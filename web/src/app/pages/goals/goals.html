@@ -17,7 +17,12 @@
     </div>
 
     <!-- Cards with goals -->
-    @if (hasGoals()) {
+    @if (isLoading()) {
+      <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
+        <z-loader />
+        <span class="text-sm text-muted-foreground">Loading goals...</span>
+      </div>
+    } @else if (hasGoals()) {
       <z-tab-group zAlignTabs="center" zTabsPosition="custom" zActivePosition="custom">
         <z-tab [label]="'On Track (' + activeGoals().length + ')'">
           <app-goals-list [goals]="activeGoals()" />
@@ -27,7 +32,6 @@
         </z-tab>
       </z-tab-group>
     } @else {
-      <!-- If doesn't have goals -->
       <z-card class="w-full h-full flex flex-col">
         <div class="flex flex-col items-center justify-center p-6 mt-6">
           <div

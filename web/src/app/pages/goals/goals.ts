@@ -6,6 +6,7 @@ import { GoalsList } from '@/shared/components/goals/goals-list/goals-list'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
 import { ZardDialogService } from '@/shared/components/ui/dialog'
+import { ZardLoaderComponent } from '@/shared/components/ui/loader'
 import {
 	ZardTabComponent,
 	ZardTabGroupComponent,
@@ -20,6 +21,7 @@ import {
 		GoalsList,
 		ZardTabGroupComponent,
 		ZardTabComponent,
+		ZardLoaderComponent,
 	],
 	templateUrl: './goals.html',
 })
@@ -31,6 +33,7 @@ export class Goals {
 	private readonly goalsService = inject(GoalsService)
 
 	readonly hasGoals = this.goalsService.hasGoals
+	readonly isLoading = this.goalsService.loading
 	readonly goals = this.goalsService.goals
 	readonly activeGoals = this.goalsService.activeGoals
 	readonly completedGoals = this.goalsService.completedGoals
