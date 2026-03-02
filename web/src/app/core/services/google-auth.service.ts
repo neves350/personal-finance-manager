@@ -20,19 +20,22 @@ export class GoogleAuthService {
 				},
 			})
 
-			google.accounts.id.prompt((notification) => {
-				if (notification.isSkippedMoment() || notification.isNotDisplayed()) {
-					this.ngZone.run(() => {
-						subscriber.error(
-							new Error(
-								notification.isNotDisplayed()
-									? notification.getNotDisplayedReason()
-									: notification.getSkippedReason(),
-							),
-						)
-					})
-				}
+			const container = document.createElement('div')
+			container.style.display = 'none'
+			document.body.appendChild(container)
+
+			google.accounts.id.renderButton(container, {
+				type: 'icon',
+				size: 'large',
 			})
+
+			const googleBtn =
+				container.querySelector<HTMLElement>('[role="button"]')
+			if (googleBtn) {
+				googleBtn.click()
+			}
+
+			return () => container.remove()
 		})
 	}
 }

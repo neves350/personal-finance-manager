@@ -49,12 +49,24 @@ declare namespace google.accounts.id {
 		state_cookie_domain?: string
 		ux_mode?: 'popup' | 'redirect'
 		itp_support?: boolean
+		use_fedcm_for_prompt?: boolean
+	}
+
+	interface ButtonConfig {
+		type?: 'standard' | 'icon'
+		theme?: 'outline' | 'filled_blue' | 'filled_black'
+		size?: 'large' | 'medium' | 'small'
+		text?: 'signin_with' | 'signup_with' | 'continue_with' | 'signin'
+		shape?: 'rectangular' | 'pill' | 'circle' | 'square'
+		width?: number
+		click_listener?: () => void
 	}
 
 	function initialize(config: IdConfiguration): void
 	function prompt(
 		momentListener?: (notification: PromptMomentNotification) => void,
 	): void
+	function renderButton(parent: HTMLElement, config: ButtonConfig): void
 	function disableAutoSelect(): void
 	function revoke(
 		hint: string,
