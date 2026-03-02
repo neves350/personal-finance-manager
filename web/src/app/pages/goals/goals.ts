@@ -43,7 +43,7 @@ export class Goals {
 		this.dialogService.create({
 			zTitle: 'New Goal',
 			zContent: GoalsForm,
-			zWidth: '650px',
+			zWidth: '450px',
 			zHideFooter: false,
 			zOkText: 'Create Goal',
 			zOnOk: (instance: GoalsForm) => {

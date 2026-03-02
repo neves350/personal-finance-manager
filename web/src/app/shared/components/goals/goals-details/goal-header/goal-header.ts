@@ -54,7 +54,7 @@ export class GoalHeader {
 		this.dialogService.create({
 			zTitle: 'Edit Goal',
 			zContent: GoalsForm,
-			zWidth: '650px',
+			zWidth: '450px',
 			zHideFooter: false,
 			zOkText: 'Save Changes',
 			zOnOk: (instance: GoalsForm) => {

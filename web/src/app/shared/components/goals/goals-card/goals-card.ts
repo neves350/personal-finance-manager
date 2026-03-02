@@ -124,7 +124,7 @@ export class GoalsCard {
 		this.dialogService.create({
 			zTitle: 'Create Deposit',
 			zContent: GoalsDepositForm,
-			zWidth: '500px',
+			zWidth: '450px',
 			zHideFooter: false,
 			zOkText: 'Add Deposit',
 			zOnOk: (instance: GoalsDepositForm) => {
@@ -144,7 +144,7 @@ export class GoalsCard {
 		this.dialogService.create({
 			zTitle: 'Edit Goal',
 			zContent: GoalsForm,
-			zWidth: '500px',
+			zWidth: '450px',
 			zHideFooter: false,
 			zOkText: 'Save Changes',
 			zOnOk: (instance: GoalsForm) => {
