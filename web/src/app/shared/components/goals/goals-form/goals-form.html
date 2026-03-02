@@ -98,28 +98,50 @@
   }
 
   <!-- Date Picker -->
-  <div class="grid grid-cols-2 gap-4">
-    <div class="grid gap-2">
-      <label for="date" class="text-sm">Start Date</label>
-      <z-date-picker
-        placeholder="Pick a date"
-        zSize="sm"
-        zFormat="dd-MM-yyyy"
-        class="w-full [&>button]:w-full"
-        [value]="selectedDate"
-        (dateChange)="onStartDateChange($event)"
-      />
-    </div>
+  @if (!isEditMode()) {
+    <div class="grid grid-cols-2 gap-4">
+      <div class="grid gap-2">
+        <label for="date" class="text-sm">Start Date</label>
+        <z-date-picker
+          zSize="sm"
+          class="w-full [&>button]:w-full"
+          [value]="selectedDate"
+          (dateChange)="onStartDateChange($event)"
+        />
+      </div>
 
-    <div class="grid gap-2">
-      <label for="date" class="text-sm">End Date (Optional)</label>
-      <z-date-picker
-        placeholder="No deadline"
-        zSize="sm"
-        zFormat="dd-MM-yyyy"
-        class="w-full [&>button]:w-full"
-        (dateChange)="onEndDateChange($event)"
-      />
+      <div class="grid gap-2">
+        <label for="date" class="text-sm">End Date (Optional)</label>
+        <z-date-picker
+          placeholder="No deadline"
+          zSize="sm"
+          class="w-full [&>button]:w-full"
+          (dateChange)="onEndDateChange($event)"
+        />
+      </div>
     </div>
-  </div>
+  } @else {
+    <div class="grid grid-cols-2 gap-4">
+      <div class="grid gap-2">
+        <label for="date" class="text-sm">Start Date</label>
+        <z-date-picker
+          zSize="sm"
+          class="w-full [&>button]:w-full"
+          [value]="goalStartDate()"
+          (dateChange)="onStartDateChange($event)"
+        />
+      </div>
+
+      <div class="grid gap-2">
+        <label for="date" class="text-sm">End Date (Optional)</label>
+        <z-date-picker
+          placeholder="No deadline"
+          zSize="sm"
+          class="w-full [&>button]:w-full"
+          [value]="goalEndDate()"
+          (dateChange)="onEndDateChange($event)"
+        />
+      </div>
+    </div>
+  }
 </form>

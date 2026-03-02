@@ -3,10 +3,11 @@ import {
 	Component,
 	computed,
 	inject,
+	input,
 } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import { GoalType } from '@core/api/goals.interface'
+import { Goal, GoalType } from '@core/api/goals.interface'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
 import { CategoriesService } from '@core/services/categories.service'
 import { GoalsService } from '@core/services/goals.service'
@@ -49,6 +50,7 @@ export class GoalsForm {
 	readonly accounts = this.bankAccountsService.bankAccounts
 	readonly categories = this.categoriesService.expenseCategories
 
+	readonly goal = input<Goal | null>(null)
 	readonly selectedDate: Date | null = new Date()
 	readonly isEditMode = computed(() => !!this.zData?.id)
 
@@ -120,6 +122,15 @@ export class GoalsForm {
 		[GoalType.SAVINGS]: 'Save money',
 		[GoalType.SPENDING_LIMIT]: 'Control expenses',
 	}
+
+	readonly goalStartDate = computed<Date | null>(() => {
+		const start = this.zData?.startDate
+		return start ? new Date(start) : null
+	})
+	readonly goalEndDate = computed<Date | null>(() => {
+		const end = this.zData?.endDate
+		return end ? new Date(end) : null
+	})
 
 	selectType(type: GoalType): void {
 		this.form.controls.type.setValue(type)
