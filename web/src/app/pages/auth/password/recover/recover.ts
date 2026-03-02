@@ -2,29 +2,29 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router, RouterLink } from '@angular/router'
 import { AuthService } from '@core/services/auth/auth.service'
-import {
-	ArrowLeftIcon,
-	FingerprintPatternIcon,
-	LucideAngularModule,
-	MailIcon,
-} from 'lucide-angular'
-import { NgxSonnerToaster, toast } from 'ngx-sonner'
+import { ArrowRightIcon, LucideAngularModule } from 'lucide-angular'
+import { toast } from 'ngx-sonner'
+import { ZardAvatarComponent } from '@/shared/components/ui/avatar'
+import { ZardButtonComponent } from '@/shared/components/ui/button'
+import { ZardDividerComponent } from '@/shared/components/ui/divider'
+import { ZardInputDirective } from '@/shared/components/ui/input'
 
 @Component({
 	selector: 'app-recover',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [
 		LucideAngularModule,
 		ReactiveFormsModule,
-		NgxSonnerToaster,
 		RouterLink,
+		ZardAvatarComponent,
+		ZardDividerComponent,
+		ZardInputDirective,
+		ZardButtonComponent,
 	],
 	templateUrl: './recover.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Recover {
-	readonly MailIcon = MailIcon
-	readonly FingerprintPatternIcon = FingerprintPatternIcon
-	readonly ArrowLeftIcon = ArrowLeftIcon
+	readonly ArrowRightIcon = ArrowRightIcon
 
 	private readonly fb = inject(FormBuilder)
 	private readonly router = inject(Router)
