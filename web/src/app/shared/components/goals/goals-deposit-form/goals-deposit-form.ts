@@ -1,7 +1,9 @@
+import { CurrencyPipe } from '@angular/common'
 import { Component, inject } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { GoalsService } from '@core/services/goals.service'
-import { CalendarIcon, LucideAngularModule } from 'lucide-angular'
+import { CalendarIcon, EuroIcon, LucideAngularModule } from 'lucide-angular'
+import { toast } from 'ngx-sonner'
 import { ZardDatePickerComponent } from '../../ui/date-picker'
 import { Z_MODAL_DATA, ZardDialogRef } from '../../ui/dialog'
 import { ZardInputDirective } from '../../ui/input'
@@ -14,6 +16,7 @@ import type { iDepositSheetData } from './goals-deposit-form.interface'
 		ZardDatePickerComponent,
 		ZardInputDirective,
 		LucideAngularModule,
+		CurrencyPipe,
 	],
 	templateUrl: './goals-deposit-form.html',
 })
@@ -24,17 +27,16 @@ export class GoalsDepositForm {
 	private readonly fb = inject(FormBuilder)
 
 	readonly CalendarIcon = CalendarIcon
+	readonly EuroIcon = EuroIcon
+
 	readonly selectedDate: Date | null = new Date()
 	readonly goal = this.zData?.goal
 
-	get formattedRemaining(): string {
+	get formattedRemaining() {
 		if (!this.goal) return ''
 		const remaining = this.goal.amount - this.goal.currentAmount
-		const currency = this.goal.bankAccount?.currency ?? 'EUR'
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency,
-		}).format(Math.max(0, remaining))
+
+		return Math.max(0, remaining)
 	}
 
 	form = this.fb.nonNullable.group({
@@ -82,7 +84,15 @@ export class GoalsDepositForm {
 		}
 
 		this.goalsService.addDeposit(goalId, payload).subscribe({
-			next: () => this.dialogRef.close(),
+			next: () => {
+				toast.success('Deposit created successfully')
+				this.dialogRef.close()
+			},
+			error: (error) => {
+				toast.error(
+					error.error?.message || error.message || 'Failed to create deposit',
+				)
+			},
 		})
 	}
 }

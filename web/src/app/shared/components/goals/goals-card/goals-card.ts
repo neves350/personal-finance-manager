@@ -29,7 +29,6 @@ import { ZardDialogService } from '../../ui/dialog'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardPopoverComponent, ZardPopoverDirective } from '../../ui/popover'
 import { ZardProgressBarComponent } from '../../ui/progress-bar'
-import { ZardSheetService } from '../../ui/sheet'
 import { GoalsDepositForm } from '../goals-deposit-form/goals-deposit-form'
 import type { iDepositSheetData } from '../goals-deposit-form/goals-deposit-form.interface'
 import { GoalsForm } from '../goals-form/goals-form'
@@ -54,7 +53,6 @@ import type { iGoalsData } from '../goals-form/goals-form.interface'
 })
 export class GoalsCard {
 	private readonly dialogService = inject(ZardDialogService)
-	private readonly sheetService = inject(ZardSheetService)
 	private readonly goalsService = inject(GoalsService)
 
 	readonly goal = input.required<Goal>()
@@ -124,17 +122,17 @@ export class GoalsCard {
 
 	addDeposit() {
 		this.dialogService.create({
-			zTitle: 'Add Deposit',
+			zTitle: 'Create Deposit',
 			zContent: GoalsDepositForm,
 			zWidth: '500px',
 			zHideFooter: false,
-			zOkText: 'Deposit',
+			zOkText: 'Add Deposit',
 			zOnOk: (instance: GoalsDepositForm) => {
 				instance.submit()
-				return false // submit() handle close
+				return false
 			},
 			zCustomClasses:
-				'rounded-2xl [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: this.goal().id,
 				goal: this.goal(),
@@ -143,19 +141,18 @@ export class GoalsCard {
 	}
 
 	updateCard() {
-		this.sheetService.create({
+		this.dialogService.create({
 			zTitle: 'Edit Goal',
 			zContent: GoalsForm,
-			zSide: 'right',
 			zWidth: '500px',
 			zHideFooter: false,
 			zOkText: 'Save Changes',
 			zOnOk: (instance: GoalsForm) => {
 				instance.submit()
-				return false // submit() handle close
+				return false
 			},
 			zCustomClasses:
-				'rounded-2xl [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: this.goal().id,
 				title: this.goal().title,
@@ -174,11 +171,12 @@ export class GoalsCard {
 		if (!goalId) return
 
 		return this.dialogService.create({
-			zTitle: `Remove ${this.goal().title}?`,
-			zDescription: 'This action cannot be undone.',
+			zTitle: `Remove goal?`,
+			zDescription: `Are you sure you want to delete the recurring entry "${this.goal().title}"? This action cannot be undone.`,
 			zCancelText: 'Cancel',
 			zOkText: 'Delete Goal',
 			zOkDestructive: true,
+			zWidth: '500px',
 			zOnOk: async () => {
 				try {
 					const message = await lastValueFrom(this.goalsService.delete(goalId))
