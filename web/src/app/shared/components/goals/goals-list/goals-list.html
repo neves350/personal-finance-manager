@@ -1,4 +1,10 @@
-<div class="mt-4 overflow-hidden rounded-md border">
+<div class="grid grid-cols-3 gap-4 mt-4 items-stretch">
+  @for (goal of goals(); track goal.id) {
+    <app-goals-card [goal]="goal" />
+  }
+</div>
+
+<!-- <div class="mt-4 overflow-hidden rounded-md border">
   <table z-table zSize="comfortable">
     <thead z-table-header class="bg-table">
       <tr z-table-row>
@@ -45,4 +51,4 @@
     [(zPageIndex)]="currentPage"
     [zSize]="'sm'"
   />
-</div>
+</div> -->
