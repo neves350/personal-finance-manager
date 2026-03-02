@@ -23,6 +23,7 @@ import {
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { AuthService } from './auth.service'
 import { LoginUserDto, RegisterUserDto } from './dtos/auth.dto'
+import { GoogleAuthDto } from './dtos/google-auth.dto'
 import { ForgotPasswordDto } from './dtos/request-password-recover.dto'
 import { ResetPasswordDto } from './dtos/reset-password.dto'
 import { JwtAuthGuard } from './guards/jwt-auth.guard'
@@ -96,6 +97,37 @@ export class AuthController {
 		return {
 			user,
 			message: 'Login successful',
+		}
+	}
+
+	@Post('sessions/google')
+	@ApiOperation({
+		summary: 'Authenticate with google',
+		description: 'Authenticates user with google credentials.',
+	})
+	async googleAuth(
+		@Body() dto: GoogleAuthDto,
+		@Res({ passthrough: true }) res: Response,
+	) {
+		const { user, tokens } = await this.authService.googleAuth(dto.credential)
+
+		// send the token to client
+		res.cookie('accessToken', tokens.accessToken, {
+			httpOnly: true,
+			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
+			sameSite: 'lax',
+			maxAge: 15 * 60 * 1000, // 15 min
+		})
+		res.cookie('refreshToken', tokens.refreshToken, {
+			httpOnly: true,
+			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
+			sameSite: 'lax',
+			maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+		})
+
+		return {
+			user,
+			message: 'Google authentication successful',
 		}
 	}
 

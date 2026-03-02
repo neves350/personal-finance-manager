@@ -7,6 +7,7 @@ import {
 import { ConfigService } from '@nestjs/config'
 import { JwtService, type JwtSignOptions } from '@nestjs/jwt'
 import * as bcrypt from 'bcrypt'
+import { OAuth2Client } from 'google-auth-library'
 import { Categories } from 'prisma/categories'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
 import { MailService } from 'src/infrastructure/mail/mail.service'
@@ -109,6 +110,88 @@ export class AuthService {
 			expiresIn: this.configService.getOrThrow<string>('JWT_EXPIRE_IN'),
 		} as JwtSignOptions)
 		const refreshToken = this.jwtService.sign(payload, {
+			secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
+			expiresIn: this.configService.getOrThrow<string>('JWT_REFRESH_EXPIRE_IN'),
+		} as JwtSignOptions)
+
+		return {
+			user,
+			tokens: { accessToken, refreshToken },
+		}
+	}
+
+	async googleAuth(credential: string): Promise<RegisterResponse> {
+		const client = new OAuth2Client(
+			this.configService.getOrThrow<string>('GOOGLE_CLIENT_ID'),
+		)
+
+		const ticket = await client.verifyIdToken({
+			idToken: credential,
+			audience: this.configService.getOrThrow<string>('GOOGLE_CLIENT_ID'),
+		})
+
+		const payload = ticket.getPayload()
+		if (!payload) throw new UnauthorizedException('Invalid Google token')
+
+		const { sub: googleId, email, name, picture } = payload
+
+		if (!email) throw new UnauthorizedException('Google account has no email')
+
+		// Find user by googleId or email
+		let user = await this.prisma.user.findFirst({
+			where: {
+				OR: [{ googleId }, { email }],
+			},
+		})
+
+		if (user && !user.googleId) {
+			// Existing email user → link Google account
+			user = await this.prisma.user.update({
+				where: { id: user.id },
+				data: {
+					googleId,
+					...(picture && !user.avatarUrl ? { avatarUrl: picture } : {}),
+				},
+			})
+		} else if (!user) {
+			// New user → create with default categories
+			const result = await this.prisma.$transaction(async (tx) => {
+				const newUser = await tx.user.create({
+					data: {
+						name: name || email,
+						email,
+						googleId,
+						passwordHash: null,
+						avatarUrl: picture || 'default',
+					},
+				})
+
+				await tx.category.createMany({
+					data: Categories.map((category) => ({
+						title: category.title,
+						icon: category.icon,
+						type: category.type,
+						isDefault: true,
+						userId: newUser.id,
+					})),
+				})
+
+				return newUser
+			})
+
+			user = result
+		}
+
+		const jwtPayload = {
+			sub: user.id,
+			email: user.email,
+		}
+
+		const accessToken = this.jwtService.sign(jwtPayload, {
+			secret: this.configService.getOrThrow<string>('JWT_SECRET'),
+			expiresIn: this.configService.getOrThrow<string>('JWT_EXPIRE_IN'),
+		} as JwtSignOptions)
+		const refreshToken = this.jwtService.sign(jwtPayload, {
 			secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
 			expiresIn: this.configService.getOrThrow<string>('JWT_REFRESH_EXPIRE_IN'),
 		} as JwtSignOptions)

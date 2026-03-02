@@ -17,6 +17,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 			// Skip refresh for auth-related endpoints and profile (handled by verifyAuth)
 			const isAuthEndpoint =
 				req.url.includes('/sessions/password') ||
+				req.url.includes('/sessions/google') ||
 				req.url.includes('/refresh') ||
 				req.url.includes('/users') ||
 				req.url.includes('/profile')
