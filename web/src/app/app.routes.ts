@@ -16,28 +16,29 @@ export const routes: Routes = [
 		path: 'login',
 		title: 'Login',
 		canActivate: [guestGuard],
-		loadComponent: () => import('./pages/login/login').then((m) => m.Login),
+		loadComponent: () =>
+			import('./pages/auth/login/login').then((m) => m.Login),
 	},
 	{
 		path: 'register',
 		title: 'Register',
 		canActivate: [guestGuard],
 		loadComponent: () =>
-			import('./pages/register/register').then((m) => m.Register),
+			import('./pages/auth/register/register').then((m) => m.Register),
 	},
 	{
 		path: 'password/recover',
 		title: 'Recover Password',
 		canActivate: [guestGuard],
 		loadComponent: () =>
-			import('./pages/password/recover/recover').then((m) => m.Recover),
+			import('./pages/auth/password/recover/recover').then((m) => m.Recover),
 	},
 	{
 		path: 'password/reset',
 		title: 'Reset Password',
 		canActivate: [guestGuard],
 		loadComponent: () =>
-			import('./pages/password/reset/reset').then((m) => m.Reset),
+			import('./pages/auth/password/reset/reset').then((m) => m.Reset),
 	},
 	{
 		path: '',
