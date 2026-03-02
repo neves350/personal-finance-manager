@@ -12,15 +12,16 @@ import { CategoriesService } from '@core/services/categories.service'
 import { GoalsService } from '@core/services/goals.service'
 import {
 	BanknoteArrowDownIcon,
+	EuroIcon,
 	HandCoinsIcon,
 	LucideAngularModule,
 	type LucideIconData,
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
 import { ZardDatePickerComponent } from '../../ui/date-picker'
+import { Z_MODAL_DATA, ZardDialogRef } from '../../ui/dialog'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardSelectComponent, ZardSelectItemComponent } from '../../ui/select'
-import { Z_SHEET_DATA, ZardSheetRef } from '../../ui/sheet'
 import type { iGoalsData } from './goals-form.interface'
 
 @Component({
@@ -37,10 +38,10 @@ import type { iGoalsData } from './goals-form.interface'
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GoalsForm {
-	private readonly zData: iGoalsData = inject(Z_SHEET_DATA)
+	private readonly zData: iGoalsData = inject(Z_MODAL_DATA)
 	private readonly fb = inject(FormBuilder)
 	private readonly goalsService = inject(GoalsService)
-	private readonly sheetRef = inject(ZardSheetRef)
+	private readonly dialogRef = inject(ZardDialogRef)
 
 	private readonly bankAccountsService = inject(BankAccountsService)
 	private readonly categoriesService = inject(CategoriesService)
@@ -51,8 +52,7 @@ export class GoalsForm {
 	readonly selectedDate: Date | null = new Date()
 	readonly isEditMode = computed(() => !!this.zData?.id)
 
-	readonly HandCoinsIcon = HandCoinsIcon
-	readonly BanknoteArrowDownIcon = BanknoteArrowDownIcon
+	readonly EuroIcon = EuroIcon
 
 	// Form with default values
 	form = this.fb.nonNullable.group({
@@ -112,8 +112,8 @@ export class GoalsForm {
 	}
 
 	readonly typeIcons: Record<GoalType, LucideIconData> = {
-		[GoalType.SAVINGS]: this.HandCoinsIcon,
-		[GoalType.SPENDING_LIMIT]: this.BanknoteArrowDownIcon,
+		[GoalType.SAVINGS]: HandCoinsIcon,
+		[GoalType.SPENDING_LIMIT]: BanknoteArrowDownIcon,
 	}
 
 	readonly typeDescriptions: Record<GoalType, string> = {
@@ -183,13 +183,11 @@ export class GoalsForm {
 						: 'Goal created successfully',
 				)
 				this.bankAccountsService.loadBankAccounts().subscribe()
-				this.sheetRef.close()
+				this.dialogRef.close()
 			},
 			error: (error) => {
 				toast.error(
-					error.error?.message ||
-						error.message ||
-						'Failed to save goal',
+					error.error?.message || error.message || 'Failed to save goal',
 				)
 			},
 		})

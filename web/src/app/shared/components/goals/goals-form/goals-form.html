@@ -7,16 +7,18 @@
       @for (goalType of goalTypes; track goalType) {
         <button
           type="button"
-          class="flex cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 p-4 text-center transition-colors"
+          class="flex cursor-pointer flex-col items-center gap-1 rounded-2xl border-2 p-4 text-center transition-colors"
           [class]="getTypeClasses(goalType)"
           (click)="selectType(goalType)"
         >
-          <i-lucide
-            [img]="typeIcons[goalType]"
-            class="size-6"
-            [class]="getTypeIconClasses(goalType)"
-          />
-          <span class="text-sm font-semibold">{{ getTypeLabel(goalType) }}</span>
+          <div class="flex items-center gap-2">
+            <i-lucide
+              [img]="typeIcons[goalType]"
+              class="size-5"
+              [class]="getTypeIconClasses(goalType)"
+            />
+            <span class="text-sm font-semibold">{{ getTypeLabel(goalType) }}</span>
+          </div>
           <span class="text-xs text-muted-foreground">{{ typeDescriptions[goalType] }}</span>
         </button>
       }
@@ -24,8 +26,8 @@
   }
 
   <!-- Name Input -->
-  <div class="grid gap-2 space-y-2">
-    <label for="title">Goal Name</label>
+  <div class="grid gap-2">
+    <label for="title" class="text-sm">Name</label>
     <input
       z-input
       class="rounded-md border border-zinc-400/50 p-2 text-sm text-muted-foreground"
@@ -38,14 +40,22 @@
   </div>
 
   <!-- Balance -->
-  <div class="grid gap-2 space-y-2">
-    <label for="amount">Goal Amount</label>
-    <input
-      z-input
-      class="rounded-md border border-zinc-400/50 p-2 text-sm text-muted-foreground"
-      formControlName="amount"
-      placeholder="100"
-    />
+  <div class="grid gap-2">
+    <label for="amount" class="text-sm">Amount</label>
+    <div class="relative">
+      <span
+        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+      >
+        <i-lucide [img]="EuroIcon" class="size-4" />
+      </span>
+      <input
+        z-input
+        type="number"
+        class="w-full rounded-md border border-zinc-400/50 py-2 pl-10 pr-4 text-sm text-muted-foreground"
+        formControlName="amount"
+        placeholder="90"
+      />
+    </div>
     @if (form.controls.amount.touched && form.controls.amount.errors?.['required']) {
       <span class="text-xs text-destructive">Amount is required</span>
     }
@@ -54,7 +64,7 @@
   <!-- SAVINGS -->
   @if (form.controls.type.value === 'SAVINGS') {
     <div class="grid gap-2">
-      <label for="bankAccountId">Account to save (optional)</label>
+      <label for="bankAccountId" class="text-sm">Account to save (optional)</label>
       <z-select class="w-full" formControlName="bankAccountId">
         @for (account of accounts(); track account.id) {
           <z-select-item [zValue]="$any(account.id)">
@@ -73,7 +83,7 @@
   <!-- SPENDING LIMIT -->
   @if (form.controls.type.value === 'SPENDING_LIMIT') {
     <div class="grid gap-2">
-      <label for="categoryId">Category (optional)</label>
+      <label for="categoryId" class="text-sm">Category (optional)</label>
       <z-select class="w-full" formControlName="categoryId">
         @for (category of categories(); track category.id) {
           <z-select-item [zValue]="$any(category.id)">
@@ -90,7 +100,7 @@
   <!-- Date Picker -->
   <div class="grid grid-cols-2 gap-4">
     <div class="grid gap-2">
-      <label for="date">Start Date</label>
+      <label for="date" class="text-sm">Start Date</label>
       <z-date-picker
         placeholder="Pick a date"
         zSize="sm"
@@ -102,7 +112,7 @@
     </div>
 
     <div class="grid gap-2">
-      <label for="date">End Date (Optional)</label>
+      <label for="date" class="text-sm">End Date (Optional)</label>
       <z-date-picker
         placeholder="No deadline"
         zSize="sm"

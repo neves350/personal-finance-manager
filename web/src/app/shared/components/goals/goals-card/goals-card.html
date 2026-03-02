@@ -1,4 +1,124 @@
-<td z-table-cell>
+<z-card class="mb-2 h-full flex flex-col">
+  <div class="flex items-start justify-between">
+    <div
+      class="size-10 flex items-center justify-center rounded-lg text-white"
+      [class]="goalIcon().style"
+    >
+      <i-lucide [img]="goalIcon().icon" class="size-5" [class]="goalIcon().style" />
+    </div>
+
+    <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
+      <span class="truncate font-medium">
+        {{ goal().title }}
+      </span>
+      <span class="truncate text-xs text-muted-foreground">
+        {{ typeLabel() }}
+      </span>
+    </div>
+
+    <!-- Popover Option -->
+    <div class="flex items-center gap-1">
+      <z-button zPopover [zContent]="popoverContent" zType="ghost">
+        <i-lucide [img]="EllipsisIcon" class="size-5" />
+      </z-button>
+    </div>
+  </div>
+
+  <ng-template #popoverContent>
+    <z-popover class="w-50 items-start">
+      <div class="flex flex-col gap-1">
+        @if (goal().type === 'SAVINGS' && goal().paceStatus !== 'COMPLETED') {
+          <z-button
+            zPopoverClose
+            zType="ghost"
+            zSize="sm"
+            zFull
+            (click)="addDeposit()"
+            class="w-full justify-start"
+          >
+            <i-lucide [img]="PlusIcon" class="h-4 w-4 mr-2" />
+            Deposit
+          </z-button>
+        }
+
+        <z-button
+          zPopoverClose
+          zType="ghost"
+          zSize="sm"
+          zFull
+          (click)="updateCard()"
+          class="w-full justify-start"
+        >
+          <i-lucide [img]="SquarePenIcon" class="h-4 w-4 mr-2" />
+          Edit
+        </z-button>
+
+        <z-button
+          zPopoverClose
+          zType="ghost"
+          zSize="sm"
+          zFull
+          class="w-full justify-start"
+          [routerLink]="['/goal-details', goal().id]"
+        >
+          <i-lucide [img]="EyeIcon" class="h-4 w-4 mr-2" />
+          Details
+        </z-button>
+      </div>
+
+      <z-divider />
+
+      <z-button
+        zPopoverClose
+        zType="ghost"
+        zSize="sm"
+        zFull
+        class="text-destructive w-full justify-start"
+        (click)="deleteCard()"
+      >
+        <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
+        Delete
+      </z-button>
+    </z-popover>
+  </ng-template>
+
+  <div class="mt-6 m-1">
+    <div class="flex justify-between mb-1">
+      <span class="font-semibold">{{ amount() | currency: 'EUR' }}</span>
+    </div>
+    <z-progress-bar [progress]="goal().progress" class="bg-income" />
+    <div class="flex justify-between mt-1">
+      <span class="font-semibold">
+        {{ currentAmount() | currency: 'EUR' }}
+        <span class="text-xs text-muted-foreground">saved so far</span>
+      </span>
+      <span class="justify-end text-muted-foreground">{{ goal().progress }}%</span>
+    </div>
+  </div>
+
+  <z-divider />
+
+  <div class="ml-1 grid gap-2 text-left text-sm leading-tight">
+    <div class="flex justify-between">
+      <span class="text-sm text-muted-foreground">Target</span>
+      @if (goal().endDate) {
+        <span class="font-semibold justify-end">{{ goal().endDate | date: 'mediumDate' }}</span>
+      } @else {
+        <span class="font-semibold justify-end text-muted-foreground">No end date</span>
+      }
+    </div>
+    <div class="flex justify-between">
+      <span class="text-sm text-muted-foreground">Remaining</span>
+      <span class="font-semibold justify-end">{{ remainingAmount() | currency: 'EUR' }}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-sm text-muted-foreground">Pace</span>
+      <span class="font-semibold justify-end">{{ paceBadge().label }}</span>
+    </div>
+  </div>
+</z-card>
+
+<!-- <td z-table-cell>
   <div class="flex items-start justify-between">
     <div class="size-10 flex items-center justify-center rounded-lg" [class]="goalIcon().style">
       <i-lucide [img]="goalIcon().icon" class="size-5" />
@@ -109,4 +229,4 @@
       </z-button>
     </z-popover>
   </ng-template>
-</td>
+</td> -->
