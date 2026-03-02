@@ -1,7 +1,7 @@
 <main class="p-4 md:p-6 w-full">
   <div class="max-w-[1400px] mx-auto py-6 md:py-3 space-y-8 md:space-y-12">
     <div class="flex justify-between items-start">
-      <h1 class="font-semibold flex flex-col">
+      <h1 class="font-medium flex flex-col text-lg">
         Cards
         <span class="font-normal text-muted-foreground text-sm">
           Manage your credit and debit cards.
@@ -17,9 +17,9 @@
         >
           <z-select-item zValue="all">All bank accounts</z-select-item>
           @for (account of bankAccounts(); track account.id) {
-          <z-select-item [zValue]="account.id!">
-            <span>{{ account.name }}</span>
-          </z-select-item>
+            <z-select-item [zValue]="account.id!">
+              <span>{{ account.name }}</span>
+            </z-select-item>
           }
         </z-select>
 
@@ -31,35 +31,35 @@
     </div>
 
     @if (hasCards()) {
-    <!-- Cards List -->
-    <app-cards-list [cards]="cards()" />
+      <!-- Cards List -->
+      <app-cards-list [cards]="cards()" />
     } @else {
-    <z-card class="w-full h-full flex flex-col">
-      <!-- Empty State -->
-      <div class="flex flex-col items-center justify-center p-6 mt-6">
-        <div
-          class="size-12 flex items-center justify-center rounded-lg bg-accent text-accent-foreground mb-4"
-        >
-          <i-lucide [img]="WalletCardsIcon" />
-        </div>
+      <z-card class="w-full h-full flex flex-col">
+        <!-- Empty State -->
+        <div class="flex flex-col items-center justify-center p-6 mt-6">
+          <div
+            class="size-12 flex items-center justify-center rounded-lg bg-accent text-accent-foreground mb-4"
+          >
+            <i-lucide [img]="WalletCardsIcon" />
+          </div>
 
-        <div class="flex flex-col items-center text-center">
-          <div class="space-y-2 mt-6">
-            <p class="font-medium">No cards added</p>
-            <span class="text-muted-foreground">
-              Add your cards to track spending and available credit limits.
-            </span>
+          <div class="flex flex-col items-center text-center">
+            <div class="space-y-2 mt-6">
+              <p class="font-medium">No cards added</p>
+              <span class="text-muted-foreground">
+                Add your cards to track spending and available credit limits.
+              </span>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-center justify-center mt-4">
+            <z-button class="cursor-pointer" (click)="openSheet()">
+              <i-lucide [img]="PlusIcon" />
+              Add card
+            </z-button>
           </div>
         </div>
-
-        <div class="flex flex-col items-center justify-center mt-4">
-          <z-button class="cursor-pointer" (click)="openSheet()">
-            <i-lucide [img]="PlusIcon" />
-            Add card
-          </z-button>
-        </div>
-      </div>
-    </z-card>
+      </z-card>
     }
   </div>
 </main>
