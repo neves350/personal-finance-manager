@@ -108,17 +108,17 @@ export class GoalSavedMoney {
 
 	addDeposit() {
 		this.dialogService.create({
-			zTitle: 'Add Deposit',
+			zTitle: 'Create Deposit',
 			zContent: GoalsDepositForm,
-			zWidth: '425px',
+			zWidth: '450px',
 			zHideFooter: false,
-			zOkText: 'Deposit',
+			zOkText: 'Add Deposit',
 			zOnOk: (instance: GoalsDepositForm) => {
 				instance.submit()
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: this.goal().id,
 				goal: this.goal(),

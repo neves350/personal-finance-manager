@@ -99,134 +99,36 @@
   <z-divider />
 
   <div class="ml-1 grid gap-2 text-left text-sm leading-tight">
-    <div class="flex justify-between">
-      <span class="text-sm text-muted-foreground">Target</span>
-      @if (goal().endDate) {
-        <span class="font-semibold justify-end">{{ goal().endDate | date: 'mediumDate' }}</span>
-      } @else {
-        <span class="font-semibold justify-end text-muted-foreground">No end date</span>
-      }
-    </div>
-    <div class="flex justify-between">
-      <span class="text-sm text-muted-foreground">Remaining</span>
-      <span class="font-semibold justify-end">{{ remainingAmount() | currency: 'EUR' }}</span>
-    </div>
-    <div class="flex justify-between">
-      <span class="text-sm text-muted-foreground">Pace</span>
-      <span class="font-semibold justify-end">{{ paceBadge().label }}</span>
-    </div>
+    @if (goal().paceStatus !== 'COMPLETED') {
+      <div class="flex justify-between">
+        <span class="text-sm text-muted-foreground">Target</span>
+        @if (goal().endDate) {
+          <span class="font-semibold justify-end">{{ goal().endDate | date: 'mediumDate' }}</span>
+        } @else {
+          <span class="font-semibold justify-end text-muted-foreground">No end date</span>
+        }
+      </div>
+      <div class="flex justify-between">
+        <span class="text-sm text-muted-foreground">Remaining</span>
+        <span class="font-semibold justify-end">{{ remainingAmount() | currency: 'EUR' }}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-sm text-muted-foreground">Pace</span>
+        <span class="font-semibold justify-end">{{ paceBadge().label }}</span>
+      </div>
+    } @else {
+      <div class="flex justify-between">
+        <span class="text-sm text-muted-foreground">Target</span>
+        @if (goal().endDate) {
+          <span class="font-semibold justify-end">{{ goal().endDate | date: 'mediumDate' }}</span>
+        } @else {
+          <span class="font-semibold justify-end text-muted-foreground">No end date</span>
+        }
+      </div>
+      <div class="flex justify-between">
+        <span class="text-sm text-muted-foreground">Pace</span>
+        <span class="font-semibold justify-end">{{ paceBadge().label }}</span>
+      </div>
+    }
   </div>
 </z-card>
-
-<!-- <td z-table-cell>
-  <div class="flex items-start justify-between">
-    <div class="size-10 flex items-center justify-center rounded-lg" [class]="goalIcon().style">
-      <i-lucide [img]="goalIcon().icon" class="size-5" />
-    </div>
-
-    <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
-      <span class="truncate text-sm font-medium">
-        {{ goal().title }}
-      </span>
-      <span class="truncate text-xs text-muted-foreground">
-        {{ typeLabel() }}
-      </span>
-    </div>
-  </div>
-</td>
-<td z-table-cell>
-  <div class="flex justify-between">
-    <span class="text-xs font-semibold text-income-foreground"
-      >{{ goal().progress }}% completed</span
-    >
-    <span class="text-xs font-semibold justify-end text-muted-foreground">{{
-      goal().endDate | date: 'd MMM'
-    }}</span>
-  </div>
-  <z-progress-bar [progress]="goal().progress" class="bg-income" />
-</td>
-<td z-table-cell>
-  <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
-    <span class="truncate text-sm font-medium">
-      {{ formattedCurrentAmount() }}
-    </span>
-    <span class="truncate text-xs text-muted-foreground"> to {{ formattedAmount() }} </span>
-  </div>
-</td>
-<td z-table-cell>
-  <z-badge [zType]="paceBadge().type" zShape="soft" class="h-5">
-    <span class="w-1.5 h-1.5 rounded-full animate-pulse" [class]="paceBadge().dot"></span>
-    {{ paceBadge().label }}
-  </z-badge>
-</td>
-<td z-table-cell>
-  <z-button
-    class="cursor-pointer"
-    zType="outline"
-    zPopover
-    [zContent]="popoverContent"
-    zSize="sm"
-    zShape="circle"
-    zPlacement="bottom"
-  >
-    <i-lucide [img]="EllipsisIcon" />
-  </z-button>
-
-  <ng-template #popoverContent>
-    <z-popover class="w-50 items-start">
-      <div class="flex flex-col gap-1">
-        @if (goal().type === 'SAVINGS' && goal().paceStatus !== 'COMPLETED') {
-          <z-button
-            zPopoverClose
-            zType="ghost"
-            zSize="sm"
-            zFull
-            (click)="addDeposit()"
-            class="w-full justify-start"
-          >
-            <i-lucide [img]="PlusIcon" class="h-4 w-4 mr-2" />
-            Deposit
-          </z-button>
-        }
-
-        <z-button
-          zPopoverClose
-          zType="ghost"
-          zSize="sm"
-          zFull
-          (click)="updateCard()"
-          class="w-full justify-start"
-        >
-          <i-lucide [img]="SquarePenIcon" class="h-4 w-4 mr-2" />
-          Edit
-        </z-button>
-
-        <z-button
-          zPopoverClose
-          zType="ghost"
-          zSize="sm"
-          zFull
-          class="w-full justify-start"
-          [routerLink]="['/goal-details', goal().id]"
-        >
-          <i-lucide [img]="EyeIcon" class="h-4 w-4 mr-2" />
-          Details
-        </z-button>
-      </div>
-
-      <z-divider />
-
-      <z-button
-        zPopoverClose
-        zType="ghost"
-        zSize="sm"
-        zFull
-        class="text-destructive w-full justify-start"
-        (click)="deleteCard()"
-      >
-        <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
-        Delete
-      </z-button>
-    </z-popover>
-  </ng-template>
-</td> -->
