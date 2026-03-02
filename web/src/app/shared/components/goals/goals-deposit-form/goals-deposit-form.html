@@ -1,22 +1,29 @@
 @if (goal) {
   <div class="flex justify-center items-center mb-3 mt-3">
-    <span class="text-sm text-muted-foreground font-semibold"
-      >Progress: {{ goal.progress }}% · {{ formattedRemaining }} remaining</span
-    >
+    <span class="text-sm text-muted-foreground font-semibold">
+      Progress: {{ goal.progress }}% · {{ formattedRemaining | currency: 'EUR' }} remaining
+    </span>
   </div>
 }
 
 <form [formGroup]="form">
   <!-- Amount Input -->
   <div class="grid gap-2 mt-6">
-    <label for="amount">Deposit Amount</label>
-    <input
-      z-input
-      type="number"
-      class="rounded-md border border-zinc-400/50 p-2 text-sm text-muted-foreground"
-      formControlName="amount"
-      placeholder="100"
-    />
+    <label for="amount" class="text-sm">Amount</label>
+    <div class="relative">
+      <span
+        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+      >
+        <i-lucide [img]="EuroIcon" class="size-4" />
+      </span>
+      <input
+        z-input
+        type="number"
+        class="w-full rounded-md border border-zinc-400/50 py-2 pl-10 pr-4 text-sm text-muted-foreground"
+        formControlName="amount"
+        placeholder="90"
+      />
+    </div>
     @if (form.controls.amount.touched && form.controls.amount.errors?.['required']) {
       <span class="text-xs text-destructive">Amount is required</span>
     }
@@ -24,11 +31,9 @@
 
   <!-- Date Picker -->
   <div class="grid gap-2 mt-6">
-    <label for="date">Date</label>
+    <label for="date" class="text-sm">Date</label>
     <z-date-picker
-      placeholder="Pick a date"
       zSize="sm"
-      zFormat="dd-MM-yyyy"
       class="w-full [&>button]:w-full"
       [value]="selectedDate"
       (dateChange)="onDateChange($event)"
@@ -37,7 +42,7 @@
 
   <!-- Note Input (Optional) -->
   <div class="grid gap-2 mt-6">
-    <label for="title">Note (optional)</label>
+    <label for="title" class="text-sm">Note (optional)</label>
     <input
       z-input
       class="rounded-md border border-zinc-400/50 p-2 text-sm text-muted-foreground"

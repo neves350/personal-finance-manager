@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common'
+import { CurrencyPipe, DatePipe } from '@angular/common'
 import {
 	ChangeDetectionStrategy,
 	Component,
@@ -22,39 +22,37 @@ import {
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
 import { lastValueFrom } from 'rxjs'
-import { ZardBadgeComponent, type ZardBadgeVariants } from '../../ui/badge'
+import { type ZardBadgeVariants } from '../../ui/badge'
 import { ZardButtonComponent } from '../../ui/button'
+import { ZardCardComponent } from '../../ui/card'
 import { ZardDialogService } from '../../ui/dialog'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardPopoverComponent, ZardPopoverDirective } from '../../ui/popover'
 import { ZardProgressBarComponent } from '../../ui/progress-bar'
-import { ZardSheetService } from '../../ui/sheet'
-import { ZardTableCellComponent } from '../../ui/table'
 import { GoalsDepositForm } from '../goals-deposit-form/goals-deposit-form'
 import type { iDepositSheetData } from '../goals-deposit-form/goals-deposit-form.interface'
 import { GoalsForm } from '../goals-form/goals-form'
 import type { iGoalsData } from '../goals-form/goals-form.interface'
 
 @Component({
-	selector: 'tr[app-goals-card]',
+	selector: 'app-goals-card',
 	imports: [
 		LucideAngularModule,
-		ZardBadgeComponent,
 		ZardButtonComponent,
 		RouterLink,
-		ZardTableCellComponent,
 		ZardProgressBarComponent,
 		ZardPopoverComponent,
 		ZardPopoverDirective,
 		ZardDividerComponent,
 		DatePipe,
+		CurrencyPipe,
+		ZardCardComponent,
 	],
 	templateUrl: './goals-card.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GoalsCard {
 	private readonly dialogService = inject(ZardDialogService)
-	private readonly sheetService = inject(ZardSheetService)
 	private readonly goalsService = inject(GoalsService)
 
 	readonly goal = input.required<Goal>()
@@ -64,17 +62,15 @@ export class GoalsCard {
 	readonly Trash2Icon = Trash2Icon
 	readonly EyeIcon = EyeIcon
 	readonly PlusIcon = PlusIcon
-	readonly HandCoinsIcon = HandCoinsIcon
-	readonly BanknoteArrowDownIcon = BanknoteArrowDownIcon
 
 	readonly goalIcon = computed(() => {
 		const iconMap: Record<GoalType, { icon: LucideIconData; style: string }> = {
 			[GoalType.SAVINGS]: {
-				icon: this.HandCoinsIcon,
+				icon: HandCoinsIcon,
 				style: 'bg-income text-income-foreground',
 			},
 			[GoalType.SPENDING_LIMIT]: {
-				icon: this.BanknoteArrowDownIcon,
+				icon: BanknoteArrowDownIcon,
 				style: 'bg-expense text-expense-foreground',
 			},
 		}
@@ -100,54 +96,43 @@ export class GoalsCard {
 		() => ({ SAVINGS: 'Saved', SPENDING_LIMIT: 'Spent' })[this.goal().type],
 	)
 
-	readonly formattedAmount = computed(() => {
-		const currency = this.goal().bankAccount?.currency ?? 'EUR'
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency,
-		}).format(this.goal().amount)
-	})
-
-	readonly formattedCurrentAmount = computed(() => {
-		const currency = this.goal().bankAccount?.currency ?? 'EUR'
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency,
-		}).format(this.goal().currentAmount)
-	})
+	readonly amount = computed(() => this.goal().amount)
+	readonly currentAmount = computed(() => this.goal().currentAmount)
+	readonly remainingAmount = computed(
+		() => this.goal().amount - this.goal().currentAmount,
+	)
 
 	readonly paceBadge = computed(() => {
 		const map: Record<
 			string,
-			{ type: ZardBadgeVariants['zType']; label: string; dot: string }
+			{ type: ZardBadgeVariants['zType']; label: string }
 		> = {
-			ON_TRACK: { type: 'success', label: 'On Track', dot: 'bg-green-500' },
-			COMPLETED: { type: 'completed', label: 'Completed', dot: 'bg-teal-500' },
-			OFF_PACE: { type: 'warning', label: 'Off Pace', dot: 'bg-yellow-500' },
-			OVER_PACE: { type: 'destructive', label: 'Over Pace', dot: 'bg-white' },
+			ON_TRACK: { type: 'success', label: 'On Track' },
+			COMPLETED: { type: 'completed', label: 'Completed' },
+			OFF_PACE: { type: 'warning', label: 'Off Pace' },
+			OVER_PACE: { type: 'destructive', label: 'Over Pace' },
 		}
 		return (
 			map[this.goal().paceStatus] ?? {
 				type: 'secondary',
 				label: this.goal().paceStatus,
-				dot: 'bg-green-500',
 			}
 		)
 	})
 
 	addDeposit() {
 		this.dialogService.create({
-			zTitle: 'Add Deposit',
+			zTitle: 'Create Deposit',
 			zContent: GoalsDepositForm,
-			zWidth: '425px',
+			zWidth: '500px',
 			zHideFooter: false,
-			zOkText: 'Deposit',
+			zOkText: 'Add Deposit',
 			zOnOk: (instance: GoalsDepositForm) => {
 				instance.submit()
-				return false // submit() handle close
+				return false
 			},
 			zCustomClasses:
-				'rounded-2xl [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: this.goal().id,
 				goal: this.goal(),
@@ -156,19 +141,18 @@ export class GoalsCard {
 	}
 
 	updateCard() {
-		this.sheetService.create({
+		this.dialogService.create({
 			zTitle: 'Edit Goal',
 			zContent: GoalsForm,
-			zSide: 'right',
 			zWidth: '500px',
 			zHideFooter: false,
 			zOkText: 'Save Changes',
 			zOnOk: (instance: GoalsForm) => {
 				instance.submit()
-				return false // submit() handle close
+				return false
 			},
 			zCustomClasses:
-				'rounded-2xl [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: this.goal().id,
 				title: this.goal().title,
@@ -187,11 +171,12 @@ export class GoalsCard {
 		if (!goalId) return
 
 		return this.dialogService.create({
-			zTitle: `Remove ${this.goal().title}?`,
-			zDescription: 'This action cannot be undone.',
+			zTitle: `Remove goal?`,
+			zDescription: `Are you sure you want to delete the recurring entry "${this.goal().title}"? This action cannot be undone.`,
 			zCancelText: 'Cancel',
 			zOkText: 'Delete Goal',
 			zOkDestructive: true,
+			zWidth: '500px',
 			zOnOk: async () => {
 				try {
 					const message = await lastValueFrom(this.goalsService.delete(goalId))
