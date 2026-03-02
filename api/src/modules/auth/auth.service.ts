@@ -91,6 +91,9 @@ export class AuthService {
 
 		if (!user) throw new UnauthorizedException('Invalid email')
 
+		if (!user.passwordHash)
+			throw new UnauthorizedException('This account uses Google sign-in')
+
 		const isPasswordValid = await bcrypt.compare(password, user.passwordHash)
 
 		if (!isPasswordValid) throw new UnauthorizedException('Invalid password')

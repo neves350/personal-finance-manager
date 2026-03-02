@@ -82,6 +82,9 @@ export class UsersService {
 			)
 		}
 
+		if (!existingUser.passwordHash)
+			throw new UnauthorizedException('This account uses Google sign-in')
+
 		const isPasswordValid = await bcrypt.compare(
 			currentPassword,
 			existingUser.passwordHash,
