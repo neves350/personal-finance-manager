@@ -2,13 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router, RouterLink } from '@angular/router'
 import { AuthService } from '@core/services/auth/auth.service'
-import {
-	ArrowRightIcon,
-	LockKeyholeIcon,
-	LucideAngularModule,
-	MailIcon,
-	WalletMinimalIcon,
-} from 'lucide-angular'
+import { ArrowRightIcon, LucideAngularModule } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
 import { ZardAvatarComponent } from '@/shared/components/ui/avatar'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
@@ -34,9 +28,6 @@ export class Login {
 	private readonly router = inject(Router)
 	private readonly authService = inject(AuthService)
 
-	readonly WalletMinimalIcon = WalletMinimalIcon
-	readonly MailIcon = MailIcon
-	readonly LockKeyholeIcon = LockKeyholeIcon
 	readonly ArrowRightIcon = ArrowRightIcon
 
 	form = this.fb.nonNullable.group({
