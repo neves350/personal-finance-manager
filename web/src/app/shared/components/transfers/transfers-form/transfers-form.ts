@@ -35,6 +35,8 @@ export class TransfersForm {
 	private readonly dialogRef = inject(ZardDialogRef)
 
 	readonly account = input.required<BankAccount>()
+	readonly selectedDate: Date | null = new Date()
+
 	readonly ArrowDownIcon = ArrowDownIcon
 	readonly EuroIcon = EuroIcon
 
