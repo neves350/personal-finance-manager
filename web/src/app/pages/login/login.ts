@@ -38,7 +38,6 @@ export class Login {
 	readonly MailIcon = MailIcon
 	readonly LockKeyholeIcon = LockKeyholeIcon
 	readonly ArrowRightIcon = ArrowRightIcon
-	readonly toast = toast
 
 	form = this.fb.nonNullable.group({
 		email: ['', [Validators.email, Validators.required]],
@@ -50,10 +49,16 @@ export class Login {
 
 		this.authService.login(credentials).subscribe({
 			next: () => {
+				toast.success('Logged in successfully')
 				this.router.navigateByUrl('/dashboard')
 			},
-			error: () => {
-				toast.error('Login failed, please try again later.')
+			error: (err) => {
+				const message = err?.error?.message
+				if (message === 'Invalid email' || message === 'Invalid password') {
+					toast.error('Incorrect email or password')
+				} else {
+					toast.error('Login failed, please try again later.')
+				}
 			},
 		})
 	}
