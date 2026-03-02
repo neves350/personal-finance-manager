@@ -1,15 +1,15 @@
 import { Component, computed, inject, input } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { GoalType } from '@core/api/goals.interface'
 import type { Goal } from '@core/api/goals.interface'
+import { GoalType } from '@core/api/goals.interface'
+import { GoalsService } from '@core/services/goals.service'
 import {
 	ArrowBigLeftDashIcon,
 	LucideAngularModule,
 	PencilIcon,
 } from 'lucide-angular'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
-import { ZardSheetService } from '@/shared/components/ui/sheet'
-import { GoalsService } from '@core/services/goals.service'
+import { ZardDialogService } from '@/shared/components/ui/dialog'
 import { GoalsForm } from '../../goals-form/goals-form'
 import type { iGoalsData } from '../../goals-form/goals-form.interface'
 
@@ -19,7 +19,7 @@ import type { iGoalsData } from '../../goals-form/goals-form.interface'
 	templateUrl: './goal-header.html',
 })
 export class GoalHeader {
-	private readonly sheetService = inject(ZardSheetService)
+	private readonly dialogService = inject(ZardDialogService)
 	private readonly goalsService = inject(GoalsService)
 
 	readonly ArrowBigLeftDashIcon = ArrowBigLeftDashIcon
@@ -51,11 +51,10 @@ export class GoalHeader {
 	updateCard() {
 		const current = this.displayGoal()
 
-		this.sheetService.create({
+		this.dialogService.create({
 			zTitle: 'Edit Goal',
 			zContent: GoalsForm,
-			zSide: 'right',
-			zWidth: '500px',
+			zWidth: '650px',
 			zHideFooter: false,
 			zOkText: 'Save Changes',
 			zOnOk: (instance: GoalsForm) => {
@@ -63,7 +62,7 @@ export class GoalHeader {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: current.id,
 				title: current.title,
