@@ -38,8 +38,8 @@ export class Recover {
 		const { email } = this.form.getRawValue()
 
 		this.authService.requestPasswordRecover(email).subscribe({
-			next: (message) => {
-				toast.success(message)
+			next: () => {
+				toast.success('You gonna receive a email, check your email.')
 				this.router.navigate(['/password/reset'])
 			},
 			error: () => toast.error('Failed to send recovery email'),
