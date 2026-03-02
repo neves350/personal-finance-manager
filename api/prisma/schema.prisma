@@ -9,9 +9,10 @@ datasource db {
 
 model User {
   id           String        @id @default(uuid())
+  googleId     String?       @unique @map("google_id")
   email        String        @unique
   name         String
-  passwordHash String        @map("password_hash")
+  passwordHash String?       @map("password_hash")
   avatarUrl    String?       @default("default") @map("avatar_url")
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
