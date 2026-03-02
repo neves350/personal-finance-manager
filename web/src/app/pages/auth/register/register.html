@@ -15,15 +15,13 @@
               />
             </span>
           </div>
-
           <h2 class="text-[22px] font-bold tracking-tight text-white">Sign up to Spendly</h2>
-
           <div class="p-4 text-center">
             <p class="text-sm text-muted-foreground/50">Welcome back, let's track!</p>
           </div>
         </div>
 
-        <z-button zFull zType="outline">
+        <z-button zFull zType="outline" (click)="onGoogleSignIn()">
           <svg
             class="w-7 h-7 text-white"
             aria-hidden="true"

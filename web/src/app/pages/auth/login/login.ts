@@ -2,8 +2,10 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router, RouterLink } from '@angular/router'
 import { AuthService } from '@core/services/auth/auth.service'
+import { GoogleAuthService } from '@core/services/google-auth.service'
 import { ArrowRightIcon, LucideAngularModule } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
+import { switchMap } from 'rxjs'
 import { ZardAvatarComponent } from '@/shared/components/ui/avatar'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardDividerComponent } from '@/shared/components/ui/divider'
@@ -27,6 +29,7 @@ export class Login {
 	private readonly fb = inject(FormBuilder)
 	private readonly router = inject(Router)
 	private readonly authService = inject(AuthService)
+	private readonly googleAuthService = inject(GoogleAuthService)
 
 	readonly ArrowRightIcon = ArrowRightIcon
 
@@ -34,6 +37,21 @@ export class Login {
 		email: ['', [Validators.email, Validators.required]],
 		password: ['', [Validators.minLength(6), Validators.required]],
 	})
+
+	onGoogleSignIn() {
+		this.googleAuthService
+			.signIn()
+			.pipe(switchMap((credential) => this.authService.googleLogin(credential)))
+			.subscribe({
+				next: () => {
+					toast.success('Logged in successfully')
+					this.router.navigateByUrl('/dashboard')
+				},
+				error: () => {
+					toast.error('Google sign-in failed, please try again.')
+				},
+			})
+	}
 
 	onSubmit() {
 		const credentials = this.form.getRawValue()

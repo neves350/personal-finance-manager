@@ -8,6 +8,7 @@ import { toSignal } from '@angular/core/rxjs-interop'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router, RouterLink } from '@angular/router'
 import { AuthService } from '@core/services/auth/auth.service'
+import { GoogleAuthService } from '@core/services/google-auth.service'
 import {
 	ArrowRightIcon,
 	EyeIcon,
@@ -15,7 +16,7 @@ import {
 	LucideAngularModule,
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
-import { map, startWith } from 'rxjs'
+import { map, startWith, switchMap } from 'rxjs'
 import { ZardAvatarComponent } from '@/shared/components/ui/avatar'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardDividerComponent } from '@/shared/components/ui/divider'
@@ -41,6 +42,7 @@ export class Register {
 	private readonly fb = inject(FormBuilder)
 	private readonly router = inject(Router)
 	private readonly authService = inject(AuthService)
+	private readonly googleAuthService = inject(GoogleAuthService)
 
 	readonly ArrowRightIcon = ArrowRightIcon
 	readonly EyeOffIcon = EyeOffIcon
@@ -76,6 +78,21 @@ export class Register {
 
 	togglePassword() {
 		this.showPassword.update((v) => !v)
+	}
+
+	onGoogleSignIn() {
+		this.googleAuthService
+			.signIn()
+			.pipe(switchMap((credential) => this.authService.googleLogin(credential)))
+			.subscribe({
+				next: () => {
+					toast.success('Logged in successfully')
+					this.router.navigateByUrl('/dashboard')
+				},
+				error: () => {
+					toast.error('Google sign-in failed, please try again.')
+				},
+			})
 	}
 
 	onSubmit() {
