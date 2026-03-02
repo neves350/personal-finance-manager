@@ -29,6 +29,18 @@ export class AuthService {
 		)
 	}
 
+	googleLogin(credential: string): Observable<User> {
+		return this.authApi.googleLogin(credential).pipe(
+			map((response) => {
+				if (response.user) {
+					this.currentUser.set(response.user)
+					return response.user
+				}
+				throw new Error('No user in response')
+			}),
+		)
+	}
+
 	register(data: RegisterRequest): Observable<User> {
 		return this.authApi.register(data).pipe(
 			map((response) => {

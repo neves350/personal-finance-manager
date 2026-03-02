@@ -26,6 +26,17 @@ export class AuthApi {
 	}
 
 	/**
+	 * LOGIN GOOGLE
+	 */
+	googleLogin(credential: string): Observable<AuthResponse> {
+		return this.http.post<AuthResponse>(
+			`${this.baseUrl}/sessions/google`,
+			{ credential },
+			{ withCredentials: true },
+		)
+	}
+
+	/**
 	 * REGISTER
 	 */
 	register(data: RegisterRequest): Observable<AuthResponse> {
