@@ -1,7 +1,22 @@
-<div class="flex items-center justify-between gap-3">
-  <z-select [zValue]="period()" [zIcon]="CalendarDaysIcon" (zSelectionChange)="onPeriodChange($event)">
-    <z-select-item zValue="week">Last Week</z-select-item>
-    <z-select-item zValue="month">Last Month</z-select-item>
-    <z-select-item zValue="year">Last Year</z-select-item>
-  </z-select>
+<div class="flex items-center gap-4">
+  <z-tab-group
+    #tabGroup
+    [zShowArrow]="false"
+    zTabsPosition="custom"
+    zActivePosition="custom"
+    (zTabChange)="onTabChange($event)"
+    class="[&_nav]:mb-0 [&_.tab-content]:hidden"
+  >
+    <z-tab label="1W" />
+    <z-tab label="1M" />
+    <z-tab label="1Y" />
+  </z-tab-group>
+
+  <z-date-range-picker
+    #dateRangePicker
+    placeholder="Custom range"
+    zSize="sm"
+    zFormat="MMM d, yyyy"
+    (rangeChange)="onRangeChange($event)"
+  />
 </div>
