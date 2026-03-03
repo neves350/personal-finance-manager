@@ -8,13 +8,14 @@ import {
 	type StatisticsQueryParams,
 	type StatisticsTrends,
 } from '@core/api/statistics.interface'
-import { forkJoin, Observable, tap } from 'rxjs'
+import { forkJoin, Subject, switchMap } from 'rxjs'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class StatisticsService {
 	private readonly statisticsApi = inject(StatisticsApi)
+	private readonly loadTrigger$ = new Subject<StatisticsQueryParams | undefined>()
 
 	readonly period = signal<PeriodType>(PeriodType.MONTH)
 	readonly overview = signal<StatisticsOverview | null>(null)
@@ -47,29 +48,30 @@ export class StatisticsService {
 		return this.incomeByCategory()?.categories ?? []
 	})
 
-	loadStatistics(
-		params?: StatisticsQueryParams,
-	): Observable<
-		[
-			StatisticsOverview,
-			StatisticsTrends,
-			StatisticsByCategory,
-			StatisticsByCategory,
-			StatisticsDailyTotals[],
-		]
-	> {
-		this.loading.set(true)
-		this.error.set(null)
-		if (params?.period) this.period.set(params.period)
+	constructor() {
+		this.loadTrigger$
+			.pipe(
+				switchMap((params) => {
+					this.loading.set(true)
+					this.error.set(null)
+					if (params?.period) this.period.set(params.period)
 
-		return forkJoin([
-			this.statisticsApi.getOverview(params),
-			this.statisticsApi.getTrends(params),
-			this.statisticsApi.getByCategory({ ...params, type: 'EXPENSE' }),
-			this.statisticsApi.getByCategory({ ...params, type: 'INCOME' }),
-			this.statisticsApi.getDailyTotals(params),
-		]).pipe(
-			tap({
+					return forkJoin([
+						this.statisticsApi.getOverview(params),
+						this.statisticsApi.getTrends(params),
+						this.statisticsApi.getByCategory({
+							...params,
+							type: 'EXPENSE',
+						}),
+						this.statisticsApi.getByCategory({
+							...params,
+							type: 'INCOME',
+						}),
+						this.statisticsApi.getDailyTotals(params),
+					])
+				}),
+			)
+			.subscribe({
 				next: ([
 					overview,
 					trends,
@@ -88,7 +90,10 @@ export class StatisticsService {
 					this.error.set(err.message || 'Failed to load statistics')
 					this.loading.set(false)
 				},
-			}),
-		)
+			})
+	}
+
+	loadStatistics(params?: StatisticsQueryParams): void {
+		this.loadTrigger$.next(params)
 	}
 }

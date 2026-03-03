@@ -1,33 +1,32 @@
 <z-card>
   <h1 class="font-semibold">Top expenses</h1>
 
-  @for (category of topCategories(); track category.categoryId; let i = $index) {
-    <div class="space-y-4 mt-8">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div
-            class="size-10 flex items-center justify-center rounded-md"
-            [class]="getRowStyle(i).bg"
-          >
-            <i-lucide [img]="iconMap[category.categoryIcon] ?? iconMap['tag']" class="size-4" />
-          </div>
-          <span class="text-sm font-medium"
-            >{{ category.categoryTitle }} ({{ category.percentage }}%)</span
-          >
+  <div class="mt-4 space-y-3">
+    @for (category of topCategories(); track category.categoryId; let i = $index) {
+      <div class="flex items-center gap-3">
+        <div
+          class="size-10 shrink-0 flex items-center justify-center rounded-md"
+          [class]="getRowStyle(i).bg"
+        >
+          <i-lucide [img]="iconMap[category.categoryIcon]" class="size-4" />
         </div>
 
-        <div>
+        <span class="text-sm font-medium w-40 truncate shrink-0"
+          >{{ category.categoryTitle }} ({{ category.percentage }}%)</span
+        >
+
+        <div class="flex-1 min-w-0 ml-13">
           <z-progress-bar
             [progress]="category.percentage"
             [zType]="getRowStyle(i).zType"
-            class="w-40"
+            class="h-1.5 w-80"
           />
         </div>
 
-        <div class="flex items-center gap-3">
-          <span class="text-sm font-semibold"> {{ formatAmount(category.total) }} € </span>
-        </div>
+        <span class="text-sm font-semibold shrink-0 text-right w-24"
+          >{{ formatAmount(category.total) }} €</span
+        >
       </div>
-    </div>
-  }
+    }
+  </div>
 </z-card>

@@ -41,13 +41,13 @@ export class Statistics {
 
 	constructor() {
 		this.bankAccountsService.loadBankAccounts().subscribe()
-		this.statisticsService
-			.loadStatistics({ period: this.statisticsService.period() })
-			.subscribe()
+		this.statisticsService.loadStatistics({
+			period: this.statisticsService.period(),
+		})
 		this.categoriesService.loadCategories().subscribe()
 	}
 
 	onFilterChange(params: StatisticsQueryParams) {
-		this.statisticsService.loadStatistics(params).subscribe()
+		this.statisticsService.loadStatistics(params)
 	}
 }
