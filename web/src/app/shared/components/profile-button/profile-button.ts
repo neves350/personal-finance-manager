@@ -13,6 +13,7 @@ import {
 	UserIcon,
 } from 'lucide-angular'
 import { ZardAvatarComponent } from '../ui/avatar'
+import { ZardBadgeComponent } from '../ui/badge'
 import { ZardDividerComponent } from '../ui/divider'
 import { ZardDropdownImports } from '../ui/dropdown'
 
@@ -24,6 +25,7 @@ import { ZardDropdownImports } from '../ui/dropdown'
 		ZardDividerComponent,
 		LucideAngularModule,
 		RouterLink,
+		ZardBadgeComponent,
 	],
 	templateUrl: './profile-button.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { ProfileButton } from '../profile-button/profile-button'
+import { LucideAngularModule, UserLockIcon } from 'lucide-angular'
 import { ZardAvatarComponent } from '../ui/avatar'
 import { ZardButtonComponent } from '../ui/button'
+import { ZardCardComponent } from '../ui/card'
 import { ZardDividerComponent } from '../ui/divider'
 import { HlmSidebarImports } from '../ui/spartan/sidebar/src'
 import { SidebarGroup } from './sidebar-group/sidebar-group'
@@ -13,11 +14,14 @@ import { SidebarGroup } from './sidebar-group/sidebar-group'
 		ZardAvatarComponent,
 		HlmSidebarImports,
 		ZardDividerComponent,
-		ProfileButton,
 		SidebarGroup,
 		ZardButtonComponent,
 		RouterLink,
+		ZardCardComponent,
+		LucideAngularModule,
 	],
 	templateUrl: './sidebar.html',
 })
-export class Sidebar {}
+export class Sidebar {
+	readonly UserLockIcon = UserLockIcon
+}
