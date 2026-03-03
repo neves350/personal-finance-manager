@@ -40,21 +40,31 @@ export class ZardDropdownService {
     this.renderer = this.rendererFactory.createRenderer(null, null);
   }
 
-  toggle(triggerElement: ElementRef, template: TemplateRef<unknown>, viewContainerRef: ViewContainerRef) {
+  toggle(
+    triggerElement: ElementRef,
+    template: TemplateRef<unknown>,
+    viewContainerRef: ViewContainerRef,
+    align: 'start' | 'end' = 'start',
+  ) {
     if (this.isOpen()) {
       this.close();
     } else {
-      this.open(triggerElement, template, viewContainerRef);
+      this.open(triggerElement, template, viewContainerRef, align);
     }
   }
 
-  private open(triggerElement: ElementRef, template: TemplateRef<unknown>, viewContainerRef: ViewContainerRef) {
+  private open(
+    triggerElement: ElementRef,
+    template: TemplateRef<unknown>,
+    viewContainerRef: ViewContainerRef,
+    align: 'start' | 'end' = 'start',
+  ) {
     if (this.isOpen()) {
       this.close();
     }
 
     this.triggerElement = triggerElement;
-    this.createOverlay(triggerElement);
+    this.createOverlay(triggerElement, align);
 
     if (!this.overlayRef) {
       return;
@@ -89,7 +99,7 @@ export class ZardDropdownService {
     this.isOpen.set(false);
   }
 
-  private createOverlay(triggerElement: ElementRef) {
+  private createOverlay(triggerElement: ElementRef, align: 'start' | 'end' = 'start') {
     if (this.overlayRef) {
       this.destroyOverlay();
     }
@@ -98,16 +108,16 @@ export class ZardDropdownService {
       .flexibleConnectedTo(triggerElement)
       .withPositions([
         {
-          originX: 'start',
+          originX: align,
           originY: 'bottom',
-          overlayX: 'start',
+          overlayX: align,
           overlayY: 'top',
           offsetY: 4,
         },
         {
-          originX: 'start',
+          originX: align,
           originY: 'top',
-          overlayX: 'start',
+          overlayX: align,
           overlayY: 'bottom',
           offsetY: -4,
         },
