@@ -2,16 +2,17 @@ import { Component, computed, inject } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 import {
 	ArrowRightLeftIcon,
-	ChartNoAxesColumnIncreasingIcon,
-	GoalIcon,
-	LandmarkIcon,
-	LayoutDashboardIcon,
+	ChartPieIcon,
+	FileChartLineIcon,
+	LayoutGridIcon,
 	LucideAngularModule,
 	type LucideIconData,
-	RepeatIcon,
+	Repeat2Icon,
+	ScrollTextIcon,
 	SettingsIcon,
 	TagIcon,
-	WalletIcon,
+	WalletCardsIcon,
+	WalletMinimalIcon,
 } from 'lucide-angular'
 import { ZardDividerComponent } from '../../ui/divider'
 import {
@@ -44,20 +45,22 @@ export class SidebarGroup {
 	)
 
 	readonly activeExpandedClass =
-		'text-sidebar-accent bg-sidebar-group font-semibold border-l-3 border-sidebar-accent pl-4'
+		'text-sidebar-foreground font-medium bg-sidebar-accent pl-2'
 
 	readonly activeCollapsedClass =
-		'text-sidebar-accent bg-sidebar-group font-semibold border-0 rounded-md'
+		'text-sidebar-foreground bg-sidebar-accent font-medium rounded-md'
 
 	readonly mainItem: MenuItem[] = [
 		{
 			title: 'Dashboard',
 			url: '/dashboard',
-			icon: LayoutDashboardIcon,
+			icon: LayoutGridIcon,
 		},
-	]
-
-	readonly financeItem: MenuItem[] = [
+		{
+			title: 'Accounts',
+			url: '/accounts',
+			icon: WalletMinimalIcon,
+		},
 		{
 			title: 'Transactions',
 			url: '/transactions',
@@ -66,17 +69,17 @@ export class SidebarGroup {
 		{
 			title: 'Recurrings',
 			url: '/recurrings',
-			icon: RepeatIcon,
+			icon: Repeat2Icon,
+		},
+		{
+			title: 'Invoices',
+			url: '/invoices',
+			icon: ScrollTextIcon,
 		},
 		{
 			title: 'Cards',
 			url: '/cards',
-			icon: WalletIcon,
-		},
-		{
-			title: 'Accounts',
-			url: '/accounts',
-			icon: LandmarkIcon,
+			icon: WalletCardsIcon,
 		},
 		{
 			title: 'Categories',
@@ -89,12 +92,15 @@ export class SidebarGroup {
 		{
 			title: 'Statistics',
 			url: '/statistics',
-			icon: ChartNoAxesColumnIncreasingIcon,
+			icon: FileChartLineIcon,
 		},
+	]
+
+	readonly plansItem: MenuItem[] = [
 		{
 			title: 'Goals',
 			url: '/goals',
-			icon: GoalIcon,
+			icon: ChartPieIcon,
 		},
 	]
 
