@@ -4,11 +4,13 @@ import { NavigationEnd, Router } from '@angular/router'
 import { LucideAngularModule, SlashIcon } from 'lucide-angular'
 import { filter, map } from 'rxjs'
 import { BreadcrumbService } from '@/shared/services/breadcrumb.service'
+import { ProfileButton } from '../profile-button/profile-button'
 import { Theme } from '../theme/theme'
 import {
 	ZardBreadcrumbComponent,
 	ZardBreadcrumbItemComponent,
 } from '../ui/breadcrumb'
+import { ZardDividerComponent } from '../ui/divider'
 
 interface BreadcrumbItem {
 	label: string
@@ -17,15 +19,20 @@ interface BreadcrumbItem {
 
 const BREADCRUMB_MAP: Record<string, BreadcrumbItem[]> = {
 	'/dashboard': [{ label: 'Main Menu' }, { label: 'Dashboard' }],
-	'/transactions': [{ label: 'Finances' }, { label: 'Transactions' }],
-	'/cards': [{ label: 'Finances' }, { label: 'Cards' }],
-	'/accounts': [{ label: 'Finances' }, { label: 'Accounts' }],
-	'/account-details': [{ label: 'Finances' }, { label: 'Accounts' }],
-	'/categories': [{ label: 'Finances' }, { label: 'Categories' }],
-	'/goals': [{ label: 'Analytics' }, { label: 'Goals' }],
-	'/goal-details': [{ label: 'Analytics' }, { label: 'Goals' }],
+	'/accounts': [{ label: 'Main Menu' }, { label: 'Accounts' }],
+	'/account-details': [{ label: 'Main Menu' }, { label: 'Account Details' }],
+	'/transactions': [{ label: 'Main Menu' }, { label: 'Transactions' }],
+	'/recurrings': [{ label: 'Main Menu' }, { label: 'Recurrings' }],
+	'/invoices': [{ label: 'Main Menu' }, { label: 'Invoices' }],
+	'/cards': [{ label: 'Main Menu' }, { label: 'Cards' }],
+	'/card-details': [{ label: 'Main Menu' }, { label: 'Card Details' }],
+	'/categories': [{ label: 'Main Menu' }, { label: 'Categories' }],
+
 	'/statistics': [{ label: 'Analytics' }, { label: 'Statistics' }],
-	'/profile': [{ label: 'Others' }, { label: 'Profile' }],
+
+	'/goals': [{ label: 'Planning' }, { label: 'Goals' }],
+	'/goal-details': [{ label: 'Planning' }, { label: 'Goal Details' }],
+
 	'/settings': [{ label: 'Others' }, { label: 'Settings' }],
 }
 
@@ -36,6 +43,8 @@ const BREADCRUMB_MAP: Record<string, BreadcrumbItem[]> = {
 		ZardBreadcrumbComponent,
 		ZardBreadcrumbItemComponent,
 		LucideAngularModule,
+		ProfileButton,
+		ZardDividerComponent,
 	],
 	templateUrl: './header.html',
 	host: {

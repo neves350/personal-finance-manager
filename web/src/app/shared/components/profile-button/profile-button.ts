@@ -7,7 +7,7 @@ import {
 import { RouterLink } from '@angular/router'
 import { AuthService } from '@core/services/auth/auth.service'
 import {
-	ChevronsUpDownIcon,
+	ChevronDownIcon,
 	LogOutIcon,
 	LucideAngularModule,
 	UserIcon,
@@ -35,7 +35,7 @@ export class ProfileButton {
 
 	readonly UserIcon = UserIcon
 	readonly LogOutIcon = LogOutIcon
-	readonly ChevronsUpDownIcon = ChevronsUpDownIcon
+	readonly ChevronDownIcon = ChevronDownIcon
 
 	readonly initials = computed(() => {
 		const name = this.user()?.name
