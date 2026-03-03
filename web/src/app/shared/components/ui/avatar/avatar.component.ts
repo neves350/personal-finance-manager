@@ -25,6 +25,8 @@ export type ZardAvatarStatus = 'online' | 'offline' | 'doNotDisturb' | 'away';
       />
     }
 
+    <ng-content />
+
     @if (zStatus()) {
       @switch (zStatus()) {
         @case ('online') {
