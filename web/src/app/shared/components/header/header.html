@@ -1,4 +1,4 @@
-<div class="flex flex-1 items-center justify-between gap-4">
+<div class="flex flex-1 items-center justify-between gap-2">
   <z-breadcrumb zWrap="wrap" zAlign="start" [zSeparator]="customSeparator">
     @for (crumb of breadcrumbs(); track $index; let last = $last) {
       @if (!last) {
@@ -16,8 +16,11 @@
   </ng-template>
 
   <div class="flex items-center justify-end gap-2">
+    <z-button zType="goalGhost">
+      <i-lucide [img]="BellIcon" class="size-4.5" />
+    </z-button>
     <app-theme />
-    <z-divider zOrientation="vertical" class="h-5" />
+    <z-divider zOrientation="vertical" class="h-6" />
     <app-profile-button />
   </div>
 </div>

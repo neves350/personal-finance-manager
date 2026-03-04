@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { NavigationEnd, Router } from '@angular/router'
-import { LucideAngularModule, SlashIcon } from 'lucide-angular'
+import { BellIcon, LucideAngularModule, SlashIcon } from 'lucide-angular'
 import { filter, map } from 'rxjs'
 import { BreadcrumbService } from '@/shared/services/breadcrumb.service'
 import { ProfileButton } from '../profile-button/profile-button'
@@ -10,6 +10,7 @@ import {
 	ZardBreadcrumbComponent,
 	ZardBreadcrumbItemComponent,
 } from '../ui/breadcrumb'
+import { ZardButtonComponent } from '../ui/button'
 import { ZardDividerComponent } from '../ui/divider'
 
 interface BreadcrumbItem {
@@ -45,6 +46,7 @@ const BREADCRUMB_MAP: Record<string, BreadcrumbItem[]> = {
 		LucideAngularModule,
 		ProfileButton,
 		ZardDividerComponent,
+		ZardButtonComponent,
 	],
 	templateUrl: './header.html',
 	host: {
@@ -56,6 +58,7 @@ export class Header {
 	private readonly breadcrumbsService = inject(BreadcrumbService)
 
 	readonly SlashIcon = SlashIcon
+	readonly BellIcon = BellIcon
 
 	private readonly currentUrl = toSignal(
 		this.router.events.pipe(
