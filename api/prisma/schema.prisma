@@ -80,22 +80,24 @@ model Deposit {
 }
 
 model Card {
-  id            String        @id @default(uuid())
-  userId        String        @map("user_id")
-  bankAccountId String        @map("bank_account_id")
-  name          String
-  color         CardColor     @default(GRAY)
-  type          CardType
-  lastFour      String?       @map("last_four") @db.VarChar(4)
-  creditLimit   Decimal?      @map("credit_limit") @db.Decimal(12, 2)
-  closingDay    Int?          @map("closing_day")
-  dueDay        Int?          @map("due_day")
-  transactions  Transaction[]
-  recurrings    Recurring[]
-  createdAt     DateTime      @default(now()) @map("created_at")
-  updatedAt     DateTime      @updatedAt @map("updated_at")
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bankAccount   BankAccount   @relation(fields: [bankAccountId], references: [id], onDelete: Cascade)
+  id             String        @id @default(uuid())
+  userId         String        @map("user_id")
+  bankAccountId  String        @map("bank_account_id")
+  name           String
+  color          CardColor     @default(GRAY)
+  type           CardType
+  lastFour       String?       @map("last_four") @db.VarChar(4)
+  expirationDate String        @map("expiration_date") @db.VarChar(5)
+  cvc            String        @db.VarChar(4)
+  creditLimit    Decimal?      @map("credit_limit") @db.Decimal(12, 2)
+  closingDay     Int?          @map("closing_day")
+  dueDay         Int?          @map("due_day")
+  transactions   Transaction[]
+  recurrings     Recurring[]
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bankAccount    BankAccount   @relation(fields: [bankAccountId], references: [id], onDelete: Cascade)
 
   @@map("cards")
 }
