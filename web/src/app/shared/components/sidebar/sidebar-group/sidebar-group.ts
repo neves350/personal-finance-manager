@@ -104,9 +104,9 @@ export class SidebarGroup {
 		},
 	]
 
-	readonly othersItem: MenuItem[] = [
+	readonly settingsItem: MenuItem[] = [
 		{
-			title: 'Settings',
+			title: 'System Settings',
 			url: '/settings',
 			icon: SettingsIcon,
 		},

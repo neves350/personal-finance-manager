@@ -83,10 +83,10 @@
 
   <z-divider />
 
-  <div hlmSidebarGroupLabel class="group-data-[collapsible=icon]:hidden">Others</div>
+  <div hlmSidebarGroupLabel class="group-data-[collapsible=icon]:hidden">Settings</div>
   <div hlmSidebarGroupContent>
     <ul hlmSidebarMenu class="p-2 mr-1 gap-2">
-      @for (item of othersItem; track item.title) {
+      @for (item of settingsItem; track item.title) {
         <li hlmSidebarMenuItem>
           <a
             #rla="routerLinkActive"

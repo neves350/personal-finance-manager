@@ -18,31 +18,4 @@
   <hlm-sidebar-content>
     <app-sidebar-group />
   </hlm-sidebar-content>
-
-  <hlm-sidebar-footer>
-    <z-card class="border-2 group-data-[collapsible=icon]:hidden">
-      <div class="flex items-center justify-between">
-        <div class="size-10 flex items-center justify-center rounded-md bg-sidebar-accent">
-          <i-lucide [img]="UserLockIcon" class="h-5" />
-        </div>
-        <span class="font-semibold mr-4">Upgrade to Pro!</span>
-      </div>
-
-      <div class="mt-5 mb-2">
-        <span class="text-muted-foreground text-[15px]"
-          >Upgrade your account and unlock all of the benefits.</span
-        >
-      </div>
-
-      <div>
-        <z-button zFull zSize="sm" class="bg-chart-2"> Upgrade Now </z-button>
-      </div>
-    </z-card>
-
-    <z-button
-      class="hidden bg-chart-2 border-2 rounded-xl group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center"
-    >
-      <i-lucide [img]="UserLockIcon" class="h-5" />
-    </z-button>
-  </hlm-sidebar-footer>
 </hlm-sidebar>
