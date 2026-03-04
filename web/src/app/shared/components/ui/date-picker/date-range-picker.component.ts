@@ -46,7 +46,7 @@ const HEIGHT_BY_SIZE: Record<NonNullable<ZardButtonSizeVariants>, string> = {
 		<button
 			z-button
 			type="button"
-			zType="outline"
+			zType="ghost"
 			[zSize]="zSize()"
 			[disabled]="disabled()"
 			[class]="buttonClasses()"
@@ -59,7 +59,7 @@ const HEIGHT_BY_SIZE: Record<NonNullable<ZardButtonSizeVariants>, string> = {
 			[attr.aria-haspopup]="true"
 			aria-label="Choose date range"
 		>
-			<z-icon zType="calendar" />
+			<z-icon zType="calendar" zSize="lg" />
 			<span [class]="textClasses()">
 				{{ displayText() }}
 			</span>
