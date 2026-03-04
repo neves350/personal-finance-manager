@@ -1,5 +1,4 @@
 import {
-	type AfterViewInit,
 	ChangeDetectionStrategy,
 	Component,
 	output,
@@ -11,41 +10,42 @@ import {
 	type StatisticsQueryParams,
 } from '@core/api/statistics.interface'
 import { ZardDateRangePickerComponent } from '../../ui/date-picker'
-import { ZardTabComponent, ZardTabGroupComponent } from '../../ui/tabs'
+import {
+	type SegmentedOption,
+	ZardSegmentedComponent,
+} from '../../ui/segmented'
 
-const TAB_PERIODS = [PeriodType.WEEK, PeriodType.MONTH, PeriodType.YEAR]
-const DEFAULT_TAB_INDEX = 1 // 1M
+const PERIOD_MAP: Record<string, PeriodType> = {
+	[PeriodType.WEEK]: PeriodType.WEEK,
+	[PeriodType.MONTH]: PeriodType.MONTH,
+	[PeriodType.YEAR]: PeriodType.YEAR,
+}
 
 @Component({
 	selector: 'app-statistics-filter',
-	imports: [
-		ZardTabGroupComponent,
-		ZardTabComponent,
-		ZardDateRangePickerComponent,
-	],
+	imports: [ZardSegmentedComponent, ZardDateRangePickerComponent],
 	templateUrl: './statistics-filter.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StatisticsFilter implements AfterViewInit {
+export class StatisticsFilter {
 	readonly period = signal<PeriodType>(PeriodType.MONTH)
 	readonly filterChange = output<StatisticsQueryParams>()
 
-	private initialized = false
-	private readonly tabGroup =
-		viewChild<ZardTabGroupComponent>('tabGroup')
+	private readonly segmented =
+		viewChild<ZardSegmentedComponent>('segmented')
 	private readonly dateRangePicker =
 		viewChild<ZardDateRangePickerComponent>('dateRangePicker')
 
-	ngAfterViewInit() {
-		this.tabGroup()?.selectTabByIndex(DEFAULT_TAB_INDEX)
-		// Skip initial zTabChange emissions from tab group init
-		this.initialized = true
-	}
+	readonly periodOptions: SegmentedOption[] = [
+		{ value: PeriodType.WEEK, label: '1W' },
+		{ value: PeriodType.MONTH, label: '1M' },
+		{ value: PeriodType.YEAR, label: '1Y' },
+	]
 
-	onTabChange(event: { index: number; label: string }) {
-		if (!this.initialized) return
+	readonly defaultPeriod = PeriodType.MONTH
 
-		const period = TAB_PERIODS[event.index]
+	onPeriodChange(value: string) {
+		const period = PERIOD_MAP[value]
 		if (period) {
 			this.period.set(period)
 			this.dateRangePicker()?.clearRange()
@@ -55,6 +55,7 @@ export class StatisticsFilter implements AfterViewInit {
 
 	onRangeChange(range: { startDate: Date; endDate: Date } | null) {
 		if (range) {
+			this.segmented()?.clearSelection()
 			this.filterChange.emit({
 				startDate: this.toISODate(range.startDate),
 				endDate: this.toISODate(range.endDate),
