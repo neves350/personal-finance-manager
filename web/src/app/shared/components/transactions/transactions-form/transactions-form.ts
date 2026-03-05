@@ -49,6 +49,7 @@ export class TransactionsForm {
 	private readonly bankAccountsService = inject(BankAccountsService)
 
 	readonly categories = this.categoriesService.expenseCategories
+	readonly cards = this.cardsService.cards
 	readonly accounts = this.bankAccountsService.bankAccounts
 
 	readonly transactionTypes = Object.values(TransactionType)

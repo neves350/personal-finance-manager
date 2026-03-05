@@ -83,18 +83,33 @@
     </div>
   </div>
 
-  <div class="grid gap-2">
-    <label for="bankAccountId" class="text-sm">Account</label>
-    <z-select class="w-full" formControlName="bankAccountId">
-      @for (account of accounts(); track account.id) {
-        <z-select-item [zValue]="$any(account.id)">
-          <span>{{ account.name }}</span>
-        </z-select-item>
+  <div class="grid grid-cols-2 gap-4">
+    <div class="grid gap-2">
+      <label for="bankAccountId" class="text-sm">Account</label>
+      <z-select class="w-full" formControlName="bankAccountId">
+        @for (account of accounts(); track account.id) {
+          <z-select-item [zValue]="$any(account.id)">
+            <span>{{ account.name }}</span>
+          </z-select-item>
+        }
+      </z-select>
+      @if (
+        form.controls.bankAccountId.touched && form.controls.bankAccountId.errors?.['required']
+      ) {
+        <span class="text-xs text-destructive">Account is required</span>
       }
-    </z-select>
-    @if (form.controls.bankAccountId.touched && form.controls.bankAccountId.errors?.['required']) {
-      <span class="text-xs text-destructive">Account is required</span>
-    }
+    </div>
+
+    <div class="grid gap-2">
+      <label for="cardId" class="text-sm">Card (optional)</label>
+      <z-select class="w-full" formControlName="cardId">
+        @for (card of cards(); track card.id) {
+          <z-select-item [zValue]="$any(card.id)">
+            <span>{{ card.name }}</span>
+          </z-select-item>
+        }
+      </z-select>
+    </div>
   </div>
 
   <div class="grid gap-2 border rounded-md bg-input/30 border-input p-2">
