@@ -7,6 +7,8 @@ export interface iSheetData {
 	type?: CardType
 	lastFour?: string
 	creditLimit?: number
+	expirationDate?: string
+	cvc?: string
 	closingDay?: number | string
 	dueDay?: number | string
 	accountId?: string

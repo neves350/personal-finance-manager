@@ -55,6 +55,14 @@ export class CardsForm implements AfterViewInit {
 		closingDay: ['1'],
 		dueDay: ['10'],
 		bankAccountId: ['', [Validators.required]],
+		expirationDate: [
+			'',
+			[Validators.required, Validators.pattern(/^\d{2}\/\d{2}$/)],
+		],
+		cvc: [
+			'',
+			[Validators.required, Validators.minLength(3), Validators.maxLength(4)],
+		],
 	})
 
 	readonly isEditMode = computed(() => !!this.zData?.id)
@@ -82,6 +90,8 @@ export class CardsForm implements AfterViewInit {
 		dueDay: this.formValues()?.dueDay
 			? Number(this.formValues()?.dueDay)
 			: undefined,
+		expirationDate: this.formValues()?.expirationDate || '',
+		cvc: this.formValues()?.cvc || '',
 	}))
 
 	// Type labels for display
@@ -96,12 +106,23 @@ export class CardsForm implements AfterViewInit {
 				...this.zData,
 				closingDay: this.zData.closingDay?.toString() ?? '',
 				dueDay: this.zData.dueDay?.toString() ?? '',
+				bankAccountId: this.zData.accountId ?? '',
 			})
 		}
 	}
 
 	getTypeLabel(type: CardType): string {
 		return this.typeLabels[type]
+	}
+
+	formatExpiry(event: Event): void {
+		const input = event.target as HTMLInputElement
+		let value = input.value.replace(/\D/g, '')
+		if (value.length >= 2) {
+			value = `${value.slice(0, 2)}/${value.slice(2, 4)}`
+		}
+		input.value = value
+		this.form.controls.expirationDate.setValue(value)
 	}
 
 	submit(): void {
@@ -124,6 +145,8 @@ export class CardsForm implements AfterViewInit {
 				? Number(formValue.closingDay)
 				: undefined,
 			dueDay: formValue.dueDay ? Number(formValue.dueDay) : undefined,
+			expirationDate: formValue.expirationDate || undefined,
+			cvc: formValue.cvc || undefined,
 		}
 
 		const request$ = this.zData?.id

@@ -1,4 +1,3 @@
-<!-- Live Preview Card -->
 <div class="px-4 py-2">
   <app-cards-preview [card]="previewData()" />
 </div>
@@ -6,9 +5,8 @@
 <z-divider />
 
 <form [formGroup]="form" class="grid flex-1 auto-rows-min gap-6 px-4 py-4">
-  <!-- Name Input -->
-  <div class="grid gap-2">
-    <label for="name">Card Name</label>
+  <div class="grid gap-1">
+    <label for="name" class="text-sm">Card Name</label>
     <input
       z-input
       class="rounded-md border border-zinc-400/50 p-2 text-sm text-muted-foreground"
@@ -16,34 +14,53 @@
       placeholder="My Wallet"
     />
     @if (form.controls.name.touched && form.controls.name.errors?.['required']) {
-    <span class="text-xs text-destructive">Name of card is required</span>
+      <span class="text-xs text-destructive">Name of card is required</span>
     }
   </div>
 
-  <!-- Color Selection with Visual Circles -->
   <div class="grid gap-3">
-    <label>Card Color</label>
+    <label class="text-sm">Card Color</label>
     <app-cards-color-picker formControlName="color" [colors]="colors" />
   </div>
 
-  <!-- Type Select -->
-  <div class="grid gap-2">
-    <label for="type">Type</label>
-    <z-select class="w-full" formControlName="type">
-      @for (cardType of cardTypes; track cardType) {
-      <z-select-item [zValue]="cardType">
-        <span>{{ getTypeLabel(cardType) }}</span>
-      </z-select-item>
+  <div class="grid grid-cols-2 gap-3">
+    <div class="flex flex-col gap-1">
+      <label for="type" class="text-sm">Type</label>
+      <z-select class="w-full" formControlName="type" zPlaceholder="Select an account">
+        @for (cardType of cardTypes; track cardType) {
+          <z-select-item [zValue]="cardType">
+            <span>{{ getTypeLabel(cardType) }}</span>
+          </z-select-item>
+        }
+      </z-select>
+      @if (form.controls.type.touched && form.controls.type.errors?.['required']) {
+        <span class="text-xs text-destructive">Type is required</span>
       }
-    </z-select>
-    @if (form.controls.type.touched && form.controls.type.errors?.['required']) {
-    <span class="text-xs text-destructive">Type is required</span>
-    }
+    </div>
+    <div class="flex flex-col gap-1">
+      <label for="bankAccountId" class="text-sm">Account</label>
+      <z-select class="w-full" formControlName="bankAccountId">
+        @for (account of bankAccounts(); track account.id) {
+          <z-select-item [zValue]="$any(account.id)">
+            <span>{{ account.name }}</span>
+          </z-select-item>
+        }
+      </z-select>
+      @if (
+        form.controls.bankAccountId.touched && form.controls.bankAccountId.errors?.['required']
+      ) {
+        <span class="text-xs text-destructive">Bank account is required</span>
+      }
+      @if (bankAccounts().length === 0) {
+        <span class="text-xs text-muted-foreground"
+          >No bank accounts available. Create one first.</span
+        >
+      }
+    </div>
   </div>
 
-  <!-- Last Four Digits -->
-  <div class="grid gap-3">
-    <label for="lastFour">Last 4 Digits</label>
+  <div class="grid gap-1">
+    <label for="lastFour" class="text-sm">Last 4 Digits</label>
     <input
       z-input
       class="rounded-md border border-zinc-400/50 p-2 text-sm text-muted-foreground"
@@ -53,60 +70,61 @@
     />
   </div>
 
-  <!-- Credit Limit (only for credit cards) -->
   @if (form.controls.type.value === 'CREDIT_CARD') {
-  <div class="grid gap-2">
-    <label for="creditLimit">Credit Limit</label>
-    <input
-      z-input
-      type="number"
-      class="rounded-md border border-zinc-400/50 p-2 text-sm text-muted-foreground"
-      formControlName="creditLimit"
-      placeholder="5000"
-    />
-  </div>
-
-  <div class="grid grid-cols-2 gap-3">
-    <!-- Closing Day Select -->
-    <div class="flex flex-col gap-1">
-      <label for="closingDay">Closing Day</label>
-      <z-select class="w-full" formControlName="closingDay">
-        @for (day of days; track day) {
-        <z-select-item [zValue]="'' + day">
-          <span>{{ day }}</span>
-        </z-select-item>
-        }
-      </z-select>
+    <div class="grid gap-2">
+      <label for="creditLimit" class="text-sm">Credit Limit</label>
+      <input
+        z-input
+        type="number"
+        class="rounded-md border border-zinc-400/50 p-2 text-sm text-muted-foreground"
+        formControlName="creditLimit"
+        placeholder="5000"
+      />
     </div>
-
-    <!-- Due Day Select -->
-    <div class="flex flex-col gap-1">
-      <label for="dueDay">Due Day</label>
-      <z-select class="w-full" formControlName="dueDay">
-        @for (day of days; track day) {
-        <z-select-item [zValue]="'' + day">
-          <span>{{ day }}</span>
-        </z-select-item>
-        }
-      </z-select>
+    <div class="grid grid-cols-2 gap-3">
+      <div class="flex flex-col gap-1">
+        <label for="closingDay" class="text-sm">Closing Day</label>
+        <z-select class="w-full" formControlName="closingDay">
+          @for (day of days; track day) {
+            <z-select-item [zValue]="'' + day">
+              <span>{{ day }}</span>
+            </z-select-item>
+          }
+        </z-select>
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="dueDay" class="text-sm">Due Day</label>
+        <z-select class="w-full" formControlName="dueDay">
+          @for (day of days; track day) {
+            <z-select-item [zValue]="'' + day">
+              <span>{{ day }}</span>
+            </z-select-item>
+          }
+        </z-select>
+      </div>
     </div>
-  </div>
   }
 
-  <!-- Bank Account Select -->
-  <div class="grid gap-2">
-    <label for="bankAccountId">Bank Account</label>
-    <z-select class="w-full" formControlName="bankAccountId">
-      @for (account of bankAccounts(); track account.id) {
-      <z-select-item [zValue]="$any(account.id)">
-        <span>{{ account.name }}</span>
-      </z-select-item>
-      }
-    </z-select>
-    @if (form.controls.bankAccountId.touched && form.controls.bankAccountId.errors?.['required']) {
-    <span class="text-xs text-destructive">Bank account is required</span>
-    } @if (bankAccounts().length === 0) {
-    <span class="text-xs text-muted-foreground">No bank accounts available. Create one first.</span>
-    }
+  <div class="grid grid-cols-2 gap-3">
+    <div class="flex flex-col gap-1">
+      <label for="expirationDate" class="text-sm">Expiration Date</label>
+      <input
+        formControlName="expirationDate"
+        placeholder="MM/YY"
+        maxlength="5"
+        (input)="formatExpiry($event)"
+        class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label for="cvc" class="text-sm">CVC</label>
+      <input
+        formControlName="cvc"
+        placeholder="123"
+        maxlength="4"
+        type="password"
+        class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+      />
+    </div>
   </div>
 </form>
