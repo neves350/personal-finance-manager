@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common'
 import {
 	ChangeDetectionStrategy,
 	Component,
@@ -5,16 +6,12 @@ import {
 	input,
 } from '@angular/core'
 import { type Card, CardColor, CardType } from '@core/api/cards.interface'
-import {
-	CreditCardIcon,
-	LucideAngularModule,
-	WalletIcon,
-} from 'lucide-angular'
+import { CreditCardIcon, LucideAngularModule, WalletIcon } from 'lucide-angular'
 import { ZardCardComponent } from '@/shared/components/ui/card'
 
 @Component({
 	selector: 'app-cards-preview',
-	imports: [ZardCardComponent, LucideAngularModule],
+	imports: [ZardCardComponent, LucideAngularModule, CurrencyPipe],
 	templateUrl: './cards-preview.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -45,29 +42,19 @@ export class CardsPreview {
 		return this.colorClasses[color]
 	})
 
-	readonly cardIcon = computed(() => {
-		const type = this.card().type || CardType.CREDIT_CARD
-		const iconMap: Record<CardType, typeof CreditCardIcon> = {
-			[CardType.CREDIT_CARD]: this.CreditCardIcon,
-			[CardType.DEBIT_CARD]: this.WalletIcon,
-		}
-		return iconMap[type]
-	})
-
 	readonly typeLabel = computed(() => {
 		const type = this.card().type || CardType.CREDIT_CARD
 		return this.typeLabels[type]
 	})
 
-	readonly formattedCreditLimit = computed(() => {
+	readonly creditLimit = computed(() => {
 		const creditLimit = this.card().creditLimit
 		if (!creditLimit) return null
-		return Number(creditLimit).toLocaleString('pt-PT', {
-			minimumFractionDigits: 2,
-			maximumFractionDigits: 2,
-		})
+		return Number(creditLimit)
 	})
 
 	readonly cardName = computed(() => this.card().name || 'Card Name')
 	readonly lastFour = computed(() => this.card().lastFour)
+	readonly expirationDate = computed(() => this.card().expirationDate)
+	readonly cvc = computed(() => this.card().cvc)
 }
