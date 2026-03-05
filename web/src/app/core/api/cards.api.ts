@@ -5,7 +5,9 @@ import { environment } from 'src/environments/environment'
 import type {
 	Card,
 	CardActionResponse,
-	CardExpensesRequest,
+	CardCashflowItem,
+	CardMonthlyExpense,
+	CardTransaction,
 	CreateCardRequest,
 	CreateCardResponse,
 	UpdateCardRequest,
@@ -55,9 +57,11 @@ export class CardsApi {
 	 * GET CARD BY ID
 	 */
 	findById(cardId: string): Observable<Card> {
-		return this.http.get<Card>(`${this.baseUrl}/${cardId}`, {
-			withCredentials: true,
-		})
+		return this.http
+			.get<{ card: Card }>(`${this.baseUrl}/${cardId}`, {
+				withCredentials: true,
+			})
+			.pipe(map((response) => response.card))
 	}
 
 	/**
@@ -83,12 +87,33 @@ export class CardsApi {
 	/**
 	 * GET MONTHLY EXPENSES
 	 */
-	monthlyExpenses(cardId: string): Observable<CardExpensesRequest> {
-		return this.http.get<CardExpensesRequest>(
+	monthlyExpenses(
+		cardId: string,
+		params: { startDate: string; endDate: string },
+	): Observable<CardMonthlyExpense> {
+		return this.http.get<CardMonthlyExpense>(
 			`${this.baseUrl}/${cardId}/expenses`,
-			{
-				withCredentials: true,
-			},
+			{ withCredentials: true, params },
+		)
+	}
+
+	/**
+	 * GET CASH FLOW
+	 */
+	cashflow(cardId: string): Observable<{ data: CardCashflowItem[] }> {
+		return this.http.get<{ data: CardCashflowItem[] }>(
+			`${this.baseUrl}/${cardId}/cashflow`,
+			{ withCredentials: true },
+		)
+	}
+
+	/**
+	 * GET RECENT TRANSACTIONS
+	 */
+	recentTransactions(cardId: string, limit = 5): Observable<CardTransaction[]> {
+		return this.http.get<CardTransaction[]>(
+			`${this.baseUrl}/${cardId}/transactions`,
+			{ withCredentials: true, params: { limit: limit.toString() } },
 		)
 	}
 }

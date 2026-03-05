@@ -2,7 +2,6 @@ import { computed, Injectable, inject, signal } from '@angular/core'
 import { CardsApi } from '@core/api/cards.api'
 import type {
 	Card,
-	CardExpensesRequest,
 	CreateCardRequest,
 	UpdateCardRequest,
 } from '@core/api/cards.interface'
@@ -92,8 +91,19 @@ export class CardsService {
 			.pipe(map((response) => response.message))
 	}
 
-	monthlyExpenses(cardId: string): Observable<CardExpensesRequest> {
-		return this.cardsApi.monthlyExpenses(cardId)
+	monthlyExpenses(
+		cardId: string,
+		params: { startDate: string; endDate: string },
+	) {
+		return this.cardsApi.monthlyExpenses(cardId, params)
+	}
+
+	cashflow(cardId: string) {
+		return this.cardsApi.cashflow(cardId)
+	}
+
+	recentTransactions(cardId: string, limit = 5) {
+		return this.cardsApi.recentTransactions(cardId, limit)
 	}
 
 	countByBankAccount(bankAccountId: string): Observable<number> {

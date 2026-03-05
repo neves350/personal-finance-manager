@@ -26,6 +26,8 @@ export interface Card {
 	color: CardColor
 	type: CardType
 	lastFour?: string
+	expirationDate: string
+	cvc: string
 	creditLimit?: number
 	closingDay?: number
 	dueDay?: number
@@ -80,4 +82,24 @@ export interface CardActionResponse {
 export interface CardExpensesRequest {
 	startDate: string
 	endDate: string
+}
+
+export interface CardMonthlyExpense {
+	_sum: { amount: string | null }
+}
+
+export interface CardCashflowItem {
+	month: number
+	year: number
+	income: number
+	expense: number
+}
+
+export interface CardTransaction {
+	id: string
+	title: string
+	type: string
+	amount: number
+	date: string
+	category: { id: string; title: string; type: string; icon: string }
 }
