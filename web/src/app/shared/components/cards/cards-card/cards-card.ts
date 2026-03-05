@@ -130,7 +130,9 @@ export class CardsCard {
 				creditLimit: this.card().creditLimit,
 				closingDay: this.card().closingDay,
 				dueDay: this.card().dueDay,
-				accountId: this.card().bankAccount,
+				expirationDate: this.card().expirationDate,
+				cvc: this.card().cvc,
+				accountId: this.card().bankAccountId,
 			} as iSheetData,
 		})
 	}

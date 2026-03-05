@@ -31,6 +31,7 @@ export interface Card {
 	creditLimit?: number
 	closingDay?: number
 	dueDay?: number
+	bankAccountId?: string
 	bankAccount?: { name: string }
 	createdAt?: string
 }

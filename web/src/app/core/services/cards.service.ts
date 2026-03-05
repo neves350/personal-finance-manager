@@ -50,8 +50,8 @@ export class CardsService {
 		return this.cardsApi.create(data).pipe(
 			map((response) => response.card),
 			tap({
-				next: (wallet) => {
-					this.cards.update((current) => [...current, wallet])
+				next: () => {
+					this.loadCards().subscribe()
 					this.loading.set(false)
 				},
 				error: (err) => {
