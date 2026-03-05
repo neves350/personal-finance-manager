@@ -15,14 +15,12 @@ import {
 	ApiDeleteResponses,
 	ApiFindAllResponses,
 	ApiFindOneResponses,
-	ApiMonthlyExpensesResponses,
 	ApiUpdateByIdResponses,
 } from 'src/common/decorators/api-responses/card-responses.decorator'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { CardService } from './card.service'
 import { CreateCardDto } from './dtos/create-card.dto'
-import { QueryCardExpensesDto } from './dtos/query-card-expenses.dto'
 import { UpdateCardDto } from './dtos/update-card.dto'
 
 @ApiTags('Cards')
@@ -111,20 +109,18 @@ export class CardController {
 	}
 
 	@UseGuards(JwtAuthGuard)
-	@Get('cards/:id/expenses')
+	@Get('cards/:id/transactions')
 	@ApiBearerAuth()
 	@ApiOperation({
-		summary: 'Get monthly expenses card',
-		description: 'Check card expenses in a month.',
+		summary: 'Get recent card transactions',
+		description: 'Get recent transactions associated with a card.',
 	})
-	@ApiMonthlyExpensesResponses()
-	async getExpenses(
+	async getRecentTransactions(
 		@Param('id') id: string,
-		@Query() query: QueryCardExpensesDto,
+		@Query('limit') limit: string,
 		@CurrentUser() user,
 	) {
-		// Verify card ownership
 		await this.cardService.findOne(id, user.userId)
-		return this.cardService.monthlyExpenses(id, query.startDate, query.endDate)
+		return this.cardService.getRecentTransactions(id, Number(limit) || 5)
 	}
 }

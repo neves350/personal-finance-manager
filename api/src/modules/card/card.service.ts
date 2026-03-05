@@ -133,4 +133,26 @@ export class CardService {
 
 		return total
 	}
+
+	async getRecentTransactions(cardId: string, limit = 5) {
+		const transactions = await this.prisma.transaction.findMany({
+			where: { cardId },
+			orderBy: { date: 'desc' },
+			take: limit,
+			include: {
+				category: {
+					select: { id: true, title: true, type: true, icon: true },
+				},
+			},
+		})
+
+		return transactions.map((tx) => ({
+			id: tx.id,
+			title: tx.title,
+			type: tx.type,
+			amount: Number(tx.amount),
+			date: tx.date,
+			category: tx.category,
+		}))
+	}
 }
