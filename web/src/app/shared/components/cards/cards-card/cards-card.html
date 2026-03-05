@@ -1,50 +1,97 @@
-<z-card class="mb-2 h-full flex flex-col">
-  <div class="flex items-start justify-between">
-    <div
-      class="size-10 flex items-center justify-center rounded-lg text-white"
-      [class]="bgColorClass()"
-    >
-      <i-lucide [img]="cardIcon()" class="size-5" />
+<z-card class="p-4 h-full flex flex-col cursor-pointer">
+  <div class="flex justify-between items-start">
+    <div class="size-10 rounded-full flex items-center justify-center" [class]="bgColorClass()">
+      <i-lucide [img]="WalletIcon" class="size-5 text-white" />
     </div>
-
-    <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
-      <span class="truncate text-sm font-medium">
-        {{ card().name }}
-      </span>
-      <span class="truncate text-xs text-muted-foreground">
+    <div class="ml-4 grid flex-1 text-left">
+      <p class="text-lg font-bold">{{ card().name }}</p>
+      <p class="text-xs text-muted-foreground">
         {{ typeLabel() }}
-        @if (card().lastFour) {
-        <span> **** {{ card().lastFour }}</span>
+        @if (card().bankAccount?.name) {
+          · {{ card().bankAccount?.name }}
         }
-      </span>
+      </p>
     </div>
+    <div class="flex gap-1">
+      <z-button zPopover [zContent]="popoverContent" zSize="sm" zShape="circle" zType="ghost">
+        <i-lucide [img]="EllipsisIcon" />
+      </z-button>
 
-    <!-- Edit & Delete Buttons -->
-    <div class="flex items-center gap-1">
-      <z-button zType="ghost" zSize="sm" (click)="updateCard()">
-        <i-lucide [img]="SquarePenIcon" class="size-5" />
-      </z-button>
-      <z-button zType="ghost" zSize="sm" (click)="deleteCard()">
-        <i-lucide [img]="Trash2Icon" class="size-5 text-destructive" />
-      </z-button>
+      <ng-template #popoverContent>
+        <z-popover class="w-40 items-start border-2">
+          <div class="flex flex-col">
+            <z-button
+              zPopoverClose
+              zType="ghost"
+              zSize="sm"
+              zFull
+              class="w-full justify-start"
+              [routerLink]="['/card-details', card().id]"
+            >
+              <i-lucide [img]="EyeIcon" class="h-4 w-4 mr-2" />
+              Details
+            </z-button>
+            <z-button
+              zPopoverClose
+              zType="ghost"
+              zSize="sm"
+              zFull
+              class="w-full justify-start"
+              (click)="updateCard(); $event.stopPropagation()"
+            >
+              <i-lucide [img]="SquarePenIcon" class="h-4 w-4 mr-2" />
+              Edit
+            </z-button>
+            <z-divider />
+            <z-button
+              zType="ghost"
+              zSize="sm"
+              zPopoverClose
+              zFull
+              class="text-destructive w-full justify-start"
+              (click)="deleteCard(); $event.stopPropagation()"
+            >
+              <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
+              Delete
+            </z-button>
+          </div>
+        </z-popover>
+      </ng-template>
     </div>
   </div>
 
-  <!-- Credit Limit (for credit cards) -->
-  @if (formattedCreditLimit()) {
-  <div class="mt-6">
-    <p class="text-xs text-muted-foreground mb-1">Monthly Expenses</p>
-    <span class="text-xl font-bold" [class]="textColorClass()">{{ formattedCreditLimit() }}€</span>
+  <div class="mt-4 flex justify-between">
+    <div class="text-left">
+      <p class="text-xs text-muted-foreground uppercase">Month Expenses</p>
+      <p class="text-sm mt-1 font-medium">{{ monthlyExpenses() | currency: 'EUR' }}</p>
+    </div>
+    @if (creditLimit()) {
+      <div class="text-left">
+        <p class="text-xs text-muted-foreground uppercase">Limit</p>
+        <p class="text-sm mt-1 font-medium">{{ creditLimit() | currency: 'EUR' }}</p>
+      </div>
+    }
   </div>
-  } @if(isCreditCard()) {
-  <app-cards-limit-progress [card]="card()" />
-  }
-
-  <!-- See Details -->
-  <div class="mt-auto pt-6">
-    <z-button class="cursor-pointer" zType="outline" zFull>
-      See details
-      <i-lucide [img]="ArrowRightIcon" />
-    </z-button>
+  <div class="mt-auto pt-4 flex justify-between items-start">
+    @if (card().lastFour) {
+      <div>
+        <p class="text-xs text-muted-foreground uppercase">Card Number</p>
+        <p class="text-sm font-medium">**** **** **** {{ card().lastFour }}</p>
+      </div>
+    }
+    <div class="flex gap-4">
+      @if (card().expirationDate) {
+        <div class="text-left">
+          <p class="text-xs text-muted-foreground uppercase">Exp</p>
+          <p class="text-sm font-medium">{{ card().expirationDate }}</p>
+        </div>
+      }
+      @if (card().cvc) {
+        <div class="text-left">
+          <p class="text-xs text-muted-foreground uppercase">CVC</p>
+          <p class="text-sm font-medium">{{ card().cvc }}</p>
+        </div>
+      }
+    </div>
   </div>
 </z-card>

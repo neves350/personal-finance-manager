@@ -1,15 +1,20 @@
+import { CurrencyPipe } from '@angular/common'
 import {
 	ChangeDetectionStrategy,
 	Component,
 	computed,
+	effect,
 	inject,
 	input,
+	signal,
 } from '@angular/core'
+import { RouterLink } from '@angular/router'
 import { Card, CardColor, CardType } from '@core/api/cards.interface'
 import { CardsService } from '@core/services/cards.service'
 import {
-	ArrowRightIcon,
 	CreditCardIcon,
+	EllipsisIcon,
+	EyeIcon,
 	LucideAngularModule,
 	SquarePenIcon,
 	Trash2Icon,
@@ -20,10 +25,11 @@ import { lastValueFrom } from 'rxjs'
 import { ZardButtonComponent } from '../../ui/button'
 import { ZardCardComponent } from '../../ui/card'
 import { ZardDialogService } from '../../ui/dialog'
+import { ZardDividerComponent } from '../../ui/divider'
+import { ZardPopoverComponent, ZardPopoverDirective } from '../../ui/popover'
 import { ZardSheetService } from '../../ui/sheet'
 import { CardsForm } from '../cards-form/cards-form'
 import type { iSheetData } from '../cards-form/cards-form.interface'
-import { CardsLimitProgress } from '../cards-limit-progress/cards-limit-progress'
 
 @Component({
 	selector: 'app-cards-card',
@@ -31,13 +37,14 @@ import { CardsLimitProgress } from '../cards-limit-progress/cards-limit-progress
 		ZardCardComponent,
 		LucideAngularModule,
 		ZardButtonComponent,
-		CardsLimitProgress,
+		ZardPopoverComponent,
+		ZardPopoverDirective,
+		ZardDividerComponent,
+		RouterLink,
+		CurrencyPipe,
 	],
 	templateUrl: './cards-card.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	host: {
-		class: 'block h-full',
-	},
 })
 export class CardsCard {
 	readonly card = input.required<Card>()
@@ -50,7 +57,8 @@ export class CardsCard {
 	readonly CreditCardIcon = CreditCardIcon
 	readonly SquarePenIcon = SquarePenIcon
 	readonly Trash2Icon = Trash2Icon
-	readonly ArrowRightIcon = ArrowRightIcon
+	readonly EyeIcon = EyeIcon
+	readonly EllipsisIcon = EllipsisIcon
 
 	readonly isCreditCard = computed(
 		() => this.card().type === CardType.CREDIT_CARD,
@@ -79,8 +87,8 @@ export class CardsCard {
 	}
 
 	private readonly typeLabels: Record<CardType, string> = {
-		[CardType.CREDIT_CARD]: 'Credit Card',
-		[CardType.DEBIT_CARD]: 'Debit Card',
+		[CardType.CREDIT_CARD]: 'Credit',
+		[CardType.DEBIT_CARD]: 'Debit',
 	}
 
 	readonly bgColorClass = computed(() => {
@@ -91,25 +99,33 @@ export class CardsCard {
 		return this.textColorClasses[this.card().color]
 	})
 
-	readonly cardIcon = computed(() => {
-		const iconMap: Record<CardType, typeof CreditCardIcon> = {
-			[CardType.CREDIT_CARD]: this.CreditCardIcon,
-			[CardType.DEBIT_CARD]: this.WalletIcon,
-		}
-		return iconMap[this.card().type]
-	})
-
 	readonly typeLabel = computed(() => {
 		return this.typeLabels[this.card().type]
 	})
 
-	readonly formattedCreditLimit = computed(() => {
+	readonly creditLimit = computed(() => {
 		const creditLimit = this.card().creditLimit
 		if (!creditLimit) return null
-		return Number(creditLimit).toLocaleString('pt-PT', {
-			minimumFractionDigits: 2,
-			maximumFractionDigits: 2,
-		})
+		return Number(creditLimit)
+	})
+
+	readonly monthlyExpenses = signal<number>(0)
+
+	private readonly loadExpenses = effect(() => {
+		const cardId = this.card().id
+		if (!cardId) return
+
+		const now = new Date()
+		const startDate = new Date(now.getFullYear(), now.getMonth(), 1)
+			.toISOString()
+		const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+			.toISOString()
+
+		this.cardsService
+			.monthlyExpenses(cardId, { startDate, endDate })
+			.subscribe((res) => {
+				this.monthlyExpenses.set(Number(res._sum.amount ?? 0))
+			})
 	})
 
 	updateCard() {
