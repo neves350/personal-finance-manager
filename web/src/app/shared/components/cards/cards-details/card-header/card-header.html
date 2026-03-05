@@ -1,0 +1,14 @@
+<div class="flex justify-between items-center">
+  <div class="flex items-center gap-4">
+    <z-button zType="goalGhost" routerLink="/cards">
+      <i-lucide [img]="ArrowLeftIcon" />
+    </z-button>
+    <h1 class="font-medium flex flex-col text-lg">
+      {{ card().name }}
+      <span class="text-muted-foreground text-sm font-normal">{{ typeLabel() }}</span>
+    </h1>
+  </div>
+  <z-button zType="goalGhost" (click)="updateCard()">
+    <i-lucide [img]="SquarePenIcon" class="size-4" />
+  </z-button>
+</div>
