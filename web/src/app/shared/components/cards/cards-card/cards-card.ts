@@ -112,7 +112,7 @@ export class CardsCard {
 		this.dialogService.create({
 			zTitle: 'Edit Card',
 			zContent: CardsForm,
-			zWidth: '450px',
+			zWidth: '600px',
 			zHideFooter: false,
 			zOkText: 'Save Changes',
 			zOnOk: (instance: CardsForm) => {
