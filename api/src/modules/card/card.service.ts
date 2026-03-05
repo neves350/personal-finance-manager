@@ -62,6 +62,9 @@ export class CardService {
 				userId,
 				...(bankAccountId && { bankAccountId }),
 			},
+			include: {
+				bankAccount: { select: { name: true } },
+			},
 		})
 
 		return {
