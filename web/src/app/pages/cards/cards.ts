@@ -12,11 +12,11 @@ import { CardsForm } from '@/shared/components/cards/cards-form/cards-form'
 import { CardsList } from '@/shared/components/cards/cards-list/cards-list'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
+import { ZardDialogService } from '@/shared/components/ui/dialog'
 import {
 	ZardSelectComponent,
 	ZardSelectItemComponent,
 } from '@/shared/components/ui/select'
-import { ZardSheetService } from '@/shared/components/ui/sheet'
 
 @Component({
 	selector: 'app-cards',
@@ -35,7 +35,7 @@ export class Cards implements OnInit {
 	readonly WalletCardsIcon = WalletCardsIcon
 	readonly PlusIcon = PlusIcon
 
-	private readonly sheetService = inject(ZardSheetService)
+	private readonly dialogService = inject(ZardDialogService)
 	private readonly cardsService = inject(CardsService)
 	private readonly bankAccountsService = inject(BankAccountsService)
 
@@ -61,19 +61,18 @@ export class Cards implements OnInit {
 	}
 
 	openSheet() {
-		this.sheetService.create({
+		this.dialogService.create({
 			zTitle: 'New Card',
 			zContent: CardsForm,
-			zSide: 'right',
 			zWidth: '500px',
 			zHideFooter: false,
 			zOkText: 'Create Card',
 			zOnOk: (instance: CardsForm) => {
 				instance.submit()
-				return false // submit() handle close
+				return false
 			},
 			zCustomClasses:
-				'rounded-2xl [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 }

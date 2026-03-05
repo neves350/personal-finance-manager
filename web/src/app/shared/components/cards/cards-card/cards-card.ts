@@ -3,7 +3,6 @@ import {
 	ChangeDetectionStrategy,
 	Component,
 	computed,
-	effect,
 	inject,
 	input,
 	signal,
@@ -27,7 +26,6 @@ import { ZardCardComponent } from '../../ui/card'
 import { ZardDialogService } from '../../ui/dialog'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardPopoverComponent, ZardPopoverDirective } from '../../ui/popover'
-import { ZardSheetService } from '../../ui/sheet'
 import { CardsForm } from '../cards-form/cards-form'
 import type { iSheetData } from '../cards-form/cards-form.interface'
 
@@ -50,7 +48,6 @@ export class CardsCard {
 	readonly card = input.required<Card>()
 
 	private readonly dialogService = inject(ZardDialogService)
-	private readonly sheetService = inject(ZardSheetService)
 	private readonly cardsService = inject(CardsService)
 
 	readonly WalletIcon = WalletIcon
@@ -111,37 +108,19 @@ export class CardsCard {
 
 	readonly monthlyExpenses = signal<number>(0)
 
-	private readonly loadExpenses = effect(() => {
-		const cardId = this.card().id
-		if (!cardId) return
-
-		const now = new Date()
-		const startDate = new Date(now.getFullYear(), now.getMonth(), 1)
-			.toISOString()
-		const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0)
-			.toISOString()
-
-		this.cardsService
-			.monthlyExpenses(cardId, { startDate, endDate })
-			.subscribe((res) => {
-				this.monthlyExpenses.set(Number(res._sum.amount ?? 0))
-			})
-	})
-
 	updateCard() {
-		this.sheetService.create({
+		this.dialogService.create({
 			zTitle: 'Edit Card',
 			zContent: CardsForm,
-			zSide: 'right',
-			zWidth: '500px',
+			zWidth: '450px',
 			zHideFooter: false,
 			zOkText: 'Save Changes',
 			zOnOk: (instance: CardsForm) => {
 				instance.submit()
-				return false // submit() handle close
+				return false
 			},
 			zCustomClasses:
-				'rounded-2xl [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: this.card().id,
 				name: this.card().name,
@@ -151,17 +130,19 @@ export class CardsCard {
 				creditLimit: this.card().creditLimit,
 				closingDay: this.card().closingDay,
 				dueDay: this.card().dueDay,
+				accountId: this.card().bankAccount,
 			} as iSheetData,
 		})
 	}
 
 	deleteCard() {
 		return this.dialogService.create({
-			zTitle: `Remove ${this.card().name}?`,
-			zDescription: 'This action cannot be undone.',
+			zTitle: `Remove goal?`,
+			zDescription: `Are you sure you want to delete the recurring entry "${this.card().name}"? This action cannot be undone.`,
 			zCancelText: 'Cancel',
 			zOkText: 'Delete Card',
 			zOkDestructive: true,
+			zWidth: '500px',
 			zOnOk: async () => {
 				const walletId = this.card().id
 				if (!walletId) return false
