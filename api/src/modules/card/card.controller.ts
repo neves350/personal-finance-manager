@@ -123,4 +123,16 @@ export class CardController {
 		await this.cardService.findOne(id, user.userId)
 		return this.cardService.getRecentTransactions(id, Number(limit) || 5)
 	}
+
+	@UseGuards(JwtAuthGuard)
+	@Get('cards/:id/cashflow')
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'Get card cashflow',
+		description: 'Get monthly income/expense totals for the last 6 months.',
+	})
+	async getCashflow(@Param('id') id: string, @CurrentUser() user) {
+		await this.cardService.findOne(id, user.userId)
+		return this.cardService.getCashflow(id)
+	}
 }

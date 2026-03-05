@@ -155,4 +155,47 @@ export class CardService {
 			category: tx.category,
 		}))
 	}
+
+	async getCashflow(cardId: string) {
+		const now = new Date()
+		const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1)
+
+		const transactions = await this.prisma.transaction.findMany({
+			where: {
+				cardId,
+				date: { gte: sixMonthsAgo },
+			},
+			select: { type: true, amount: true, date: true },
+		})
+
+		// Build monthly totals for last 6 months
+		const monthlyData = new Map<string, { income: number; expense: number }>()
+
+		for (let i = 0; i < 6; i++) {
+			const d = new Date(now.getFullYear(), now.getMonth() - 5 + i, 1)
+			const key = `${d.getFullYear()}-${d.getMonth() + 1}`
+			monthlyData.set(key, { income: 0, expense: 0 })
+		}
+
+		for (const tx of transactions) {
+			const date = new Date(tx.date)
+			const key = `${date.getFullYear()}-${date.getMonth() + 1}`
+			const entry = monthlyData.get(key)
+			if (!entry) continue
+
+			const amount = Number(tx.amount)
+			if (tx.type === 'INCOME') {
+				entry.income += amount
+			} else {
+				entry.expense += amount
+			}
+		}
+
+		return {
+			data: Array.from(monthlyData.entries()).map(([key, values]) => {
+				const [year, month] = key.split('-').map(Number)
+				return { month, year, ...values }
+			}),
+		}
+	}
 }
