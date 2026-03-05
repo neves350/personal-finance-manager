@@ -64,7 +64,7 @@ export class Cards implements OnInit {
 		this.dialogService.create({
 			zTitle: 'New Card',
 			zContent: CardsForm,
-			zWidth: '500px',
+			zWidth: '600px',
 			zHideFooter: false,
 			zOkText: 'Create Card',
 			zOnOk: (instance: CardsForm) => {
