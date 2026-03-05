@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, type Routes } from '@angular/router'
 import { authGuard } from '@core/guards/auth.guard'
 import { guestGuard } from '@core/guards/guest.guard'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
+import { CardsService } from '@core/services/cards.service'
 import { GoalsService } from '@core/services/goals.service'
 import { Layout } from './shared/components/layout/layout'
 
@@ -69,6 +70,19 @@ export const routes: Routes = [
 				path: 'cards',
 				title: 'Cards',
 				loadComponent: () => import('./pages/cards/cards').then((m) => m.Cards),
+			},
+			{
+				path: 'card-details/:id',
+				title: 'Card Details',
+				loadComponent: () =>
+					import('./pages/cards/card-details/card-details').then(
+						(m) => m.CardDetails,
+					),
+				resolve: {
+					card: (route: ActivatedRouteSnapshot) => {
+						return inject(CardsService).findById(route.params['id'])
+					},
+				},
 			},
 			{
 				path: 'accounts',
