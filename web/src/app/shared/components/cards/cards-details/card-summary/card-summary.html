@@ -1,0 +1,66 @@
+<div class="grid grid-cols-1 gap-4 p-2 h-full">
+  <z-card>
+    <h3 class="font-semibold mb-4">Details</h3>
+    <div class="space-y-4">
+      <div>
+        <p class="text-xs text-muted-foreground uppercase">Card Number</p>
+        <p class="font-medium tracking-wider">{{ maskedCardNumber() }}</p>
+      </div>
+      <div class="grid grid-cols-3 gap-4">
+        <div>
+          <p class="text-xs text-muted-foreground uppercase">Expiry Date</p>
+          <p class="font-medium">{{ card().expirationDate }}</p>
+        </div>
+        <div>
+          <p class="text-xs text-muted-foreground">CVC</p>
+          <p class="font-medium">{{ card().cvc }}</p>
+        </div>
+        <div>
+          <p class="text-xs text-muted-foreground uppercase">Status</p>
+          <span
+            class="inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-500"
+          >
+            Active
+          </span>
+        </div>
+      </div>
+    </div>
+  </z-card>
+
+  <z-card>
+    @if (isCreditCard()) {
+      <h3 class="font-semibold mb-4">Spending Limits</h3>
+      <z-progress-bar [progress]="limitUsagePercent()" zType="expense" zSize="sm" class="mb-2" />
+      <div class="flex items-center justify-between text-sm mt-2">
+        <span class="text-muted-foreground">
+          <span>{{ currentMonthExpenses() | currency: 'EUR' }}</span>
+          spent of
+          <span>{{ card().creditLimit | currency: 'EUR' }}</span>
+        </span>
+        <span class="font-medium">{{ limitUsagePercentRounded() }}%</span>
+      </div>
+      <div class="grid grid-cols-2 gap-4 mt-6">
+        <div>
+          <p class="text-xs text-muted-foreground uppercase">Closing Day</p>
+          <p class="font-medium">{{ card().closingDay }}</p>
+        </div>
+        <div>
+          <p class="text-xs text-muted-foreground uppercase">Due Day</p>
+          <p class="font-medium">{{ card().dueDay }}</p>
+        </div>
+      </div>
+    } @else {
+      <h3 class="font-semibold mb-4">Card Info</h3>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-xs text-muted-foreground uppercase">Type</p>
+          <p class="font-medium">Debit Card</p>
+        </div>
+        <div>
+          <p class="text-xs text-muted-foreground uppercase">Account</p>
+          <p class="font-medium">{{ card().bankAccount?.name || 'No account selected' }}</p>
+        </div>
+      </div>
+    }
+  </z-card>
+</div>
