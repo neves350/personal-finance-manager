@@ -10,12 +10,13 @@ import type { Card } from '@core/api/cards.interface'
 import { CardsService } from '@core/services/cards.service'
 import { CardCashflow } from '@/shared/components/cards/cards-details/card-cashflow/card-cashflow'
 import { CardHeader } from '@/shared/components/cards/cards-details/card-header/card-header'
+import { CardRecent } from '@/shared/components/cards/cards-details/card-recent/card-recent'
 import { CardSummary } from '@/shared/components/cards/cards-details/card-summary/card-summary'
 import { BreadcrumbService } from '@/shared/services/breadcrumb.service'
 
 @Component({
 	selector: 'app-card-details',
-	imports: [CardHeader, CardSummary, CardCashflow],
+	imports: [CardHeader, CardSummary, CardCashflow, CardRecent],
 	templateUrl: './card-details.html',
 })
 export class CardDetails {
