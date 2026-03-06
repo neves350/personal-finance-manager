@@ -79,6 +79,9 @@ export class CardService {
 				id: cardId,
 				userId,
 			},
+			include: {
+				bankAccount: { select: { name: true } },
+			},
 		})
 
 		if (!card) throw new NotFoundException('Card not found')
