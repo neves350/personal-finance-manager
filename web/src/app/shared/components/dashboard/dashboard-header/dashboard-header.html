@@ -1,4 +1,4 @@
-<div class="flex justify-between">
+<div class="flex justify-between mb-6">
   @if (user(); as user) {
     <h1 class="font-medium flex flex-col text-lg">
       {{ greeting }}, {{ user.name }}.
@@ -9,13 +9,25 @@
   }
 
   <div class="justify-end">
-    <z-button class="cursor-pointer mr-2" zType="outline" (click)="openTransfer()">
-      <i-lucide [img]="ArrowRightLeftIcon" />
-      Transfer
-    </z-button>
-    <z-button class="cursor-pointer" zType="outline" (click)="openSheet()">
-      <i-lucide [img]="PlusIcon" />
-      New account
-    </z-button>
+    <div class="flex items-center justify-between gap-3">
+      <z-button class="cursor-pointer" zType="goalGhost" (click)="openTransfer()">
+        <i-lucide [img]="ArrowRightLeftIcon" />
+        Transfer
+      </z-button>
+      <z-button class="cursor-pointer" zType="goalGhost" (click)="openSheet()">
+        <i-lucide [img]="PlusIcon" />
+        New account
+      </z-button>
+
+      <z-select
+        [zValue]="period()"
+        [zIcon]="CalendarDaysIcon"
+        (zSelectionChange)="onPeriodChange($event)"
+      >
+        <z-select-item zValue="week">Last Week</z-select-item>
+        <z-select-item zValue="month">Last Month</z-select-item>
+        <z-select-item zValue="year">Last Year</z-select-item>
+      </z-select>
+    </div>
   </div>
 </div>
