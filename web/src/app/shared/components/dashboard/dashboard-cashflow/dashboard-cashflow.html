@@ -1,0 +1,24 @@
+<z-card>
+  <div class="flex items-center justify-between mb-4">
+    <div>
+      <h2 class="text-lg font-semibold flex items-center gap-2">Cashflow</h2>
+      <p class="text-sm text-muted-foreground">Monthly tracking of income and spending</p>
+    </div>
+  </div>
+
+  @if (chartOptions()) {
+    <apx-chart
+      [series]="chartOptions()!.series!"
+      [chart]="chartOptions()!.chart!"
+      [xaxis]="chartOptions()!.xaxis!"
+      [yaxis]="chartOptions()!.yaxis!"
+      [stroke]="chartOptions()!.stroke!"
+      [grid]="chartOptions()!.grid!"
+      [tooltip]="chartOptions()!.tooltip!"
+      [legend]="chartOptions()!.legend!"
+      [colors]="chartOptions()!.colors!"
+      [dataLabels]="chartOptions()!.dataLabels!"
+      [markers]="chartOptions()!.markers!"
+    />
+  }
+</z-card>
