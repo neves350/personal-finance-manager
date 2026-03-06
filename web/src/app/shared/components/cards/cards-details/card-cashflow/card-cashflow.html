@@ -1,0 +1,25 @@
+<z-card>
+  <div class="flex items-start justify-between mb-4">
+    <h3 class="font-semibold flex flex-col">
+      Cashflow
+      <span class="font-normal text-muted-foreground text-sm">Last 6 months</span>
+    </h3>
+  </div>
+
+  @if (chartOptions()) {
+    <apx-chart
+      [series]="chartOptions()!.series!"
+      [chart]="chartOptions()!.chart!"
+      [xaxis]="chartOptions()!.xaxis!"
+      [yaxis]="chartOptions()!.yaxis!"
+      [stroke]="chartOptions()!.stroke!"
+      [fill]="chartOptions()!.fill!"
+      [colors]="chartOptions()!.colors!"
+      [tooltip]="chartOptions()!.tooltip!"
+      [dataLabels]="chartOptions()!.dataLabels!"
+      [grid]="chartOptions()!.grid!"
+      [markers]="chartOptions()!.markers!"
+      [legend]="chartOptions()!.legend!"
+    />
+  }
+</z-card>
