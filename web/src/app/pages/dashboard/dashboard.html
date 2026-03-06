@@ -1,13 +1,14 @@
 <main class="p-4 md:p-6 w-full">
   <div class="max-w-[1800px] mx-auto py-6 md:py-3 space-y-8 md:space-y-12">
-    <app-dashboard-header />
+    <app-dashboard-header (filterChange)="onFilterChange($event)" />
+    <app-dashboard-cashflow />
 
-    <app-dashboard-card />
+    <!-- <app-dashboard-card />
     <app-dashboard-chart />
 
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
       <app-dashboard-wallets />
       <app-dashboard-transactions />
-    </div>
+    </div> -->
   </div>
 </main>
