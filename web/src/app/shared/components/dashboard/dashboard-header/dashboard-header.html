@@ -1,0 +1,21 @@
+<div class="flex justify-between">
+  @if (user(); as user) {
+    <h1 class="font-medium flex flex-col text-lg">
+      {{ greeting }}, {{ user.name }}.
+      <span class="font-normal text-muted-foreground text-sm">
+        Check your financial overview.
+      </span>
+    </h1>
+  }
+
+  <div class="justify-end">
+    <z-button class="cursor-pointer mr-2" zType="outline" (click)="openTransfer()">
+      <i-lucide [img]="ArrowRightLeftIcon" />
+      Transfer
+    </z-button>
+    <z-button class="cursor-pointer" zType="outline" (click)="openSheet()">
+      <i-lucide [img]="PlusIcon" />
+      New account
+    </z-button>
+  </div>
+</div>
