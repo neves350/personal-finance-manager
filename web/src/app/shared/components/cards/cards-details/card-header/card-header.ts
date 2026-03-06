@@ -4,6 +4,7 @@ import {
 	computed,
 	inject,
 	input,
+	output,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { type Card, CardType } from '@core/api/cards.interface'
@@ -25,6 +26,7 @@ import type { iSheetData } from '../../cards-form/cards-form.interface'
 })
 export class CardHeader {
 	readonly card = input.required<Card>()
+	readonly cardUpdated = output<void>()
 	readonly ArrowLeftIcon = ArrowLeftIcon
 	readonly SquarePenIcon = SquarePenIcon
 
@@ -42,7 +44,7 @@ export class CardHeader {
 			zHideFooter: false,
 			zOkText: 'Save Changes',
 			zOnOk: (instance: CardsForm) => {
-				instance.submit()
+				instance.submit(() => this.cardUpdated.emit())
 				return false
 			},
 			zCustomClasses:
