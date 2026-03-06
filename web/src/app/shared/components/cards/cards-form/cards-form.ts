@@ -125,7 +125,7 @@ export class CardsForm implements AfterViewInit {
 		this.form.controls.expirationDate.setValue(value)
 	}
 
-	submit(): void {
+	submit(onSuccess?: () => void): void {
 		if (this.form.invalid) {
 			this.form.markAllAsTouched()
 			return
@@ -154,7 +154,10 @@ export class CardsForm implements AfterViewInit {
 			: this.cardsService.create(payload)
 
 		request$.subscribe({
-			next: () => this.dialogRef.close(),
+			next: () => {
+				onSuccess?.()
+				this.dialogRef.close()
+			},
 		})
 	}
 }
