@@ -152,7 +152,11 @@ export function createCashflowOptions(
 		xaxis: {
 			type: 'category',
 			categories,
+			tickAmount: period === 'month' ? 10 : undefined,
 			labels: {
+				rotate: -45,
+				rotateAlways: false,
+				hideOverlappingLabels: true,
 				style: {
 					colors: foreground,
 					fontSize: '12px',
