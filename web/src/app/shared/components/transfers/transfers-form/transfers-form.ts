@@ -2,7 +2,6 @@ import {
 	ChangeDetectionStrategy,
 	Component,
 	inject,
-	input,
 } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import type { BankAccount } from '@core/api/bank-accounts.interface'
@@ -34,20 +33,19 @@ export class TransfersForm {
 	private readonly fb = inject(FormBuilder)
 	private readonly dialogRef = inject(ZardDialogRef)
 
-	readonly account = input.required<BankAccount>()
 	readonly selectedDate: Date | null = new Date()
 
 	readonly ArrowDownIcon = ArrowDownIcon
 	readonly EuroIcon = EuroIcon
 
 	// list all accounts
-	readonly accounts = this.bankAccountsService.bankAccounts()
+	readonly accounts = this.bankAccountsService.bankAccounts
 
 	form = this.fb.nonNullable.group({
 		amount: [0 as number | null, [Validators.required, Validators.min(0.01)]],
 		fromAccountId: ['', [Validators.required]],
 		toAccountId: ['', [Validators.required]],
-		date: ['', [Validators.required]],
+		date: [new Date().toISOString(), [Validators.required]],
 		description: [''],
 	})
 

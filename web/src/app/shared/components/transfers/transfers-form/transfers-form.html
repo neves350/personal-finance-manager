@@ -26,7 +26,7 @@
   <div class="grid gap-2">
     <label for="fromAccountId" class="text-sm">From</label>
     <z-select class="w-full" formControlName="fromAccountId" zPlaceholder="Select a source account">
-      @for (account of accounts; track account.id) {
+      @for (account of accounts(); track account.id) {
         <z-select-item [zValue]="account.id!">
           <span class="flex w-full justify-between gap-4">
             <span>{{ account.name }}</span>
@@ -56,7 +56,7 @@
       formControlName="toAccountId"
       zPlaceholder="Select a destination account"
     >
-      @for (account of accounts; track account.id) {
+      @for (account of accounts(); track account.id) {
         <z-select-item [zValue]="account.id!">
           <span class="flex w-full justify-between gap-4">
             <span>{{ account.name }}</span>

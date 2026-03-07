@@ -5,7 +5,7 @@ import type {
 	Transfer,
 	TransfersQueryParams,
 } from '@core/api/transfers.interface'
-import { map, Observable, tap } from 'rxjs'
+import { map, Observable, switchMap, tap } from 'rxjs'
 
 @Injectable({
 	providedIn: 'root',
@@ -45,16 +45,9 @@ export class TransfersService {
 
 		return this.transfersApi.create(data).pipe(
 			map((response) => response.transfer),
-			tap({
-				next: (transfer) => {
-					this.transfers.update((current) => [...current, transfer])
-					this.loading.set(false)
-				},
-				error: (err) => {
-					this.error.set(err.message || 'Failed to create transfers')
-					this.loading.set(false)
-				},
-			}),
+			switchMap((transfer) =>
+				this.loadTransfers().pipe(map(() => transfer)),
+			),
 		)
 	}
 
