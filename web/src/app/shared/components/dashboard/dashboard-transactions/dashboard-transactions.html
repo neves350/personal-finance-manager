@@ -1,18 +1,15 @@
-<z-card class="w-full h-full flex flex-col">
-  <h1 class="font-semibold flex">
-    <i-lucide [img]="ArrowRightLeftIcon" class="mr-1" />
-    Recent movements
-  </h1>
+<z-card class="w-full h-full flex flex-col mt-4">
+  <h1 class="text-lg font-semibold">Recent movements</h1>
 
   @if (hasTransfers() || hasTransactions()) {
     <div class="flex-1 mt-4 mb-2">
       @for (movement of recentMovements(); track movement.id) {
         <div class="flex w-full items-center outline-none p-2">
           <div
-            class="size-12 flex items-center justify-center rounded-full"
+            class="size-10 flex items-center justify-center rounded-2xl"
             [class]="iconMap[movement.type].bg"
           >
-            <i-lucide [img]="iconMap[movement.type].icon" class="size-6" />
+            <i-lucide [img]="iconMap[movement.type].icon" class="size-5" />
           </div>
 
           <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
@@ -24,7 +21,7 @@
 
           <div class="ml-4 text-right text-sm">
             <span class="font-semibold" [class]="iconMap[movement.type].amountClass">
-              {{ movement.amount }}
+              {{ movement.amount | currency: 'EUR' }}
             </span>
           </div>
         </div>

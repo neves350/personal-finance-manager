@@ -5,6 +5,6 @@ export interface Movement {
 	type: MovementType
 	label: string
 	subtitle: string
-	amount: string
+	amount: number
 	date: Date
 }

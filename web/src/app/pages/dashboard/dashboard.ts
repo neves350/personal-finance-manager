@@ -8,6 +8,7 @@ import { DashboardCashflow } from '@/shared/components/dashboard/dashboard-cashf
 import { DashboardGoals } from '@/shared/components/dashboard/dashboard-goals/dashboard-goals'
 import { DashboardHeader } from '@/shared/components/dashboard/dashboard-header/dashboard-header'
 import { DashboardSpending } from '@/shared/components/dashboard/dashboard-spending/dashboard-spending'
+import { DashboardTransactions } from '@/shared/components/dashboard/dashboard-transactions/dashboard-transactions'
 
 @Component({
 	selector: 'app-dashboard',
@@ -16,6 +17,7 @@ import { DashboardSpending } from '@/shared/components/dashboard/dashboard-spend
 		DashboardCashflow,
 		DashboardSpending,
 		DashboardGoals,
+		DashboardTransactions,
 	],
 	templateUrl: './dashboard.html',
 })

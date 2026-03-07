@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common'
+import { CurrencyPipe, DatePipe } from '@angular/common'
 import {
 	ChangeDetectionStrategy,
 	Component,
@@ -27,6 +27,7 @@ import { ZardCardComponent } from '../../ui/card'
 		ZardButtonComponent,
 		RouterLink,
 		DatePipe,
+		CurrencyPipe,
 	],
 	templateUrl: './dashboard-transactions.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -61,11 +62,6 @@ export class DashboardTransactions {
 	}
 
 	readonly recentMovements = computed((): Movement[] => {
-		const fmt = (amount: number, currency = 'EUR') =>
-			new Intl.NumberFormat('pt-PT', { style: 'currency', currency }).format(
-				Number(amount),
-			)
-
 		const transfers: Movement[] = this.transfersService
 			.transfers()
 			.map((t) => ({
@@ -73,7 +69,7 @@ export class DashboardTransactions {
 				type: 'transfer' as MovementType,
 				label: t.description || 'Transfer',
 				subtitle: `${t.fromAccount?.name} → ${t.toAccount?.name}`,
-				amount: `-${fmt(t.amount, t.fromAccount?.currency)}`,
+				amount: -Number(t.amount),
 				date: new Date(t.date),
 			}))
 
@@ -87,13 +83,13 @@ export class DashboardTransactions {
 						: ('expense' as MovementType),
 				label: t.title,
 				subtitle: t.category?.title ?? '',
-				amount: `${t.type === 'INCOME' ? '+' : '-'}${fmt(t.amount)}`,
+				amount: t.type === 'INCOME' ? Number(t.amount) : -Number(t.amount),
 				date: new Date(t.date),
 			}))
 
 		return [...transfers, ...transactions]
 			.sort((a, b) => b.date.getTime() - a.date.getTime())
-			.slice(0, 4)
+			.slice(0, 5)
 	})
 
 	constructor() {
