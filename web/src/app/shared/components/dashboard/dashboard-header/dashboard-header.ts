@@ -16,7 +16,7 @@ import {
 	LucideAngularModule,
 	PlusIcon,
 } from 'lucide-angular'
-import { BankAccountsForm } from '../../bank-accounts/bank-accounts-form/bank-accounts-form'
+import { TransactionsForm } from '../../transactions/transactions-form/transactions-form'
 import { TransfersForm } from '../../transfers/transfers-form/transfers-form'
 import { ZardButtonComponent } from '../../ui/button'
 import { ZardDialogService } from '../../ui/dialog'
@@ -50,12 +50,6 @@ export class DashboardHeader {
 		this.emitFilter()
 	}
 
-	private emitFilter() {
-		this.filterChange.emit({
-			period: this.period(),
-		})
-	}
-
 	openTransfer() {
 		this.dialogService.create({
 			zTitle: 'New Transfer',
@@ -72,19 +66,25 @@ export class DashboardHeader {
 		})
 	}
 
-	openSheet() {
+	openTransaction() {
 		this.dialogService.create({
-			zTitle: 'New Account',
-			zContent: BankAccountsForm,
+			zTitle: 'New Transaction',
+			zContent: TransactionsForm,
 			zWidth: '500px',
 			zHideFooter: false,
-			zOkText: 'Create Account',
-			zOnOk: (instance: BankAccountsForm) => {
+			zOkText: 'Create Transaction',
+			zOnOk: (instance: TransactionsForm) => {
 				instance.submit()
 				return false
 			},
 			zCustomClasses:
 				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+		})
+	}
+
+	private emitFilter() {
+		this.filterChange.emit({
+			period: this.period(),
 		})
 	}
 

@@ -1,7 +1,7 @@
 <div class="flex justify-between mb-6">
   @if (user(); as user) {
-    <h1 class="font-medium flex flex-col text-lg">
-      {{ greeting }}, {{ user.name }}.
+    <h1 class="font-medium flex flex-col text-xl">
+      {{ greeting }}, {{ user.name }}
       <span class="font-normal text-muted-foreground text-sm">
         Check your financial overview.
       </span>
@@ -10,13 +10,13 @@
 
   <div class="justify-end">
     <div class="flex items-center justify-between gap-3">
-      <z-button class="cursor-pointer" zType="goalGhost" (click)="openTransfer()">
+      <z-button class="cursor-pointer" (click)="openTransaction()">
+        <i-lucide [img]="PlusIcon" />
+        New Transaction
+      </z-button>
+      <z-button class="cursor-pointer" zType="outline" (click)="openTransfer()">
         <i-lucide [img]="ArrowRightLeftIcon" />
         Transfer
-      </z-button>
-      <z-button class="cursor-pointer" zType="goalGhost" (click)="openSheet()">
-        <i-lucide [img]="PlusIcon" />
-        New account
       </z-button>
 
       <z-select
@@ -24,9 +24,9 @@
         [zIcon]="CalendarDaysIcon"
         (zSelectionChange)="onPeriodChange($event)"
       >
-        <z-select-item zValue="week">Last Week</z-select-item>
-        <z-select-item zValue="month">Last Month</z-select-item>
-        <z-select-item zValue="year">Last Year</z-select-item>
+        <z-select-item zValue="week">Week</z-select-item>
+        <z-select-item zValue="month">Month</z-select-item>
+        <z-select-item zValue="year">Year</z-select-item>
       </z-select>
     </div>
   </div>
