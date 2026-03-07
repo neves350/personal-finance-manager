@@ -1,0 +1,54 @@
+<z-card class="h-full">
+  <div class="flex items-center justify-between mb-4">
+    <div>
+      <h2 class="text-lg font-semibold">Spending by Category</h2>
+      <p class="text-sm text-muted-foreground">This {{ periodLabel() }}</p>
+    </div>
+  </div>
+
+  @if (hasCategories()) {
+    <div class="flex gap-8">
+      <!-- Donut Chart -->
+      @if (chartOptions()) {
+        <div class="shrink-0 py-8">
+          <apx-chart
+            [series]="chartOptions()!.series!"
+            [chart]="chartOptions()!.chart!"
+            [labels]="chartOptions()!.labels!"
+            [colors]="chartOptions()!.colors!"
+            [plotOptions]="chartOptions()!.plotOptions!"
+            [dataLabels]="chartOptions()!.dataLabels!"
+            [legend]="chartOptions()!.legend!"
+            [stroke]="chartOptions()!.stroke!"
+            [tooltip]="chartOptions()!.tooltip!"
+          />
+        </div>
+      }
+
+      <!-- Category list -->
+      <div class="flex-1 space-y-3 py-10">
+        @for (cat of categories(); track cat.categoryId; let i = $index) {
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <div
+                class="size-2.5 rounded-full"
+                [style.backgroundColor]="getCategoryColor(i)"
+              ></div>
+              <span class="text-sm text-muted-foreground">{{ cat.categoryTitle }}</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-sm font-medium">{{ fmt(cat.total) }}</span>
+              <span class="text-xs text-muted-foreground w-12 text-right"
+                >{{ cat.percentage }}%</span
+              >
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <div class="flex flex-col items-center justify-center py-8 text-muted-foreground">
+      <p class="text-sm">No spending data available</p>
+    </div>
+  }
+</z-card>
