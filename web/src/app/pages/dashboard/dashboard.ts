@@ -1,15 +1,16 @@
 import { Component, inject } from '@angular/core'
-import { DashboardCard } from '@/shared/components/dashboard/dashboard-card/dashboard-card'
-import { DashboardCards } from '@/shared/components/dashboard/dashboard-cards/dashboard-cards'
-import { DashboardCashflow } from '@/shared/components/dashboard/dashboard-cashflow/dashboard-cashflow'
-import { DashboardChart } from '@/shared/components/dashboard/dashboard-chart/dashboard-chart'
-import { DashboardHeader } from '@/shared/components/dashboard/dashboard-header/dashboard-header'
-import { DashboardTransactions } from '@/shared/components/dashboard/dashboard-transactions/dashboard-transactions'
 import {
 	PeriodType,
 	type StatisticsQueryParams,
 } from '@core/api/statistics.interface'
 import { StatisticsService } from '@core/services/statistics.service'
+import { DashboardCard } from '@/shared/components/dashboard/dashboard-card/dashboard-card'
+import { DashboardCards } from '@/shared/components/dashboard/dashboard-cards/dashboard-cards'
+import { DashboardCashflow } from '@/shared/components/dashboard/dashboard-cashflow/dashboard-cashflow'
+import { DashboardChart } from '@/shared/components/dashboard/dashboard-chart/dashboard-chart'
+import { DashboardHeader } from '@/shared/components/dashboard/dashboard-header/dashboard-header'
+import { DashboardSpending } from '@/shared/components/dashboard/dashboard-spending/dashboard-spending'
+import { DashboardTransactions } from '@/shared/components/dashboard/dashboard-transactions/dashboard-transactions'
 
 @Component({
 	selector: 'app-dashboard',
@@ -20,6 +21,7 @@ import { StatisticsService } from '@core/services/statistics.service'
 		DashboardTransactions,
 		DashboardHeader,
 		DashboardCashflow,
+		DashboardSpending,
 	],
 	templateUrl: './dashboard.html',
 })
