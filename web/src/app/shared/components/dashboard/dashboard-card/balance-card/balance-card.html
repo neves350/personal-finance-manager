@@ -1,20 +1,25 @@
 <z-card>
-  <div class="flex w-full items-center outline-none p-4">
-    <div class="size-12 flex items-center justify-center rounded-full bg-balance text-balance-foreground">
-      <i-lucide [img]="HandCoinsIcon" class="size-6" />
+  <div class="flex flex-col">
+    <div class="flex items-center justify-between">
+      <span class="text-sm font-medium tracking-wider text-muted-foreground uppercase">{{
+        title()
+      }}</span>
+      <div class="size-10 flex items-center justify-center rounded-lg bg-transfer">
+        <i-lucide [img]="HandCoinsIcon" class="size-5 text-transfer-foreground" />
+      </div>
     </div>
 
-    <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
-      <span class="truncate text-sm font-medium">Total Balance</span>
-      <span class="truncate text-xs text-muted-foreground">{{ formattedBalance }}</span>
-    </div>
+    <span class="text-3xl font-bold mt-1">{{ formattedBalance() | currency: 'EUR' }}</span>
 
-    <div class="ml-4 grid flex-1 text-right text-sm leading-tight">
-      <span class="truncate text-sm font-semibold" [class]="isPositiveChange ? 'text-primary' : 'text-expense-foreground'">
-        <i-lucide [img]="isPositiveChange ? ArrowUpIcon : ArrowDownIcon" class="h-4 w-4 inline" />
-        {{ formattedPercentage }}
-      </span>
-      <span class="truncate text-xs text-muted-foreground">Compare to last year</span>
+    <div
+      class="flex items-center gap-1 text-sm mt-1"
+      [class]="isPositiveChange() ? 'text-income-foreground' : 'text-expense-foreground'"
+    >
+      <i-lucide
+        [img]="isPositiveChange() ? ArrowUpIcon : ArrowDownIcon"
+        class="size-3 font-semibold"
+      />
+      <span>{{ formattedPercentage() }} vs {{ periodLabel() }}</span>
     </div>
   </div>
 </z-card>

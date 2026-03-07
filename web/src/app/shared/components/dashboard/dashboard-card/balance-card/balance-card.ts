@@ -1,38 +1,35 @@
-import { ZardCardComponent } from '@/shared/components/ui/card'
-import { Component, input } from '@angular/core'
+import { CurrencyPipe } from '@angular/common'
+import { Component, computed, input } from '@angular/core'
 import {
 	ArrowDownIcon,
 	ArrowUpIcon,
 	HandCoinsIcon,
 	LucideAngularModule,
 } from 'lucide-angular'
-
+import { ZardCardComponent } from '@/shared/components/ui/card'
 
 @Component({
 	selector: 'app-balance-card',
-	imports: [ZardCardComponent, LucideAngularModule],
+	imports: [ZardCardComponent, LucideAngularModule, CurrencyPipe],
 	templateUrl: './balance-card.html',
 })
 export class BalanceCard {
 	readonly balance = input<number>(0)
 	readonly percentageChange = input<number>(0)
+	readonly periodLabel = input<string>('last month')
+	readonly title = input<string>('TOTAL BALANCE')
 
 	readonly HandCoinsIcon = HandCoinsIcon
 	readonly ArrowUpIcon = ArrowUpIcon
 	readonly ArrowDownIcon = ArrowDownIcon
 
-	get isPositiveChange(): boolean {
-		return this.percentageChange() >= 0
-	}
+	readonly isPositiveChange = computed(() => this.percentageChange() >= 0)
 
-	get formattedBalance(): string {
-		return this.balance().toLocaleString('pt-PT', {
-			minimumFractionDigits: 2,
-			maximumFractionDigits: 2,
-		}) + '€'
-	}
+	readonly formattedBalance = computed(() => this.balance())
 
-	get formattedPercentage(): string {
-		return Math.abs(this.percentageChange()).toFixed(1) + '%'
-	}
+	readonly formattedPercentage = computed(() => {
+		const value = Math.abs(this.percentageChange())
+		const sign = this.percentageChange() >= 0 ? '+' : '-'
+		return `${sign}${value.toFixed(1)}%`
+	})
 }
