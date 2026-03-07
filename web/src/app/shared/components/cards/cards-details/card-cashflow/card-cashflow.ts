@@ -8,12 +8,12 @@ import {
 import { Card } from '@core/api/cards.interface'
 import { CardsService } from '@core/services/cards.service'
 import { ChartComponent } from 'ng-apexcharts'
+import { ZardCardComponent } from '@/shared/components/ui/card'
 import {
 	type ChartOptions,
+	createCashflowChartOptions,
 	MONTHS,
-} from '@/shared/components/dashboard/dashboard-chart/transaction-chart/transaction-chart.config'
-import { ZardCardComponent } from '@/shared/components/ui/card'
-import { createCashflowChartOptions } from './cashflow-chart.config'
+} from './cashflow-chart.config'
 
 @Component({
 	selector: 'app-card-cashflow',
@@ -35,9 +35,7 @@ export class CardCashflow {
 
 	private fetchCashflow() {
 		this.cardsService.cashflow(this.card().id!).subscribe((res) => {
-			const months = res.data.map(
-				(d) => `${MONTHS[d.month - 1]} ${d.year}`,
-			)
+			const months = res.data.map((d) => `${MONTHS[d.month - 1]} ${d.year}`)
 			const incomeData = res.data.map((d) => d.income)
 			const expensesData = res.data.map((d) => d.expense)
 

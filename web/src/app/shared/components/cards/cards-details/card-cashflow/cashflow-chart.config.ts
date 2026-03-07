@@ -1,4 +1,46 @@
-import type { ChartOptions } from '@/shared/components/dashboard/dashboard-chart/transaction-chart/transaction-chart.config'
+import type {
+	ApexAxisChartSeries,
+	ApexChart,
+	ApexDataLabels,
+	ApexFill,
+	ApexGrid,
+	ApexLegend,
+	ApexMarkers,
+	ApexStroke,
+	ApexTooltip,
+	ApexXAxis,
+	ApexYAxis,
+} from 'ng-apexcharts'
+
+export type ChartOptions = {
+	series: ApexAxisChartSeries
+	chart: ApexChart
+	xaxis: ApexXAxis
+	yaxis: ApexYAxis
+	stroke: ApexStroke
+	tooltip: ApexTooltip
+	dataLabels: ApexDataLabels
+	fill: ApexFill
+	grid: ApexGrid
+	legend: ApexLegend
+	markers: ApexMarkers
+	colors: string[]
+}
+
+export const MONTHS = [
+	'Jan',
+	'Feb',
+	'Mar',
+	'Apr',
+	'May',
+	'Jun',
+	'Jul',
+	'Aug',
+	'Sep',
+	'Oct',
+	'Nov',
+	'Dec',
+] as const
 
 export function createCashflowChartOptions(
 	incomeData: number[],
