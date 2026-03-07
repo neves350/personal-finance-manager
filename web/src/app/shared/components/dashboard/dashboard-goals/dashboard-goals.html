@@ -1,0 +1,67 @@
+<z-card class="h-full">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-lg font-semibold">Savings overview</h1>
+  </div>
+
+  @if (hasGoals()) {
+    <div class="space-y-5 grid grid-cols-3 gap-4">
+      @for (goal of displayGoals(); track goal.id) {
+        <z-card class="mb-1 flex flex-col border-2">
+          <div class="flex items-start justify-between">
+            <div
+              class="size-12 mt-2 flex items-center justify-center rounded-lg text-white bg-accent"
+            >
+              <i-lucide [img]="HandCoinsIcon" class="size-5 text-accent-foreground" />
+            </div>
+            <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
+              <span class="truncate text-sm text-muted-foreground mb-2">
+                {{ goal.title }}
+              </span>
+              <span class="truncate font-semibold">
+                {{ goal.amount | currency: 'EUR' }}
+              </span>
+              <span class="truncate text-sm text-income-foreground font-medium">
+                {{ getRemainingAmount(goal) | currency: 'EUR' }} left
+              </span>
+            </div>
+
+            <div class="relative size-18 shrink-0">
+              <svg class="size-full -rotate-90" viewBox="0 0 40 40" aria-hidden="true">
+                <circle
+                  cx="20"
+                  cy="20"
+                  r="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  class="text-muted"
+                />
+                <circle
+                  cx="20"
+                  cy="20"
+                  r="16"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  [attr.stroke]="getStrokeColor(goal.paceStatus)"
+                  [attr.stroke-dasharray]="CIRCUMFERENCE"
+                  [attr.stroke-dashoffset]="getStrokeDashoffset(goal.progress)"
+                />
+              </svg>
+              <span
+                class="absolute inset-0 flex items-center justify-center text-xs font-semibold"
+                [style.color]="getStrokeColor(goal.paceStatus)"
+                >{{ goal.progress }}%</span
+              >
+            </div>
+          </div>
+        </z-card>
+      }
+    </div>
+  } @else {
+    <div class="flex flex-col items-center justify-center py-8 text-muted-foreground">
+      <p class="text-sm">No active goals</p>
+      <a routerLink="/goals" class="text-primary text-sm mt-2 hover:underline">Create a goal</a>
+    </div>
+  }
+</z-card>
