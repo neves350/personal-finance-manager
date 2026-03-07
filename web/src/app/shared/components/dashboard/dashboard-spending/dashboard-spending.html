@@ -37,7 +37,7 @@
               <span class="text-sm text-muted-foreground">{{ cat.categoryTitle }}</span>
             </div>
             <div class="flex items-center gap-1.5">
-              <span class="text-sm font-medium">{{ fmt(cat.total) }}</span>
+              <span class="text-sm font-medium">{{ cat.total | currency: 'EUR' }}</span>
               <span class="text-xs text-muted-foreground w-12 text-right"
                 >{{ cat.percentage }}%</span
               >

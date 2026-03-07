@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common'
 import {
 	afterNextRender,
 	ChangeDetectionStrategy,
@@ -7,6 +8,7 @@ import {
 	inject,
 	signal,
 } from '@angular/core'
+import { PeriodType } from '@core/api/statistics.interface'
 import { StatisticsService } from '@core/services/statistics.service'
 import { ChartComponent } from 'ng-apexcharts'
 import { ZardCardComponent } from '../../ui/card'
@@ -30,7 +32,7 @@ const CATEGORY_COLORS = [
 
 @Component({
 	selector: 'app-dashboard-spending',
-	imports: [ZardCardComponent, ChartComponent],
+	imports: [ZardCardComponent, ChartComponent, CurrencyPipe],
 	templateUrl: './dashboard-spending.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -38,7 +40,15 @@ export class DashboardSpending {
 	private readonly statisticsService = inject(StatisticsService)
 
 	readonly categories = this.statisticsService.expenseCategories
-	readonly periodLabel = this.statisticsService.periodLabel
+
+	readonly periodLabel = computed(() => {
+		const labels: Record<PeriodType, string> = {
+			[PeriodType.WEEK]: 'week',
+			[PeriodType.MONTH]: 'month',
+			[PeriodType.YEAR]: 'year',
+		}
+		return labels[this.statisticsService.period()]
+	})
 	readonly hasCategories = computed(() => this.categories().length > 0)
 	readonly chartOptions = signal<Partial<DonutChartOptions> | null>(null)
 
@@ -52,13 +62,6 @@ export class DashboardSpending {
 			const cats = this.categories()
 			if (cats) this.initChart()
 		})
-	}
-
-	fmt(value: number): string {
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency: 'EUR',
-		}).format(value)
 	}
 
 	getCategoryColor(index: number): string {
