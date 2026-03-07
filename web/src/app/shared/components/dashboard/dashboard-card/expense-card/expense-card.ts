@@ -1,59 +1,35 @@
-import { ZardCardComponent } from '@/shared/components/ui/card'
-import { afterNextRender, Component, input, signal } from '@angular/core'
-import { LucideAngularModule, TrendingDownIcon } from 'lucide-angular'
-import { NgApexchartsModule } from 'ng-apexcharts'
-
+import { CurrencyPipe } from '@angular/common'
+import { Component, computed, input } from '@angular/core'
 import {
-	createSparklineChartOptions,
-	type SparklineChartOptions,
-} from './expense-card.config'
+	ArrowDownIcon,
+	ArrowUpIcon,
+	LucideAngularModule,
+	TrendingDownIcon,
+} from 'lucide-angular'
+import { ZardCardComponent } from '@/shared/components/ui/card'
 
 @Component({
 	selector: 'app-expense-card',
-	imports: [ZardCardComponent, LucideAngularModule, NgApexchartsModule],
+	imports: [ZardCardComponent, LucideAngularModule, CurrencyPipe],
 	templateUrl: './expense-card.html',
 })
 export class ExpenseCard {
 	readonly expense = input<number>(0)
 	readonly percentageChange = input<number>(0)
-	readonly chartData = input<number[]>([120, 95, 140, 110, 130, 100])
+	readonly periodLabel = input<string>('last month')
+	readonly title = input<string>('MONTHLY EXPENSES')
 
 	readonly TrendingDownIcon = TrendingDownIcon
-	readonly chartOptions = signal<Partial<SparklineChartOptions> | null>(null)
+	readonly ArrowUpIcon = ArrowUpIcon
+	readonly ArrowDownIcon = ArrowDownIcon
 
-	constructor() {
-		afterNextRender(() => {
-			this.initChart()
-			this.observeThemeChanges()
-		})
-	}
+	readonly isPositiveChange = computed(() => this.percentageChange() <= 0)
 
-	get formattedExpense(): string {
-		return this.expense().toLocaleString('pt-PT', {
-			minimumFractionDigits: 2,
-			maximumFractionDigits: 2,
-		}) + '€'
-	}
+	readonly formattedExpense = computed(() => this.expense())
 
-	private initChart(): void {
-		this.chartOptions.set(createSparklineChartOptions(this.chartData()))
-	}
-
-	private observeThemeChanges(): void {
-		const observer = new MutationObserver((mutations) => {
-			for (const mutation of mutations) {
-				if (
-					mutation.type === 'attributes' &&
-					mutation.attributeName === 'class'
-				) {
-					this.initChart()
-				}
-			}
-		})
-
-		observer.observe(document.documentElement, {
-			attributes: true,
-			attributeFilter: ['class'],
-		})
-	}
+	readonly formattedPercentage = computed(() => {
+		const value = Math.abs(this.percentageChange())
+		const sign = this.percentageChange() >= 0 ? '+' : '-'
+		return `${sign}${value.toFixed(1)}%`
+	})
 }

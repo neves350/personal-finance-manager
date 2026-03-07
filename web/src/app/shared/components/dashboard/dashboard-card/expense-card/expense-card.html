@@ -1,29 +1,25 @@
 <z-card>
-  <div class="flex w-full items-center outline-none p-2">
-    <div class="size-12 flex items-center justify-center rounded-full bg-expense text-expense-foreground">
-      <i-lucide [img]="TrendingDownIcon" class="size-6" />
+  <div class="flex flex-col">
+    <div class="flex items-center justify-between">
+      <span class="text-sm font-medium tracking-wider text-muted-foreground uppercase">{{
+        title()
+      }}</span>
+      <div class="size-10 flex items-center justify-center rounded-lg bg-expense">
+        <i-lucide [img]="TrendingDownIcon" class="size-5 text-expense-foreground" />
+      </div>
     </div>
 
-    <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
-      <span class="truncate text-sm font-medium">Total Expense</span>
-      <span class="truncate text-xs text-muted-foreground">{{ formattedExpense }}</span>
-    </div>
+    <span class="text-3xl font-bold mt-1">{{ formattedExpense() | currency: 'EUR' }}</span>
 
-    <div class="ml-4 grid text-right">
-      @if (chartOptions()) {
-        <apx-chart
-          [series]="chartOptions()!.series!"
-          [chart]="chartOptions()!.chart!"
-          [colors]="chartOptions()!.colors!"
-          [stroke]="chartOptions()!.stroke!"
-          [xaxis]="chartOptions()!.xaxis!"
-          [yaxis]="chartOptions()!.yaxis!"
-          [grid]="chartOptions()!.grid!"
-          [dataLabels]="chartOptions()!.dataLabels!"
-          [tooltip]="chartOptions()!.tooltip!"
-        />
-      }
-      <span class="truncate text-xs text-muted-foreground">Last 6 months</span>
+    <div
+      class="flex items-center gap-1 text-sm mt-1"
+      [class]="isPositiveChange() ? 'text-income-foreground' : 'text-expense-foreground'"
+    >
+      <i-lucide
+        [img]="isPositiveChange() ? ArrowDownIcon : ArrowUpIcon"
+        class="size-3 font-semibold"
+      />
+      <span>{{ formattedPercentage() }} vs {{ periodLabel() }}</span>
     </div>
   </div>
 </z-card>
