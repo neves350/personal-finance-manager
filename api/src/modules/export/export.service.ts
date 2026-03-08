@@ -9,48 +9,57 @@ import { TransactionQueryHelper } from './helpers/transaction-query.helper'
 export class ExportService {
 	constructor(private readonly prisma: PrismaService) {}
 
+	private async getExportTransactions(
+		userId: string,
+		query: ExportTransactionsQueryDto,
+	) {
+		const userAccounts = await this.prisma.bankAccount.findMany({
+			where: { userId },
+			select: { id: true },
+		})
+
+		if (userAccounts.length === 0) {
+			return []
+		}
+
+		const accountIds = userAccounts.map((account) => account.id)
+
+		const filters = TransactionQueryHelper.buildTransactionFilters(
+			accountIds,
+			query,
+		)
+
+		return this.prisma.transaction.findMany({
+			where: filters,
+			include: {
+				category: {
+					select: { title: true },
+				},
+				card: {
+					select: { name: true },
+				},
+				bankAccount: {
+					select: { name: true },
+				},
+			},
+			orderBy: {
+				date: 'desc',
+			},
+		})
+	}
+
 	async exportTransactionToCsv(
 		userId: string,
 		query: ExportTransactionsQueryDto,
 	): Promise<string> {
-		// filters
-		const filters = TransactionQueryHelper.buildTransactionFilters(userId, {
-			cardId: query.cardId,
-			type: query.type,
-			startDate: query.startDate,
-			endDate: query.endDate,
-		})
+		const transactions = await this.getExportTransactions(userId, query)
 
-		// get transactions
-		const transactions = await this.prisma.transaction.findMany({
-			where: filters,
-			include: {
-				category: {
-					select: {
-						title: true,
-					},
-				},
-				card: {
-					select: {
-						name: true,
-					},
-				},
-			},
-			orderBy: {
-				date: 'desc', // recent first
-			},
-		})
-
-		// transform into csv format
 		const csvData =
 			CsvTransformerHelper.transformTransactionsToCSV(transactions)
 
-		// generate csv
-		const csv = Papa.unparse(csvData, {
+		return Papa.unparse(csvData, {
 			header: true,
 			delimiter: ',',
 		})
-
-		return csv
 	}
 }
