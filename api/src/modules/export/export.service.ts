@@ -3,6 +3,7 @@ import * as Papa from 'papaparse'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
 import { ExportTransactionsQueryDto } from './dtos/export-transactions-query.dto'
 import { CsvTransformerHelper } from './helpers/csv-transformer.helper'
+import { PdfGeneratorHelper } from './helpers/pdf-generator.helper'
 import { TransactionQueryHelper } from './helpers/transaction-query.helper'
 
 @Injectable()
@@ -60,6 +61,18 @@ export class ExportService {
 		return Papa.unparse(csvData, {
 			header: true,
 			delimiter: ',',
+		})
+	}
+
+	async exportTransactionToPdf(
+		userId: string,
+		query: ExportTransactionsQueryDto,
+	): Promise<Buffer> {
+		const transactions = await this.getExportTransactions(userId, query)
+
+		return PdfGeneratorHelper.generateTransactionsPdf(transactions, {
+			startDate: query.startDate,
+			endDate: query.endDate,
 		})
 	}
 }

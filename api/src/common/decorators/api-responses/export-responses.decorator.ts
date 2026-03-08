@@ -16,3 +16,19 @@ export function ApiExportCsvResponses() {
 		}),
 	)
 }
+
+/**
+ * Export Transaction Pdf
+ */
+export function ApiExportPdfResponses() {
+	return applyDecorators(
+		ApiResponse({
+			status: 200,
+			description: 'PDF file downloaded successfully',
+		}),
+		ApiResponse({
+			status: 401,
+			description: 'Unauthorized',
+		}),
+	)
+}
