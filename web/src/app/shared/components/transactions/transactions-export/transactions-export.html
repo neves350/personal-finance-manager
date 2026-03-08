@@ -1,0 +1,15 @@
+<z-button zType="outline" zSize="sm" z-dropdown [zDropdownMenu]="menu">
+  <i-lucide [img]="DownloadIcon" class="size-4" />
+  Export
+</z-button>
+
+<z-dropdown-menu-content #menu="zDropdownMenuContent" class="w-48">
+  <z-dropdown-menu-item (click)="downloadCsv()">
+    <i-lucide [img]="FileSpreadsheetIcon" class="size-4" />
+    Download .csv
+  </z-dropdown-menu-item>
+  <z-dropdown-menu-item (click)="downloadPdf()">
+    <i-lucide [img]="FileTextIcon" class="size-4" />
+    Download .pdf
+  </z-dropdown-menu-item>
+</z-dropdown-menu-content>
