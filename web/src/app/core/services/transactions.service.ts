@@ -27,6 +27,7 @@ export class TransactionsService {
 	readonly loading = signal<boolean>(false)
 	readonly error = signal<string | null>(null)
 
+	readonly activeFilters = signal<TransactionsQueryParams>({})
 	readonly selectedYear = signal(new Date().getFullYear())
 	readonly selectedMonth = signal(new Date().getMonth()) // 0-based
 
@@ -119,6 +120,7 @@ export class TransactionsService {
 	): Observable<Transaction[]> {
 		this.loading.set(true)
 		this.error.set(null)
+		this.activeFilters.set(params ?? {})
 
 		const dateRange = this.getMonthDateRange()
 		const mergedParams = { ...dateRange, ...params }
