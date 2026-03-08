@@ -2,22 +2,25 @@ import type { Type } from 'src/generated/prisma/enums'
 
 export class TransactionQueryHelper {
 	static buildTransactionFilters(
-		userId: string,
+		accountIds: string[],
 		options: {
-			cardId?: string
+			accountId?: string
+			categoryId?: string
 			type?: Type
 			startDate?: string
 			endDate?: string
 		} = {},
 	) {
 		const filters: any = {
-			card: {
-				userId,
-			},
+			bankAccountId: { in: accountIds },
 		}
 
-		if (options.cardId) {
-			filters.cardId = options.cardId
+		if (options.accountId) {
+			filters.bankAccountId = options.accountId
+		}
+
+		if (options.categoryId) {
+			filters.categoryId = options.categoryId
 		}
 
 		if (options.type) {

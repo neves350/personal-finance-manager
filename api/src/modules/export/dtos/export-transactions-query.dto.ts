@@ -4,12 +4,20 @@ import { Type } from 'src/generated/prisma/enums'
 
 export class ExportTransactionsQueryDto {
 	@ApiPropertyOptional({
-		description: 'Card ID to filter (optional)',
+		description: 'Account ID to filter (optional)',
 		example: '123e4567-e89b-12d3-a456-426614174000',
 	})
 	@IsOptional()
-	@IsUUID('4')
-	cardId?: string
+	@IsUUID()
+	accountId?: string
+
+	@ApiPropertyOptional({
+		description: 'Category ID to filter (optional)',
+		example: '123e4567-e89b-12d3-a456-426614174000',
+	})
+	@IsOptional()
+	@IsUUID()
+	categoryId?: string
 
 	@ApiPropertyOptional({
 		description: 'Start date (YYYY-MM-DD)',
