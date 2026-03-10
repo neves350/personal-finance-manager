@@ -16,8 +16,10 @@ src/
 │   ├── transaction/           #   Income/expense transactions
 │   ├── category/              #   Default + custom categories
 │   ├── transfer/              #   Account-to-account transfers
-│   ├── statistic/             #   Overview, by-category, trends
-│   ├── export/                #   CSV transaction export
+│   ├── recurring/             #   Recurring transaction management
+│   ├── transfer/              #   Account-to-account transfers
+│   ├── statistic/             #   Overview, by-category, trends, daily totals
+│   ├── export/                #   CSV + PDF transaction export
 │   └── goal/                  #   Savings goals + deposits
 ├── infrastructure/
 │   ├── db/                    #   PrismaService (Neon adapter)
@@ -94,24 +96,27 @@ Incoming Request
 
 ### Bank Accounts (`/bank-accounts`)
 
-| Method | Route                    | Auth | Description            |
-| ------ | ------------------------ | ---- | ---------------------- |
-| GET    | `/bank-accounts`         | Yes  | List all accounts      |
-| GET    | `/bank-accounts/:id`     | Yes  | Get single account     |
-| POST   | `/bank-accounts`         | Yes  | Create account         |
-| PUT    | `/bank-accounts/:id`     | Yes  | Update account         |
-| DELETE | `/bank-accounts/:id`     | Yes  | Delete account         |
+| Method | Route                                  | Auth | Description              |
+| ------ | -------------------------------------- | ---- | ------------------------ |
+| GET    | `/bank-accounts`                       | Yes  | List all accounts        |
+| GET    | `/bank-accounts/:id`                   | Yes  | Get single account       |
+| POST   | `/bank-accounts`                       | Yes  | Create account           |
+| PUT    | `/bank-accounts/:id`                   | Yes  | Update account           |
+| DELETE | `/bank-accounts/:id`                   | Yes  | Delete account           |
+| GET    | `/bank-accounts/:id/balance-history`   | Yes  | 6-month balance history  |
+| GET    | `/bank-accounts/:id/recent-movements`  | Yes  | Recent transactions      |
 
 ### Cards (`/cards`)
 
-| Method | Route                    | Auth | Description            |
-| ------ | ------------------------ | ---- | ---------------------- |
-| GET    | `/cards`                 | Yes  | List all cards         |
-| GET    | `/cards/:id`             | Yes  | Get single card        |
-| GET    | `/cards/:id/expenses`    | Yes  | Get card expenses      |
-| POST   | `/cards`                 | Yes  | Create card            |
-| PUT    | `/cards/:id`             | Yes  | Update card            |
-| DELETE | `/cards/:id`             | Yes  | Delete card            |
+| Method | Route                      | Auth | Description                     |
+| ------ | -------------------------- | ---- | ------------------------------- |
+| GET    | `/cards`                   | Yes  | List all cards                  |
+| GET    | `/cards/:id`               | Yes  | Get single card                 |
+| GET    | `/cards/:id/transactions`  | Yes  | Recent card transactions        |
+| GET    | `/cards/:id/cashflow`      | Yes  | 6-month income/expense totals   |
+| POST   | `/cards`                   | Yes  | Create card                     |
+| PUT    | `/cards/:id`               | Yes  | Update card                     |
+| DELETE | `/cards/:id`               | Yes  | Delete card                     |
 
 ### Transactions (`/transactions`)
 
@@ -146,13 +151,24 @@ Incoming Request
 | ------ | --------------------------- | ---- | -------------------------------- |
 | GET    | `/statistics/overview`      | Yes  | Totals, averages, top categories |
 | GET    | `/statistics/by-category`   | Yes  | Category breakdown + percentages |
-| GET    | `/statistics/trends`        | Yes  | Period comparison + changes      |
+| GET    | `/statistics/trends`        | Yes  | Period comparison + % changes    |
+| GET    | `/statistics/daily-totals`  | Yes  | Daily income/expense/balance     |
+
+### Recurring Transactions (`/recurring`)
+
+| Method | Route              | Auth | Description                          |
+| ------ | ------------------ | ---- | ------------------------------------ |
+| GET    | `/recurring`       | Yes  | List all recurring transactions      |
+| POST   | `/recurring`       | Yes  | Create recurring transaction         |
+| PATCH  | `/recurring/:id`   | Yes  | Update recurring transaction         |
+| DELETE | `/recurring/:id`   | Yes  | Delete recurring (+ generated txns)  |
 
 ### Export (`/export`)
 
-| Method | Route                       | Auth | Description              |
-| ------ | --------------------------- | ---- | ------------------------ |
-| GET    | `/export/transactions`      | Yes  | Download CSV             |
+| Method | Route                            | Auth | Description       |
+| ------ | -------------------------------- | ---- | ----------------- |
+| GET    | `/export/transactions/csv`       | Yes  | Download CSV      |
+| GET    | `/export/transactions/pdf`       | Yes  | Download PDF      |
 
 ### Goals (`/goals`)
 
@@ -163,6 +179,7 @@ Incoming Request
 | PUT    | `/goals/:id`                | Yes  | Update goal              |
 | DELETE | `/goals/:id`                | Yes  | Delete goal              |
 | POST   | `/goals/:id/deposits`       | Yes  | Add deposit to goal      |
+| GET    | `/goals/:id/deposits`       | Yes  | List deposits for goal   |
 
 ## Key Patterns
 

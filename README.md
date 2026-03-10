@@ -9,17 +9,32 @@ A full-stack expense tracking application built as a learning project. Monorepo 
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-blue)
 
+## Screenshots
+
+| Dashboard | Transactions |
+|-----------|-------------|
+| ![Dashboard](screenshots/Dashboard.png) | ![Transactions](screenshots/Transactions.png) |
+
+| Statistics | Goals |
+|------------|-------|
+| ![Statistics](screenshots/Statistics.png) | ![Goals](screenshots/Goals.png) |
+
+| Cards | Settings |
+|-------|---------|
+| ![Cards](screenshots/Cards.png) | ![Settings](screenshots/Settings.png) |
+
 ## Features
 
-- User registration & login with JWT authentication (httpOnly cookies)
+- User registration & login with JWT (httpOnly cookies) + Google OAuth
 - Bank account management (Checking, Savings, Wallet, Investment)
-- Credit & debit card tracking with color themes
-- Income & expense transaction recording
+- Credit & debit card tracking with color themes and 6-month cashflow history
+- Income & expense transaction recording with search and filtering
+- Recurring transactions (monthly/annual) with auto-generation
 - Transfers between accounts with status tracking
-- Savings goals with deposit tracking
-- Statistics dashboard with charts (by category, trends, overview)
-- CSV export of transactions
-- Custom & default expense/income categories
+- Savings goals and spending limits with deposit tracking and heatmap
+- Statistics dashboard with charts (by category, trends, daily totals, overview)
+- CSV and PDF export of transactions
+- Custom & default expense/income categories with icons
 - Password recovery via email
 - Light & dark theme support
 
@@ -62,11 +77,15 @@ spendly/
 │  │  Guest     │   │   Auth     │   │  Protected Pages         │ │
 │  │  Pages     │   │   Flow     │   │  (behind authGuard)      │ │
 │  │            │   │            │   │                          │ │
-│  │ /login    ─┼──►│  AuthApi   │   │  /dashboard  Overview    │ │
-│  │ /register  │   │     ↓      │   │  /accounts   Bank accts  │ │
-│  │ /recover   │   │  AuthSvc   │   │  /cards      Card mgmt   │ │
-│  │ /reset     │   │  (signals) │   │  /categories Categories  │ │
-│  └────────────┘   └─────┬──────┘   │  /profile    User prefs  │ │
+│  │ /login    ─┼──►│  AuthApi   │   │  /dashboard      Overview      │ │
+│  │ /register  │   │     ↓      │   │  /transactions   Income/expense │ │
+│  │ /recover   │   │  AuthSvc   │   │  /recurrings     Recurring txns  │ │
+│  │ /reset     │   │  (signals) │   │  /accounts       Bank accounts  │ │
+│  └────────────┘   └─────┬──────┘   │  /cards          Card mgmt     │ │
+│                         │          │  /goals          Savings goals  │ │
+│                         │          │  /statistics     Analytics      │ │
+│                         │          │  /categories     Categories     │ │
+│                         │          │  /settings       User prefs     │ │
 │                         │          └───────────┬──────────────┘ │
 │                         ▼                      │                │
 │               ┌──────────────────┐             │                │
@@ -91,13 +110,14 @@ spendly/
 │  │                                                           │  │
 │  │  /auth          → register, login, refresh, logout        │  │
 │  │  /users         → profile, update avatar                  │  │
-│  │  /bank-accounts → CRUD bank accounts                      │  │
-│  │  /cards         → CRUD cards + expenses query             │  │
-│  │  /transactions  → CRUD transactions                       │  │
+│  │  /bank-accounts → CRUD + balance history + recent moves   │  │
+│  │  /cards         → CRUD cards + cashflow history           │  │
+│  │  /transactions  → CRUD transactions + filters             │  │
+│  │  /recurring     → CRUD recurring transactions             │  │
 │  │  /categories    → CRUD categories (default + custom)      │  │
 │  │  /transfers     → CRUD transfers between accounts         │  │
-│  │  /statistics    → overview, by-category, trends           │  │
-│  │  /export        → CSV transaction export                  │  │
+│  │  /statistics    → overview, by-category, trends, daily    │  │
+│  │  /export        → CSV + PDF transaction export            │  │
 │  │  /goals         → CRUD goals + deposits                   │  │
 │  └─────────────────────────┬─────────────────────────────────┘  │
 │                            │                                    │
@@ -117,9 +137,9 @@ spendly/
 │  ┌────────┐ ┌──────────────┐ ┌───────┐ ┌─────────────┐        │
 │  │ tokens │ │  transfers   │ │ goals │ │ categories  │        │
 │  └────────┘ └──────────────┘ └───────┘ └─────────────┘        │
-│  ┌──────────┐                                                   │
-│  │ deposits │                                                   │
-│  └──────────┘                                                   │
+│  ┌──────────┐ ┌────────────┐                                   │
+│  │ deposits │ │ recurrings │                                   │
+│  └──────────┘ └────────────┘                                   │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -202,6 +222,7 @@ spendly/
 │ amount       │───1:N─│ goalId       (FK)│  │
 │ currentAmount│       └──────────────────┘  │
 │ deadline     │                             │
+│ type  (enum) │                             │
 └──────────────┘  ┌──────────────────┐       │
                   │    Token         │       │
                   ├──────────────────┤       │
@@ -210,6 +231,19 @@ spendly/
                   │ code    (5 char) │
                   │ userId       (FK)│
                   └──────────────────┘
+
+┌──────────────────┐
+│    Recurring     │
+├──────────────────┤
+│ id           (PK)│
+│ userId       (FK)│
+│ description      │
+│ type      (enum) │   INCOME | EXPENSE
+│ amount           │
+│ frequency (enum) │   MONTH | ANNUAL
+│ date             │
+│ cardId    (FK)?  │
+└──────────────────┘
 ```
 
 ## Getting Started

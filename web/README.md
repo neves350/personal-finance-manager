@@ -14,13 +14,21 @@ src/app/
 │   │   ├── bank-accounts.api  #     BankAccountsApi
 │   │   ├── cards.api          #     CardsApi
 │   │   ├── categories.api     #     CategoriesApi
+│   │   ├── goals.api          #     GoalsApi
+│   │   ├── recurrings.api     #     RecurringsApi
+│   │   ├── statistics.api     #     StatisticsApi
 │   │   ├── transfers.api      #     TransfersApi
+│   │   ├── transactions.api   #     TransactionsApi
 │   │   └── users.api          #     UsersApi
 │   ├── services/              #   State management (signals)
 │   │   ├── auth/              #     AuthService (currentUser signal)
 │   │   ├── bank-accounts      #     BankAccountsService
 │   │   ├── cards              #     CardsService
 │   │   ├── categories         #     CategoriesService
+│   │   ├── goals              #     GoalsService
+│   │   ├── recurrings         #     RecurringsService
+│   │   ├── statistics         #     StatisticsService
+│   │   ├── transactions       #     TransactionsService
 │   │   ├── transfers          #     TransfersService
 │   │   └── users              #     UsersService
 │   ├── guards/                #   Route protection
@@ -31,16 +39,21 @@ src/app/
 │   └── strategies/
 │       └── page-title         #     Dynamic page titles
 ├── pages/                     # Route components (all lazy loaded)
-│   ├── login/                 #   Login form
-│   ├── register/              #   Registration form
-│   ├── password/
-│   │   ├── recover/           #   Email recovery form
-│   │   └── reset/             #   New password form
-│   ├── dashboard/             #   Main dashboard with charts
-│   ├── bank-account/          #   Account list + detail view
-│   ├── cards/                 #   Card management
-│   ├── categories/            #   Category management
-│   └── user-profile/          #   Profile settings
+│   ├── auth/
+│   │   ├── login/             #   Login form (email + Google OAuth)
+│   │   ├── register/          #   Registration form
+│   │   └── password/
+│   │       ├── recover/       #   Email recovery form
+│   │       └── reset/         #   New password form
+│   ├── dashboard/             #   Overview: cashflow, goals, recent txns
+│   ├── transactions/          #   Transaction list with search/filter/export
+│   ├── recurrings/            #   Recurring transaction management
+│   ├── bank-account/          #   Account list + detail view (balance history)
+│   ├── cards/                 #   Card list + detail view (cashflow chart)
+│   ├── categories/            #   Category management with icons
+│   ├── goals/                 #   Savings goals + detail view (heatmap)
+│   ├── statistics/            #   Analytics: overview, by-category, trends
+│   └── settings/              #   Profile, security, appearance (theme)
 └── shared/                    # Reusable components
     └── components/
         ├── layout/            #   App shell (header + sidebar + content)
@@ -88,16 +101,16 @@ src/app/
     │  └──────────┘  │
     └────────────────┘
              │
-     ┌───────┼───────┬──────────┬──────────┐
-     │       │       │          │          │
- Dashboard Accounts Cards  Categories  Profile
-     │       │       │          │
-     │       │       │     ┌────┴────┐
-     │       │       │   List    Form+IconPicker
-     │       │       │
-     │       │    ┌──┴──────────┐
-     │       │  List  Preview  Form+ColorPicker
-     │       │
+     ┌───────┼───────┬──────────┬──────────┬──────────┬──────────┐
+     │       │       │          │          │          │          │
+ Dashboard Txns Recurrings Accounts  Cards  Categories Goals Statistics Settings
+     │               │          │       │          │       │
+     │               │          │       │     ┌────┴────┐  │
+     │            monthly/   Detail→  Detail→  List   Form  Detail→
+     │            annual    (balance, (cashflow, +IconPicker (heatmap,
+     │                       chart,    chart,              deposits)
+     │                       recent)   recent)
+     │
      │    ┌──┴──────────────────┐
      │  List  Card  Form  Totals  Detail→(balance, chart, recent)
      │
@@ -140,18 +153,24 @@ Example: AuthService
 
 ## Routes
 
-| Path                   | Guard   | Component      | Description           |
-| ---------------------- | ------- | -------------- | --------------------- |
-| `/login`               | guest   | Login          | Email/password login  |
-| `/register`            | guest   | Register       | Create account        |
-| `/password/recover`    | guest   | Recover        | Request recovery code |
-| `/password/reset`      | guest   | Reset          | Set new password      |
-| `/dashboard`           | auth    | Dashboard      | Overview + charts     |
-| `/accounts`            | auth    | BankAccount    | List bank accounts    |
-| `/account-details/:id` | auth    | AccountDetails | Single account view   |
-| `/cards`               | auth    | Cards          | Manage cards          |
-| `/categories`          | auth    | Categories     | Manage categories     |
-| `/profile`             | auth    | UserProfile    | Edit profile          |
+| Path                   | Guard   | Component      | Description                      |
+| ---------------------- | ------- | -------------- | -------------------------------- |
+| `/login`               | guest   | Login          | Email/password + Google login    |
+| `/register`            | guest   | Register       | Create account                   |
+| `/password/recover`    | guest   | Recover        | Request recovery code            |
+| `/password/reset`      | guest   | Reset          | Set new password                 |
+| `/dashboard`           | auth    | Dashboard      | Overview + charts                |
+| `/transactions`        | auth    | Transactions   | All transactions + export        |
+| `/recurrings`          | auth    | Recurrings     | Recurring transactions           |
+| `/accounts`            | auth    | BankAccount    | List bank accounts               |
+| `/account-details/:id` | auth    | AccountDetails | Account detail + balance history |
+| `/cards`               | auth    | Cards          | Manage cards                     |
+| `/card-details/:id`    | auth    | CardDetails    | Card detail + cashflow chart     |
+| `/categories`          | auth    | Categories     | Manage categories                |
+| `/goals`               | auth    | Goals          | Savings goals + spending limits  |
+| `/goal-details/:id`    | auth    | GoalsDetails   | Goal detail + heatmap            |
+| `/statistics`          | auth    | Statistics     | Analytics & reporting            |
+| `/settings`            | auth    | Settings       | Profile, security, appearance    |
 
 ## UI Library
 
