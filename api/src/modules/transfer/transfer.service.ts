@@ -34,12 +34,6 @@ export class TransferService {
 
 		if (!toAccount) throw new NotFoundException('Destination account not found')
 
-		// validate currency
-		if (fromAccount.currency !== toAccount.currency)
-			throw new BadRequestException(
-				'Transfers between accounts with different currencies are not supported',
-			)
-
 		// check's for positive balance
 		const fromBalance = Number(fromAccount.balance)
 		if (fromBalance < amount)
@@ -163,14 +157,12 @@ export class TransferService {
 						select: {
 							id: true,
 							name: true,
-							currency: true,
 						},
 					},
 					toAccount: {
 						select: {
 							id: true,
 							name: true,
-							currency: true,
 						},
 					},
 				},

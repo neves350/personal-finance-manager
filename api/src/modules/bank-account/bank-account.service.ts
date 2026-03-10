@@ -13,13 +13,12 @@ export class BankAccountService {
 	constructor(private readonly prisma: PrismaService) {}
 
 	async create(data: CreateBankAccountDto, userId: string) {
-		const { name, type, currency, balance } = data
+		const { name, type, balance } = data
 
 		const bankAccount = this.prisma.bankAccount.create({
 			data: {
 				name,
 				type,
-				currency,
 				balance,
 				initialBalance: balance,
 				userId,

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator'
-import { BankCurrency, BankType } from 'src/generated/prisma/client'
+import { BankType } from 'src/generated/prisma/client'
 
 export class CreateBankAccountDto {
 	@ApiProperty({ example: 'Revolut Credit Card' })
@@ -12,11 +12,6 @@ export class CreateBankAccountDto {
 	@IsEnum(BankType)
 	@IsNotEmpty()
 	type: BankType
-
-	@ApiProperty({ enum: BankCurrency, example: 'EUR' })
-	@IsEnum(BankCurrency)
-	@IsNotEmpty()
-	currency: BankCurrency
 
 	@ApiProperty()
 	@IsNumber()
