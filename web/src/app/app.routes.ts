@@ -136,12 +136,10 @@ export const routes: Routes = [
 					import('./pages/statistics/statistics').then((m) => m.Statistics),
 			},
 			{
-				path: 'profile',
-				title: 'Profile',
+				path: 'settings',
+				title: 'Settings',
 				loadComponent: () =>
-					import('./pages/user-profile/user-profile').then(
-						(m) => m.UserProfile,
-					),
+					import('./pages/settings/settings').then((m) => m.Settings),
 			},
 		],
 	},

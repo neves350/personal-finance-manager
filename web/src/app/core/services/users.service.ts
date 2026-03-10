@@ -1,38 +1,51 @@
+import { HttpClient } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
-import { UsersApi } from '@core/api/users.api'
 import type {
 	ChangePasswordRequest,
 	UpdateUserRequest,
 	User,
+	UserActionResponse,
 } from '@core/api/users.interface'
-import { map, Observable } from 'rxjs'
+import { map, type Observable } from 'rxjs'
+import { environment } from 'src/environments/environment'
 
 @Injectable({
 	providedIn: 'root',
 })
 export class UsersService {
-	private readonly usersApi = inject(UsersApi)
+	private readonly http = inject(HttpClient)
+	private readonly baseUrl = `${environment.apiUrl}/users`
 
 	findById(userId: string): Observable<User> {
-		return this.usersApi.findById(userId)
+		return this.http.get<User>(`${this.baseUrl}/${userId}`, {
+			withCredentials: true,
+		})
 	}
 
 	update(userId: string, data: UpdateUserRequest): Observable<User> {
-		return this.usersApi.update(userId, data)
+		return this.http.patch<User>(`${this.baseUrl}/${userId}`, data, {
+			withCredentials: true,
+		})
 	}
 
 	changePassword(
 		userId: string,
 		data: ChangePasswordRequest,
 	): Observable<string> {
-		return this.usersApi
-			.changePassword(userId, data)
+		return this.http
+			.patch<UserActionResponse>(
+				`${this.baseUrl}/${userId}/password`,
+				data,
+				{ withCredentials: true },
+			)
 			.pipe(map((response) => response.message))
 	}
 
 	delete(userId: string): Observable<string> {
-		return this.usersApi
-			.delete(userId)
+		return this.http
+			.delete<UserActionResponse>(`${this.baseUrl}/${userId}`, {
+				withCredentials: true,
+			})
 			.pipe(map((response) => response.message))
 	}
 }
