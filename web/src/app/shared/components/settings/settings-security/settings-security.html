@@ -1,0 +1,89 @@
+<div class="space-y-6">
+  <div>
+    <h2 class="text-base font-semibold">Security</h2>
+    <p class="text-sm text-muted-foreground">Password management.</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="grid grid-cols-[1fr_2fr] items-center gap-x-6 gap-y-5 max-w-2xl">
+      <label for="currentPassword" class="text-sm font-medium">Old Password</label>
+      <div>
+        <div class="relative">
+          <input
+            z-input
+            id="currentPassword"
+            [type]="showCurrentPassword() ? 'text' : 'password'"
+            formControlName="currentPassword"
+            placeholder="Enter current password"
+            class="pr-12"
+          />
+          <span
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer select-none"
+            (mousedown)="$event.preventDefault()"
+            (click)="toggleCurrentPassword()"
+          >
+            <i-lucide [img]="showCurrentPassword() ? EyeIcon : EyeOffIcon" class="size-4.5" />
+          </span>
+        </div>
+      </div>
+
+      <label for="newPassword" class="text-sm font-medium">New Password</label>
+      <div>
+        <div class="relative">
+          <input
+            z-input
+            id="newPassword"
+            [type]="showNewPassword() ? 'text' : 'password'"
+            formControlName="newPassword"
+            placeholder="Enter new password"
+            class="pr-12"
+            (focus)="passwordFocused.set(true)"
+            (blur)="passwordFocused.set(false)"
+          />
+          <span
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer select-none"
+            (mousedown)="$event.preventDefault()"
+            (click)="toggleNewPassword()"
+          >
+            <i-lucide [img]="showNewPassword() ? EyeIcon : EyeOffIcon" class="size-4.5" />
+          </span>
+        </div>
+        @if (passwordFocused() || passwordValue()) {
+          <app-password-checklist [password]="passwordValue()" />
+        }
+      </div>
+
+      <label for="confirmPassword" class="text-sm font-medium">Confirm Password</label>
+      <div>
+        <div class="relative">
+          <input
+            z-input
+            id="confirmPassword"
+            [type]="showConfirmPassword() ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="Confirm new password"
+            class="pr-12"
+          />
+          <span
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer select-none"
+            (mousedown)="$event.preventDefault()"
+            (click)="toggleConfirmPassword()"
+          >
+            <i-lucide [img]="showConfirmPassword() ? EyeIcon : EyeOffIcon" class="size-4.5" />
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4 pt-6">
+      @if (submitting()) {
+        <button z-button type="submit" disabled>
+          <z-loader />
+          Changing...
+        </button>
+      } @else {
+        <button z-button type="submit" [zDisabled]="!hasChanges()">Change Password</button>
+      }
+    </div>
+  </form>
+</div>

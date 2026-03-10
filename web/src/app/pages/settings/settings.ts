@@ -1,11 +1,17 @@
 import { Component } from '@angular/core'
 import { SettingsProfile } from '@/shared/components/settings/settings-profile/settings-profile'
+import { SettingsSecurity } from '@/shared/components/settings/settings-security/settings-security'
 import { ZardCardComponent } from '@/shared/components/ui/card'
 import { ZardDividerComponent } from '@/shared/components/ui/divider'
 
 @Component({
 	selector: 'app-settings',
-	imports: [SettingsProfile, ZardCardComponent, ZardDividerComponent],
+	imports: [
+		SettingsProfile,
+		ZardCardComponent,
+		ZardDividerComponent,
+		SettingsSecurity,
+	],
 	templateUrl: './settings.html',
 })
 export class Settings {}
