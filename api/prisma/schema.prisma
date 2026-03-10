@@ -123,7 +123,6 @@ model BankAccount {
   userId         String        @map("user_id")
   name           String
   type           BankType      @default(CHECKING)
-  currency       BankCurrency  @default(EUR)
   balance        Decimal       @db.Decimal(12, 2)
   initialBalance Decimal       @default(0) @map("initial_balance") @db.Decimal(12, 2)
   cards          Card[]
@@ -144,11 +143,6 @@ enum BankType {
   CHECKING
   SAVINGS
   INVESTMENT
-}
-
-enum BankCurrency {
-  EUR
-  USD
 }
 
 model Transfer {
