@@ -52,10 +52,16 @@ export class UsersService {
 
 		// update user profile
 		return this.prisma.user.update({
-			where: {
-				id,
-			},
+			where: { id },
 			data: updateUserDto,
+			select: {
+				id: true,
+				name: true,
+				email: true,
+				avatarUrl: true,
+				createdAt: true,
+				updatedAt: true,
+			},
 		})
 	}
 

@@ -3,10 +3,15 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
 import cookieParser from 'cookie-parser'
+import { json, urlencoded } from 'express'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule)
+	const app = await NestFactory.create(AppModule, { bodyParser: false })
+
+	// Increase body limit for base64 avatar uploads
+	app.use(json({ limit: '5mb' }))
+	app.use(urlencoded({ extended: true, limit: '5mb' }))
 
 	// CORS
 	app.enableCors({ origin: process.env.FRONTEND_URL, credentials: true })
