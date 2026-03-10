@@ -1,0 +1,79 @@
+@if (user(); as user) {
+  <div class="space-y-6">
+    <div>
+      <h2 class="text-base font-semibold">Profile Information</h2>
+      <p class="text-sm text-muted-foreground">
+        Manage your personal details and keep your contact info up to date.
+      </p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="save()" class="space-y-6">
+      <div class="grid grid-cols-[1fr_2fr] items-center gap-x-6 gap-y-5 max-w-2xl">
+        <!-- Profile Picture -->
+        <label class="text-sm font-medium">Profile Picture</label>
+        <div class="flex items-center gap-4">
+          @if (pendingAvatarUrl(); as preview) {
+            <img [src]="preview" [alt]="user.name" class="size-12 rounded-full object-cover" />
+          } @else {
+            <z-avatar
+              [zSrc]="avatarPreview()"
+              [zFallback]="initials()"
+              [zAlt]="user.name"
+              [zSize]="48"
+              class="bg-accent"
+            />
+          }
+          @if (avatarPreview()) {
+            <z-button type="button" zType="ghost" zSize="sm" (click)="deleteImage()">
+              Delete
+            </z-button>
+          }
+          <z-button type="button" zType="link" zSize="sm" (click)="fileInput.click()">
+            Update
+          </z-button>
+          <input
+            #fileInput
+            type="file"
+            accept="image/*"
+            class="hidden"
+            (change)="onFileSelected($event)"
+          />
+        </div>
+
+        <!-- Name -->
+        <label for="settings-name" class="text-sm font-medium">Name</label>
+        <input
+          z-input
+          id="settings-name"
+          type="text"
+          formControlName="name"
+          [placeholder]="user.name"
+        />
+
+        <!-- Email -->
+        <label for="settings-email" class="text-sm font-medium">Email</label>
+        <input
+          z-input
+          id="settings-email"
+          type="email"
+          formControlName="email"
+          [placeholder]="user.email"
+        />
+      </div>
+
+      <div class="flex items-center gap-4 pt-2">
+        <button
+          z-button
+          type="submit"
+          zType="default"
+          [zLoading]="saving()"
+          [zDisabled]="!hasChanges()"
+        >
+          Save Changes
+        </button>
+
+        <z-button type="button" zType="outline" (click)="openDialog()"> Change password </z-button>
+      </div>
+    </form>
+  </div>
+}
