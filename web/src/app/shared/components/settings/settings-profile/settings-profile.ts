@@ -11,10 +11,8 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { AuthService } from '@core/services/auth/auth.service'
 import { UsersService } from '@core/services/users.service'
 import { toast } from 'ngx-sonner'
-import { NewPasswordDialog } from '../../new-password-dialog/new-password-dialog'
 import { ZardAvatarComponent } from '../../ui/avatar'
 import { ZardButtonComponent } from '../../ui/button'
-import { ZardDialogService } from '../../ui/dialog'
 import { ZardInputDirective } from '../../ui/input'
 
 @Component({
@@ -31,7 +29,6 @@ import { ZardInputDirective } from '../../ui/input'
 export class SettingsProfile {
 	private readonly authService = inject(AuthService)
 	private readonly usersService = inject(UsersService)
-	private readonly dialogService = inject(ZardDialogService)
 	private readonly fb = inject(FormBuilder)
 	private readonly cdr = inject(ChangeDetectorRef)
 
@@ -152,50 +149,6 @@ export class SettingsProfile {
 				this.saving.set(false)
 				toast.error(err.error?.message || 'Failed to update profile')
 			},
-		})
-	}
-
-	openDialog() {
-		const dialogRef = this.dialogService.create({
-			zTitle: 'Change Password',
-			zDescription: 'Verify your current password and enter a new one.',
-			zContent: NewPasswordDialog,
-			zCustomClasses: 'dialog-center-layout',
-			zOkText: 'Update',
-			zOnOk: (instance) => {
-				if (!instance.isFormValid()) {
-					instance.form.markAllAsTouched()
-					return false
-				}
-
-				const userId = this.user()?.id
-				if (!userId) {
-					toast.error('User not found')
-					return false
-				}
-
-				const { currentPassword, newPassword, confirmPassword } =
-					instance.form.value
-
-				this.usersService
-					.changePassword(userId, {
-						currentPassword: currentPassword ?? '',
-						newPassword: newPassword ?? '',
-						confirmPassword: confirmPassword ?? '',
-					})
-					.subscribe({
-						next: (message) => {
-							toast.success(message)
-							dialogRef.close()
-						},
-						error: (err) => {
-							toast.error(err.error?.message || 'Failed to change password')
-						},
-					})
-
-				return false
-			},
-			zWidth: '425px',
 		})
 	}
 }
