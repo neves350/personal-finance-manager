@@ -58,21 +58,15 @@ export class AccountBalance {
 	})
 
 	readonly formattedBalance = computed(() => {
-		const { balance, currency } = this.account()
+		const { balance } = this.account()
 		if (balance === null || balance === undefined) return null
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency,
-		}).format(Number(balance))
+		return new Number(balance)
 	})
 
 	readonly formattedInitialBalance = computed(() => {
-		const { initialBalance, currency } = this.account()
+		const { initialBalance } = this.account()
 		if (initialBalance === null || initialBalance === undefined) return null
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency,
-		}).format(Number(initialBalance))
+		return new Number(initialBalance)
 	})
 
 	readonly totalMovements = computed(() => {

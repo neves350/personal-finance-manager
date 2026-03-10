@@ -92,7 +92,7 @@ export class BankAccountsCard {
 	readonly balanceSinceStart = computed(() => {
 		return new Intl.NumberFormat('en-US', {
 			style: 'currency',
-			currency: this.account().currency,
+			currency: 'EUR',
 			signDisplay: 'always',
 		}).format(this.balanceDelta())
 	})
@@ -151,11 +151,13 @@ export class BankAccountsCard {
 	})
 
 	readonly formattedBalance = computed(() => {
-		const { balance, currency } = this.account()
+		const { balance } = this.account()
 		if (balance === null || balance === undefined) return null
-		return new Intl.NumberFormat('pt-PT', {
+
+		return new Intl.NumberFormat('en-US', {
 			style: 'currency',
-			currency,
+			currency: 'EUR',
+			signDisplay: 'always',
 		}).format(Number(balance))
 	})
 
@@ -195,7 +197,6 @@ export class BankAccountsCard {
 				name: this.account().name,
 				type: this.account().type,
 				balance: this.account().balance,
-				currency: this.account().currency,
 			} as iSheetData,
 		})
 	}

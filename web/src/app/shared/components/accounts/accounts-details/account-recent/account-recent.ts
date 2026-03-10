@@ -20,7 +20,6 @@ import {
 } from 'lucide-angular'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
-import { getCurrencySymbol } from '../account-balance-chart/account-balance-chart.config'
 
 @Component({
 	selector: 'app-account-recent',
@@ -45,10 +44,6 @@ export class AccountRecent {
 	readonly loading = signal(true)
 
 	private readonly bankAccountsApi = inject(BankAccountsApi)
-
-	readonly currencySymbol = computed(() =>
-		getCurrencySymbol(this.account().currency),
-	)
 
 	readonly hasMovements = computed(() => this.movements().length > 0)
 
@@ -104,6 +99,6 @@ export class AccountRecent {
 	}
 
 	formatAmount(amount: number): string {
-		return `${amount.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${this.currencySymbol()}`
+		return `€${amount.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 	}
 }

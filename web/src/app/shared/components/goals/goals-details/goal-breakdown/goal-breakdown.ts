@@ -34,24 +34,16 @@ export class GoalBreakdown {
 		return goals.find((g) => g.id === initial.id) ?? initial
 	})
 
-	private formatCurrency(value: number) {
-		const currency = this.displayGoal().bankAccount?.currency ?? 'EUR'
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency,
-		}).format(value)
-	}
-
-	readonly formattedDailyAmount = computed(() =>
-		this.formatCurrency(this.displayGoal().breakdown?.daily ?? 0),
+	readonly formattedDailyAmount = computed(
+		() => this.displayGoal().breakdown?.daily ?? 0,
 	)
 
-	readonly formattedWeeklyAmount = computed(() =>
-		this.formatCurrency(this.displayGoal().breakdown?.weekly ?? 0),
+	readonly formattedWeeklyAmount = computed(
+		() => this.displayGoal().breakdown?.weekly ?? 0,
 	)
 
-	readonly formattedMonthlyAmount = computed(() =>
-		this.formatCurrency(this.displayGoal().breakdown?.monthly ?? 0),
+	readonly formattedMonthlyAmount = computed(
+		() => this.displayGoal().breakdown?.monthly ?? 0,
 	)
 
 	readonly formattedDaysLeft = computed(() => {

@@ -80,11 +80,7 @@ export class TransactionsRow {
 	readonly formattedAmount = computed(() => {
 		const { amount, type } = this.transaction()
 
-		const currency = 'EUR'
-		const formatted = new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency,
-		}).format(amount)
+		const formatted = amount
 
 		return type === 'INCOME' ? `+${formatted}` : `-${formatted}`
 	})

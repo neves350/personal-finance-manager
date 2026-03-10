@@ -1,8 +1,4 @@
-import {
-	ChangeDetectionStrategy,
-	Component,
-	inject,
-} from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import type { BankAccount } from '@core/api/bank-accounts.interface'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
@@ -61,11 +57,8 @@ export class TransfersForm {
 		this.form.controls.date.setValue(date ? date.toISOString() : '')
 	}
 
-	formatBalance(account: BankAccount): string {
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency: account.currency,
-		}).format(Number(account.balance))
+	formatBalance(account: BankAccount): number {
+		return Number(account.balance)
 	}
 
 	submit(): void {

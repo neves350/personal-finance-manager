@@ -24,7 +24,7 @@
           </div>
 
           <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
-            <span class="truncate text-sm font-medium">{{ formatAmount(deposit.amount) }}</span>
+            <span class="truncate text-sm font-medium">{{ deposit.amount | currency: 'EUR' }}</span>
             @if (deposit.note) {
               <span class="truncate text-xs text-muted-foreground">
                 {{ deposit.note }} · {{ deposit.createdAt | date: 'd MMMM' }}

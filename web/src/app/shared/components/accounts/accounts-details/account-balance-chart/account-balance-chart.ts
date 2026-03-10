@@ -19,7 +19,6 @@ import { ZardDividerComponent } from '@/shared/components/ui/divider'
 import {
 	type BalanceChartOptions,
 	createBalanceChartOptions,
-	getCurrencySymbol,
 	MONTHS_PT,
 } from './account-balance-chart.config'
 
@@ -43,10 +42,6 @@ export class AccountBalanceChart {
 	readonly balanceHistory = signal<BalanceHistoryItem[]>([])
 
 	private readonly bankAccountsApi = inject(BankAccountsApi)
-
-	readonly currencySymbol = computed(() =>
-		getCurrencySymbol(this.account().currency),
-	)
 
 	readonly percentageChange = computed(() => {
 		const data = this.balanceHistory()
@@ -121,12 +116,7 @@ export class AccountBalanceChart {
 		const lastBalance = balances[balances.length - 1]
 
 		this.chartOptions.set(
-			createBalanceChartOptions(
-				balances,
-				months,
-				this.currencySymbol(),
-				lastBalance < 0,
-			),
+			createBalanceChartOptions(balances, months, lastBalance < 0),
 		)
 	}
 
@@ -149,6 +139,6 @@ export class AccountBalanceChart {
 	}
 
 	formatBalance(value: number): string {
-		return `${value.toLocaleString()}${this.currencySymbol()}`
+		return `€${value.toLocaleString()}`
 	}
 }

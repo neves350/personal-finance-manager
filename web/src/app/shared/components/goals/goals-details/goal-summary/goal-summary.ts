@@ -36,29 +36,17 @@ export class GoalSummary {
 	})
 
 	readonly formattedAmount = computed(() => {
-		const currency = this.displayGoal().bankAccount?.currency ?? 'EUR'
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency,
-		}).format(this.displayGoal().amount)
+		return this.displayGoal().amount
 	})
 
 	readonly formattedCurrentAmount = computed(() => {
-		const currency = this.displayGoal().bankAccount?.currency ?? 'EUR'
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency,
-		}).format(this.displayGoal().currentAmount)
+		return this.displayGoal().currentAmount
 	})
 
 	readonly formattedRemainingAmount = computed(() => {
 		const goal = this.displayGoal()
-		const currency = goal.bankAccount?.currency ?? 'EUR'
 		const remaining = Math.max(goal.amount - goal.currentAmount, 0)
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency,
-		}).format(remaining)
+		return remaining
 	})
 
 	readonly paceBadge = computed(() => {

@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common'
+import { CurrencyPipe, DatePipe } from '@angular/common'
 import {
 	Component,
 	computed,
@@ -32,6 +32,7 @@ import type { iDepositSheetData } from '../../goals-deposit-form/goals-deposit-f
 		ZardButtonComponent,
 		LucideAngularModule,
 		DatePipe,
+		CurrencyPipe,
 		ZardDividerComponent,
 	],
 	templateUrl: './goal-saved-money.html',
@@ -62,25 +63,9 @@ export class GoalSavedMoney {
 		return count === 1 ? '1 deposit' : `${count} deposits`
 	})
 
-	private readonly currencyFormatter = computed(() => {
-		const currency = this.displayGoal().bankAccount?.currency ?? 'EUR'
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency,
-		})
-	})
-
 	readonly formattedCurrentAmount = computed(() => {
-		const currency = this.displayGoal().bankAccount?.currency ?? 'EUR'
-		return new Intl.NumberFormat('pt-PT', {
-			style: 'currency',
-			currency,
-		}).format(this.displayGoal().currentAmount)
+		return this.displayGoal().currentAmount
 	})
-
-	formatAmount(amount: number): string {
-		return this.currencyFormatter().format(amount)
-	}
 
 	constructor() {
 		effect(() => {

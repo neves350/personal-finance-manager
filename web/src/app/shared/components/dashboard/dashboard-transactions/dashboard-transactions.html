@@ -43,7 +43,7 @@
             <td class="py-4 text-muted-foreground">{{ movement.date | date: 'mediumDate' }}</td>
             <td class="py-4 text-muted-foreground">{{ movement.method }}</td>
             <td class="py-4 text-right font-medium" [class]="getAmountClass(movement.type)">
-              {{ movement.amount | currency: movement.currency }}
+              {{ movement.amount | currency: 'EUR' }}
             </td>
           </tr>
         }

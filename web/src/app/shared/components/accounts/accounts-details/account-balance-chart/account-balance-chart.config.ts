@@ -1,4 +1,3 @@
-import type { BankCurrency } from '@core/api/bank-accounts.interface'
 import type {
 	ApexAxisChartSeries,
 	ApexChart,
@@ -41,15 +40,6 @@ export const MONTHS_PT = [
 	'Dez',
 ] as const
 
-const CURRENCY_SYMBOL: Record<BankCurrency, string> = {
-	EUR: '€',
-	USD: '$',
-}
-
-export function getCurrencySymbol(currency: BankCurrency): string {
-	return CURRENCY_SYMBOL[currency] ?? currency
-}
-
 function getStep(value: number): number {
 	return Math.abs(value) >= 100 ? 50 : 10
 }
@@ -73,7 +63,6 @@ function getCssVar(name: string): string {
 export function createBalanceChartOptions(
 	balanceData: number[],
 	months: string[],
-	currencySymbol: string,
 	isNegative: boolean,
 ): Partial<BalanceChartOptions> {
 	const foreground = getCssVar('--foreground') || 'oklch(0.26 0.05 173)'
@@ -81,8 +70,7 @@ export function createBalanceChartOptions(
 		? getCssVar('--expense-foreground') || 'oklch(64.6% 0.222 41.116)'
 		: getCssVar('--income-foreground') || 'oklch(0.60 0.13 163)'
 
-	const formatValue = (value: number) =>
-		`${value.toLocaleString()}${currencySymbol}`
+	const formatValue = (value: number) => `€${value.toLocaleString()}`
 
 	const maxValue = Math.max(...balanceData)
 	const minValue = Math.min(...balanceData)

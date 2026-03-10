@@ -28,7 +28,6 @@ interface Movement {
 	category: string
 	method: string
 	amount: number
-	currency: string
 	date: Date
 }
 
@@ -76,7 +75,6 @@ export class DashboardTransactions {
 				category: 'Transfer',
 				method: t.fromAccount?.name ?? 'Bank Transfer',
 				amount: -Number(t.amount),
-				currency: t.fromAccount?.currency ?? 'EUR',
 				date: new Date(t.date),
 			}))
 
@@ -89,7 +87,6 @@ export class DashboardTransactions {
 				category: t.category?.title ?? '',
 				method: t.card?.name ?? t.bankAccount?.name ?? 'Account',
 				amount: t.type === 'INCOME' ? Number(t.amount) : -Number(t.amount),
-				currency: 'EUR',
 				date: new Date(t.date),
 			}))
 
