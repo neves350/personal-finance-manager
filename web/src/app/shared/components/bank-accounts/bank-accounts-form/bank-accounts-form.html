@@ -31,21 +31,6 @@
       }
     </div>
 
-    <!-- Currency Select -->
-    <div class="grid gap-2">
-      <label for="currency" class="text-sm">Currency</label>
-      <z-select class="w-full" formControlName="currency">
-        @for (bankAccountCurrency of bankAccountCurrencies; track bankAccountCurrency) {
-          <z-select-item [zValue]="bankAccountCurrency">
-            <span>{{ getCurrencyLabel(bankAccountCurrency) }}</span>
-          </z-select-item>
-        }
-      </z-select>
-      @if (form.controls.type.touched && form.controls.type.errors?.['required']) {
-        <span class="text-xs text-destructive">Type is required</span>
-      }
-    </div>
-
     <!-- Balance -->
     <div class="grid gap-3">
       <label for="balance" class="text-sm">Balance</label>

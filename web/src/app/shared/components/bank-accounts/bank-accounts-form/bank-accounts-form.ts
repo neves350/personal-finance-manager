@@ -6,7 +6,7 @@ import {
 } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import { BankCurrency, BankType } from '@core/api/bank-accounts.interface'
+import { BankType } from '@core/api/bank-accounts.interface'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
 import { EuroIcon, LucideAngularModule } from 'lucide-angular'
 import { Z_MODAL_DATA, ZardDialogRef } from '../../ui/dialog'
@@ -38,7 +38,6 @@ export class BankAccountsForm {
 	form = this.fb.nonNullable.group({
 		name: ['', [Validators.required]],
 		type: [BankType.CHECKING, [Validators.required]],
-		currency: [BankCurrency.EUR, [Validators.required]],
 		balance: [0 as number | null],
 	})
 
@@ -48,7 +47,6 @@ export class BankAccountsForm {
 			this.form.patchValue({
 				name: this.zData.name ?? '',
 				type: this.zData.type ?? BankType.CHECKING,
-				currency: this.zData.currency ?? BankCurrency.EUR,
 				balance: this.zData.balance ?? 0,
 			})
 		}
@@ -58,7 +56,6 @@ export class BankAccountsForm {
 
 	// Enum values for template
 	readonly bankAccountTypes = Object.values(BankType)
-	readonly bankAccountCurrencies = Object.values(BankCurrency)
 
 	// Form values as signal for reactive preview
 	private readonly formValues = toSignal(this.form.valueChanges, {
@@ -69,7 +66,6 @@ export class BankAccountsForm {
 	readonly previewData = computed(() => ({
 		name: this.formValues()?.name || 'Account Name',
 		type: this.formValues()?.type || BankType.CHECKING,
-		currency: this.formValues()?.type || BankCurrency.EUR,
 		balance: this.formValues()?.balance ?? 0,
 	}))
 
@@ -81,17 +77,8 @@ export class BankAccountsForm {
 		[BankType.INVESTMENT]: 'Investment',
 	}
 
-	readonly typeCurrenct: Record<BankCurrency, string> = {
-		[BankCurrency.EUR]: 'Eur',
-		[BankCurrency.USD]: 'Usd',
-	}
-
 	getTypeLabel(type: BankType): string {
 		return this.typeLabels[type]
-	}
-
-	getCurrencyLabel(type: BankCurrency): string {
-		return this.typeCurrenct[type]
 	}
 
 	submit(): void {
@@ -104,7 +91,6 @@ export class BankAccountsForm {
 		const payload = {
 			name: formValue.name,
 			type: formValue.type,
-			currency: formValue.currency,
 			balance: Number(formValue.balance) || 0,
 		}
 
