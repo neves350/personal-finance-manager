@@ -23,12 +23,10 @@ export interface Transfer {
 	fromAccount?: {
 		id: string
 		name: string
-		currency: string
 	}
 	toAccount?: {
 		id: string
 		name: string
-		currency: string
 	}
 }
 

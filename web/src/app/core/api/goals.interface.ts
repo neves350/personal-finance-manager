@@ -33,7 +33,6 @@ export interface Goal {
 		id: string
 		name: string
 		type: string
-		currency: string
 	} | null
 	createdAt?: string
 	updatedAt?: string

@@ -8,11 +8,6 @@ export enum BankType {
 	INVESTMENT = 'INVESTMENT',
 }
 
-export enum BankCurrency {
-	EUR = 'EUR',
-	USD = 'USD',
-}
-
 /**
  * BANK ACCOUNT
  */
@@ -20,7 +15,6 @@ export interface BankAccount {
 	id?: string
 	name: string
 	type: BankType
-	currency: BankCurrency
 	balance: number
 	initialBalance?: number
 	totalMovements?: number
@@ -34,7 +28,6 @@ export interface BankAccount {
 export interface CreateBankAccountRequest {
 	name: string
 	type: BankType
-	currency: BankCurrency
 	balance: number
 }
 
@@ -44,7 +37,6 @@ export interface CreateBankAccountRequest {
 export interface UpdateBankAccountRequest {
 	name?: string
 	type?: BankType
-	currency?: BankCurrency
 	balance?: number
 }
 
