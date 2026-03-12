@@ -31,5 +31,13 @@ export const mockPrisma = {
 	card: {
 		count: jest.fn(),
 	},
+	category: {
+		create: jest.fn(),
+		findMany: jest.fn(),
+		findFirst: jest.fn(),
+		findUnique: jest.fn(),
+		update: jest.fn(),
+		delete: jest.fn(),
+	},
 	$transaction: jest.fn(),
 }
