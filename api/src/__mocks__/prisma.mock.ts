@@ -4,6 +4,7 @@ export const mockPrisma = {
 		findFirst: jest.fn(),
 		create: jest.fn(),
 		update: jest.fn(),
+		delete: jest.fn(),
 	},
 	token: {
 		create: jest.fn(),
