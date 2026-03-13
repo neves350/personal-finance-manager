@@ -4,7 +4,7 @@ import { mockPrisma } from 'src/__mocks__/prisma.mock'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
 import { CardService } from './card.service'
 
-describe('WalletService', () => {
+describe('CardService', () => {
 	let service: CardService
 
 	beforeEach(async () => {
@@ -73,7 +73,9 @@ describe('WalletService', () => {
 
 	describe('findAll', () => {
 		it('should find all cards', async () => {
-			mockPrisma.card.findMany.mockResolvedValue('user-id')
+			mockPrisma.card.findMany.mockResolvedValue([
+				{ id: 'card-id', name: 'Card 1' },
+			])
 
 			const result = await service.findAll('user-id', 'account-id')
 
