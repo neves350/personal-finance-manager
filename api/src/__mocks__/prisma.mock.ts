@@ -29,8 +29,10 @@ export const mockPrisma = {
 		aggregate: jest.fn(),
 	},
 	transfer: {
-		count: jest.fn(),
+		create: jest.fn(),
+		findUnique: jest.fn(),
 		findMany: jest.fn(),
+		count: jest.fn(),
 		aggregate: jest.fn(),
 	},
 	card: {
