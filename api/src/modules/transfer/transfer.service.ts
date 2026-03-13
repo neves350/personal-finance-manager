@@ -180,7 +180,7 @@ export class TransferService {
 	}
 
 	async findOne(transferId: string, userId: string) {
-		const transfer = this.prisma.transfer.findUnique({
+		const transfer = await this.prisma.transfer.findUnique({
 			where: {
 				id: transferId,
 				userId,
