@@ -20,8 +20,12 @@ export const mockPrisma = {
 		aggregate: jest.fn(),
 	},
 	transaction: {
-		count: jest.fn(),
+		create: jest.fn(),
 		findMany: jest.fn(),
+		findFirst: jest.fn(),
+		update: jest.fn(),
+		delete: jest.fn(),
+		count: jest.fn(),
 		aggregate: jest.fn(),
 	},
 	transfer: {
