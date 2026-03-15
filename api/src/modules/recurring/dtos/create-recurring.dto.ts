@@ -15,17 +15,17 @@ import {
 	ValidateIf,
 } from 'class-validator'
 
-enum RecurringType {
+export enum RecurringType {
 	INCOME = 'INCOME',
 	EXPENSE = 'EXPENSE',
 }
 
-enum FrequencyType {
+export enum FrequencyType {
 	MONTH = 'MONTH',
 	ANNUAL = 'ANNUAL',
 }
 
-enum PaymentMethod {
+export enum PaymentMethod {
 	MONEY = 'MONEY',
 	CARD = 'CARD',
 }
