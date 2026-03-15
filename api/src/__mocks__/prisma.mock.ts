@@ -62,5 +62,12 @@ export const mockPrisma = {
 		create: jest.fn(),
 		findMany: jest.fn(),
 	},
+	recurring: {
+		create: jest.fn(),
+		findMany: jest.fn(),
+		findFirst: jest.fn(),
+		update: jest.fn(),
+		delete: jest.fn(),
+	},
 	$transaction: jest.fn(),
 }
