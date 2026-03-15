@@ -27,6 +27,7 @@ export const mockPrisma = {
 		delete: jest.fn(),
 		count: jest.fn(),
 		aggregate: jest.fn(),
+		groupBy: jest.fn(),
 	},
 	transfer: {
 		create: jest.fn(),
