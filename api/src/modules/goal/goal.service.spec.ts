@@ -1,9 +1,6 @@
 import { BadRequestException } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
-import { mockHeatmap } from 'src/__mocks__/heatmap.mock'
 import { mockPrisma } from 'src/__mocks__/prisma.mock'
-import { mockSavings } from 'src/__mocks__/savings.mock'
-import { mockSpendingLimit } from 'src/__mocks__/spending-limit.mock'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
 import { GoalService } from './goal.service'
 import { HeatmapService } from './helpers/heatmap.helper'
@@ -18,9 +15,9 @@ describe('GoalService', () => {
 			providers: [
 				GoalService,
 				{ provide: PrismaService, useValue: mockPrisma },
-				{ provide: SpendingLimitService, useValue: mockSpendingLimit },
-				{ provide: SavingsService, useValue: mockSavings },
-				{ provide: HeatmapService, useValue: mockHeatmap },
+				SpendingLimitService,
+				SavingsService,
+				HeatmapService,
 			],
 		}).compile()
 
