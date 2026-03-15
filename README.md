@@ -42,7 +42,7 @@ A full-stack expense tracking application built as a learning project. Monorepo 
 
 | Layer        | Technology                                                  |
 | ------------ | ----------------------------------------------------------- |
-| **Frontend** | Angular 21, Signals, TailwindCSS 4, Spartan UI, ApexCharts |
+| **Frontend** | Angular 21, Signals, TailwindCSS 4, ZardUI, ApexCharts      |
 | **Backend**  | NestJS 11, Passport JWT, Prisma 7, class-validator          |
 | **Database** | PostgreSQL (Neon serverless)                                |
 | **Tooling**  | npm workspaces, Biome, Vitest, Jest, Concurrently           |
