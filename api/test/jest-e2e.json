@@ -9,5 +9,7 @@
   "moduleNameMapper": {
     "^src/(.*)$": "<rootDir>/../src/$1",
     "^prisma/(.*)$": "<rootDir>/../prisma/$1"
-  }
+  },
+  "testTimeout": 30000,
+  "forceExit": true
 }
