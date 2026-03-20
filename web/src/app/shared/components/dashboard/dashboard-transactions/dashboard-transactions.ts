@@ -58,10 +58,10 @@ export class DashboardTransactions {
 	readonly iconMap = {
 		transfer: {
 			icon: ArrowRightLeftIcon,
-			bg: 'bg-transfer text-transfer-foreground',
+			bg: 'bg-chart-2/20 text-chart-2',
 		},
-		income: { icon: ArrowUpIcon, bg: 'bg-income text-income-foreground' },
-		expense: { icon: ArrowDownIcon, bg: 'bg-expense text-expense-foreground' },
+		income: { icon: ArrowUpIcon, bg: 'bg-primary/20 text-primary' },
+		expense: { icon: ArrowDownIcon, bg: 'bg-destructive/20 text-destructive' },
 	}
 
 	readonly recentMovements = computed((): Movement[] => {
@@ -73,7 +73,7 @@ export class DashboardTransactions {
 				label: t.description || 'Transfer',
 				subtitle: `${t.fromAccount?.name} → ${t.toAccount?.name}`,
 				category: 'Transfer',
-				method: t.fromAccount?.name ?? 'Bank Transfer',
+				method: t.fromAccount?.name ?? 'Account Transfer',
 				amount: -Number(t.amount),
 				date: new Date(t.date),
 			}))
@@ -117,8 +117,6 @@ export class DashboardTransactions {
 	}
 
 	getAmountClass(type: string): string {
-		return type === 'income'
-			? 'text-income-foreground'
-			: 'text-expense-foreground'
+		return type === 'income' ? 'text-primary' : 'text-destructive'
 	}
 }
