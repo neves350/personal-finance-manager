@@ -76,18 +76,17 @@ export class AccountRecent {
 	}
 
 	getMovementColorClass(movement: Movement): string {
-		if (movement.type === 'transfer')
-			return 'bg-transfer text-transfer-foreground'
+		if (movement.type === 'transfer') return 'bg-chart-2/20 text-chart-2'
 		return movement.transactionType === 'INCOME'
-			? 'bg-income text-income-foreground'
-			: 'bg-expense text-expense-foreground'
+			? 'bg-primary/20 text-primary'
+			: 'bg-destructive/20 text-destructive'
 	}
 
 	getAmountColorClass(movement: Movement): string {
-		if (movement.type === 'transfer') return 'text-transfer'
+		if (movement.type === 'transfer') return 'text-chart-2'
 		return movement.transactionType === 'INCOME'
-			? 'text-income'
-			: 'text-expense'
+			? 'text-primary'
+			: 'text-destructive'
 	}
 
 	getAmountPrefix(movement: Movement): string {

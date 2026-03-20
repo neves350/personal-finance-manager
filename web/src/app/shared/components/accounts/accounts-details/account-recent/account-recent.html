@@ -6,7 +6,7 @@
     </h1>
 
     <div class="flex gap-1">
-      <z-button class="cursor-pointer mr-2" zType="outline" routerLink="/transactions">
+      <z-button class="cursor-pointer mr-2" zType="ghost" routerLink="/transactions">
         See all
         <i-lucide [img]="ArrowRightIcon" />
       </z-button>
@@ -18,9 +18,9 @@
       @for (movement of movements(); track movement.id) {
         <div class="flex w-full items-center outline-none p-2">
           <div
-            class="size-10 flex items-center justify-center rounded-full {{getMovementColorClass(movement)}}"
+            class="size-8 xl:size-10 rounded-xl flex items-center justify-center {{getMovementColorClass(movement)}}"
           >
-            <i-lucide [img]="getMovementIcon(movement)" class="my-icon" />
+            <i-lucide [img]="getMovementIcon(movement)" class="size-4 xl:size-5" />
           </div>
 
           <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
@@ -38,7 +38,7 @@
           </div>
 
           <div class="ml-4 text-right text-sm leading-tight">
-            <span class="text-sm font-semibold {{getAmountColorClass(movement)}}"
+            <span class="text-xs xl:text-sm font-semibold {{getAmountColorClass(movement)}}"
             >
               {{ getAmountPrefix(movement) }}{{ formatAmount(movement.amount) }}
             </span>
@@ -49,15 +49,15 @@
   } @else if (!loading()) {
     <div class="flex flex-col items-center justify-center p-6 mt-6">
       <div
-        class="size-12 flex items-center justify-center rounded-lg bg-accent text-accent-foreground mb-4"
+        class="size-12 flex items-center justify-center rounded-full bg-primary/20 text-primary mb-4"
       >
-        <i-lucide [img]="BanknoteXIcon" />
+        <i-lucide [img]="BanknoteXIcon" class="size-5" />
       </div>
 
       <div class="flex flex-col items-center text-center">
-        <div class="space-y-2 mt-6">
-          <p class="font-medium">No movement</p>
-          <span class="text-muted-foreground">
+        <div class="space-y-2">
+          <p class="font-medium ">No movement</p>
+          <span class="text-muted-foreground text-sm">
             This account has not yet had any confirmed activity.
           </span>
         </div>
