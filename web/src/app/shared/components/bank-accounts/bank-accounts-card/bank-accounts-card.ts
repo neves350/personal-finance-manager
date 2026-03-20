@@ -12,8 +12,7 @@ import { BankAccount, BankType } from '@core/api/bank-accounts.interface'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
 import { CardsService } from '@core/services/cards.service'
 import {
-	CircleArrowDownIcon,
-	CircleArrowUpIcon,
+	Clock2Icon,
 	CoinsIcon,
 	CreditCardIcon,
 	EllipsisVerticalIcon,
@@ -23,6 +22,8 @@ import {
 	LucideAngularModule,
 	SquarePenIcon,
 	Trash2Icon,
+	TrendingDownIcon,
+	TrendingUpIcon,
 	WalletMinimalIcon,
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
@@ -70,6 +71,7 @@ export class BankAccountsCard {
 	readonly SquarePenIcon = SquarePenIcon
 	readonly Trash2Icon = Trash2Icon
 	readonly EyeIcon = EyeIcon
+	readonly Clock2Icon = Clock2Icon
 
 	readonly badgeType = computed(() => {
 		const balance = Number(this.account().balance)
@@ -97,12 +99,10 @@ export class BankAccountsCard {
 		}).format(this.balanceDelta())
 	})
 	readonly trendIcon = computed(() =>
-		this.balanceDelta() >= 0 ? CircleArrowUpIcon : CircleArrowDownIcon,
+		this.balanceDelta() >= 0 ? TrendingUpIcon : TrendingDownIcon,
 	)
 	readonly trendColorClass = computed(() =>
-		this.balanceDelta() < 0
-			? 'text-expense-foreground'
-			: 'text-income-foreground',
+		this.balanceDelta() < 0 ? 'text-destructive' : 'text-primary',
 	)
 	readonly lastMovementRelative = computed(() => {
 		const updatedAt = this.account().updatedAt

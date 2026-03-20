@@ -1,11 +1,11 @@
-<z-card class="mb-2 h-full flex flex-col">
+<z-card class="mb-2 h-full flex flex-col glass-card-hover">
   <div class="flex items-start justify-between">
-    <div class="size-10 flex items-center justify-center rounded-lg text-white bg-accent">
-      <i-lucide [img]="bankAccountIcon()" class="size-5 text-accent-foreground" />
+    <div class="size-10 flex items-center justify-center rounded-lg text-primary bg-primary/20">
+      <i-lucide [img]="bankAccountIcon()" class="size-4.5 xl:size-5" />
     </div>
 
-    <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
-      <span class="truncate text-sm font-medium">
+    <div class="ml-4 grid flex-1 text-left leading-tight">
+      <span class="truncate text-sm font-semibold text-foreground">
         {{ account().name }}
       </span>
       <span class="truncate text-xs text-muted-foreground">
@@ -63,25 +63,27 @@
 
   <div class="mt-6">
     <p class="text-xs text-muted-foreground mb-1">Current Balance</p>
-    <span class="text-xl font-bold" [class]="balanceColorClass()">
+    <span class="text-xl font-bold font-display" [class]="balanceColorClass()">
       {{ formattedBalance() }}
     </span>
   </div>
 
   @if (hasBalanceChange()) {
     <div class="flex items-center gap-1 mt-1">
-      <i-lucide [img]="trendIcon()" class="size-4" [class]="trendColorClass()" />
-      <span class="text-sm font-semibold" [class]="trendColorClass()">
-        {{ balanceSinceStart() }}
+      <i-lucide [img]="trendIcon()" class="size-3.5 xl:size-4" [class]="trendColorClass()" />
+      <span class="text-sm" [class]="trendColorClass()">
+        {{ balanceSinceStart() }} since start
       </span>
-      <span class="text-sm text-muted-foreground">since start</span>
     </div>
   }
 
   <z-divider />
 
   @if (lastMovementRelative()) {
-    <p class="text-xs text-muted-foreground mb-1">Last movement: {{ lastMovementRelative() }}</p>
+    <div class="flex gap-2">
+      <i-lucide [img]="Clock2Icon" class="size-4" />
+      <p class="text-xs text-muted-foreground mb-1 flex-col flex">Last movement: {{ lastMovementRelative() }}</p>
+    </div>
   } @else {
     <p class="text-xs text-muted-foreground mb-1">No confirmed movements.</p>
   }
