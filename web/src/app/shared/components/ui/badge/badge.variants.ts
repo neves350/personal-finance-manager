@@ -13,17 +13,15 @@ export const badgeVariants = cva(
 					'border-destructive/30 bg-destructive/15 text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
 				outline:
 					'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
-				available:
-					'border-(--available-border) bg-(--available-bg) text-available',
+				available: 'border-primary/30 bg-primary/20 text-primary',
 				unavailable:
-					'border-(--unavailable-border) bg-(--unavailable-bg) text-unavailable',
+					'border-secondary-foreground/30 bg-secondary-foreground/20 text-secondary-foreground',
 				success: 'border-green-500/30 bg-green-500/15 text-primary',
 				warning: 'border-yellow-500/30 bg-yellow-500/15 text-yellow-500/95',
 				completed: 'border-teal-500/30 bg-teal-500/15 text-teal-500/95',
 				positive:
 					'border-(--income-foreground-border) bg-(--income)/70 text-income-foreground',
-				negative:
-					'border-(--expense-foreground-border) bg-(--destructive)/10 text-expense-foreground',
+				negative: 'border-destructive/30 bg-destructive/20 text-destructive',
 				balance:
 					'border-balance-foreground/30 bg-balance/70 text-balance-foreground',
 			},
