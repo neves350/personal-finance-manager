@@ -3,7 +3,7 @@ import { Component, computed, input } from '@angular/core'
 import {
 	ArrowDownIcon,
 	ArrowUpIcon,
-	HandCoinsIcon,
+	CoinsIcon,
 	LucideAngularModule,
 } from 'lucide-angular'
 import { ZardCardComponent } from '@/shared/components/ui/card'
@@ -19,7 +19,7 @@ export class BalanceCard {
 	readonly periodLabel = input<string>('last month')
 	readonly title = input<string>('TOTAL BALANCE')
 
-	readonly HandCoinsIcon = HandCoinsIcon
+	readonly CoinsIcon = CoinsIcon
 	readonly ArrowUpIcon = ArrowUpIcon
 	readonly ArrowDownIcon = ArrowDownIcon
 
