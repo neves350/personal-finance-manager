@@ -11,7 +11,7 @@
           <i-lucide [img]="ArrowRightLeftIcon" />
           Transfer
         </z-button>
-        <z-button class="cursor-pointer" zType="outline" (click)="openSheet()">
+        <z-button class="cursor-pointer" (click)="openSheet()">
           <i-lucide [img]="PlusIcon" />
           New account
         </z-button>
@@ -32,7 +32,7 @@
         <!-- Empty State -->
         <div class="flex flex-col items-center justify-center p-6 mt-6">
           <div
-            class="size-12 flex items-center justify-center rounded-lg bg-accent text-accent-foreground mb-4"
+            class="size-12 flex items-center justify-center rounded-lg text-primary bg-primary/20 mb-4"
           >
             <i-lucide [img]="CoinsIcon" />
           </div>
