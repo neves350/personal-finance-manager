@@ -4,7 +4,7 @@
   </div>
 
   @if (hasGoals()) {
-    <div class="space-y-5 grid grid-cols-3 gap-4">
+    <div class="xl:space-y-5 grid grid-cols-2 xl:grid-cols-3 gap-3 xl:gap-4">
       @for (goal of displayGoals(); track goal.id) {
         <z-card class="mb-1 border-2 glass-card-hover">
           <div class="flex items-center gap-3">
