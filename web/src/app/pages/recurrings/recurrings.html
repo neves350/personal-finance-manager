@@ -1,5 +1,5 @@
 <main class="p-4 md:p-6 w-full">
-  <div class="max-w-[1400px] mx-auto py-6 md:py-3 space-y-8 md:space-y-12">
+  <div class="max-w-500 mx-auto py-3 space-y-8">
     <div class="flex justify-between items-start">
       <div class="flex items-center gap-3">
         <h1 class="font-medium flex flex-col text-lg">
@@ -52,26 +52,19 @@
       <z-card class="flex flex-col mt-4">
         <div class="flex flex-col items-center justify-center p-6 mt-6">
           <div
-            class="size-12 flex items-center justify-center rounded-lg bg-accent text-accent-foreground mb-4"
+            class="size-12 flex items-center justify-center rounded-full bg-primary/20 text-primary mb-4"
           >
-            <i-lucide [img]="RepeatIcon" />
+            <i-lucide [img]="RepeatIcon" class="size-5" />
           </div>
 
           <div class="flex flex-col items-center text-center">
-            <div class="space-y-2 mt-6">
+            <div class="space-y-2">
               <p class="font-medium">No recurring transactions</p>
-              <span class="text-muted-foreground">
+              <span class="text-muted-foreground text-sm">
                 Create templates for recurring monthly expenses and income, such as rent, Netflix,
                 salary, etc.
               </span>
             </div>
-          </div>
-
-          <div class="flex flex-col items-center justify-center mt-4">
-            <z-button class="cursor-pointer" (click)="openDialog()">
-              <i-lucide [img]="PlusIcon" />
-              New Recurring
-            </z-button>
           </div>
         </div>
       </z-card>
