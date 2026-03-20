@@ -7,6 +7,7 @@
           <a
             #rla="routerLinkActive"
             hlmSidebarMenuButton
+            [size]="'md'"
             [routerLink]="item.url"
             routerLinkActive
             [tooltip]="item.title"
@@ -15,9 +16,12 @@
               rla.isActive ? (isCollapsed() ? activeCollapsedClass : activeExpandedClass) : ''
             "
           >
-            <i-lucide [img]="item.icon" class="size-5 mb-1 group-data-[collapsible=icon]:size-5" />
+            <i-lucide
+              [img]="item.icon"
+              class="size-4.5 mb-1 group-data-[collapsible=icon]:size-5 group-data-[collapsible=icon]:mt-0.5"
+            />
             @if (!isCollapsed()) {
-              <span class="m-4">{{ item.title }}</span>
+              <span class="m-2">{{ item.title }}</span>
             }
           </a>
         </li>
@@ -35,6 +39,7 @@
           <a
             #rla="routerLinkActive"
             hlmSidebarMenuButton
+            [size]="'md'"
             [routerLink]="item.url"
             routerLinkActive
             [tooltip]="item.title"
@@ -43,9 +48,12 @@
               rla.isActive ? (isCollapsed() ? activeCollapsedClass : activeExpandedClass) : ''
             "
           >
-            <i-lucide [img]="item.icon" class="size-5 mb-1 group-data-[collapsible=icon]:size-5" />
+            <i-lucide
+              [img]="item.icon"
+              class="size-4.5 mb-1 group-data-[collapsible=icon]:size-5 group-data-[collapsible=icon]:mt-0.5"
+            />
             @if (!isCollapsed()) {
-              <span class="m-4">{{ item.title }}</span>
+              <span class="m-2">{{ item.title }}</span>
             }
           </a>
         </li>
@@ -63,6 +71,7 @@
           <a
             #rla="routerLinkActive"
             hlmSidebarMenuButton
+            [size]="'md'"
             [routerLink]="item.url"
             routerLinkActive
             [tooltip]="item.title"
@@ -71,9 +80,12 @@
               rla.isActive ? (isCollapsed() ? activeCollapsedClass : activeExpandedClass) : ''
             "
           >
-            <i-lucide [img]="item.icon" class="size-5 mb-1 group-data-[collapsible=icon]:size-5" />
+            <i-lucide
+              [img]="item.icon"
+              class="size-4.5 mb-1 group-data-[collapsible=icon]:size-5 group-data-[collapsible=icon]:mt-0.5"
+            />
             @if (!isCollapsed()) {
-              <span class="m-4">{{ item.title }}</span>
+              <span class="m-2">{{ item.title }}</span>
             }
           </a>
         </li>
@@ -91,6 +103,7 @@
           <a
             #rla="routerLinkActive"
             hlmSidebarMenuButton
+            [size]="'md'"
             [routerLink]="item.url"
             routerLinkActive
             [tooltip]="item.title"
@@ -99,9 +112,12 @@
               rla.isActive ? (isCollapsed() ? activeCollapsedClass : activeExpandedClass) : ''
             "
           >
-            <i-lucide [img]="item.icon" class="size-5 mb-1 group-data-[collapsible=icon]:size-5" />
+            <i-lucide
+              [img]="item.icon"
+              class="size-4.5 mb-1 group-data-[collapsible=icon]:size-5 group-data-[collapsible=icon]:mt-0.5"
+            />
             @if (!isCollapsed()) {
-              <span class="m-4">{{ item.title }}</span>
+              <span class="m-2">{{ item.title }}</span>
             }
           </a>
         </li>

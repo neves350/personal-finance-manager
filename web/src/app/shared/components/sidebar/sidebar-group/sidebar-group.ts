@@ -2,17 +2,16 @@ import { Component, computed, inject } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 import {
 	ArrowRightLeftIcon,
+	ChartColumnIcon,
 	ChartPieIcon,
-	FileChartLineIcon,
+	CreditCardIcon,
 	LayoutGridIcon,
 	LucideAngularModule,
 	type LucideIconData,
 	Repeat2Icon,
-	ScrollTextIcon,
 	SettingsIcon,
 	TagIcon,
-	WalletCardsIcon,
-	WalletMinimalIcon,
+	WalletIcon,
 } from 'lucide-angular'
 import { ZardDividerComponent } from '../../ui/divider'
 import {
@@ -45,10 +44,10 @@ export class SidebarGroup {
 	)
 
 	readonly activeExpandedClass =
-		'text-sidebar-foreground font-medium bg-sidebar-accent pl-2'
+		'text-sidebar-foreground font-medium bg-sidebar-ring/10 border-1 border-sidebar-ring/50'
 
 	readonly activeCollapsedClass =
-		'text-sidebar-foreground bg-sidebar-accent font-medium rounded-md'
+		'text-sidebar-foreground bg-sidebar-ring/10 border-1 border-sidebar-ring/50 font-medium rounded-md'
 
 	readonly mainItem: MenuItem[] = [
 		{
@@ -59,7 +58,7 @@ export class SidebarGroup {
 		{
 			title: 'Accounts',
 			url: '/accounts',
-			icon: WalletMinimalIcon,
+			icon: WalletIcon,
 		},
 		{
 			title: 'Transactions',
@@ -72,14 +71,9 @@ export class SidebarGroup {
 			icon: Repeat2Icon,
 		},
 		{
-			title: 'Invoices',
-			url: '/invoices',
-			icon: ScrollTextIcon,
-		},
-		{
 			title: 'Cards',
 			url: '/cards',
-			icon: WalletCardsIcon,
+			icon: CreditCardIcon,
 		},
 		{
 			title: 'Categories',
@@ -92,7 +86,7 @@ export class SidebarGroup {
 		{
 			title: 'Statistics',
 			url: '/statistics',
-			icon: FileChartLineIcon,
+			icon: ChartColumnIcon,
 		},
 	]
 
