@@ -2,6 +2,7 @@ import {
 	afterNextRender,
 	ChangeDetectionStrategy,
 	Component,
+	ElementRef,
 	effect,
 	inject,
 	signal,
@@ -22,16 +23,25 @@ import {
 })
 export class DashboardCashflow {
 	private readonly statisticsService = inject(StatisticsService)
+	private readonly elementRef = inject(ElementRef)
 
 	readonly chartOptions = signal<Partial<CashflowChartOptions> | null>(null)
 
+	private resizeTimer: ReturnType<typeof setTimeout> | null = null
+
 	constructor() {
 		afterNextRender(() => {
-			const observer = new MutationObserver(() => this.rebuildChart())
-			observer.observe(document.documentElement, {
+			const mutationObserver = new MutationObserver(() => this.rebuildChart())
+			mutationObserver.observe(document.documentElement, {
 				attributes: true,
 				attributeFilter: ['class'],
 			})
+
+			const resizeObserver = new ResizeObserver(() => {
+				if (this.resizeTimer) clearTimeout(this.resizeTimer)
+				this.resizeTimer = setTimeout(() => this.rebuildChart(), 150)
+			})
+			resizeObserver.observe(this.elementRef.nativeElement)
 		})
 
 		effect(() => {

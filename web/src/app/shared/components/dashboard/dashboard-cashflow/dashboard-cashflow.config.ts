@@ -117,10 +117,17 @@ export function createCashflowOptions(
 		],
 		chart: {
 			height: 300,
+			width: '100%',
 			type: 'area',
 			toolbar: { show: false },
 			fontFamily: 'Inter, sans-serif',
 			foreColor: foreground,
+			animations: {
+				enabled: true,
+				speed: 400,
+				animateGradually: { enabled: false },
+				dynamicAnimation: { enabled: true, speed: 250 },
+			},
 		},
 		colors: ['hsl(160, 84%, 39%)', 'hsl(0, 72%, 51%)'],
 		fill: {

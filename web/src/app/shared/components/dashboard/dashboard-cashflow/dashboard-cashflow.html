@@ -7,18 +7,20 @@
   </div>
 
   @if (chartOptions()) {
-    <apx-chart
-      [series]="chartOptions()!.series!"
-      [chart]="chartOptions()!.chart!"
-      [xaxis]="chartOptions()!.xaxis!"
-      [yaxis]="chartOptions()!.yaxis!"
-      [stroke]="chartOptions()!.stroke!"
-      [grid]="chartOptions()!.grid!"
-      [tooltip]="chartOptions()!.tooltip!"
-      [legend]="chartOptions()!.legend!"
-      [colors]="chartOptions()!.colors!"
-      [dataLabels]="chartOptions()!.dataLabels!"
-      [markers]="chartOptions()!.markers!"
-    />
+    <div class="w-full overflow-hidden">
+      <apx-chart
+        [series]="chartOptions()!.series!"
+        [chart]="chartOptions()!.chart!"
+        [xaxis]="chartOptions()!.xaxis!"
+        [yaxis]="chartOptions()!.yaxis!"
+        [stroke]="chartOptions()!.stroke!"
+        [grid]="chartOptions()!.grid!"
+        [tooltip]="chartOptions()!.tooltip!"
+        [legend]="chartOptions()!.legend!"
+        [colors]="chartOptions()!.colors!"
+        [dataLabels]="chartOptions()!.dataLabels!"
+        [markers]="chartOptions()!.markers!"
+      />
+    </div>
   }
 </z-card>
