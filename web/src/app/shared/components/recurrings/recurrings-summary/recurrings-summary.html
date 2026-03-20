@@ -1,22 +1,22 @@
 <z-card class="mb-8 py-6">
   <div class="grid grid-cols-3 w-full">
     <div class="text-center flex flex-col border-r border-border">
-      <span class="text-xs text-muted-foreground mb-1">Income/month</span>
-      <span class="text-2xl font-semibold text-income-foreground"
+      <span class="text-sm text-muted-foreground mb-1">Income/month</span>
+      <span class="text-xl xl:text-2xl font-bold text-primary font-display"
         >+{{ monthSummary().income | currency: 'EUR' }}</span
       >
     </div>
     <div class="text-center flex flex-col border-r border-border">
-      <span class="text-xs text-muted-foreground mb-1">Expenses/month</span>
-      <span class="text-2xl font-semibold text-expense-foreground"
+      <span class="text-sm text-muted-foreground mb-1">Expenses/month</span>
+      <span class="text-xl xl:text-2xl font-bold text-destructive font-display"
         >-{{ monthSummary().expenses | currency: 'EUR' }}</span
       >
     </div>
     <div class="text-center flex flex-col">
-      <span class="text-xs text-muted-foreground mb-1">Balance/month</span>
+      <span class="text-sm text-muted-foreground mb-1">Balance/month</span>
       <span
-        class="text-2xl font-semibold"
-        [class]="monthSummary().balance >= 0 ? 'text-income-foreground' : 'text-expense-foreground'"
+        class="text-xl xl:text-2xl font-bold font-display"
+        [class]="monthSummary().balance >= 0 ? 'text-primary' : 'text-destructive'"
       >
         {{ balanceSign() }}{{ adsBalance() | currency: 'EUR' }}</span
       >
