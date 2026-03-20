@@ -20,13 +20,15 @@ const sidebarMenuButtonVariants = cva(
 	{
 		variants: {
 			variant: {
-				default: 'hover:bg-sidebar-group hover:text-sidebar-accent',
+				default:
+					'hover:bg-sidebar-accent hover:text-sidebar-foreground hover:border-1',
 				outline:
 					'bg-background shadow-sidebar-border hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-sidebar-accent',
 			},
 			size: {
 				default: 'h-8 text-sm',
 				sm: 'h-7 text-xs',
+				md: 'h-10 text-sm',
 				lg: 'h-12 text-sm group-data-[collapsible=icon]:!p-0',
 			},
 		},
@@ -69,7 +71,7 @@ export class HlmSidebarMenuButton {
 	private readonly _sidebarService = inject(HlmSidebarService)
 
 	public readonly variant = input<'default' | 'outline'>('default')
-	public readonly size = input<'default' | 'sm' | 'lg'>('default')
+	public readonly size = input<'default' | 'sm' | 'md' | 'lg'>('default')
 	public readonly isActive = input<boolean, BooleanInput>(false, {
 		transform: booleanAttribute,
 	})
