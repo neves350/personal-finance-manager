@@ -1,9 +1,9 @@
 <main class="p-4 md:p-6 w-full">
-  <div class="max-w-[1800px] mx-auto py-6 md:py-3 space-y-8 md:space-y-12">
+  <div class="max-w-[2000px] mx-auto py-3 xl:py-6 space-y-8 xl:space-y-12">
     <app-dashboard-header (filterChange)="onFilterChange($event)" />
     <app-dashboard-card />
-    <div class="grid grid-cols-3 gap-4 mb-4 mt-4">
-      <app-dashboard-cashflow class="col-span-2" />
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-3 xl:gap-4 mb-4 mt-4">
+      <app-dashboard-cashflow class="col-span-1 xl:col-span-2" />
       <app-dashboard-spending />
     </div>
     <app-dashboard-goals />
