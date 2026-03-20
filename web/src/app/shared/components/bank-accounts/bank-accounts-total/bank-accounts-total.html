@@ -1,17 +1,17 @@
-<z-card class="h-full flex flex-col mb-8" [class]="totalStyle().card">
+<z-card class="h-full flex flex-col mb-8">
   <div class="flex items-start justify-between">
     <div
-      class="size-10 flex items-center justify-center rounded-lg text-white"
+      class="size-10 flex items-center justify-center rounded-lg"
       [class]="totalStyle().iconBg"
     >
-      <i-lucide [img]="WalletMinimalIcon" class="size-5" [class]="totalStyle().iconText" />
+      <i-lucide [img]="WalletMinimalIcon" class="size-4.5 xl:size-5" [class]="totalStyle().iconText" />
     </div>
 
-    <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
-      <span class="truncate text-xs text-muted-foreground">
+    <div class="ml-4 grid flex-1 text-left leading-tight">
+      <span class="truncate text-xs xl:text-sm text-muted-foreground">
         Total Assets · Sum of all accounts
       </span>
-      <span class="text-xl font-bold" [class]="totalStyle().balance"
+      <span class="text-xl xl:text-2xl font-bold" [class]="totalStyle().balance"
         >{{ isNegative() ? '' : '+' }}{{ totalBalance() | currency: 'EUR' }}</span
       >
     </div>
@@ -19,7 +19,7 @@
     <!-- Trend -->
     <div class="flex gap-1">
       <i-lucide [img]="totalStyle().trendIcon" class="size-4" [class]="totalStyle().trendText" />
-      <span class="text-sm font-bold" [class]="totalStyle().trendText"
+      <span class="text-xs xl:text-sm font-bold" [class]="totalStyle().trendText"
         >{{ isNegative() ? '' : '+' }}{{ totalBalance() | currency: 'EUR' }}</span
       >
     </div>
@@ -28,12 +28,12 @@
   <z-divider />
 
   <div class="flex gap-4">
-    <p class="text-sm text-muted-foreground mb-1">
+    <p class="text-xs xl:text-sm text-muted-foreground mb-1">
       {{ accountCount() }} {{ accountCount() === 1 ? 'account' : 'accounts' }} with a balance
     </p>
     @if (negativeAccountCount()) {
       <z-divider zOrientation="vertical" class="h-5" />
-      <p class="text-sm text-expense-foreground/70 mb-1">
+      <p class="text-xs xl:text-sm text-expense-foreground/70 mb-1">
         {{ negativeAccountCount() }} negative
         {{ negativeAccountCount() === 1 ? 'account' : 'accounts' }}
       </p>

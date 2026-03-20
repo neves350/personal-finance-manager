@@ -43,20 +43,18 @@ export class BankAccountsTotal {
 	readonly totalStyle = computed(() => {
 		return this.isNegative()
 			? {
-					card: 'bg-expense/30',
-					iconBg: 'bg-expense',
-					iconText: 'text-expense-foreground',
-					balance: 'text-expense-foreground',
+					iconBg: 'bg-destructive/20',
+					iconText: 'text-destructive',
+					balance: 'text-destructive',
 					trendIcon: CircleArrowDownIcon,
-					trendText: 'text-expense-foreground',
+					trendText: 'text-destructive',
 				}
 			: {
-					card: 'bg-income/30',
-					iconBg: 'bg-income',
-					iconText: 'text-income-foreground',
+					iconBg: 'bg-primary/20',
+					iconText: 'text-primary',
 					balance: 'text-primary',
 					trendIcon: CircleArrowUpIcon,
-					trendText: 'text-income-foreground',
+					trendText: 'text-primary',
 				}
 	})
 }
