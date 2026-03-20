@@ -1,9 +1,9 @@
 <div class="flex justify-start">
-  <z-button class="cursor-pointer mr-4" zType="outline" routerLink="/accounts">
-    <i-lucide [img]="ArrowBigLeftDashIcon" />
+  <z-button class="cursor-pointer mr-4" zType="ghost" routerLink="/accounts">
+    <i-lucide [img]="ArrowLeftIcon" />
   </z-button>
-  <h1 class="font-medium flex flex-col text-lg">
+  <h1 class="font-medium flex flex-col text-base xl:text-lg">
     {{ account().name }}
-    <span class="font-normal text-muted-foreground text-sm"> {{ accountType() }} </span>
+    <span class="font-normal text-muted-foreground text-xs xl:text-sm"> {{ accountType() }} </span>
   </h1>
 </div>

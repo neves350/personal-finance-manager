@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { BankAccount, BankType } from '@core/api/bank-accounts.interface'
-import { ArrowBigLeftDashIcon, LucideAngularModule } from 'lucide-angular'
+import { ArrowLeftIcon, LucideAngularModule } from 'lucide-angular'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 
 @Component({
@@ -10,7 +10,7 @@ import { ZardButtonComponent } from '@/shared/components/ui/button'
 	templateUrl: './account-header.html',
 })
 export class AccountHeader {
-	readonly ArrowBigLeftDashIcon = ArrowBigLeftDashIcon
+	readonly ArrowLeftIcon = ArrowLeftIcon
 
 	readonly account = input.required<BankAccount>()
 
