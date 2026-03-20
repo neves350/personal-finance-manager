@@ -2,9 +2,9 @@
   <z-breadcrumb zWrap="wrap" zAlign="start" [zSeparator]="customSeparator">
     @for (crumb of breadcrumbs(); track $index; let last = $last) {
       @if (!last) {
-        <z-breadcrumb-item [routerLink]="['/']" class="ml-0.5 mr-1.5">{{
-          crumb.label
-        }}</z-breadcrumb-item>
+        <z-breadcrumb-item [routerLink]="['/']" class="ml-0.5 mr-1.5">
+          {{ crumb.label }}
+        </z-breadcrumb-item>
       } @else {
         <z-breadcrumb-item class="ml-0.5 mr-0.5">{{ crumb.label }}</z-breadcrumb-item>
       }
@@ -16,7 +16,7 @@
   </ng-template>
 
   <div class="flex items-center justify-end gap-2">
-    <z-button zType="goalGhost">
+    <z-button zType="ghost">
       <i-lucide [img]="BellIcon" class="size-4.5" />
     </z-button>
     <app-theme />
