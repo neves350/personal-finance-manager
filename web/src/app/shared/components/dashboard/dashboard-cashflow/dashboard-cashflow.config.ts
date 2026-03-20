@@ -68,10 +68,6 @@ export function createCashflowOptions(
 ): Partial<CashflowChartOptions> {
 	const foreground = getCssVar('--foreground') || 'oklch(0.26 0.05 173)'
 	const border = getCssVar('--border') || 'oklch(0.92 0.004 286.32)'
-	const incomeColor =
-		getCssVar('--income-foreground') || 'oklch(0.6 0.118 184.704)'
-	const expenseColor =
-		getCssVar('--expense-foreground') || 'oklch(0.646 0.222 41.116)'
 
 	// Aggregate daily data into monthly totals for year view
 	let chartLabels = labels
@@ -123,30 +119,29 @@ export function createCashflowOptions(
 			height: 300,
 			type: 'area',
 			toolbar: { show: false },
-			fontFamily: 'inherit',
+			fontFamily: 'Inter, sans-serif',
 			foreColor: foreground,
-			background: 'transparent',
 		},
-		colors: [incomeColor, expenseColor],
+		colors: ['hsl(160, 84%, 39%)', 'hsl(0, 72%, 51%)'],
 		fill: {
 			type: 'gradient',
 			gradient: {
-				shadeIntensity: 0,
-				opacityFrom: 0.25,
-				opacityTo: 0.05,
-				stops: [0, 90, 100],
+				shadeIntensity: 1,
+				opacityFrom: 0.3,
+				opacityTo: 0,
+				stops: [0, 100],
 			},
 		},
 		dataLabels: { enabled: false },
 		stroke: {
 			curve: 'smooth',
-			width: 3,
+			width: 2,
 		},
 		markers: {
 			size: 0,
 			strokeWidth: 2,
 			hover: {
-				size: 6,
+				size: 4,
 			},
 		},
 		xaxis: {
@@ -177,9 +172,6 @@ export function createCashflowOptions(
 		grid: {
 			borderColor: border,
 			strokeDashArray: 4,
-			xaxis: {
-				lines: { show: false },
-			},
 		},
 		legend: {
 			position: 'top',
@@ -187,8 +179,9 @@ export function createCashflowOptions(
 			fontSize: '14px',
 			labels: { colors: foreground },
 			markers: {
-				shape: 'circle',
+				shape: 'line',
 				offsetX: -4,
+				strokeWidth: 1,
 			},
 			itemMargin: { horizontal: 12 },
 		},
