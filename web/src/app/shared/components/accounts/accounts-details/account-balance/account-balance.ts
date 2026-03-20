@@ -8,6 +8,8 @@ import {
 	HandCoinsIcon,
 	LandmarkIcon,
 	LucideAngularModule,
+	TrendingDownIcon,
+	TrendingUpIcon,
 	WalletMinimalIcon,
 } from 'lucide-angular'
 import { ZardCardComponent } from '@/shared/components/ui/card'
@@ -20,8 +22,6 @@ import { ZardDividerComponent } from '@/shared/components/ui/divider'
 })
 export class AccountBalance {
 	readonly WalletMinimalIcon = WalletMinimalIcon
-	readonly ArrowUpIcon = ArrowUpIcon
-	readonly ArrowDownIcon = ArrowDownIcon
 	readonly LandmarkIcon = LandmarkIcon
 	readonly HandCoinsIcon = HandCoinsIcon
 	readonly CoinsIcon = CoinsIcon
@@ -40,7 +40,7 @@ export class AccountBalance {
 
 	readonly trendIcon = computed(() => {
 		const balance = Number(this.account().balance)
-		return balance < 0 ? this.ArrowDownIcon : this.ArrowUpIcon
+		return balance < 0 ? TrendingDownIcon : TrendingUpIcon
 	})
 
 	readonly balanceColorClass = computed(() => {
@@ -60,13 +60,23 @@ export class AccountBalance {
 	readonly formattedBalance = computed(() => {
 		const { balance } = this.account()
 		if (balance === null || balance === undefined) return null
-		return new Number(balance)
+
+		return new Intl.NumberFormat('en-US', {
+			style: 'currency',
+			currency: 'EUR',
+			signDisplay: 'always',
+		}).format(Number(balance))
 	})
 
 	readonly formattedInitialBalance = computed(() => {
 		const { initialBalance } = this.account()
 		if (initialBalance === null || initialBalance === undefined) return null
-		return new Number(initialBalance)
+
+		return new Intl.NumberFormat('en-US', {
+			style: 'currency',
+			currency: 'EUR',
+			signDisplay: 'always',
+		}).format(Number(initialBalance))
 	})
 
 	readonly totalMovements = computed(() => {
