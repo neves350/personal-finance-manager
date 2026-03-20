@@ -66,9 +66,7 @@ export function createBalanceChartOptions(
 	isNegative: boolean,
 ): Partial<BalanceChartOptions> {
 	const foreground = getCssVar('--foreground') || 'oklch(0.26 0.05 173)'
-	const chartColor = isNegative
-		? getCssVar('--expense-foreground') || 'oklch(64.6% 0.222 41.116)'
-		: getCssVar('--income-foreground') || 'oklch(0.60 0.13 163)'
+	const chartColor = isNegative ? 'hsl(0, 72%, 51%)' : 'hsl(160, 84%, 39%)'
 
 	const formatValue = (value: number) => `€${value.toLocaleString()}`
 
@@ -89,7 +87,6 @@ export function createBalanceChartOptions(
 			toolbar: {
 				show: false,
 			},
-			fontFamily: 'inherit',
 			foreColor: foreground,
 			background: 'transparent',
 			sparkline: {
@@ -102,22 +99,23 @@ export function createBalanceChartOptions(
 		},
 		stroke: {
 			curve: 'smooth',
-			width: 3,
+			width: 2,
+			dashArray: 10,
 		},
 		fill: {
 			type: 'gradient',
 			gradient: {
 				shadeIntensity: 1,
 				opacityFrom: 0.3,
-				opacityTo: 0.05,
-				stops: [0, 100, 100],
+				opacityTo: 0,
+				stops: [0, 100],
 			},
 		},
 		markers: {
-			size: 4,
+			size: 0,
 			strokeWidth: 2,
 			hover: {
-				size: 6,
+				size: 4,
 			},
 		},
 		xaxis: {
@@ -148,9 +146,9 @@ export function createBalanceChartOptions(
 				formatter: (value: number) => {
 					const rounded = Math.round(value)
 					if (Math.abs(rounded) >= 10000) {
-						return `${(rounded / 1000).toFixed(0)}k`
+						return `€${(rounded / 1000).toFixed(0)}k`
 					}
-					return `${rounded.toLocaleString()}`
+					return `€${rounded.toLocaleString()}`
 				},
 			},
 		},

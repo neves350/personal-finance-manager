@@ -12,7 +12,11 @@ import type {
 	BalanceHistoryItem,
 	BankAccount,
 } from '@core/api/bank-accounts.interface'
-import { ArrowDownIcon, ArrowUpIcon, LucideAngularModule } from 'lucide-angular'
+import {
+	LucideAngularModule,
+	TrendingDownIcon,
+	TrendingUpIcon,
+} from 'lucide-angular'
 import { ChartComponent } from 'ng-apexcharts'
 import { ZardCardComponent } from '@/shared/components/ui/card'
 import { ZardDividerComponent } from '@/shared/components/ui/divider'
@@ -33,9 +37,6 @@ import {
 	templateUrl: './account-balance-chart.html',
 })
 export class AccountBalanceChart {
-	readonly ArrowUpIcon = ArrowUpIcon
-	readonly ArrowDownIcon = ArrowDownIcon
-
 	readonly account = input.required<BankAccount>()
 	readonly chart = viewChild<ChartComponent>('chart')
 	readonly chartOptions = signal<Partial<BalanceChartOptions> | null>(null)
@@ -58,7 +59,7 @@ export class AccountBalanceChart {
 	readonly isPositiveChange = computed(() => this.percentageChange() >= 0)
 
 	readonly trendIcon = computed(() =>
-		this.isPositiveChange() ? ArrowUpIcon : ArrowDownIcon,
+		this.isPositiveChange() ? TrendingUpIcon : TrendingDownIcon,
 	)
 
 	readonly formattedChange = computed(() => {
@@ -69,7 +70,7 @@ export class AccountBalanceChart {
 	readonly firstMonthLabel = computed(() => {
 		const data = this.balanceHistory()
 		if (data.length === 0) return ''
-		return MONTHS_PT[data[0].month - 1]
+		return `${MONTHS_PT[data[0].month - 1]}. ${data[0].year}`
 	})
 
 	readonly firstMonthBalance = computed(() => {
@@ -81,7 +82,7 @@ export class AccountBalanceChart {
 	readonly lastMonthLabel = computed(() => {
 		const data = this.balanceHistory()
 		if (data.length === 0) return ''
-		return MONTHS_PT[data[data.length - 1].month - 1]
+		return `${MONTHS_PT[data[data.length - 1].month - 1]}. ${[data[data.length - 1].year]}`
 	})
 
 	readonly lastMonthBalance = computed(() => {
@@ -112,7 +113,9 @@ export class AccountBalanceChart {
 		if (data.length === 0) return
 
 		const balances = data.map((item) => item.balance)
-		const months = data.map((item) => MONTHS_PT[item.month - 1])
+		const months = data.map(
+			(item) => `${MONTHS_PT[item.month - 1]} ${item.year}`,
+		)
 		const lastBalance = balances[balances.length - 1]
 
 		this.chartOptions.set(

@@ -1,4 +1,4 @@
-<z-card class="h-full flex flex-col mb-8">
+<z-card class="h-full flex flex-col mb-4">
   <div class="flex items-start justify-between">
     <h1 class="font-semibold flex flex-col">
       Balance evolution
@@ -17,7 +17,7 @@
           "
         />
         <span
-          class="text-sm font-semibold"
+          class="text-xs xl:text-sm font-semibold"
           [class]="isPositiveChange() ? 'text-income-foreground' : 'text-expense-foreground'"
         >
           {{ formattedChange() }}
@@ -48,12 +48,12 @@
 
     <div class="flex items-start justify-center">
       <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
-        <p class="text-xs text-muted-foreground mb-1">{{ firstMonthLabel() }}.</p>
-        <span class="text-sm font-bold">{{ firstMonthBalance() }}</span>
+        <p class="text-xs text-muted-foreground mb-1">{{ firstMonthLabel() }}</p>
+        <span class="text-xs xl:text-sm font-semibold">{{ firstMonthBalance() }}</span>
       </div>
       <div>
-        <p class="text-xs text-muted-foreground mb-1">{{ lastMonthLabel() }}.</p>
-        <span class="text-sm font-bold">{{ lastMonthBalance() }}</span>
+        <p class="text-xs text-muted-foreground mb-1">{{ lastMonthLabel() }}</p>
+        <span class="text-xs xl:text-sm font-semibold">{{ lastMonthBalance() }}</span>
       </div>
     </div>
   }
