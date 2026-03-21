@@ -14,6 +14,7 @@ import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
 import { ZardDialogService } from '@/shared/components/ui/dialog'
 import { ZardLoaderComponent } from '@/shared/components/ui/loader'
+import { ZardSheetService } from '@/shared/components/ui/sheet'
 
 @Component({
 	selector: 'app-bank-account',
@@ -33,6 +34,7 @@ export class BankAccount implements OnInit {
 	readonly ArrowRightLeftIcon = ArrowRightLeftIcon
 
 	private readonly dialogService = inject(ZardDialogService)
+	private readonly sheetService = inject(ZardSheetService)
 	private readonly bankAccountsService = inject(BankAccountsService)
 
 	// Expose service signals to template
@@ -45,10 +47,11 @@ export class BankAccount implements OnInit {
 	}
 
 	openTransfer() {
-		this.dialogService.create({
+		this.sheetService.create({
 			zTitle: 'New Transfer',
 			zContent: TransfersForm,
 			zWidth: '500px',
+			zSide: 'right',
 			zHideFooter: false,
 			zOkText: 'Send Transfer',
 			zOnOk: (instance: TransfersForm) => {
@@ -56,7 +59,7 @@ export class BankAccount implements OnInit {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 

@@ -3,12 +3,16 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import type { BankAccount } from '@core/api/bank-accounts.interface'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
 import { TransfersService } from '@core/services/transfers.service'
-import { ArrowDownIcon, EuroIcon, LucideAngularModule } from 'lucide-angular'
+import {
+	CircleArrowDownIcon,
+	EuroIcon,
+	LucideAngularModule,
+} from 'lucide-angular'
 import { toast } from 'ngx-sonner'
 import { ZardDatePickerComponent } from '../../ui/date-picker'
-import { ZardDialogRef } from '../../ui/dialog'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardSelectComponent, ZardSelectItemComponent } from '../../ui/select'
+import { ZardSheetRef } from '../../ui/sheet'
 
 @Component({
 	selector: 'app-transfers-form',
@@ -27,11 +31,11 @@ export class TransfersForm {
 	private readonly transfersService = inject(TransfersService)
 	private readonly bankAccountsService = inject(BankAccountsService)
 	private readonly fb = inject(FormBuilder)
-	private readonly dialogRef = inject(ZardDialogRef)
+	private readonly sheetRef = inject(ZardSheetRef)
 
 	readonly selectedDate: Date | null = new Date()
 
-	readonly ArrowDownIcon = ArrowDownIcon
+	readonly CircleArrowDownIcon = CircleArrowDownIcon
 	readonly EuroIcon = EuroIcon
 
 	// list all accounts
@@ -80,7 +84,7 @@ export class TransfersForm {
 			next: () => {
 				toast.success('Transfer created successfully')
 				this.bankAccountsService.loadBankAccounts().subscribe()
-				this.dialogRef.close()
+				this.sheetRef.close()
 			},
 			error: (error) => {
 				console.log('Full error:', error)
