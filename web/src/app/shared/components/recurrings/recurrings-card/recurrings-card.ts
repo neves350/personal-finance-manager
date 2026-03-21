@@ -12,8 +12,8 @@ import {
 } from '@core/api/recurrings.interface'
 import { RecurringsService } from '@core/services/recurrings.service'
 import {
-	ArrowDownIcon,
-	ArrowUpIcon,
+	CircleArrowDownIcon,
+	CircleArrowUpIcon,
 	LucideAngularModule,
 	type LucideIconData,
 	PencilIcon,
@@ -67,15 +67,15 @@ export class RecurringsCard {
 		}
 	> = {
 		[RecurringType.INCOME]: {
-			icon: ArrowUpIcon,
-			style: 'bg-income-foreground/10 text-income-foreground',
-			cost: 'text-income-foreground',
+			icon: CircleArrowUpIcon,
+			style: 'bg-primary/10 text-primary',
+			cost: 'text-primary',
 			sign: '+',
 		},
 		[RecurringType.EXPENSE]: {
-			icon: ArrowDownIcon,
-			style: 'bg-expense-foreground/10 text-expense-foreground',
-			cost: 'text-expense-foreground',
+			icon: CircleArrowDownIcon,
+			style: 'bg-destructive/10 text-destructive',
+			cost: 'text-destructive',
 			sign: '-',
 		},
 	}
