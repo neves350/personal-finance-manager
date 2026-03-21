@@ -29,6 +29,7 @@ import {
 import { ZardBadgeComponent } from '../../ui/badge'
 import { ZardButtonComponent } from '../../ui/button'
 import { ZardDialogService } from '../../ui/dialog'
+import { ZardSheetService } from '../../ui/sheet'
 import { RecurringsForm } from '../recurrings-form/recurrings-form'
 import type { iRecurringSheetData } from '../recurrings-form/recurrings-form.interface'
 import { DeleteRecurringDialog } from './delete-recurring-dialog'
@@ -51,8 +52,9 @@ import { DeleteRecurringDialog } from './delete-recurring-dialog'
 export class RecurringsCard {
 	readonly recurrings = input.required<Recurring[]>()
 
-	private readonly dialogService = inject(ZardDialogService)
 	private readonly recurringsService = inject(RecurringsService)
+	private readonly sheetService = inject(ZardSheetService)
+	private readonly dialogService = inject(ZardDialogService)
 
 	readonly PencilIcon = PencilIcon
 	readonly Trash2Icon = Trash2Icon
@@ -95,10 +97,11 @@ export class RecurringsCard {
 	}
 
 	editRecurring(recurring: Recurring) {
-		this.dialogService.create({
+		this.sheetService.create({
 			zTitle: 'Edit Recurring Transaction',
 			zContent: RecurringsForm,
-			zWidth: '600px',
+			zWidth: '500px',
+			zSide: 'right',
 			zHideFooter: false,
 			zOkText: 'Save Changes',
 			zOnOk: (instance: RecurringsForm) => {
@@ -106,7 +109,7 @@ export class RecurringsCard {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5 border-4',
+				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: recurring.id,
 				type: recurring.type,

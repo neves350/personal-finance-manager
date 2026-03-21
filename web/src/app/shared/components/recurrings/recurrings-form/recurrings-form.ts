@@ -21,9 +21,9 @@ import {
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
 import { ZardDatePickerComponent } from '../../ui/date-picker'
-import { Z_MODAL_DATA, ZardDialogRef } from '../../ui/dialog'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardSelectComponent, ZardSelectItemComponent } from '../../ui/select'
+import { Z_SHEET_DATA, ZardSheetRef } from '../../ui/sheet'
 import type { iRecurringSheetData } from './recurrings-form.interface'
 
 @Component({
@@ -43,8 +43,8 @@ export class RecurringsForm {
 	private readonly cardsService = inject(CardsService)
 	private readonly bankAccountsService = inject(BankAccountsService)
 	private readonly categoriesService = inject(CategoriesService)
-	private readonly zData: iRecurringSheetData = inject(Z_MODAL_DATA)
-	private readonly dialogRef = inject(ZardDialogRef)
+	private readonly zData: iRecurringSheetData = inject(Z_SHEET_DATA)
+	private readonly sheetRef = inject(ZardSheetRef)
 	private readonly fb = inject(FormBuilder)
 
 	readonly isEditMode = computed(() => !!this.zData?.id)
@@ -181,8 +181,8 @@ export class RecurringsForm {
 		if (!isSelected) return 'border-zinc-700'
 
 		return paymentType === PaymentMethodType.CARD
-			? 'border-balance-foreground bg-balance-foreground/10'
-			: 'border-goal-foreground bg-goal-foreground/10'
+			? 'border-chart-2 bg-chart-2/10'
+			: 'border-chart-4 bg-chart-4/10'
 	}
 
 	getPaymentsIconClasses(paymentType: PaymentMethodType): string {
@@ -191,8 +191,8 @@ export class RecurringsForm {
 		if (!isSelected) return 'text-muted-foreground'
 
 		return paymentType === PaymentMethodType.CARD
-			? 'text-balance-foreground'
-			: 'text-goal-foreground'
+			? 'text-chart-2'
+			: 'text-chart-4'
 	}
 
 	onStartDateChange(date: Date | null) {
@@ -235,7 +235,7 @@ export class RecurringsForm {
 						? 'Recurring transaction updated successfully'
 						: 'Recurring transaction created successfully',
 				)
-				this.dialogRef.close()
+				this.sheetRef.close()
 			},
 			error: (error) => {
 				toast.error(

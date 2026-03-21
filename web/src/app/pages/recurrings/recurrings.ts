@@ -11,12 +11,12 @@ import { RecurringsForm } from '@/shared/components/recurrings/recurrings-form/r
 import { RecurringsSummary } from '@/shared/components/recurrings/recurrings-summary/recurrings-summary'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
-import { ZardDialogService } from '@/shared/components/ui/dialog'
 import { ZardLoaderComponent } from '@/shared/components/ui/loader'
 import {
 	ZardPopoverComponent,
 	ZardPopoverDirective,
 } from '@/shared/components/ui/popover'
+import { ZardSheetService } from '@/shared/components/ui/sheet'
 
 @Component({
 	selector: 'app-recurrings',
@@ -35,7 +35,7 @@ import {
 })
 export class Recurrings {
 	private readonly recurringsService = inject(RecurringsService)
-	private readonly dialogService = inject(ZardDialogService)
+	private readonly sheetService = inject(ZardSheetService)
 
 	readonly recurrings = this.recurringsService.recurrings
 	readonly hasRecurrings = this.recurringsService.hasRecurrings
@@ -50,10 +50,11 @@ export class Recurrings {
 	}
 
 	openDialog() {
-		this.dialogService.create({
+		this.sheetService.create({
 			zTitle: 'New Recurring Transaction',
 			zContent: RecurringsForm,
-			zWidth: '600px',
+			zWidth: '500px',
+			zSide: 'right',
 			zHideFooter: false,
 			zOkText: 'Create recurring',
 			zOnOk: (instance: RecurringsForm) => {
@@ -61,7 +62,7 @@ export class Recurrings {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 }
