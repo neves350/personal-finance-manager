@@ -1,4 +1,4 @@
-import { DecimalPipe } from '@angular/common'
+import { CurrencyPipe } from '@angular/common'
 import {
 	afterNextRender,
 	Component,
@@ -12,7 +12,10 @@ import {
 	ArrowUpIcon,
 	BanknoteArrowDownIcon,
 	BanknoteArrowUpIcon,
+	CoinsIcon,
 	LucideAngularModule,
+	TrendingDownIcon,
+	TrendingUpIcon,
 	WalletIcon,
 } from 'lucide-angular'
 import { NgApexchartsModule } from 'ng-apexcharts'
@@ -25,7 +28,7 @@ import { createSparklineChartOptions } from './statistics-summary-sparkline.conf
 	imports: [
 		LucideAngularModule,
 		ZardCardComponent,
-		DecimalPipe,
+		CurrencyPipe,
 		ZardBadgeComponent,
 		NgApexchartsModule,
 	],
@@ -54,25 +57,25 @@ export class StatisticsSummary {
 
 	readonly incomeSparkline = this.createSparkline(
 		'income',
-		'--income-foreground',
+		'--primary',
 		'Income',
 	)
 	readonly expenseSparkline = this.createSparkline(
 		'expenses',
-		'--expense-foreground',
+		'--destructive',
 		'Expenses',
 	)
 	readonly balanceSparkline = this.createSparkline(
 		'balance',
-		'--balance-foreground',
+		'--chart-2',
 		'Balance',
 	)
 
+	readonly TrendingUpIcon = TrendingUpIcon
+	readonly TrendingDownIcon = TrendingDownIcon
 	readonly ArrowUpIcon = ArrowUpIcon
 	readonly ArrowDownIcon = ArrowDownIcon
-	readonly BanknoteArrowUpIcon = BanknoteArrowUpIcon
-	readonly BanknoteArrowDownIcon = BanknoteArrowDownIcon
-	readonly WalletIcon = WalletIcon
+	readonly CoinsIcon = CoinsIcon
 
 	constructor() {
 		afterNextRender(() => {

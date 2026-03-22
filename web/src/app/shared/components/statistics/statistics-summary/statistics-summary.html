@@ -1,32 +1,34 @@
-<div class="grid grid-cols-3 items-center gap-3">
-  <z-card class="flex flex-col">
-    <div class="flex items-center justify-between mb-6">
-      <span class="text-[16px] font-medium text-muted-foreground">Income</span>
-      <i-lucide [img]="BanknoteArrowUpIcon" class="size-5 text-muted-foreground" />
+<div class="grid grid-cols-1 xl:grid-cols-3 items-center gap-3">
+  <z-card class="flex flex-col transition-all duration-300 hover:border-primary/40">
+    <div class="flex items-center justify-start mb-3 xl:mb-2">
+      <span class="text-xs xl:text-sm font-medium tracking-wider text-muted-foreground uppercase flex items-center gap-2">
+        <div class="rounded-full border-2 p-2">
+          <i-lucide [img]="TrendingUpIcon" class="h-4 w-4 xl:h-4.5 xl:w-4.5 text-primary" />
+        </div>
+        Income
+      </span>
     </div>
 
-    <span class="text-2xl font-semibold mt-2">+{{ totalIncome() | number: '1.2-2' }}€</span>
+    <span class="text-2xl xl:text-3xl font-bold tracking-tight text-card-foreground">
+      {{ totalIncome() >= 0 ? '+' : '' }}{{ totalIncome() | currency: 'EUR' }}
+    </span>
 
     <div class="flex items-end justify-between gap-1 mt-2">
       <div class="flex flex-wrap items-center gap-1">
-        <z-badge
-          class="text-sm"
-          [class]="incomeChange() >= 0 ? 'text-income-foreground' : 'text-expense-foreground'"
-          [zType]="incomeChange() >= 0 ? 'positive' : 'negative'"
-        >
-          <i-lucide
-            [img]="incomeChange() >= 0 ? ArrowUpIcon : ArrowDownIcon"
-            class="size-3"
-            [class]="incomeChange() >= 0 ? 'text-income-foreground' : 'text-expense-foreground'"
-          />
-          {{ incomeChange() >= 0 ? '+' : '' }}{{ incomeChange() }}%</z-badge
-        >
-        <span class="text-sm text-muted-foreground">compared to {{ periodLabel() }}</span>
+        <i-lucide
+          [img]="incomeChange() >= 0 ? ArrowUpIcon : ArrowDownIcon"
+          class="size-3 font-semibold"
+          [class]="incomeChange() >= 0 ? 'text-primary' : 'text-destructive'"
+        />
+        <span [class]="incomeChange() >= 0 ? 'text-primary' : 'text-destructive'" class="text-sm">
+          {{ incomeChange() >= 0 ? '+' : '' }}{{ incomeChange() }}%
+        </span>
+        <span class="text-xs text-muted-foreground">compared to {{ periodLabel() }}</span>
       </div>
 
       @if (incomeSparkline(); as spark) {
         <apx-chart
-          class="shrink-0 -mb-1 -mr-2"
+          class="shrink-0 -mb-1 -mr-1"
           [series]="spark.series!"
           [chart]="spark.chart!"
           [colors]="spark.colors!"
@@ -40,34 +42,36 @@
     </div>
   </z-card>
 
-  <z-card class="flex flex-col">
-    <div class="flex items-center justify-between mb-6">
-      <span class="text-[16px] font-medium text-muted-foreground">Expenses</span>
-      <i-lucide [img]="BanknoteArrowDownIcon" class="size-5 text-muted-foreground" />
+  <z-card class="flex flex-col transition-all duration-300 hover:border-primary/40">
+    <div class="flex items-center justify-start mb-3 xl:mb-2">
+      <span class="text-xs xl:text-sm font-medium tracking-wider text-muted-foreground uppercase flex items-center gap-2">
+        <div class="rounded-full border-2 p-2">
+          <i-lucide [img]="TrendingDownIcon" class="h-4 w-4 xl:h-4.5 xl:w-4.5 text-primary" />
+        </div>
+        Expenses
+      </span>
     </div>
 
-    <span class="text-2xl font-semibold mt-2">+{{ totalExpenses() | number: '1.2-2' }}€</span>
+    <span class="text-2xl xl:text-3xl font-bold tracking-tight text-card-foreground">
+      {{ totalExpenses() >= 0 ? '+' : '' }}{{ totalExpenses() | currency: 'EUR' }}
+    </span>
 
     <div class="flex items-end justify-between gap-1 mt-2">
       <div class="flex flex-wrap items-center gap-1">
-        <z-badge
-          class="text-sm"
-          [class]="expensesChange() >= 0 ? 'text-income-foreground' : 'text-expense-foreground'"
-          [zType]="expensesChange() >= 0 ? 'positive' : 'negative'"
-        >
-          <i-lucide
-            [img]="expensesChange() >= 0 ? ArrowUpIcon : ArrowDownIcon"
-            class="size-3"
-            [class]="expensesChange() >= 0 ? 'text-income-foreground' : 'text-expense-foreground'"
-          />
-          {{ expensesChange() >= 0 ? '+' : '' }}{{ expensesChange() }}%</z-badge
-        >
-        <span class="text-sm text-muted-foreground">compared to {{ periodLabel() }}</span>
+        <i-lucide
+          [img]="expensesChange() >= 0 ? ArrowUpIcon : ArrowDownIcon"
+          class="size-3 font-semibold"
+          [class]="expensesChange() >= 0 ? 'text-primary' : 'text-destructive'"
+        />
+        <span [class]="expensesChange() >= 0 ? 'text-primary' : 'text-destructive'" class="text-sm">
+          {{ expensesChange() >= 0 ? '+' : '' }}{{ expensesChange() }}%
+        </span>
+        <span class="text-xs text-muted-foreground">compared to {{ periodLabel() }}</span>
       </div>
 
       @if (expenseSparkline(); as spark) {
         <apx-chart
-          class="shrink-0 -mb-1 -mr-2"
+          class="shrink-0 -mb-1 -mr-1"
           [series]="spark.series!"
           [chart]="spark.chart!"
           [colors]="spark.colors!"
@@ -81,34 +85,36 @@
     </div>
   </z-card>
 
-  <z-card class="flex flex-col">
-    <div class="flex items-center justify-between mb-6">
-      <span class="text-[16px] font-medium text-muted-foreground">Net Balance</span>
-      <i-lucide [img]="WalletIcon" class="size-5 text-muted-foreground" />
+  <z-card class="flex flex-col transition-all duration-300 hover:border-primary/40">
+    <div class="flex items-center justify-start mb-3 xl:mb-2">
+      <span class="text-xs xl:text-sm font-medium tracking-wider text-muted-foreground uppercase flex items-center gap-2">
+        <div class="rounded-full border-2 p-2">
+          <i-lucide [img]="CoinsIcon" class="h-4 w-4 xl:h-4.5 xl:w-4.5 text-primary" />
+        </div>
+        Net Balance
+      </span>
     </div>
 
-    <span class="text-2xl font-semibold mt-2">+{{ totalBalance() | number: '1.2-2' }}€</span>
+    <span class="text-2xl xl:text-3xl font-bold tracking-tight text-card-foreground">
+      {{ totalBalance() >= 0 ? '+' : '' }}{{ totalBalance() | currency: 'EUR' }}
+    </span>
 
     <div class="flex items-end justify-between gap-1 mt-2">
       <div class="flex flex-wrap items-center gap-1">
-        <z-badge
-          class="text-sm"
-          [class]="balanceChange() >= 0 ? 'text-income-foreground' : 'text-expense-foreground'"
-          [zType]="balanceChange() >= 0 ? 'positive' : 'negative'"
-        >
-          <i-lucide
-            [img]="balanceChange() >= 0 ? ArrowUpIcon : ArrowDownIcon"
-            class="size-3"
-            [class]="balanceChange() >= 0 ? 'text-income-foreground' : 'text-expense-foreground'"
-          />
-          {{ balanceChange() >= 0 ? '+' : '' }}{{ balanceChange() }}%</z-badge
-        >
-        <span class="text-sm text-muted-foreground">compared to {{ periodLabel() }}</span>
+        <i-lucide
+          [img]="balanceChange() >= 0 ? ArrowUpIcon : ArrowDownIcon"
+          class="size-3 font-semibold"
+          [class]="balanceChange() >= 0 ? 'text-primary' : 'text-destructive'"
+        />
+        <span [class]="balanceChange() >= 0 ? 'text-primary' : 'text-destructive'" class="text-sm">
+          {{ balanceChange() >= 0 ? '+' : '' }}{{ balanceChange() }}%
+        </span>
+        <span class="text-xs text-muted-foreground">compared to {{ periodLabel() }}</span>
       </div>
 
       @if (balanceSparkline(); as spark) {
         <apx-chart
-          class="shrink-0 -mb-1 -mr-2"
+          class="shrink-0 -mb-1 -mr-1"
           [series]="spark.series!"
           [chart]="spark.chart!"
           [colors]="spark.colors!"

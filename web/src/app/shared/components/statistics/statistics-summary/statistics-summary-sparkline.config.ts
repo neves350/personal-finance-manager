@@ -103,7 +103,7 @@ export function createSparklineChartOptions(
 				show: !!labels,
 			},
 			y: {
-				formatter: (val: number) => `${val.toFixed(0)}€`,
+				formatter: (val: number) => `€${val.toFixed(0)}`,
 			},
 		},
 	}
