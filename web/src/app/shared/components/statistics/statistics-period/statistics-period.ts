@@ -14,7 +14,6 @@ import {
 	LucideAngularModule,
 } from 'lucide-angular'
 import { ChartComponent } from 'ng-apexcharts'
-import { ZardBadgeComponent } from '../../ui/badge'
 import { ZardCardComponent } from '../../ui/card'
 import {
 	createGroupedBarOptions,
@@ -23,12 +22,7 @@ import {
 
 @Component({
 	selector: 'app-statistics-period',
-	imports: [
-		ZardCardComponent,
-		ZardBadgeComponent,
-		LucideAngularModule,
-		ChartComponent,
-	],
+	imports: [ZardCardComponent, LucideAngularModule, ChartComponent],
 	templateUrl: './statistics-period.html',
 })
 export class StatisticsPeriod {

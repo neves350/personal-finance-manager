@@ -39,8 +39,8 @@ export function createGroupedBarOptions(
 	const mutedForeground =
 		getCssVar('--muted-foreground') || 'oklch(0.55 0.02 264)'
 	const borderColor = getCssVar('--border') || 'oklch(0.88 0.02 264)'
-	const chart2 = getCssVar('--chart-2') || 'oklch(0.6 0.118 184.704)'
-	const previousColor = `color-mix(in oklch, ${mutedForeground} 40%, transparent)`
+	const primary = getCssVar('--primary') || 'oklch(0.6 0.118 184.704)'
+	const previousColor = `color-mix(in oklch, ${mutedForeground} 30%, transparent)`
 
 	return {
 		series: [
@@ -63,18 +63,18 @@ export function createGroupedBarOptions(
 		],
 		chart: {
 			type: 'bar',
-			height: 320,
+			height: 350,
 			fontFamily: 'inherit',
 			foreColor: foreground,
 			background: 'transparent',
 			toolbar: { show: false },
 		},
-		colors: [previousColor, chart2],
+		colors: [previousColor, primary],
 		plotOptions: {
 			bar: {
 				horizontal: false,
-				columnWidth: '30%',
-				borderRadius: 10,
+				columnWidth: '40%',
+				borderRadius: 5,
 				borderRadiusApplication: 'end',
 			},
 		},
@@ -99,8 +99,8 @@ export function createGroupedBarOptions(
 					fontSize: '12px',
 				},
 				formatter: (value: number) => {
-					if (value >= 1000) return `${(value / 1000).toFixed(1)}k`
-					return `${value}`
+					if (value >= 1000) return `€${(value / 1000).toFixed(1)}k`
+					return `€${value}`
 				},
 			},
 		},
@@ -135,10 +135,10 @@ export function createGroupedBarOptions(
 			},
 			y: {
 				formatter: (value: number) =>
-					`${value.toLocaleString('pt-PT', {
+					`€${value.toLocaleString('pt-PT', {
 						minimumFractionDigits: 2,
 						maximumFractionDigits: 2,
-					})} €`,
+					})}`,
 			},
 		},
 		responsive: [
