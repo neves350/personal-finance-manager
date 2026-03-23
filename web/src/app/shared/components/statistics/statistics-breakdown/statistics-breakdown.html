@@ -1,32 +1,43 @@
-<z-card>
-  <h1 class="font-semibold">Top expenses</h1>
+<z-card class="h-full">
+	<div class="flex items-center justify-between">
+		<h1 class="font-semibold">Top expenses</h1>
+		<span class="text-xs xl:text-sm text-muted-foreground">
+		Total: €{{ formatAmount(expenseTotal()) }}
+		</span>
+	</div>
 
-  <div class="mt-4 space-y-3">
-    @for (category of topCategories(); track category.categoryId; let i = $index) {
-      <div class="flex items-center gap-3">
-        <div
-          class="size-10 shrink-0 flex items-center justify-center rounded-md"
-          [class]="getRowStyle(i).bg"
-        >
-          <i-lucide [img]="iconMap[category.categoryIcon]" class="size-4" />
-        </div>
+	<div class="mt-6">
+		<div class="h-3 flex gap-1.5 items-center justify-center">
+			@for (category of topCategories(); track category.categoryId; let i = $index) {
+				<div
+					class="h-full rounded-full"
+					[style.width.%]="category.percentage"
+					[class]="getBarClass(i)"
+				></div>
+			}
+		</div>
+	</div>
 
-        <span class="text-sm font-medium w-40 truncate shrink-0"
-          >{{ category.categoryTitle }} ({{ category.percentage }}%)</span
-        >
-
-        <div class="flex-1 min-w-0 ml-13">
-          <z-progress-bar
-            [progress]="category.percentage"
-            [zType]="getRowStyle(i).zType"
-            class="h-1.5 w-80"
-          />
-        </div>
-
-        <span class="text-sm font-semibold shrink-0 text-right w-24"
-          >{{ formatAmount(category.total) }} €</span
-        >
-      </div>
-    }
-  </div>
+	<div class="mt-4 divide-y divide-border">
+		@for (category of topCategories(); track category.categoryId; let i = $index) {
+			<div class="flex items-center justify-between py-3">
+				<div class="flex items-center gap-3">
+					<div class="size-3 rounded-full" [class]="getDotClass(i)"></div>
+					<i-lucide
+						[img]="iconMap[category.categoryIcon]"
+						class="size-4 text-muted-foreground"
+					/>
+					<span class="text-sm">{{ category.categoryTitle }}</span>
+				</div>
+				<div class="flex items-center gap-4">
+					<span class="text-xs xl:text-sm text-muted-foreground">
+					{{ category.percentage }}%
+					</span>
+					<span class="text-sm font-semibold w-20 text-right">
+					€{{ formatAmount(category.total) }}
+					</span>
+				</div>
+			</div>
+		}
+	</div>
 </z-card>
