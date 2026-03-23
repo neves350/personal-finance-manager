@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common'
 import {
 	afterNextRender,
 	Component,
@@ -13,9 +14,22 @@ import { ChartComponent } from 'ng-apexcharts'
 import { ZardCardComponent } from '../../ui/card'
 import { ZardSelectComponent, ZardSelectItemComponent } from '../../ui/select'
 import {
-	createSemiDonutOptions,
-	type SemiDonutChartOptions,
+	createDonutOptions,
+	type DonutChartOptions,
 } from './statistics-categories.config'
+
+const CATEGORY_COLORS = [
+	'var(--chart-1)',
+	'var(--chart-2)',
+	'var(--chart-3)',
+	'var(--chart-4)',
+	'var(--chart-5)',
+	'#f97316',
+	'#ec4899',
+	'#14b8a6',
+	'#8b5cf6',
+	'#f43f5e',
+]
 
 @Component({
 	selector: 'app-statistics-categories',
@@ -25,6 +39,7 @@ import {
 		ChartComponent,
 		ZardSelectComponent,
 		ZardSelectItemComponent,
+		CurrencyPipe,
 	],
 	templateUrl: './statistics-categories.html',
 })
@@ -34,7 +49,7 @@ export class StatisticsCategories {
 	readonly TagsIcon = TagsIcon
 	readonly selectedType = signal<'EXPENSE' | 'INCOME'>('EXPENSE')
 	readonly chart = viewChild<ChartComponent>('chart')
-	readonly chartOptions = signal<Partial<SemiDonutChartOptions> | null>(null)
+	readonly chartOptions = signal<Partial<DonutChartOptions> | null>(null)
 
 	readonly categoryData = computed(() =>
 		this.selectedType() === 'EXPENSE'
@@ -60,6 +75,10 @@ export class StatisticsCategories {
 		})
 	}
 
+	getCategoryColor(index: number): string {
+		return CATEGORY_COLORS[index % CATEGORY_COLORS.length]
+	}
+
 	onTypeChange(value: string | string[]): void {
 		const val = Array.isArray(value) ? value[0] : value
 		this.selectedType.set(val as 'EXPENSE' | 'INCOME')
@@ -74,9 +93,7 @@ export class StatisticsCategories {
 
 		const labels = cats.map((c) => c.categoryTitle)
 		const amounts = cats.map((c) => c.total)
-		this.chartOptions.set(
-			createSemiDonutOptions(labels, amounts, this.totalTransactions()),
-		)
+		this.chartOptions.set(createDonutOptions(labels, amounts))
 	}
 
 	private observeThemeChanges(): void {

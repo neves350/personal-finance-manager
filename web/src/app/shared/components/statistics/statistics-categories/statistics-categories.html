@@ -1,6 +1,6 @@
-<z-card class="mt-6">
+<z-card class="mt-3 xl:mt-4 h-122 *:data-[slot=card-content]:flex-1 *:data-[slot=card-content]:flex *:data-[slot=card-content]:flex-col">
   <div class="flex justify-between items-start">
-    <h1 class="font-semibold flex items-center">Spending by category</h1>
+    <h2 class="text-lg font-semibold flex items-center">Spending by category</h2>
 
     <div class="flex items-center gap-3">
       <z-select [zValue]="selectedType()" (zSelectionChange)="onTypeChange($event)">
@@ -11,28 +11,47 @@
   </div>
 
   @if (chartOptions()) {
-    <div class="relative mt-4">
-      <apx-chart
-        #chart
-        [series]="chartOptions()!.series!"
-        [chart]="chartOptions()!.chart!"
-        [labels]="chartOptions()!.labels!"
-        [colors]="chartOptions()!.colors!"
-        [legend]="chartOptions()!.legend!"
-        [plotOptions]="chartOptions()!.plotOptions!"
-        [dataLabels]="chartOptions()!.dataLabels!"
-        [tooltip]="chartOptions()!.tooltip!"
-        [stroke]="chartOptions()!.stroke!"
-        [responsive]="chartOptions()!.responsive!"
-      />
-      <span
-        class="absolute left-1/2 top-[52%] -translate-x-1/2 text-xs text-muted-foreground pointer-events-none"
-      >
-        {{ totalTransactions() }} transactions
-      </span>
+    <div class="flex-1 flex gap-8 items-center">
+      <!-- Donut Chart -->
+      <div class="shrink-0">
+        <apx-chart
+          #chart
+          [series]="chartOptions()!.series!"
+          [chart]="chartOptions()!.chart!"
+          [labels]="chartOptions()!.labels!"
+          [colors]="chartOptions()!.colors!"
+          [legend]="chartOptions()!.legend!"
+          [plotOptions]="chartOptions()!.plotOptions!"
+          [dataLabels]="chartOptions()!.dataLabels!"
+          [tooltip]="chartOptions()!.tooltip!"
+          [stroke]="chartOptions()!.stroke!"
+          [responsive]="chartOptions()!.responsive!"
+        />
+      </div>
+
+      <!-- Category list -->
+      <div class="flex-1 space-y-3 overflow-y-auto">
+        @for (cat of categories(); track cat.categoryId; let i = $index) {
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <div
+                class="size-2.5 rounded-full"
+                [style.backgroundColor]="getCategoryColor(i)"
+              ></div>
+              <span class="text-sm text-muted-foreground">{{ cat.categoryTitle }}</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-sm font-medium">{{ cat.total | currency: 'EUR' }}</span>
+              <span class="text-xs text-muted-foreground w-12 text-right"
+                >{{ cat.percentage }}%</span
+              >
+            </div>
+          </div>
+        }
+      </div>
     </div>
   } @else {
-    <div class="flex flex-col items-center justify-center min-h-[380px] text-muted-foreground">
+    <div class="flex flex-col items-center justify-center min-h-95 text-muted-foreground">
       <i-lucide [img]="TagsIcon" class="size-10 mb-2" />
       <p>No category data for this period.</p>
     </div>

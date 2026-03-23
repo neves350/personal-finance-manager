@@ -9,7 +9,7 @@ import type {
 	ApexTooltip,
 } from 'ng-apexcharts'
 
-export type SemiDonutChartOptions = {
+export type DonutChartOptions = {
 	series: ApexNonAxisChartSeries
 	chart: ApexChart
 	labels: string[]
@@ -28,11 +28,24 @@ function getCssVar(name: string): string {
 		.trim()
 }
 
-export function createSemiDonutOptions(
+function formatCurrency(value: number): string {
+	return value.toLocaleString('pt-PT', {
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2,
+	})
+}
+
+function formatCompact(value: number): string {
+	if (value >= 1000) {
+		return `${(value / 1000).toFixed(1)}k`
+	}
+	return formatCurrency(value)
+}
+
+export function createDonutOptions(
 	categories: string[],
 	amounts: number[],
-	_totalTransactions: number,
-): Partial<SemiDonutChartOptions> {
+): Partial<DonutChartOptions> {
 	const foreground = getCssVar('--foreground') || 'oklch(0.26 0.05 173)'
 	const cardBg = getCssVar('--card') || 'oklch(1 0 0)'
 	const mutedForeground =
@@ -44,6 +57,11 @@ export function createSemiDonutOptions(
 		getCssVar('--chart-3') || 'oklch(0.398 0.07 227.392)',
 		getCssVar('--chart-4') || 'oklch(0.828 0.189 84.429)',
 		getCssVar('--chart-5') || 'oklch(0.769 0.188 70.08)',
+		'#f97316',
+		'#ec4899',
+		'#14b8a6',
+		'#8b5cf6',
+		'#f43f5e',
 	]
 	const chartColors = categories.map(
 		(_, i) => baseColors[i % baseColors.length],
@@ -55,7 +73,8 @@ export function createSemiDonutOptions(
 		series: amounts,
 		chart: {
 			type: 'donut',
-			height: 380,
+			height: 280,
+			width: 220,
 			fontFamily: 'inherit',
 			foreColor: foreground,
 			background: 'transparent',
@@ -64,10 +83,8 @@ export function createSemiDonutOptions(
 		colors: chartColors,
 		plotOptions: {
 			pie: {
-				startAngle: -90,
-				endAngle: 90,
 				donut: {
-					size: '80%',
+					size: '70%',
 					labels: {
 						show: true,
 						total: {
@@ -75,30 +92,23 @@ export function createSemiDonutOptions(
 							label: 'Total',
 							fontSize: '13px',
 							color: mutedForeground,
-							formatter: () =>
-								`${total.toLocaleString('pt-PT', {
-									minimumFractionDigits: 2,
-									maximumFractionDigits: 2,
-								})} €`,
+							formatter: () => `€${formatCompact(total)}`,
 						},
 						value: {
 							show: true,
-							fontSize: '22px',
+							fontSize: '20px',
 							fontWeight: 700,
 							color: foreground,
-							offsetY: -10,
+							offsetY: 4,
 							formatter: (val: string) => {
 								const num = Number.parseFloat(val)
-								return `${num.toLocaleString('pt-PT', {
-									minimumFractionDigits: 2,
-									maximumFractionDigits: 2,
-								})} €`
+								return `€${formatCurrency(num)}`
 							},
 						},
 						name: {
 							show: true,
-							offsetY: -25,
-							fontSize: '13px',
+							offsetY: -8,
+							fontSize: '12px',
 							color: mutedForeground,
 						},
 					},
@@ -109,27 +119,7 @@ export function createSemiDonutOptions(
 			enabled: false,
 		},
 		legend: {
-			position: 'bottom',
-			horizontalAlign: 'center',
-			fontSize: '14px',
-			offsetY: -50,
-			labels: {
-				colors: foreground,
-			},
-			markers: {
-				shape: 'circle',
-				strokeWidth: 1,
-				offsetX: -4,
-			},
-			formatter: (seriesName: string, opts) => {
-				const value = opts.w.globals.series[opts.seriesIndex]
-				const percentage = ((value / total) * 100).toFixed(1)
-				return `${seriesName}: ${percentage}%`
-			},
-			itemMargin: {
-				horizontal: 18,
-				vertical: 15,
-			},
+			show: false,
 		},
 		stroke: {
 			show: true,
@@ -142,11 +132,7 @@ export function createSemiDonutOptions(
 				fontSize: '12px',
 			},
 			y: {
-				formatter: (value: number) =>
-					`${value.toLocaleString('pt-PT', {
-						minimumFractionDigits: 2,
-						maximumFractionDigits: 2,
-					})} €`,
+				formatter: (value: number) => `€${formatCurrency(value)}`,
 			},
 		},
 		responsive: [
@@ -154,7 +140,7 @@ export function createSemiDonutOptions(
 				breakpoint: 480,
 				options: {
 					chart: {
-						height: 280,
+						height: 240,
 					},
 				},
 			},
