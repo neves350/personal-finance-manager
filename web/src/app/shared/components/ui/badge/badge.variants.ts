@@ -18,7 +18,7 @@ export const badgeVariants = cva(
 					'border-secondary-foreground/30 bg-secondary-foreground/20 text-secondary-foreground',
 				success: 'border-green-500/30 bg-green-500/15 text-primary',
 				warning: 'border-yellow-500/30 bg-yellow-500/15 text-yellow-500/95',
-				completed: 'border-teal-500/30 bg-teal-500/15 text-teal-500/95',
+				completed: 'border-chart-2/30 bg-chart-2/15 text-chart-2/95',
 				positive:
 					'border-(--income-foreground-border) bg-(--income)/70 text-income-foreground',
 				negative: 'border-destructive/30 bg-destructive/20 text-destructive',
