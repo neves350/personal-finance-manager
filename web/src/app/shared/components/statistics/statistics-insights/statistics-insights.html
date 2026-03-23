@@ -1,26 +1,14 @@
-<z-card class="h-full">
-  <h1 class="font-semibold">Insights & Overview</h1>
-  <p class="text-xs text-muted-foreground">Patterns identified in your spending</p>
+<z-card class="h-full overflow-y-hidden">
+  <h2 class="text-lg font-semibold">Insights & Overview</h2>
 
   <div class="flex flex-col gap-4 mt-6">
     @for (insight of insights(); track $index) {
-      <div
-        class="flex items-start gap-3 rounded-lg border p-4"
-        [class]="insight.border + ' ' + insight.bg"
-      >
-        <div
-          class="size-9 flex items-center justify-center rounded-lg border shrink-0"
-          [class]="insight.border + ' ' + insight.bg"
-        >
+      <div class="rounded-lg border p-4" [class]="insight.border + ' ' + insight.bg">
+        <div class="flex items-center gap-2" [class]="insight.color">
           <i-lucide [img]="insight.icon" class="size-4" />
+          <span class="uppercase text-xs font-semibold">{{ insight.label }}</span>
         </div>
-
-        <div class="space-y-1">
-          <z-badge [zType]="insight.badge.type" class="uppercase text-[10px]">{{
-            insight.badge.label
-          }}</z-badge>
-          <p class="text-sm">{{ insight.message }}</p>
-        </div>
+        <p class="text-sm mt-2">{{ insight.message }}</p>
       </div>
     }
   </div>

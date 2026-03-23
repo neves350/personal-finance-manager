@@ -8,12 +8,11 @@ import {
 	TrendingDownIcon,
 } from 'lucide-angular'
 import type { Insight } from '@/interfaces/insight.interface'
-import { ZardBadgeComponent } from '../../ui/badge'
 import { ZardCardComponent } from '../../ui/card'
 
 @Component({
 	selector: 'app-statistics-insights',
-	imports: [ZardCardComponent, LucideAngularModule, ZardBadgeComponent],
+	imports: [ZardCardComponent, LucideAngularModule],
 	templateUrl: './statistics-insights.html',
 })
 export class StatisticsInsights {
@@ -33,10 +32,11 @@ export class StatisticsInsights {
 			if (category.percentage > 50) {
 				result.push({
 					icon: BadgeAlertIcon,
-					badge: { label: 'Cost Alert', type: 'destructive' },
+					label: 'Cost Alert',
+					color: 'text-destructive',
 					message: `${category.categoryTitle} represents ${category.percentage}% of your expenses (${this.fmt(category.total)})`,
-					border: 'border-expense-foreground/30',
-					bg: 'bg-expense-foreground/5',
+					border: 'border-destructive/30',
+					bg: 'bg-destructive/5',
 				})
 			}
 		}
@@ -46,10 +46,11 @@ export class StatisticsInsights {
 		if (top && top.percentage > 40 && top.percentage <= 50) {
 			result.push({
 				icon: TagIcon,
-				badge: { label: 'Category', type: 'warning' },
+				label: 'Category',
+				color: 'text-yellow-500',
 				message: `${top.categoryTitle} represents ${top.percentage}% of your total expenses`,
-				border: 'border-goal-foreground/30',
-				bg: 'bg-goal-foreground/5',
+				border: 'border-chart-4/30',
+				bg: 'bg-chart-4/5',
 			})
 		}
 
@@ -60,10 +61,11 @@ export class StatisticsInsights {
 		) {
 			result.push({
 				icon: TrendingDownIcon,
-				badge: { label: 'Spending', type: 'destructive' },
+				label: 'Spending',
+				color: 'text-destructive',
 				message: `You spent more than you earned this period (${this.fmt(overview.totalExpenses)} vs ${this.fmt(overview.totalIncome)})`,
-				border: 'border-expense-foreground/30',
-				bg: 'bg-expense-foreground/5',
+				border: 'border-destructive/30',
+				bg: 'bg-destructive/5',
 			})
 		}
 
@@ -71,10 +73,11 @@ export class StatisticsInsights {
 		if (expenses.length === 1) {
 			result.push({
 				icon: TagIcon,
-				badge: { label: 'Category', type: 'warning' },
+				label: 'Category',
+				color: 'text-chart-2',
 				message: `All your expenses are in a single category: ${expenses[0].categoryTitle}`,
-				border: 'border-goal-foreground/30',
-				bg: 'bg-goal-foreground/5',
+				border: 'border-chart-2/30',
+				bg: 'bg-chart-2/5',
 			})
 		}
 
@@ -85,10 +88,11 @@ export class StatisticsInsights {
 		) {
 			result.push({
 				icon: LightbulbIcon,
-				badge: { label: 'Tip', type: 'success' },
+				label: 'Tip',
+				color: 'text-primary',
 				message: `You're saving more than 50% of your income this period`,
-				border: 'border-income-foreground/30',
-				bg: 'bg-income-foreground/5',
+				border: 'border-primary/30',
+				bg: 'bg-primary/5',
 			})
 		}
 
@@ -96,9 +100,9 @@ export class StatisticsInsights {
 	})
 
 	private fmt(value: number): string {
-		return `${new Intl.NumberFormat('pt-PT', {
+		return `€${new Intl.NumberFormat('pt-PT', {
 			minimumFractionDigits: 2,
 			maximumFractionDigits: 2,
-		}).format(value)}€`
+		}).format(value)}`
 	}
 }
