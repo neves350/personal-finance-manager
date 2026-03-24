@@ -1,41 +1,41 @@
-<div class="mt-4 overflow-hidden rounded-md border">
+<div class="mt-4 overflow-hidden overflow-x-auto rounded-md border-2">
   <table z-table zSize="comfortable">
     <thead z-table-header class="bg-table">
       <tr z-table-row>
         <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('date')">
           <div class="flex items-center gap-1 text-muted-foreground">
             Date
-            <i-lucide [img]="sortNumberIcon('date')" class="size-3.5 text-muted-foreground" />
+            <i-lucide [img]="sortNumberIcon('date')" class="size-3 xl:size-3.5 text-muted-foreground" />
           </div>
         </th>
         <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('description')">
           <div class="flex items-center gap-1 text-muted-foreground">
             Description
-            <i-lucide [img]="sortTextIcon('description')" class="size-3.5 text-muted-foreground" />
+            <i-lucide [img]="sortTextIcon('description')" class="size-3 xl:size-3.5 text-muted-foreground" />
           </div>
         </th>
         <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('account')">
           <div class="flex items-center gap-1 text-muted-foreground">
             Account
-            <i-lucide [img]="sortTextIcon('account')" class="size-3.5 text-muted-foreground" />
+            <i-lucide [img]="sortTextIcon('account')" class="size-3 xl:size-3.5 text-muted-foreground" />
           </div>
         </th>
         <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('category')">
           <div class="flex items-center gap-1 text-muted-foreground">
             Category
-            <i-lucide [img]="sortTextIcon('category')" class="size-3.5 text-muted-foreground" />
+            <i-lucide [img]="sortTextIcon('category')" class="size-3 xl:size-3.5 text-muted-foreground" />
           </div>
         </th>
         <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('status')">
           <div class="flex items-center gap-1 text-muted-foreground">
             Status
-            <i-lucide [img]="sortTextIcon('status')" class="size-3.5 text-muted-foreground" />
+            <i-lucide [img]="sortTextIcon('status')" class="size-3 xl:size-3.5 text-muted-foreground" />
           </div>
         </th>
         <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('amount')">
           <div class="flex items-center gap-1 text-muted-foreground">
             Amount
-            <i-lucide [img]="sortNumberIcon('amount')" class="size-3.5 text-muted-foreground" />
+            <i-lucide [img]="sortNumberIcon('amount')" class="size-3 xl:size-3.5 text-muted-foreground" />
           </div>
         </th>
         <th z-table-head class="w-20"></th>
