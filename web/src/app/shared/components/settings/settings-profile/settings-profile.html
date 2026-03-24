@@ -1,7 +1,7 @@
 @if (user(); as user) {
   <div class="space-y-6">
     <div>
-      <h2 class="text-base font-semibold">Profile Information</h2>
+      <h2 class="text-base font-semibold font-display">Profile Information</h2>
       <p class="text-sm text-muted-foreground">
         Manage your personal details and keep your contact info up to date.
       </p>
@@ -10,21 +10,21 @@
     <form [formGroup]="form" (ngSubmit)="save()" class="space-y-6">
       <div class="grid grid-cols-[1fr_2fr] items-center gap-x-6 gap-y-5 max-w-2xl">
         <!-- Profile Picture -->
-        <label class="text-sm font-medium">Profile Picture</label>
+        <label class="text-sm font-medium text-muted-foreground">Profile Picture</label>
         <div class="flex items-center gap-4">
           @if (pendingAvatarUrl(); as preview) {
-            <img [src]="preview" [alt]="user.name" class="size-12 rounded-full object-cover" />
+            <img [src]="preview" [alt]="user.name" class="size-14 rounded-full object-cover" />
           } @else {
             <z-avatar
               [zSrc]="avatarPreview()"
               [zFallback]="initials()"
               [zAlt]="user.name"
               [zSize]="48"
-              class="bg-accent"
+              class="bg-primary text-primary-foreground"
             />
           }
           @if (avatarPreview()) {
-            <z-button type="button" zType="ghost" zSize="sm" (click)="deleteImage()">
+            <z-button type="button" zType="link" zSize="sm" class="text-destructive" (click)="deleteImage()">
               Delete
             </z-button>
           }
@@ -41,7 +41,7 @@
         </div>
 
         <!-- Name -->
-        <label for="settings-name" class="text-sm font-medium">Name</label>
+        <label for="settings-name" class="text-sm font-medium text-muted-foreground">Name</label>
         <input
           z-input
           id="settings-name"
@@ -51,7 +51,7 @@
         />
 
         <!-- Email -->
-        <label for="settings-email" class="text-sm font-medium">Email</label>
+        <label for="settings-email" class="text-sm font-medium text-muted-foreground">Email</label>
         <input
           z-input
           id="settings-email"
