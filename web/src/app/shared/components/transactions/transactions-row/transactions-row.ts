@@ -23,6 +23,7 @@ import { ZardButtonComponent } from '../../ui/button'
 import { ZardDialogService } from '../../ui/dialog'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardPopoverComponent, ZardPopoverDirective } from '../../ui/popover'
+import { ZardSheetService } from '../../ui/sheet'
 import type { iTransactionData } from '../transactions-form/transactions-form.interface'
 
 @Component({
@@ -41,6 +42,7 @@ import type { iTransactionData } from '../transactions-form/transactions-form.in
 })
 export class TransactionsRow {
 	private readonly transactionsService = inject(TransactionsService)
+	private readonly sheetService = inject(ZardSheetService)
 	private readonly dialogService = inject(ZardDialogService)
 
 	readonly transaction = input.required<Transaction>()
@@ -54,26 +56,26 @@ export class TransactionsRow {
 	readonly statusIcon = computed(() => {
 		return this.transaction().isPaid
 			? {
-					dot: 'bg-income-foreground shadow-[0_0_6px_var(--color-income-foreground)]',
+					dot: 'bg-primary shadow-[0_0_6px_var(--color-primary)]',
 					label: 'Completed',
-					class: 'text-income-foreground font-medium',
+					class: 'text-primary font-medium',
 				}
 			: {
-					dot: 'bg-goal-foreground shadow-[0_0_6px_var(--color-goal-foreground)]',
+					dot: 'bg-chart-4 shadow-[0_0_6px_var(--color-chart-4)]',
 					label: 'Pending',
-					class: 'text-goal-foreground font-medium',
+					class: 'text-chart-4 font-medium',
 				}
 	})
 
 	readonly typeIcon = computed(() => {
 		return this.transaction().type === 'EXPENSE'
 			? {
-					dot: 'bg-expense-foreground shadow-[0_0_6px_var(--color-expense-foreground)]',
-					class: 'text-expense-foreground font-medium',
+					dot: 'bg-destructive shadow-[0_0_6px_var(--color-destructive)]',
+					class: 'text-destructive font-medium',
 				}
 			: {
-					dot: 'bg-income-foreground shadow-[0_0_6px_var(--color-income-foreground)]',
-					class: 'text-income-foreground font-medium',
+					dot: 'bg-primary shadow-[0_0_6px_var(--color-primary)]',
+					class: 'text-primary font-medium',
 				}
 	})
 
@@ -82,7 +84,7 @@ export class TransactionsRow {
 
 		const formatted = amount
 
-		return type === 'INCOME' ? `+${formatted}` : `-${formatted}`
+		return type === 'INCOME' ? `+€${formatted}` : `-€${formatted}`
 	})
 
 	readonly amountClass = computed(() =>
@@ -101,18 +103,19 @@ export class TransactionsRow {
 			'../transactions-form/transactions-form'
 		)
 
-		this.dialogService.create({
+		this.sheetService.create({
 			zTitle: 'Edit Transaction',
 			zContent: TransactionsForm,
 			zWidth: '500px',
+			zSide: 'right',
 			zHideFooter: false,
 			zOkText: 'Save Changes',
 			zOnOk: (instance: InstanceType<typeof TransactionsForm>) => {
 				instance.submit()
-				return false // submit() handle close
+				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: this.transaction().id,
 				title: this.transaction().title,
@@ -131,10 +134,11 @@ export class TransactionsRow {
 			'../transactions-form/transactions-form'
 		)
 
-		this.dialogService.create({
+		this.sheetService.create({
 			zTitle: 'Duplicate Transaction',
 			zContent: TransactionsForm,
 			zWidth: '500px',
+			zSide: 'right',
 			zHideFooter: false,
 			zOkText: 'Create Transaction',
 			zOnOk: (instance: InstanceType<typeof TransactionsForm>) => {
@@ -142,7 +146,7 @@ export class TransactionsRow {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				title: this.transaction().title,
 				isPaid: this.transaction().isPaid,
