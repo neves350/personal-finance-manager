@@ -3,14 +3,12 @@ import { SettingsAppearance } from '@/shared/components/settings/settings-appear
 import { SettingsProfile } from '@/shared/components/settings/settings-profile/settings-profile'
 import { SettingsSecurity } from '@/shared/components/settings/settings-security/settings-security'
 import { ZardCardComponent } from '@/shared/components/ui/card'
-import { ZardDividerComponent } from '@/shared/components/ui/divider'
 
 @Component({
 	selector: 'app-settings',
 	imports: [
 		SettingsProfile,
 		ZardCardComponent,
-		ZardDividerComponent,
 		SettingsSecurity,
 		SettingsAppearance,
 	],
