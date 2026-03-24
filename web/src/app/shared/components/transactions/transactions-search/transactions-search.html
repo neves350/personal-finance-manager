@@ -1,4 +1,4 @@
-<div class="flex items-center justify-end gap-4">
+<div class="flex items-center justify-end gap-2 xl:gap-4">
   <div class="relative">
     <i-lucide
       [img]="SearchIcon"
@@ -8,13 +8,11 @@
     <input
       z-input
       placeholder="Search transactions..."
-      class="pl-9 w-80"
+      class="pl-9 w-50 xl:pl-9 xl:w-80"
       [value]="searchValue()"
       (input)="onSearch($event)"
     />
   </div>
-
-  <z-divider zOrientation="vertical" class="h-5" />
 
   <z-button
     zType="goalGhost"
@@ -32,7 +30,6 @@
   @if (hasActivateFilters()) {
     <z-button zType="goalGhost" zSize="sm" (click)="reset()">
       <i-lucide [img]="XIcon" class="size-4" />
-      Reset
     </z-button>
   }
 </div>

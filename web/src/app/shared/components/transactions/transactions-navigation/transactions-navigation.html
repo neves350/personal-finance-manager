@@ -1,4 +1,4 @@
-<div class="flex items-center justify-start gap-4">
+<div class="flex items-center justify-start gap-2 xl:gap-4">
   <z-button zType="ghost" zSize="sm" (click)="prevMonth()">
     <i-lucide [img]="ChevronLeftIcon" class="size-4" />
   </z-button>
@@ -6,8 +6,6 @@
   <z-button zType="ghost" zSize="sm" (click)="nextMonth()">
     <i-lucide [img]="ChevronRightIcon" class="size-4" />
   </z-button>
-
-  <z-divider zOrientation="vertical" class="h-5" />
 
   <z-button class="shrink-0" [zType]="todayButtonType()" zSize="sm" (click)="goToToday()"
     >Today</z-button
