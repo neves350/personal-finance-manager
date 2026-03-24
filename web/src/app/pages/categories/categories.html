@@ -1,9 +1,9 @@
-<main class="p-4 md:p-6 w-full">
-  <div class="max-w-[1400px] mx-auto py-6 md:py-3 space-y-8 md:space-y-12">
+<main class="p-6 xl:p-8">
+  <div class="max-w-500 mx-auto py-3 space-y-6">
     <div class="flex justify-between items-start">
-      <h1 class="font-medium flex flex-col text-lg">
+      <h1 class="flex flex-col page-title">
         Categories
-        <span class="font-normal text-muted-foreground text-sm">
+        <span class="page-subtitle">
           Organize your transactions with custom categories.
         </span>
       </h1>
@@ -11,17 +11,17 @@
 
     <app-categories-form [category]="editingCategory()" (editDone)="onEditDone()" />
 
-    <div class="grid grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
       <app-categories-list
         [categories]="expenseCategories()"
-        title="Expense Categories"
-        dotColor="bg-red-500"
+        title="Expenses Categories"
+        dotColor="bg-destructive"
         (edit)="onEdit($event)"
       />
       <app-categories-list
         [categories]="incomeCategories()"
         title="Income Categories"
-        dotColor="bg-emerald-500"
+        dotColor="bg-primary"
         (edit)="onEdit($event)"
       />
     </div>
