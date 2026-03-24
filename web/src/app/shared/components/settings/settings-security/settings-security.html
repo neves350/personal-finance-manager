@@ -1,12 +1,12 @@
 <div class="space-y-6">
   <div>
-    <h2 class="text-base font-semibold">Security</h2>
+    <h2 class="text-base font-semibold font-display">Security</h2>
     <p class="text-sm text-muted-foreground">Password management.</p>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="grid grid-cols-[1fr_2fr] items-center gap-x-6 gap-y-5 max-w-2xl">
-      <label for="currentPassword" class="text-sm font-medium">Old Password</label>
+      <label for="currentPassword" class="text-sm font-medium text-muted-foreground">Old Password</label>
       <div>
         <div class="relative">
           <input
@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <label for="newPassword" class="text-sm font-medium">New Password</label>
+      <label for="newPassword" class="text-sm font-medium text-muted-foreground">New Password</label>
       <div>
         <div class="relative">
           <input
@@ -53,7 +53,7 @@
         }
       </div>
 
-      <label for="confirmPassword" class="text-sm font-medium">Confirm Password</label>
+      <label for="confirmPassword" class="text-sm font-medium text-muted-foreground">Confirm Password</label>
       <div>
         <div class="relative">
           <input
