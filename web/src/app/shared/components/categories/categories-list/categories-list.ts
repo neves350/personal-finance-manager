@@ -23,7 +23,7 @@ import { CATEGORY_ICON_MAP } from '../category-icons'
 export class CategoriesList {
 	readonly categories = input.required<Category[]>()
 	readonly title = input.required<string>()
-	readonly dotColor = input<string>('bg-red-500')
+	readonly dotColor = input<string>('bg-destructive')
 	readonly iconMap = CATEGORY_ICON_MAP
 
 	readonly edit = output<Category>()

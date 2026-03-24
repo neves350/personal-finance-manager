@@ -1,30 +1,28 @@
 <z-card class="py-0 gap-0">
-  <!-- Header -->
   <div class="flex items-center gap-2 -mx-6 px-6 py-4 rounded-t-xl bg-card-header">
     <span class="size-2.5 rounded-full animate-pulse" [class]="dotColor()"></span>
-    <span class="text-sm font-medium">{{ title() }}</span>
+    <span class="text-foreground font-semibold">{{ title() }}</span>
     <span class="text-sm text-muted-foreground">({{ categories().length }})</span>
   </div>
 
-  <!-- Scrollable rows -->
-  <div class="max-h-[415px] overflow-y-auto -mr-3 pr-3 my-2">
+  <div class="max-h-110 xl:max-h-200 overflow-y-auto -mr-4 pr-4 my-2">
     @for (category of categories(); track category.id) {
       <div class="flex items-center justify-between py-3">
         <div class="flex items-center gap-3">
-          <z-badge class="bg-accent" zShape="soft">
+          <z-badge class="bg-primary/20" zShape="soft">
             <i-lucide
               [img]="iconMap[category.icon] ?? iconMap['tag']"
-              class="size-4 text-accent-foreground"
+              class="size-4 text-primary"
             />
           </z-badge>
-          <span class="text-sm">{{ category.title }}</span>
+          <span class="text-sm text-foreground">{{ category.title }}</span>
         </div>
         <div class="flex items-center gap-1">
-          <button z-button zType="ghost" zSize="sm" (click)="editCategory(category)">
-            <i-lucide [img]="SquarePenIcon" class="size-4" />
+          <button z-button zType="sidebarGhost" zSize="sm" (click)="editCategory(category)" class="hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors">
+            <i-lucide [img]="SquarePenIcon" class="size-3.5 xl:size-4" />
           </button>
-          <button z-button zType="ghost" zSize="sm" (click)="deleteCategory(category)">
-            <i-lucide [img]="Trash2Icon" class="size-4" />
+          <button z-button zType="sidebarGhost" zSize="sm" (click)="deleteCategory(category)" class="hover:bg-secondary text-muted-foreground hover:text-destructive transition-colors">
+            <i-lucide [img]="Trash2Icon" class="size-3.5 xl:size-4" />
           </button>
         </div>
       </div>
