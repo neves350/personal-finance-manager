@@ -1,12 +1,12 @@
-<div class="space-y-6 flex items-center justify-between">
+<div class="flex items-center justify-between">
   <div>
-    <h2 class="text-base font-semibold">Appearance</h2>
+    <h2 class="text-base font-semibold font-display">Appearance</h2>
     <p class="text-sm text-muted-foreground">Switch between light and dark themes.</p>
   </div>
 
   <div class="flex items-center p-3 gap-3">
-    <i-lucide [img]="SunIcon" class="h-4" />
-    <z-switch zSize="sm" (click)="toggleTheme()" />
-    <i-lucide [img]="MoonIcon" class="h-4 -ml-1" />
+    <i-lucide [img]="SunIcon" class="h-4" [class]="!darkMode() ? 'text-foreground' : 'text-muted-foreground'" />
+    <z-switch zSize="sm" [zChecked]="darkMode()" (zCheckedChange)="toggleTheme()" />
+    <i-lucide [img]="MoonIcon" class="h-4 -ml-1" [class]="darkMode() ? 'text-foreground' : 'text-muted-foreground'" />
   </div>
 </div>
