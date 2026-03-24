@@ -18,9 +18,9 @@ import { TransactionsSummary } from '@/shared/components/transactions/transactio
 import { TransactionsToolbar } from '@/shared/components/transactions/transactions-toolbar/transactions-toolbar'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
-import { ZardDialogService } from '@/shared/components/ui/dialog'
 import { ZardDropdownImports } from '@/shared/components/ui/dropdown'
 import { ZardLoaderComponent } from '@/shared/components/ui/loader'
+import { ZardSheetService } from '@/shared/components/ui/sheet'
 
 @Component({
 	selector: 'app-transactions',
@@ -40,7 +40,7 @@ import { ZardLoaderComponent } from '@/shared/components/ui/loader'
 })
 export class Transactions {
 	private readonly transactionsService = inject(TransactionsService)
-	private readonly dialogService = inject(ZardDialogService)
+	private readonly sheetService = inject(ZardSheetService)
 
 	readonly transactions = this.transactionsService.transactions
 	readonly isLoading = this.transactionsService.loading
@@ -65,10 +65,11 @@ export class Transactions {
 	})
 
 	openDialog() {
-		this.dialogService.create({
+		this.sheetService.create({
 			zTitle: 'New Transaction',
 			zContent: TransactionsForm,
 			zWidth: '500px',
+			zSide: 'right',
 			zHideFooter: false,
 			zOkText: 'Create Transaction',
 			zOnOk: (instance: TransactionsForm) => {
@@ -76,7 +77,7 @@ export class Transactions {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 }
