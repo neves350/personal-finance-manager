@@ -1,14 +1,14 @@
-<div class="grid grid-cols-3 gap-4 mt-4 items-stretch">
+<div class="grid grid-cols-3 gap-2 xl:gap-4 mt-4 items-stretch">
   <!-- Income -->
   <z-card class="mb-1 h-25 flex flex-col border-4">
     <div class="flex items-start justify-between">
-      <div class="size-10 flex items-center justify-center rounded-lg bg-income">
-        <i-lucide [img]="ArrowUpIcon" class="size-5 text-income-foreground" />
+      <div class="size-10 flex items-center justify-center rounded-lg bg-primary/20">
+        <i-lucide [img]="TrendingUpIcon" class="size-5 text-primary" />
       </div>
       <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
         <span class="truncate text-sm text-muted-foreground font-medium">Incomes</span>
-        <span class="truncate text-lg text-income-foreground font-semibold">
-          +{{ monthSummary().income | number: '1.2-2' }}€
+        <span class="truncate text-lg xl:text-xl text-primary font-bold font-display">
+          +{{ monthSummary().income | currency: 'EUR' }}
         </span>
       </div>
     </div>
@@ -17,13 +17,13 @@
   <!-- Expenses -->
   <z-card class="mb-1 h-25 flex flex-col">
     <div class="flex items-start justify-between">
-      <div class="size-10 flex items-center justify-center rounded-lg bg-expense">
-        <i-lucide [img]="ArrowDownIcon" class="size-5 text-expense-foreground" />
+      <div class="size-10 flex items-center justify-center rounded-lg bg-destructive/20">
+        <i-lucide [img]="TrendingDownIcon" class="size-5 text-destructive" />
       </div>
       <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
         <span class="truncate text-sm text-muted-foreground font-medium">Expenses</span>
-        <span class="truncate text-lg text-expense-foreground font-semibold">
-          -{{ monthSummary().expenses | number: '1.2-2' }}€
+        <span class="truncate text-lg xl:text-xl text-destructive font-bold font-display">
+          -{{ monthSummary().expenses | currency: 'EUR' }}
         </span>
       </div>
     </div>
@@ -32,18 +32,18 @@
   <!-- Net Balance -->
   <z-card class="mb-1 h-25 flex flex-col">
     <div class="flex items-start justify-between">
-      <div class="size-10 flex items-center justify-center rounded-lg bg-transfer">
-        <i-lucide [img]="CoinsIcon" class="size-5 text-transfer-foreground" />
+      <div class="size-10 flex items-center justify-center rounded-lg bg-chart-2/20">
+        <i-lucide [img]="WalletIcon" class="size-5 text-chart-2" />
       </div>
       <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
         <span class="truncate text-sm text-muted-foreground font-medium">Net Balance</span>
         <span
-          class="truncate text-lg font-semibold"
+          class="truncate text-lg xl:text-xl font-bold font-display"
           [class]="
-            monthSummary().balance >= 0 ? 'text-income-foreground' : 'text-expense-foreground'
+            monthSummary().balance >= 0 ? 'text-primary' : 'text-destructive'
           "
         >
-          {{ monthSummary().balance | number: '1.2-2' }}€
+          {{ balanceSign(monthSummary().balance) }}{{ absBalance() | currency: 'EUR' }}
         </span>
       </div>
     </div>
