@@ -1,6 +1,6 @@
 <button
   type="button"
-  class="flex h-9 w-full items-center justify-start gap-2 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs cursor-pointer"
+  class="flex h-9 w-full items-center justify-start gap-2 rounded-md border border-input bg-transparent px-2 xl:px-4 py-1 text-sm shadow-xs cursor-pointer"
   zPopover
   [zContent]="iconPickerContent"
 >
@@ -14,7 +14,7 @@
 
 <ng-template #iconPickerContent>
   <z-popover class="w-80">
-    <div class="max-h-[260px] overflow-y-auto space-y-2">
+    <div class="max-h-65 overflow-y-auto space-y-2">
       @for (group of iconGroups; track group.label) {
         <div>
           <span class="text-xs text-muted-foreground">{{ group.label }}</span>

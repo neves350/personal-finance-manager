@@ -1,4 +1,4 @@
-<z-card class="p-4 space-y-4 mb-6">
+<z-card class="p-3 space-y-3 xl:p-3 xl:space-y-3 mb-4">
   <div class="flex items-center gap-2 text-sm font-medium text-muted-foreground mb-4">
     <i-lucide [img]="isEditMode() ? SaveIcon : CirclePlusIcon" class="size-4" />
     {{ isEditMode() ? 'Edit Category' : 'New Category' }}
@@ -21,7 +21,7 @@
 
       <div class="grid gap-1">
         <label for="type" class="text-sm">Type</label>
-        <z-select class="w-32" formControlName="type">
+        <z-select class="w-28 xl:w-32" formControlName="type">
           @for (categoryType of categoryTypes; track categoryType) {
             <z-select-item [zValue]="categoryType">
               <span>{{ getTypeLabel(categoryType) }}</span>
