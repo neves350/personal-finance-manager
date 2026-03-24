@@ -20,9 +20,9 @@ import {
 } from 'lucide-angular'
 import { ZardCheckboxComponent } from '../../ui/checkbox'
 import { ZardDatePickerComponent } from '../../ui/date-picker'
-import { Z_MODAL_DATA, ZardDialogRef } from '../../ui/dialog'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardSelectComponent, ZardSelectItemComponent } from '../../ui/select'
+import { Z_SHEET_DATA, ZardSheetRef } from '../../ui/sheet'
 import type { iTransactionData } from './transactions-form.interface'
 
 @Component({
@@ -40,9 +40,9 @@ import type { iTransactionData } from './transactions-form.interface'
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionsForm {
-	private readonly zData: iTransactionData = inject(Z_MODAL_DATA)
+	private readonly zData: iTransactionData = inject(Z_SHEET_DATA)
 	private readonly fb = inject(FormBuilder)
-	private readonly dialogRef = inject(ZardDialogRef)
+	private readonly sheetRef = inject(ZardSheetRef)
 	private readonly transactionsService = inject(TransactionsService)
 	private readonly cardsService = inject(CardsService)
 	private readonly categoriesService = inject(CategoriesService)
@@ -139,8 +139,8 @@ export class TransactionsForm {
 		if (!isSelected) return 'border-zinc-700'
 
 		return transactionType === TransactionType.INCOME
-			? 'border-income-foreground bg-income-foreground/10'
-			: 'border-expense-foreground bg-expense-foreground/10'
+			? 'border-primary bg-primary/10'
+			: 'border-destructive bg-destructive/10'
 	}
 
 	getTypeIconClasses(transactionType: TransactionType): string {
@@ -149,8 +149,8 @@ export class TransactionsForm {
 		if (!isSelected) return 'text-muted-foreground'
 
 		return transactionType === TransactionType.INCOME
-			? 'text-income-foreground'
-			: 'text-expense-foreground'
+			? 'text-primary'
+			: 'text-destructive'
 	}
 
 	onDateChange(date: Date | null) {
@@ -180,7 +180,7 @@ export class TransactionsForm {
 			: this.transactionsService.create(payload)
 
 		request$.subscribe({
-			next: () => this.dialogRef.close(),
+			next: () => this.sheetRef.close(),
 		})
 	}
 }
