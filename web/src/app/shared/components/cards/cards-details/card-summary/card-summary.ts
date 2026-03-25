@@ -11,11 +11,17 @@ import {
 import { type Card, CardType } from '@core/api/cards.interface'
 import { CardsService } from '@core/services/cards.service'
 import { ZardCardComponent } from '@/shared/components/ui/card'
+import { ZardDividerComponent } from '@/shared/components/ui/divider'
 import { ZardProgressBarComponent } from '@/shared/components/ui/progress-bar'
 
 @Component({
 	selector: 'app-card-summary',
-	imports: [ZardCardComponent, ZardProgressBarComponent, CurrencyPipe],
+	imports: [
+		ZardCardComponent,
+		ZardProgressBarComponent,
+		ZardDividerComponent,
+		CurrencyPipe,
+	],
 	templateUrl: './card-summary.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { class: 'h-full' },
@@ -53,7 +59,7 @@ export class CardSummary {
 
 	readonly maskedCardNumber = computed(() => {
 		const last = this.card().lastFour
-		return last ? `**** **** **** ${last}` : '**** **** **** ****'
+		return last ? `•••• •••• •••• ${last}` : '•••• •••• •••• ••••'
 	})
 
 	constructor() {
