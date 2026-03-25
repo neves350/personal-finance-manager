@@ -52,9 +52,6 @@ export function createCashflowChartOptions(
 
 	const foreground = getCssVar('--foreground') || 'oklch(0.26 0.05 173)'
 	const border = getCssVar('--border') || 'oklch(0.92 0.004 286.32)'
-	const incomeColor = getCssVar('--income-foreground') || 'oklch(0.60 0.13 163)'
-	const expenseColor =
-		getCssVar('--expense-foreground') || 'oklch(64.6% 0.222 41.116)'
 
 	return {
 		series: [
@@ -65,24 +62,24 @@ export function createCashflowChartOptions(
 			type: 'area',
 			height: 300,
 			toolbar: { show: false },
-			fontFamily: 'inherit',
+			fontFamily: 'Inter, sans-serif',
 			foreColor: foreground,
 			background: 'transparent',
 		},
-		colors: [incomeColor, expenseColor],
+		colors: ['hsl(160, 84%, 39%)', 'hsl(0, 72%, 51%)'],
 		dataLabels: { enabled: false },
-		stroke: { curve: 'smooth', width: 3 },
+		stroke: { curve: 'smooth', width: 2 },
 		fill: {
 			type: 'gradient',
 			gradient: {
 				shadeIntensity: 1,
-				opacityFrom: 0.4,
-				opacityTo: 0.1,
-				stops: [0, 90, 100],
+				opacityFrom: 0.3,
+				opacityTo: 0,
+				stops: [0, 100],
 			},
 		},
 		markers: {
-			size: 4,
+			size: 3,
 			strokeWidth: 2,
 			hover: { size: 6 },
 		},
