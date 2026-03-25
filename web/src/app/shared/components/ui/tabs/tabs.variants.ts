@@ -18,7 +18,7 @@ export const tabContainerVariants = cva('flex', {
 })
 
 export const tabNavVariants = cva(
-	'flex gap-4 overflow-auto scroll nav-tab-scroll',
+	'flex gap-2 overflow-auto scroll nav-tab-scroll',
 	{
 		variants: {
 			zPosition: {
@@ -26,7 +26,7 @@ export const tabNavVariants = cva(
 				bottom: 'flex-row border-t mt-4',
 				left: 'flex-col border-r mr-4 min-h-0',
 				right: 'flex-col border-l ml-4 min-h-0',
-				custom: 'flex-row border-0 mb-4',
+				custom: 'flex-row border-0 mb-4 bg-secondary rounded-lg p-1 w-fit',
 			},
 			zAlignTabs: {
 				start: 'justify-start',
@@ -42,7 +42,7 @@ export const tabNavVariants = cva(
 )
 
 export const tabButtonVariants = cva(
-	'hover:bg-transparent rounded-none flex-shrink-0',
+	'hover:text-foreground rounded-none shrink-0',
 	{
 		variants: {
 			zActivePosition: {
@@ -81,7 +81,7 @@ export const tabButtonVariants = cva(
 			{
 				zActivePosition: 'custom',
 				isActive: true,
-				class: 'bg-income rounded-md font-semibold',
+				class: 'bg-primary text-primary-foreground rounded-md font-semibold',
 			},
 		],
 		defaultVariants: {
