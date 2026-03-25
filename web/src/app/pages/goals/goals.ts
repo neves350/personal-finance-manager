@@ -5,8 +5,8 @@ import { GoalsForm } from '@/shared/components/goals/goals-form/goals-form'
 import { GoalsList } from '@/shared/components/goals/goals-list/goals-list'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
-import { ZardDialogService } from '@/shared/components/ui/dialog'
 import { ZardLoaderComponent } from '@/shared/components/ui/loader'
+import { ZardSheetService } from '@/shared/components/ui/sheet'
 import {
 	ZardTabComponent,
 	ZardTabGroupComponent,
@@ -29,8 +29,8 @@ export class Goals {
 	readonly PlusIcon = PlusIcon
 	readonly GoalIcon = GoalIcon
 
-	private readonly dialogService = inject(ZardDialogService)
 	private readonly goalsService = inject(GoalsService)
+	private readonly sheetService = inject(ZardSheetService)
 
 	readonly hasGoals = this.goalsService.hasGoals
 	readonly isLoading = this.goalsService.loading
@@ -43,10 +43,11 @@ export class Goals {
 	}
 
 	openSheet() {
-		this.dialogService.create({
+		this.sheetService.create({
 			zTitle: 'New Goal',
 			zContent: GoalsForm,
-			zWidth: '450px',
+			zWidth: '500px',
+			zSide: 'right',
 			zHideFooter: false,
 			zOkText: 'Create Goal',
 			zOnOk: (instance: GoalsForm) => {
@@ -54,7 +55,7 @@ export class Goals {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 }

@@ -1,15 +1,15 @@
-<main class="p-4 md:p-6 w-full">
-  <div class="max-w-[1400px] mx-auto py-6 md:py-3 space-y-8 md:space-y-12">
+<main class="p-6 xl:p-8">
+  <div class="max-w-500 mx-auto py-3 space-y-6">
     <div class="flex justify-between items-start">
-      <h1 class="font-medium flex flex-col text-lg">
+      <h1 class="flex flex-col page-title">
         Goals
-        <span class="font-normal text-muted-foreground text-sm">
+        <span class="page-subtitle">
           Track your goals and see if you're on the right track.
         </span>
       </h1>
 
       <div class="justify-end">
-        <z-button class="cursor-pointer" zType="outline" (click)="openSheet()">
+        <z-button class="cursor-pointer" (click)="openSheet()">
           <i-lucide [img]="PlusIcon" />
           New Goal
         </z-button>
@@ -23,7 +23,7 @@
         <span class="text-sm text-muted-foreground">Loading goals...</span>
       </div>
     } @else if (hasGoals()) {
-      <z-tab-group zAlignTabs="center" zTabsPosition="custom" zActivePosition="custom">
+      <z-tab-group class="items-center" zAlignTabs="center" zTabsPosition="custom" zActivePosition="custom">
         <z-tab [label]="'On Track (' + activeGoals().length + ')'">
           <app-goals-list [goals]="activeGoals()" />
         </z-tab>
@@ -32,28 +32,21 @@
         </z-tab>
       </z-tab-group>
     } @else {
-      <z-card class="w-full h-full flex flex-col">
+      <z-card class="flex flex-col mt-4">
         <div class="flex flex-col items-center justify-center p-6 mt-6">
           <div
-            class="size-12 flex items-center justify-center rounded-lg bg-accent text-accent-foreground mb-4"
+            class="size-12 flex items-center justify-center rounded-full bg-primary/20 text-primary mb-4"
           >
-            <i-lucide [img]="GoalIcon" />
+            <i-lucide [img]="GoalIcon" class="size-5" />
           </div>
 
           <div class="flex flex-col items-center text-center">
-            <div class="space-y-2 mt-6">
+            <div class="space-y-2">
               <p class="font-medium">No goals added</p>
               <span class="text-muted-foreground">
                 Set goals to save money or control spending in specific categories.
               </span>
             </div>
-          </div>
-
-          <div class="flex flex-col items-center justify-center mt-4">
-            <z-button class="cursor-pointer" (click)="openSheet()">
-              <i-lucide [img]="PlusIcon" />
-              Create first goal
-            </z-button>
           </div>
         </div>
       </z-card>
