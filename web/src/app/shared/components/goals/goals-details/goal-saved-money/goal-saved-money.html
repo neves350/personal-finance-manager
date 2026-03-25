@@ -1,30 +1,40 @@
 <z-card>
-  <div class="flex items-start justify-between">
-    <h1 class="font-semibold flex flex-col">
-      Money saved
-      <span class="font-normal text-muted-foreground text-sm"
-        >Funds already set aside for this goal</span
-      >
-    </h1>
-
-    <div class="flex gap-1">
-      <z-button class="cursor-pointer mr-2" zType="outline" (click)="addDeposit()">
-        <i-lucide [img]="CirclePlusIcon" />
-        Save more
-      </z-button>
+  @if (goal().paceStatus !== 'COMPLETED') {
+    <div class="flex items-start justify-between">
+      <h1 class="text-base font-semibold font-display flex flex-col">
+        Money saved
+        <span class="font-normal text-muted-foreground text-xs xl:text-sm">
+          Funds already set aside for this goal
+        </span>
+      </h1>
+      <div class="flex gap-1">
+        <z-button class="cursor-pointer mr-2" zType="goalGhost" (click)="addDeposit()">
+          <i-lucide [img]="CirclePlusIcon" />
+          Save more
+        </z-button>
+      </div>
     </div>
-  </div>
+  } @else {
+    <div class="flex items-start justify-between">
+      <h1 class="text-base font-semibold font-display flex flex-col">
+        Deposit history
+        <span class="font-normal text-muted-foreground text-xs xl:text-sm">
+          All deposits made towards this goal
+        </span>
+      </h1>
+    </div>
+  }
 
   @if (hasDeposits()) {
-    <div class="flex-1 mt-4 mb-2">
+    <div class="flex-1 mt-4">
       @for (deposit of deposits(); track deposit.id) {
         <div class="flex w-full items-center outline-none p-2">
-          <div class="size-10 flex items-center justify-center rounded-full bg-income">
-            <i-lucide [img]="CheckIcon" class="h-5 text-income-foreground" />
+          <div class="size-10 flex items-center justify-center rounded-full bg-primary/20">
+            <i-lucide [img]="CircleCheckIcon" class="h-5 text-primary" />
           </div>
 
           <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
-            <span class="truncate text-sm font-medium">{{ deposit.amount | currency: 'EUR' }}</span>
+            <span class="truncate text-sm font-display font-semibold">{{ deposit.amount | currency: 'EUR' }}</span>
             @if (deposit.note) {
               <span class="truncate text-xs text-muted-foreground">
                 {{ deposit.note }} · {{ deposit.createdAt | date: 'd MMMM' }}
@@ -36,34 +46,30 @@
             }
           </div>
         </div>
-      }
       <z-divider />
+      }
       <div class="flex items-center justify-around">
         <span class="text-sm text-muted-foreground">{{ totalDepositsLabel() }}</span>
-        <span class="text-sm text-income-foreground font-semibold"
-          >{{ formattedCurrentAmount() }} saved</span
-        >
+        <span class="text-sm text-income-foreground font-semibold">
+          {{ formattedCurrentAmount() | currency: 'EUR' }} saved
+        </span>
       </div>
     </div>
   } @else if (!loading()) {
     <div class="flex flex-col items-center justify-center p-6 mt-6">
       <div
-        class="size-12 flex items-center justify-center rounded-lg bg-accent text-accent-foreground mb-4"
+        class="size-12 flex items-center justify-center rounded-full bg-secondary text-muted-foreground mb-3"
       >
-        <i-lucide [img]="HandCoinsIcon" />
+        <i-lucide [img]="WalletIcon" class="size-5" />
       </div>
 
       <div class="flex flex-col items-center text-center">
         <div class="space-y-2">
-          <p class="font-medium">Start saving</p>
-          <span class="text-muted-foreground">
-            Record how much you have already set aside for this goal and track your progress.
+          <p class="text-base text-muted-foreground font-medium">Not deposits yet.</p>
+          <span class="text-sm text-muted-foreground mt-1">
+            Start saving towards your goal!
           </span>
         </div>
-        <z-button class="cursor-pointer mr-2 mt-6" zType="outline" (click)="addDeposit()">
-          <i-lucide [img]="CirclePlusIcon" />
-          Save first amount
-        </z-button>
       </div>
     </div>
   }

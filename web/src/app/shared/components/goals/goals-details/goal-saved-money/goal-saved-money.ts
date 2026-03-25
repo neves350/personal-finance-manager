@@ -13,10 +13,10 @@ import { GoalsApi } from '@core/api/goals.api'
 import { Goal } from '@core/api/goals.interface'
 import { GoalsService } from '@core/services/goals.service'
 import {
-	CheckIcon,
+	CircleCheckIcon,
 	CirclePlusIcon,
-	HandCoinsIcon,
 	LucideAngularModule,
+	WalletIcon,
 } from 'lucide-angular'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
@@ -43,8 +43,8 @@ export class GoalSavedMoney {
 	private readonly dialogService = inject(ZardDialogService)
 
 	readonly CirclePlusIcon = CirclePlusIcon
-	readonly HandCoinsIcon = HandCoinsIcon
-	readonly CheckIcon = CheckIcon
+	readonly WalletIcon = WalletIcon
+	readonly CircleCheckIcon = CircleCheckIcon
 
 	readonly goal = input.required<Goal>()
 	readonly deposits = signal<Deposit[]>([])
