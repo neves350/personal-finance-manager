@@ -7,16 +7,16 @@ import {
 } from '@angular/core'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
 import { CardsService } from '@core/services/cards.service'
-import { LucideAngularModule, PlusIcon, WalletCardsIcon } from 'lucide-angular'
+import { CreditCardIcon, LucideAngularModule, PlusIcon } from 'lucide-angular'
 import { CardsForm } from '@/shared/components/cards/cards-form/cards-form'
 import { CardsList } from '@/shared/components/cards/cards-list/cards-list'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
-import { ZardDialogService } from '@/shared/components/ui/dialog'
 import {
 	ZardSelectComponent,
 	ZardSelectItemComponent,
 } from '@/shared/components/ui/select'
+import { ZardSheetService } from '@/shared/components/ui/sheet'
 
 @Component({
 	selector: 'app-cards',
@@ -32,10 +32,10 @@ import {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Cards implements OnInit {
-	readonly WalletCardsIcon = WalletCardsIcon
+	readonly CreditCardIcon = CreditCardIcon
 	readonly PlusIcon = PlusIcon
 
-	private readonly dialogService = inject(ZardDialogService)
+	private readonly sheetService = inject(ZardSheetService)
 	private readonly cardsService = inject(CardsService)
 	private readonly bankAccountsService = inject(BankAccountsService)
 
@@ -44,13 +44,13 @@ export class Cards implements OnInit {
 	readonly loading = this.cardsService.loading
 	readonly hasCards = this.cardsService.hasCards
 
-	// Bank account filter
+	// account filter
 	readonly bankAccounts = this.bankAccountsService.bankAccounts
 	readonly selectedBankAccountId = signal<string | null>(null)
 
 	ngOnInit(): void {
 		this.cardsService.loadCards().subscribe()
-		// Pre-load bank accounts for the form and filter
+		// Pre-load accounts for the form and filter
 		this.bankAccountsService.loadBankAccounts().subscribe()
 	}
 
@@ -61,10 +61,11 @@ export class Cards implements OnInit {
 	}
 
 	openSheet() {
-		this.dialogService.create({
+		this.sheetService.create({
 			zTitle: 'New Card',
 			zContent: CardsForm,
-			zWidth: '600px',
+			zWidth: '500px',
+			zSide: 'right',
 			zHideFooter: false,
 			zOkText: 'Create Card',
 			zOnOk: (instance: CardsForm) => {
@@ -72,7 +73,7 @@ export class Cards implements OnInit {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 }

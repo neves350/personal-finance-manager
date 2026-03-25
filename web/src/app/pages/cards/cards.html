@@ -1,16 +1,16 @@
-<main class="p-4 md:p-6 w-full">
-  <div class="max-w-[1400px] mx-auto py-6 md:py-3 space-y-8 md:space-y-12">
+<main class="p-6 xl:p-8">
+  <div class="max-w-500 mx-auto py-3 space-y-6">
     <div class="flex justify-between items-start">
-      <h1 class="font-medium flex flex-col text-lg">
+      <h1 class="flex flex-col page-title">
         Cards
-        <span class="font-normal text-muted-foreground text-sm">
+        <span class="page-subtitle">
           Manage your credit and debit cards.
         </span>
       </h1>
 
       <div class="flex items-center gap-3">
         <z-select
-          class="w-[200px]"
+          class="w-50"
           zPlaceholder="All bank accounts"
           [zValue]="selectedBankAccountId() ?? 'all'"
           (zSelectionChange)="onBankAccountFilterChange($any($event))"
@@ -31,32 +31,23 @@
     </div>
 
     @if (hasCards()) {
-      <!-- Cards List -->
       <app-cards-list [cards]="cards()" />
     } @else {
       <z-card class="w-full h-full flex flex-col">
-        <!-- Empty State -->
-        <div class="flex flex-col items-center justify-center p-6 mt-6">
+        <div class="flex flex-col items-center justify-center p-6">
           <div
-            class="size-12 flex items-center justify-center rounded-lg bg-accent text-accent-foreground mb-4"
+            class="size-12 flex items-center justify-center rounded-full bg-primary/20 text-primary mb-4"
           >
-            <i-lucide [img]="WalletCardsIcon" />
+            <i-lucide [img]="CreditCardIcon" />
           </div>
 
           <div class="flex flex-col items-center text-center">
-            <div class="space-y-2 mt-6">
+            <div class="space-y-2">
               <p class="font-medium">No cards added</p>
-              <span class="text-muted-foreground">
+              <span class="text-muted-foreground text-sm">
                 Add your cards to track spending and available credit limits.
               </span>
             </div>
-          </div>
-
-          <div class="flex flex-col items-center justify-center mt-4">
-            <z-button class="cursor-pointer" (click)="openSheet()">
-              <i-lucide [img]="PlusIcon" />
-              Add card
-            </z-button>
           </div>
         </div>
       </z-card>
