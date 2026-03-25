@@ -1,14 +1,18 @@
-<z-card class="mb-2 h-full flex flex-col">
+<z-card class="h-full flex flex-col transition-all duration-300 hover:border-primary/40 cursor-pointer" [routerLink]="['/goal-details', goal().id]">
   <div class="flex items-start justify-between">
     <div
-      class="size-10 flex items-center justify-center rounded-lg text-white"
+      class="size-10 xl:size-12 flex items-center justify-center rounded-lg"
       [class]="goalIcon().style"
     >
-      <i-lucide [img]="goalIcon().icon" class="size-5" [class]="goalIcon().style" />
+      @if (goal().paceStatus !== 'COMPLETED') {
+        <i-lucide [img]="goalIcon().icon" class="size-5 xl:size-6" />
+      } @else {
+        <i-lucide [img]="TrophyIcon" class="size-5 xl:size-6" />
+      }
     </div>
 
-    <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
-      <span class="truncate font-medium">
+    <div class="ml-4 grid flex-1 text-left leading-tight">
+      <span class="text-sm truncate font-medium">
         {{ goal().title }}
       </span>
       <span class="truncate text-xs text-muted-foreground">
@@ -18,9 +22,14 @@
 
     <!-- Popover Option -->
     <div class="flex items-center gap-1">
-      <z-button zPopover [zContent]="popoverContent" zType="ghost">
+      @if (goal().paceStatus !== 'COMPLETED') {
+      <z-button zPopover [zContent]="popoverContent" zType="sidebarGhost" class="text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors">
         <i-lucide [img]="EllipsisIcon" class="size-5" />
       </z-button>
+      } @else {
+        <i-lucide [img]="CircleCheckIcon" class="size-4 text-primary" />
+        <span class="text-primary text-sm font-semibold">Completed</span>
+      }
     </div>
   </div>
 
@@ -84,15 +93,19 @@
 
   <div class="mt-6 m-1">
     <div class="flex justify-between mb-1">
-      <span class="font-semibold">{{ amount() | currency: 'EUR' }}</span>
+      <span class="text-lg xl:text-xl font-bold font-display mb-1">{{ amount() | currency: 'EUR' }}</span>
     </div>
-    <z-progress-bar [progress]="goal().progress" class="bg-income" />
-    <div class="flex justify-between mt-1">
+    <z-progress-bar [progress]="goal().progress" class="bg-secondary" />
+    <div class="flex justify-between text-xs mt-1">
       <span class="font-semibold">
         {{ currentAmount() | currency: 'EUR' }}
-        <span class="text-xs text-muted-foreground">saved so far</span>
+        <span class="text-muted-foreground">saved so far</span>
       </span>
-      <span class="justify-end text-muted-foreground">{{ goal().progress }}%</span>
+      @if (goal().paceStatus !== 'COMPLETED') {
+        <span class="justify-end font-medium">{{ goal().progress }}%</span>
+      } @else {
+        <span class="justify-end font-medium text-primary">{{ goal().progress }}%</span>
+      }
     </div>
   </div>
 
@@ -101,33 +114,39 @@
   <div class="ml-1 grid gap-2 text-left text-sm leading-tight">
     @if (goal().paceStatus !== 'COMPLETED') {
       <div class="flex justify-between">
-        <span class="text-sm text-muted-foreground">Target</span>
+        <span class="text-muted-foreground">Target</span>
         @if (goal().endDate) {
-          <span class="font-semibold justify-end">{{ goal().endDate | date: 'mediumDate' }}</span>
+          <span class="font-medium justify-end">{{ goal().endDate | date: 'mediumDate' }}</span>
         } @else {
-          <span class="font-semibold justify-end text-muted-foreground">No end date</span>
+          <span class="font-medium justify-end">No end date</span>
         }
       </div>
       <div class="flex justify-between">
-        <span class="text-sm text-muted-foreground">Remaining</span>
-        <span class="font-semibold justify-end">{{ remainingAmount() | currency: 'EUR' }}</span>
+        <span class="text-muted-foreground">Remaining</span>
+        <span class="font-medium justify-end">{{ remainingAmount() | currency: 'EUR' }}</span>
       </div>
       <div class="flex justify-between">
-        <span class="text-sm text-muted-foreground">Pace</span>
-        <span class="font-semibold justify-end">{{ paceBadge().label }}</span>
+        <span class="text-muted-foreground">Pace</span>
+        <span [class]="'font-medium flex items-center gap-1.5 ' + paceBadge().color">
+          <span [class]="'size-1.5 xl:size-2 rounded-full animate-pulse ' + paceBadge().dot"></span>
+          {{ paceBadge().label }}
+        </span>
       </div>
     } @else {
       <div class="flex justify-between">
-        <span class="text-sm text-muted-foreground">Target</span>
+        <span class="text-muted-foreground">Target</span>
         @if (goal().endDate) {
-          <span class="font-semibold justify-end">{{ goal().endDate | date: 'mediumDate' }}</span>
+          <span class="font-medium justify-end">{{ goal().endDate | date: 'mediumDate' }}</span>
         } @else {
-          <span class="font-semibold justify-end text-muted-foreground">No end date</span>
+          <span class="font-medium justify-end">No end date</span>
         }
       </div>
       <div class="flex justify-between">
-        <span class="text-sm text-muted-foreground">Pace</span>
-        <span class="font-semibold justify-end">{{ paceBadge().label }}</span>
+        <span class="text-muted-foreground">Pace</span>
+        <span [class]="'font-medium flex items-center gap-1.5 ' + paceBadge().color">
+          <span [class]="'size-1.5 xl:size-2 rounded-full animate-pulse ' + paceBadge().dot"></span>
+          {{ paceBadge().label }}
+        </span>
       </div>
     }
   </div>
