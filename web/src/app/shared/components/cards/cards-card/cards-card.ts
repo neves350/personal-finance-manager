@@ -11,13 +11,14 @@ import { RouterLink } from '@angular/router'
 import { Card, CardColor, CardType } from '@core/api/cards.interface'
 import { CardsService } from '@core/services/cards.service'
 import {
+	BanknoteIcon,
 	CreditCardIcon,
 	EllipsisIcon,
 	EyeIcon,
 	LucideAngularModule,
+	LucideIconData,
 	SquarePenIcon,
 	Trash2Icon,
-	WalletIcon,
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
 import { lastValueFrom } from 'rxjs'
@@ -52,8 +53,6 @@ export class CardsCard {
 	private readonly dialogService = inject(ZardDialogService)
 	private readonly sheetService = inject(ZardSheetService)
 
-	readonly WalletIcon = WalletIcon
-	readonly CreditCardIcon = CreditCardIcon
 	readonly SquarePenIcon = SquarePenIcon
 	readonly Trash2Icon = Trash2Icon
 	readonly EyeIcon = EyeIcon
@@ -63,35 +62,23 @@ export class CardsCard {
 		() => this.card().type === CardType.CREDIT_CARD,
 	)
 
-	private readonly colorClasses: Record<CardColor, string> = {
-		[CardColor.GRAY]: 'bg-zinc-700',
-		[CardColor.PURPLE]: 'bg-violet-700',
-		[CardColor.BLUE]: 'bg-sky-500',
-		[CardColor.GREEN]: 'bg-emerald-700',
-		[CardColor.YELLOW]: 'bg-yellow-400',
-		[CardColor.ORANGE]: 'bg-amber-500',
-		[CardColor.RED]: 'bg-red-500',
-		[CardColor.PINK]: 'bg-fuchsia-300',
-	}
-
 	private readonly textColorClasses: Record<CardColor, string> = {
-		[CardColor.GRAY]: 'text-zinc-700',
-		[CardColor.PURPLE]: 'text-violet-700',
-		[CardColor.BLUE]: 'text-sky-500',
-		[CardColor.GREEN]: 'text-emerald-700',
-		[CardColor.YELLOW]: 'text-yellow-400',
-		[CardColor.ORANGE]: 'text-amber-500',
-		[CardColor.RED]: 'text-red-500',
-		[CardColor.PINK]: 'text-fuchsia-300',
+		[CardColor.GRAY]: 'text-zinc-500 bg-zinc-500/20',
+		[CardColor.PURPLE]: 'text-chart-3 bg-chart-3/20',
+		[CardColor.BLUE]: 'text-chart-2 bg-chart-2/20',
+		[CardColor.GREEN]: 'text-primary bg-primary/20',
+		[CardColor.YELLOW]: 'text-amber-300 bg-amber-300/20',
+		[CardColor.ORANGE]: 'text-chart-4 bg-chart-4/20',
+		[CardColor.RED]: 'text-chart-5 bg-chart-5/20',
+		[CardColor.PINK]: 'text-chart-6 bg-chart-6/20',
 	}
 
-	private readonly typeLabels: Record<CardType, string> = {
-		[CardType.CREDIT_CARD]: 'Credit',
-		[CardType.DEBIT_CARD]: 'Debit',
-	}
-
-	readonly bgColorClass = computed(() => {
-		return this.colorClasses[this.card().color]
+	readonly cardIcon = computed(() => {
+		const cardMap: Record<CardType, { icon: LucideIconData }> = {
+			[CardType.CREDIT_CARD]: { icon: CreditCardIcon },
+			[CardType.DEBIT_CARD]: { icon: BanknoteIcon },
+		}
+		return cardMap[this.card().type]
 	})
 
 	readonly textColorClass = computed(() => {
@@ -99,7 +86,10 @@ export class CardsCard {
 	})
 
 	readonly typeLabel = computed(() => {
-		return this.typeLabels[this.card().type]
+		const card = this.card()
+		const base = { CREDIT_CARD: 'Credit', DEBIT_CARD: 'Debit' }[card.type]
+
+		return base
 	})
 
 	readonly creditLimit = computed(() => {

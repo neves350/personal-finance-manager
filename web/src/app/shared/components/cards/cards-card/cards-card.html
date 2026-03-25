@@ -1,19 +1,27 @@
-<z-card class="p-4 h-full flex flex-col cursor-pointer">
-  <div class="flex justify-between items-start">
-    <div class="size-10 rounded-full flex items-center justify-center" [class]="bgColorClass()">
-      <i-lucide [img]="WalletIcon" class="size-5 text-white" />
-    </div>
-    <div class="ml-4 grid flex-1 text-left">
-      <p class="text-lg font-bold">{{ card().name }}</p>
-      <p class="text-xs text-muted-foreground">
-        {{ typeLabel() }}
-        @if (card().bankAccount?.name) {
-          · {{ card().bankAccount?.name }}
-        }
-      </p>
+<z-card class="p-5 h-full flex flex-col cursor-pointer glass-card-hover" [routerLink]="['/card-details', card().id]">
+  <div class="flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <div [class]="textColorClass()" class="size-10 items-center flex justify-center rounded-lg">
+        <i-lucide [img]="cardIcon().icon" class="size-5" />
+      </div>
+      <div>
+        <p class="text-base font-semibold">{{ card().name }}</p>
+        <p class="text-xs text-muted-foreground">
+          {{ typeLabel() }}
+          @if (card().bankAccount?.name) {
+            · {{ card().bankAccount?.name }}
+          }
+        </p>
+      </div>
     </div>
     <div class="flex gap-1">
-      <z-button zPopover [zContent]="popoverContent" zSize="sm" zShape="circle" zType="ghost">
+      <z-button
+        zPopover
+        [zContent]="popoverContent"
+        zSize="sm"
+        zType="sidebarGhost"
+        class="text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
+      >
         <i-lucide [img]="EllipsisIcon" />
       </z-button>
 
@@ -62,34 +70,37 @@
 
   <div class="mt-4 flex justify-between">
     <div class="text-left">
-      <p class="text-xs text-muted-foreground uppercase">Month Expenses</p>
-      <p class="text-sm mt-1 font-medium">{{ monthlyExpenses() | currency: 'EUR' }}</p>
+      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Month Expenses</p>
+      <p class="text-base font-bold font-display">{{ monthlyExpenses() | currency: 'EUR' }}</p>
     </div>
     @if (creditLimit()) {
       <div class="text-left">
-        <p class="text-xs text-muted-foreground uppercase">Limit</p>
-        <p class="text-sm mt-1 font-medium">{{ creditLimit() | currency: 'EUR' }}</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Limit</p>
+        <p class="text-base font-bold font-display">{{ creditLimit() | currency: 'EUR' }}</p>
       </div>
     }
   </div>
-  <div class="mt-auto pt-4 flex justify-between items-start">
+
+  <z-divider />
+
+  <div class="mt-auto flex justify-between items-start">
     @if (card().lastFour) {
       <div>
-        <p class="text-xs text-muted-foreground uppercase">Card Number</p>
-        <p class="text-sm font-medium">**** **** **** {{ card().lastFour }}</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Card Number</p>
+        <p class="text-sm font-mono text-muted-foreground">•••• •••• •••• {{ card().lastFour }}</p>
       </div>
     }
     <div class="flex gap-4">
       @if (card().expirationDate) {
         <div class="text-left">
-          <p class="text-xs text-muted-foreground uppercase">Exp</p>
-          <p class="text-sm font-medium">{{ card().expirationDate }}</p>
+          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Exp</p>
+          <p class="text-sm font-mono">{{ card().expirationDate }}</p>
         </div>
       }
       @if (card().cvc) {
         <div class="text-left">
-          <p class="text-xs text-muted-foreground uppercase">CVC</p>
-          <p class="text-sm font-medium">{{ card().cvc }}</p>
+          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">CVC</p>
+          <p class="text-sm font-mono">{{ card().cvc }}</p>
         </div>
       }
     </div>
