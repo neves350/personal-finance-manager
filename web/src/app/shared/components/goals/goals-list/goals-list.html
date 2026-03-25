@@ -1,54 +1,5 @@
-<div class="grid grid-cols-3 gap-4 mt-4 items-stretch">
+<div class="grid grid-cols-2 xl:grid-cols-3 gap-2 xl:gap-4 mt-4 items-stretch">
   @for (goal of goals(); track goal.id) {
     <app-goals-card [goal]="goal" />
   }
 </div>
-
-<!-- <div class="mt-4 overflow-hidden rounded-md border">
-  <table z-table zSize="comfortable">
-    <thead z-table-header class="bg-table">
-      <tr z-table-row>
-        <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('title')">
-          <div class="flex items-center gap-1 text-accent-foreground">
-            Goal
-            <i-lucide [img]="sortTextIcon('title')" class="size-3.5 text-muted-foreground" />
-          </div>
-        </th>
-        <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('progress')">
-          <div class="flex items-center gap-1 text-accent-foreground">
-            Progress
-            <i-lucide [img]="sortNumberIcon('progress')" class="size-3.5 text-muted-foreground" />
-          </div>
-        </th>
-        <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('amount')">
-          <div class="flex items-center gap-1 text-accent-foreground">
-            Amount
-            <i-lucide [img]="sortNumberIcon('amount')" class="size-3.5 text-muted-foreground" />
-          </div>
-        </th>
-        <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('status')">
-          <div class="flex items-center gap-1 text-accent-foreground">
-            Status
-            <i-lucide [img]="sortTextIcon('status')" class="size-3.5 text-muted-foreground" />
-          </div>
-        </th>
-        <th z-table-head class="w-20"></th>
-      </tr>
-    </thead>
-    <tbody z-table-body class="bg-table">
-      @for (goal of paginatedGoals(); track goal.id) {
-        <tr app-goals-card [goal]="goal"></tr>
-      }
-    </tbody>
-  </table>
-</div>
-<div class="p-2">
-  <z-pagination
-    zType="table"
-    [zTotal]="totalPages()"
-    [zPageSize]="pageSize"
-    [zTotalItems]="goals().length"
-    [(zPageIndex)]="currentPage"
-    [zSize]="'sm'"
-  />
-</div> -->
