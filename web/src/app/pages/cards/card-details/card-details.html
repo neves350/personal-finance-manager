@@ -1,9 +1,9 @@
-<main class="p-4 md:p-6 w-full">
-  <div class="max-w-[1400px] mx-auto py-6 md:py-3 space-y-8 md:space-y-8">
+<main class="p-4 w-full">
+  <div class="max-w-5xl mx-auto py-3 space-y-8">
     <app-card-header [card]="activeCard" (cardUpdated)="refreshCard()" />
 
-    <div class="grid grid-cols-3 mt-8">
-      <div class="col-span-2 mr-4">
+    <div class="grid grid-cols-1 xl:grid-cols-3 mt-6">
+      <div class="xl:col-span-2 xl:mr-4">
         <app-card-cashflow [card]="activeCard" />
       </div>
       <app-card-summary [card]="activeCard" />
