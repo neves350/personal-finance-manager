@@ -23,6 +23,7 @@ import { ZardDatePickerComponent } from '../../ui/date-picker'
 import { Z_MODAL_DATA, ZardDialogRef } from '../../ui/dialog'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardSelectComponent, ZardSelectItemComponent } from '../../ui/select'
+import { Z_SHEET_DATA, ZardSheetRef } from '../../ui/sheet'
 import type { iGoalsData } from './goals-form.interface'
 
 @Component({
@@ -39,10 +40,10 @@ import type { iGoalsData } from './goals-form.interface'
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GoalsForm {
-	private readonly zData: iGoalsData = inject(Z_MODAL_DATA)
+	private readonly zData: iGoalsData = inject(Z_SHEET_DATA)
 	private readonly fb = inject(FormBuilder)
 	private readonly goalsService = inject(GoalsService)
-	private readonly dialogRef = inject(ZardDialogRef)
+	private readonly sheetRef = inject(ZardSheetRef)
 
 	private readonly bankAccountsService = inject(BankAccountsService)
 	private readonly categoriesService = inject(CategoriesService)
@@ -194,7 +195,7 @@ export class GoalsForm {
 						: 'Goal created successfully',
 				)
 				this.bankAccountsService.loadBankAccounts().subscribe()
-				this.dialogRef.close()
+				this.sheetRef.close()
 			},
 			error: (error) => {
 				toast.error(
