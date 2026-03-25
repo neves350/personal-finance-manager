@@ -1,0 +1,22 @@
+<z-card class="h-full flex flex-col mb-4">
+  <div class="flex items-start justify-between">
+    <div class="size-12 xl:size-14 flex items-center justify-center rounded-full bg-primary/20 text-primary">
+      <i-lucide [img]="PartyPopperIcon" class="size-5 xl:size-6" />
+    </div>
+    <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
+      <span class="text-base xl:text-lg font-bold font-display text-primary">Goal completed!</span>
+      <p class="text-sm text-muted-foreground">
+        You successfully saved
+        <span class="font-semibold text-foreground">{{ formattedCurrentAmount() | currency: 'EUR' }}</span>
+        and completed this goal on
+        <span class="font-semibold text-foreground">{{ goal().updatedAt | date: 'mediumDate' }}</span>.
+      </p>
+    </div>
+    <div class="flex gap-1 p-3">
+      <z-badge [zType]="'success'" zShape="soft" class="h-7">
+        <i-lucide [img]="CircleCheckIcon" class="size-4 mr-1" />
+        Completed
+      </z-badge>
+    </div>
+  </div>
+</z-card>

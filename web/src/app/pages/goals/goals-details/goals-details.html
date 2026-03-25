@@ -1,10 +1,11 @@
 <main class="p-4 w-full">
   <div class="max-w-4xl mx-auto py-3 space-y-6">
     <app-goal-header [goal]="goal()" />
-    <app-goal-summary [goal]="goal()" />
-    @if (goal().breakdown) {
-      <app-goal-breakdown [goal]="goal()" />
+    @if (goal().paceStatus === 'COMPLETED') {
+      <app-goal-completed [goal]="goal()" />
     }
+    <app-goal-summary [goal]="goal()" />
+    <app-goal-breakdown [goal]="goal()" />
     <app-goal-saved-money [goal]="goal()" />
   </div>
 </main>
