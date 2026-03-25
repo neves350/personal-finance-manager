@@ -1,54 +1,59 @@
-<z-card class="p-4 transition-all flex flex-col duration-200" [class]="bgColorClass()">
-  <div class="flex items-start">
-    <div class="size-10 rounded-full flex items-center justify-center bg-white/20">
-      <i-lucide [img]="WalletIcon" class="size-5 text-white" />
-    </div>
-    <div class="ml-4 grid flex-1 text-left">
-      <span class="truncate text-sm font-medium text-white">
-        {{ cardName() }}
-      </span>
-      <span class="truncate text-xs text-white/60">
-        {{ typeLabel() }}
-      </span>
+<z-card class="p-5 transition-all flex flex-col duration-200">
+  <div class="flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <div class="size-10 rounded-lg flex items-center justify-center" [class]="bgColorClass()">
+        <i-lucide [img]="WalletIcon" class="size-5" />
+      </div>
+      <div>
+        <p class="text-base font-semibold">
+          {{ cardName() }}
+        </p>
+        <p class="text-xs text-muted-foreground">
+          {{ typeLabel() }}
+        </p>
+      </div>
     </div>
   </div>
 
-  <div class="mt-4 flex justify-between items-start">
-    <div>
-      <p class="text-xs text-white/60 uppercase">Card Number</p>
-      @if (lastFour()) {
-        <p class="text-sm font-medium text-white">**** **** **** {{ lastFour() }}</p>
-      } @else {
-        <p class="text-sm font-medium text-white">**** **** **** ****</p>
-      }
-    </div>
-    <div class="flex gap-4">
+  <div class="mt-4 flex justify-between">
       @if (card().type === 'CREDIT_CARD') {
-        <div class="ml-4 grid flex-1 text-right text-sm leading-tight">
-          <span class="truncate text-xs text-white/60 uppercase"> Credit Limit </span>
+        <div class="grid flex-1 text-left text-sm leading-tight mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Limit</span>
           @if (creditLimit()) {
-            <span class="truncate text-sm font-semibold">{{
+            <span class="text-base font-bold font-display">{{
               creditLimit() | currency: 'EUR'
             }}</span>
           } @else {
-            <span class="truncate text-sm font-semibold">€00.00</span>
+            <span class="text-base font-bold font-display">€00.00</span>
           }
         </div>
       }
+  </div>
+
+  <div class="mt-auto flex justify-between items-start">
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Card Number</p>
+      @if (lastFour()) {
+        <p class="text-sm font-mono text-muted-foreground">•••• •••• •••• {{ lastFour() }}</p>
+      } @else {
+        <p class="text-sm font-mono text-muted-foreground">•••• •••• •••• ••••</p>
+      }
+    </div>
+    <div class="flex gap-4">
       <div class="text-left">
-        <p class="text-xs text-white/60 uppercase">Exp</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Exp</p>
         @if (expirationDate()) {
-          <p class="text-sm font-medium text-white">{{ expirationDate() }}</p>
+          <p class="text-sm font-mono">{{ expirationDate() }}</p>
         } @else {
-          <p class="text-sm font-medium text-white">**/**</p>
+          <p class="text-sm font-mono">••/••</p>
         }
       </div>
       <div class="text-left">
         <p class="text-xs text-white/60 uppercase">CVC</p>
         @if (cvc()) {
-          <p class="text-sm font-medium text-white">{{ cvc() }}</p>
+          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{{ cvc() }}</p>
         } @else {
-          <p class="text-sm font-medium text-white">***</p>
+          <p class="text-sm font-mono">•••</p>
         }
       </div>
     </div>

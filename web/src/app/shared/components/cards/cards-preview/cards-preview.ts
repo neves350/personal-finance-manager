@@ -22,14 +22,14 @@ export class CardsPreview {
 	protected readonly CreditCardIcon = CreditCardIcon
 
 	private readonly colorClasses: Record<CardColor, string> = {
-		[CardColor.GRAY]: 'bg-zinc-700',
-		[CardColor.PURPLE]: 'bg-violet-700',
-		[CardColor.BLUE]: 'bg-sky-500',
-		[CardColor.GREEN]: 'bg-emerald-700',
-		[CardColor.YELLOW]: 'bg-yellow-400',
-		[CardColor.ORANGE]: 'bg-amber-500',
-		[CardColor.RED]: 'bg-red-500',
-		[CardColor.PINK]: 'bg-fuchsia-300',
+		[CardColor.GRAY]: 'text-zinc-500 bg-zinc-500/20',
+		[CardColor.PURPLE]: 'text-chart-3 bg-chart-3/20',
+		[CardColor.BLUE]: 'text-chart-2 bg-chart-2/20',
+		[CardColor.GREEN]: 'text-primary bg-primary/20',
+		[CardColor.YELLOW]: 'text-amber-300 bg-amber-300/20',
+		[CardColor.ORANGE]: 'text-chart-4 bg-chart-4/20',
+		[CardColor.RED]: 'text-chart-5 bg-chart-5/20',
+		[CardColor.PINK]: 'text-chart-6 bg-chart-6/20',
 	}
 
 	private readonly typeLabels: Record<CardType, string> = {
