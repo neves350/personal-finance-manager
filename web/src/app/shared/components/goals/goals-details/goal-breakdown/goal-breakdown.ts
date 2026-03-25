@@ -1,20 +1,25 @@
+import { CurrencyPipe, DatePipe } from '@angular/common'
 import { Component, computed, inject, input } from '@angular/core'
 import { Goal } from '@core/api/goals.interface'
 import { GoalsService } from '@core/services/goals.service'
 import {
-	CalendarDaysIcon,
-	CalendarIcon,
-	CalendarRangeIcon,
-	HourglassIcon,
+	CalendarClockIcon,
+	ClipboardPenIcon,
+	ClockIcon,
 	LucideAngularModule,
-	TrendingUpIcon,
 } from 'lucide-angular'
 import { ZardBadgeComponent } from '@/shared/components/ui/badge'
 import { ZardCardComponent } from '@/shared/components/ui/card'
 
 @Component({
 	selector: 'app-goal-breakdown',
-	imports: [ZardCardComponent, LucideAngularModule, ZardBadgeComponent],
+	imports: [
+		ZardCardComponent,
+		LucideAngularModule,
+		ZardBadgeComponent,
+		CurrencyPipe,
+		DatePipe,
+	],
 	templateUrl: './goal-breakdown.html',
 })
 export class GoalBreakdown {
@@ -22,16 +27,18 @@ export class GoalBreakdown {
 
 	readonly goal = input.required<Goal>()
 
-	readonly TrendingUpIcon = TrendingUpIcon
-	readonly HourglassIcon = HourglassIcon
-	readonly CalendarDaysIcon = CalendarDaysIcon
-	readonly CalendarRangeIcon = CalendarRangeIcon
-	readonly CalendarIcon = CalendarIcon
+	readonly ClipboardPenIcon = ClipboardPenIcon
+	readonly ClockIcon = ClockIcon
+	readonly CalendarClockIcon = CalendarClockIcon
 
 	readonly displayGoal = computed(() => {
 		const goals = this.goalsService.goals()
 		const initial = this.goal()
 		return goals.find((g) => g.id === initial.id) ?? initial
+	})
+
+	readonly formattedAmount = computed(() => {
+		return this.displayGoal().amount
 	})
 
 	readonly formattedDailyAmount = computed(
