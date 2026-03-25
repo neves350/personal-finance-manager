@@ -1,15 +1,17 @@
-<div class="flex justify-between items-center">
+<div class="flex justify-between items-center mb-6">
   <div class="flex items-center">
-    <z-button class="cursor-pointer mr-4" zType="outline" routerLink="/goals">
-      <i-lucide [img]="ArrowBigLeftDashIcon" />
+    <z-button class="cursor-pointer mr-4" zType="ghost" routerLink="/goals">
+      <i-lucide [img]="ArrowLeftIcon" />
     </z-button>
-    <h1 class="font-medium flex flex-col text-lg">
+    <h1 class="font-medium flex flex-col text-base xl:text-lg">
       {{ displayGoal().title }}
-      <span class="font-normal text-muted-foreground text-sm">{{ typeLabel() }}</span>
+      <span class="font-normal text-muted-foreground text-xs xl:text-sm">{{ typeLabel() }}</span>
     </h1>
   </div>
 
-  <z-button class="cursor-pointer" zType="outline" (click)="updateCard()">
-    <i-lucide [img]="PencilIcon" />
-  </z-button>
+  @if (goal().paceStatus !== 'COMPLETED') {
+    <z-button class="cursor-pointer" zType="outline" (click)="updateCard()">
+      <i-lucide [img]="SquarePenIcon" />
+    </z-button>
+  }
 </div>

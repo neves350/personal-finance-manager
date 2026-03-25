@@ -4,12 +4,12 @@ import type { Goal } from '@core/api/goals.interface'
 import { GoalType } from '@core/api/goals.interface'
 import { GoalsService } from '@core/services/goals.service'
 import {
-	ArrowBigLeftDashIcon,
+	ArrowLeftIcon,
 	LucideAngularModule,
-	PencilIcon,
+	SquarePenIcon,
 } from 'lucide-angular'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
-import { ZardDialogService } from '@/shared/components/ui/dialog'
+import { ZardSheetService } from '@/shared/components/ui/sheet'
 import { GoalsForm } from '../../goals-form/goals-form'
 import type { iGoalsData } from '../../goals-form/goals-form.interface'
 
@@ -19,11 +19,11 @@ import type { iGoalsData } from '../../goals-form/goals-form.interface'
 	templateUrl: './goal-header.html',
 })
 export class GoalHeader {
-	private readonly dialogService = inject(ZardDialogService)
+	private readonly sheetService = inject(ZardSheetService)
 	private readonly goalsService = inject(GoalsService)
 
-	readonly ArrowBigLeftDashIcon = ArrowBigLeftDashIcon
-	readonly PencilIcon = PencilIcon
+	readonly ArrowLeftIcon = ArrowLeftIcon
+	readonly SquarePenIcon = SquarePenIcon
 
 	readonly goal = input.required<Goal>()
 
@@ -38,11 +38,11 @@ export class GoalHeader {
 		const base = { SAVINGS: 'Savings', SPENDING_LIMIT: 'Spendings' }[goal.type]
 
 		if (goal.type === GoalType.SAVINGS && goal.bankAccount) {
-			return `Account: ${goal.bankAccount.name} • ${base}`
+			return `Account ${goal.bankAccount.name} • ${base}`
 		}
 
 		if (goal.type === GoalType.SPENDING_LIMIT && goal.category) {
-			return `Category: ${goal.category.title} • ${base}`
+			return `Category ${goal.category.title} • ${base}`
 		}
 
 		return base
@@ -51,10 +51,11 @@ export class GoalHeader {
 	updateCard() {
 		const current = this.displayGoal()
 
-		this.dialogService.create({
+		this.sheetService.create({
 			zTitle: 'Edit Goal',
 			zContent: GoalsForm,
-			zWidth: '450px',
+			zWidth: '500px',
+			zSide: 'right',
 			zHideFooter: false,
 			zOkText: 'Save Changes',
 			zOnOk: (instance: GoalsForm) => {
@@ -62,7 +63,7 @@ export class GoalHeader {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: current.id,
 				title: current.title,
