@@ -1,7 +1,14 @@
+import { CurrencyPipe } from '@angular/common'
 import { Component, computed, inject, input } from '@angular/core'
-import { Goal } from '@core/api/goals.interface'
+import { Goal, GoalType } from '@core/api/goals.interface'
 import { GoalsService } from '@core/services/goals.service'
-import { HandCoinsIcon, LucideAngularModule, TargetIcon } from 'lucide-angular'
+import {
+	LucideAngularModule,
+	LucideIconData,
+	PiggyBankIcon,
+	ReceiptIcon,
+	TrophyIcon,
+} from 'lucide-angular'
 import {
 	ZardBadgeComponent,
 	type ZardBadgeVariants,
@@ -18,14 +25,14 @@ import { ZardProgressBarComponent } from '@/shared/components/ui/progress-bar'
 		ZardDividerComponent,
 		ZardBadgeComponent,
 		ZardProgressBarComponent,
+		CurrencyPipe,
 	],
 	templateUrl: './goal-summary.html',
 })
 export class GoalSummary {
 	private readonly goalsService = inject(GoalsService)
 
-	readonly TargetIcon = TargetIcon
-	readonly HandCoinsIcon = HandCoinsIcon
+	readonly TrophyIcon = TrophyIcon
 
 	readonly goal = input.required<Goal>()
 
@@ -33,6 +40,20 @@ export class GoalSummary {
 		const goals = this.goalsService.goals()
 		const initial = this.goal()
 		return goals.find((g) => g.id === initial.id) ?? initial
+	})
+
+	readonly goalIcon = computed(() => {
+		const iconMap: Record<GoalType, { icon: LucideIconData; style: string }> = {
+			[GoalType.SAVINGS]: {
+				icon: PiggyBankIcon,
+				style: 'bg-primary/20 text-primary',
+			},
+			[GoalType.SPENDING_LIMIT]: {
+				icon: ReceiptIcon,
+				style: 'bg-destructive/20 text-destructive',
+			},
+		}
+		return iconMap[this.goal().type]
 	})
 
 	readonly formattedAmount = computed(() => {
@@ -54,16 +75,24 @@ export class GoalSummary {
 			string,
 			{ type: ZardBadgeVariants['zType']; label: string; dot: string }
 		> = {
-			ON_TRACK: { type: 'success', label: 'On Track', dot: 'bg-green-500' },
-			COMPLETED: { type: 'completed', label: 'Completed', dot: 'bg-teal-500' },
-			OFF_PACE: { type: 'warning', label: 'Off Pace', dot: 'bg-yellow-500' },
-			OVER_PACE: { type: 'destructive', label: 'Over Pace', dot: 'bg-white' },
+			ON_TRACK: { type: 'success', label: 'On Track', dot: 'bg-primary' },
+			COMPLETED: {
+				type: 'success',
+				label: '100% Completed',
+				dot: 'bg-primary',
+			},
+			OFF_PACE: { type: 'warning', label: 'Off Pace', dot: 'bg-chart-4' },
+			OVER_PACE: {
+				type: 'destructive',
+				label: 'Over Pace',
+				dot: 'bg-destructive',
+			},
 		}
 		return (
 			map[this.displayGoal().paceStatus] ?? {
 				type: 'secondary',
 				label: this.displayGoal().paceStatus,
-				dot: 'bg-green-500',
+				dot: 'bg-muted-foreground',
 			}
 		)
 	})
