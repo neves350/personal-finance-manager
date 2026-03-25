@@ -1,10 +1,10 @@
-<z-card class="-mt-4">
+<z-card class="mt-4 xl:-mt-4">
   <div class="flex items-start justify-between">
-    <h3 class="font-semibold flex flex-col">
+    <h2 class="flex flex-col text-base font-semibold font-display">
       Recent transactions
       <span class="text-muted-foreground text-sm">Recent card transactions</span>
-    </h3>
-    <z-button class="cursor-pointer" zType="outline" routerLink="/transactions">
+    </h2>
+    <z-button class="cursor-pointer" zType="sidebarGhost" routerLink="/transactions">
       See all
       <i-lucide [img]="ArrowRightIcon" />
     </z-button>
@@ -14,11 +14,11 @@
     <div class="flex-1 mt-4 mb-2">
       @for (transaction of transactions(); track transaction.id) {
         <div class="flex w-full items-center outline-none p-2">
-          <div class="size-10 flex items-center justify-center rounded-full bg-accent">
-            <i-lucide [img]="iconMap[transaction.category.icon] ?? iconMap['tag']" class="size-4" />
+          <div class="size-10 flex items-center justify-center rounded-lg bg-primary/20">
+            <i-lucide [img]="iconMap[transaction.category.icon] ?? iconMap['tag']" class="size-4 text-primary" />
           </div>
           <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
-            <span class="truncate text-sm font-medium">{{ transaction.title | titlecase }}</span>
+            <span class="truncate text-sm font-semibold">{{ transaction.title | titlecase }}</span>
             <span class="truncate text-xs text-muted-foreground">
               {{ transaction.category.title }} · {{ transaction.date | date: 'd MMM' }}
             </span>
@@ -34,14 +34,14 @@
   } @else if (!loading()) {
     <div class="flex flex-col items-center justify-center p-6 mt-6">
       <div
-        class="size-12 flex items-center justify-center rounded-lg bg-accent text-accent-foreground mb-4"
+        class="size-12 flex items-center justify-center rounded-full bg-primary/20 text-primary mb-4"
       >
-        <i-lucide [img]="BanknoteXIcon" />
+        <i-lucide [img]="ArrowRightLeftIcon" />
       </div>
       <div class="flex flex-col items-center text-center">
-        <div class="space-y-2 mt-6">
+        <div class="space-y-2">
           <p class="font-medium">No transactions</p>
-          <span class="text-muted-foreground">This card has no transactions yet.</span>
+          <span class="text-muted-foreground text-sm">This card has no transactions yet.</span>
         </div>
       </div>
     </div>

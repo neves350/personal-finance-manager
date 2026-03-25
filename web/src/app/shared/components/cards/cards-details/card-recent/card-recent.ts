@@ -13,7 +13,7 @@ import { Card, CardTransaction } from '@core/api/cards.interface'
 import { CardsService } from '@core/services/cards.service'
 import {
 	ArrowRightIcon,
-	BanknoteXIcon,
+	ArrowRightLeftIcon,
 	LucideAngularModule,
 } from 'lucide-angular'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
@@ -37,7 +37,7 @@ import { CATEGORY_ICON_MAP } from '../../../categories/category-icons'
 export class CardRecent {
 	readonly card = input.required<Card>()
 	readonly ArrowRightIcon = ArrowRightIcon
-	readonly BanknoteXIcon = BanknoteXIcon
+	readonly ArrowRightLeftIcon = ArrowRightLeftIcon
 	readonly iconMap = CATEGORY_ICON_MAP
 
 	private readonly cardsService = inject(CardsService)
@@ -64,8 +64,6 @@ export class CardRecent {
 	}
 
 	getAmountColorClass(tx: CardTransaction): string {
-		return tx.type === 'INCOME'
-			? 'text-income-foreground'
-			: 'text-expense-foreground'
+		return tx.type === 'INCOME' ? 'text-primary' : 'text-destructive'
 	}
 }
