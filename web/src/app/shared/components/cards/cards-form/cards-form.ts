@@ -15,9 +15,9 @@ import {
 import { CardColor, CardType } from '@core/api/cards.interface'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
 import { CardsService } from '@core/services/cards.service'
-import { Z_MODAL_DATA, ZardDialogRef } from '../../ui/dialog'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardSelectComponent, ZardSelectItemComponent } from '../../ui/select'
+import { Z_SHEET_DATA, ZardSheetRef } from '../../ui/sheet'
 import { CardsColorPicker } from '../cards-color-picker/cards-color-picker'
 import { CardsPreview } from '../cards-preview/cards-preview'
 import type { iSheetData } from './cards-form.interface'
@@ -37,10 +37,10 @@ import type { iSheetData } from './cards-form.interface'
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsForm implements AfterViewInit {
-	private readonly zData: iSheetData = inject(Z_MODAL_DATA)
+	private readonly zData: iSheetData = inject(Z_SHEET_DATA)
 	private readonly fb = inject(FormBuilder)
 	private readonly cardsService = inject(CardsService)
-	private readonly dialogRef = inject(ZardDialogRef)
+	private readonly sheetRef = inject(ZardSheetRef)
 
 	// Bank accounts from service (pre-loaded in Cards page)
 	readonly bankAccounts = inject(BankAccountsService).bankAccounts
@@ -156,7 +156,7 @@ export class CardsForm implements AfterViewInit {
 		request$.subscribe({
 			next: () => {
 				onSuccess?.()
-				this.dialogRef.close()
+				this.sheetRef.close()
 			},
 		})
 	}

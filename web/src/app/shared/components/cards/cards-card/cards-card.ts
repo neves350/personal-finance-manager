@@ -26,6 +26,7 @@ import { ZardCardComponent } from '../../ui/card'
 import { ZardDialogService } from '../../ui/dialog'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardPopoverComponent, ZardPopoverDirective } from '../../ui/popover'
+import { ZardSheetService } from '../../ui/sheet'
 import { CardsForm } from '../cards-form/cards-form'
 import type { iSheetData } from '../cards-form/cards-form.interface'
 
@@ -47,8 +48,9 @@ import type { iSheetData } from '../cards-form/cards-form.interface'
 export class CardsCard {
 	readonly card = input.required<Card>()
 
-	private readonly dialogService = inject(ZardDialogService)
 	private readonly cardsService = inject(CardsService)
+	private readonly dialogService = inject(ZardDialogService)
+	private readonly sheetService = inject(ZardSheetService)
 
 	readonly WalletIcon = WalletIcon
 	readonly CreditCardIcon = CreditCardIcon
@@ -109,10 +111,11 @@ export class CardsCard {
 	readonly monthlyExpenses = signal<number>(0)
 
 	updateCard() {
-		this.dialogService.create({
+		this.sheetService.create({
 			zTitle: 'Edit Card',
 			zContent: CardsForm,
-			zWidth: '600px',
+			zWidth: '500px',
+			zSide: 'right',
 			zHideFooter: false,
 			zOkText: 'Save Changes',
 			zOnOk: (instance: CardsForm) => {
@@ -120,7 +123,7 @@ export class CardsCard {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: this.card().id,
 				name: this.card().name,
