@@ -32,21 +32,21 @@ export class CardsColorPicker implements ControlValueAccessor {
 	private onTouched: () => void = () => {}
 
 	private readonly colorClasses: Record<CardColor, string> = {
-		[CardColor.GRAY]: 'bg-zinc-700 transition-transform hover:scale-110',
-		[CardColor.PURPLE]: 'bg-violet-700 transition-transform hover:scale-110',
-		[CardColor.BLUE]: 'bg-sky-500 transition-transform hover:scale-110',
-		[CardColor.GREEN]: 'bg-emerald-700 transition-transform hover:scale-110',
-		[CardColor.YELLOW]: 'bg-yellow-400 transition-transform hover:scale-110',
-		[CardColor.ORANGE]: 'bg-amber-500 transition-transform hover:scale-110',
-		[CardColor.RED]: 'bg-red-500 transition-transform hover:scale-110',
-		[CardColor.PINK]: 'bg-fuchsia-300 transition-transform hover:scale-110',
+		[CardColor.GRAY]: 'bg-zinc-500 transition-transform hover:scale-110',
+		[CardColor.PURPLE]: 'bg-chart-3 transition-transform hover:scale-110',
+		[CardColor.BLUE]: 'bg-chart-2 transition-transform hover:scale-110',
+		[CardColor.GREEN]: 'bg-primary transition-transform hover:scale-110',
+		[CardColor.YELLOW]: 'bg-amber-300 transition-transform hover:scale-110',
+		[CardColor.ORANGE]: 'bg-chart-4 transition-transform hover:scale-110',
+		[CardColor.RED]: 'bg-chart-5 transition-transform hover:scale-110',
+		[CardColor.PINK]: 'bg-chart-6 transition-transform hover:scale-110',
 	}
 
 	getButtonClasses(color: CardColor): string {
 		const base =
 			'size-8 rounded-full flex items-center justify-center transition-all cursor-pointer'
 		const selected =
-			this.selectedColor() === color ? 'ring-2 ring-offset-2 ring-primary' : ''
+			this.selectedColor() === color ? 'ring-2 ring-offset-2 ring-border' : ''
 		return `${base} ${this.colorClasses[color]} ${selected}`
 	}
 
