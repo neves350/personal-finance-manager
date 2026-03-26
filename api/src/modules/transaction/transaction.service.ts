@@ -94,6 +94,7 @@ export class TransactionService {
 			accountId,
 			categoryId,
 			type,
+			source,
 			startDate,
 			endDate,
 			page = 1,
@@ -132,6 +133,7 @@ export class TransactionService {
 		if (categoryId) where.categoryId = categoryId
 		if (type) where.type = type
 		if (accountId) where.bankAccountId = accountId
+		if (source) where.source = source
 
 		// date filters
 		if (startDate || endDate) {
@@ -243,6 +245,20 @@ export class TransactionService {
 
 		if (!oldTransaction) throw new NotFoundException('Transaction not found')
 
+		// Block editing protected fields on Open Banking transactions
+		if (oldTransaction.source === 'OPEN_BANKING') {
+			if (
+				dto.amount !== undefined ||
+				dto.date !== undefined ||
+				dto.title !== undefined ||
+				dto.type !== undefined
+			) {
+				throw new BadRequestException(
+					'Cannot edit amount, date, title or type of a bank-synced transaction.',
+				)
+			}
+		}
+
 		const amount = dto.amount ? new Prisma.Decimal(dto.amount) : undefined
 
 		return this.prisma.$transaction(async (tx) => {
@@ -294,6 +310,13 @@ export class TransactionService {
 
 		if (transaction.bankAccount.userId !== userId)
 			throw new ForbiddenException('You cannot delete this transaction')
+
+		// Block deletion of Open Banking transactions
+		if (transaction.source === 'OPEN_BANKING') {
+			throw new BadRequestException(
+				'Cannot delete a bank-synced transaction. It represents real bank data.',
+			)
+		}
 
 		await this.prisma.$transaction(async (tx) => {
 			await tx.transaction.delete({ where: { id: transactionId } })

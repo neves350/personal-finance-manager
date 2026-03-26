@@ -97,6 +97,15 @@ export class BankAccountService {
 
 		if (!bankAccount) throw new NotFoundException('Bank account not found')
 
+		// Block editing protected fields on linked (Open Banking) accounts
+		if (bankAccount.isLinked) {
+			if (data.balance !== undefined || data.type !== undefined) {
+				throw new BadRequestException(
+					'Cannot edit balance or type of a linked bank account. These values are synced from your bank.',
+				)
+			}
+		}
+
 		const updatedBankAccount = await this.prisma.bankAccount.update({
 			where: {
 				id: bankAccountId,
@@ -108,6 +117,17 @@ export class BankAccountService {
 	}
 
 	async delete(id: string) {
+		// Block deletion of linked (Open Banking) accounts — disconnect first
+		const bankAccount = await this.prisma.bankAccount.findUnique({
+			where: { id },
+		})
+
+		if (bankAccount?.isLinked) {
+			throw new BadRequestException(
+				'Cannot delete a linked bank account. Disconnect it from Open Banking first.',
+			)
+		}
+
 		// Check if there are cards linked to this bank account
 		const cardsCount = await this.prisma.card.count({
 			where: { bankAccountId: id },

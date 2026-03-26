@@ -15,6 +15,11 @@ export enum TransactionType {
 	EXPENSE = 'EXPENSE',
 }
 
+export enum TransactionSourceFilter {
+	MANUAL = 'MANUAL',
+	OPEN_BANKING = 'OPEN_BANKING',
+}
+
 export class QueryTransactionDto {
 	@IsOptional()
 	@IsString()
@@ -45,6 +50,11 @@ export class QueryTransactionDto {
 	@IsDateString()
 	@ApiPropertyOptional()
 	endDate?: string
+
+	@IsOptional()
+	@IsEnum(TransactionSourceFilter)
+	@ApiPropertyOptional({ enum: TransactionSourceFilter })
+	source?: TransactionSourceFilter
 
 	@IsOptional()
 	@Type(() => Number) // convert string to number
