@@ -8,6 +8,11 @@ export enum TransactionType {
 	EXPENSE = 'EXPENSE',
 }
 
+export enum TransactionSource {
+	MANUAL = 'MANUAL',
+	OPEN_BANKING = 'OPEN_BANKING',
+}
+
 /**
  * TRANSACTON
  */
@@ -25,6 +30,8 @@ export interface Transaction {
 	bankAccount?: TransactionBankAccount
 	category: TransactionCategory
 	isPaid: boolean
+	source?: TransactionSource
+	externalId?: string
 	createdAt?: string
 	updatedAt?: string
 }

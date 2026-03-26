@@ -18,6 +18,8 @@ export interface BankAccount {
 	balance: number
 	initialBalance?: number
 	totalMovements?: number
+	isLinked?: boolean
+	bankLogo?: string
 	createdAt?: string
 	updatedAt?: string
 }
