@@ -5,12 +5,12 @@
         <div class="flex flex-col items-center text-center mb-5">
           <div class="flex items-center justify-center mb-6">
             <span>
-              <z-avatar zSrc="finova-icon.svg" zAlt="Application logo" zSize="xl" />
+              <z-avatar zShape="rounded" class="bg-primary/80 text-primary-foreground font-bold text-lg font-display" zSize="lg">F</z-avatar>
             </span>
           </div>
-          <h2 class="text-2xl font-bold tracking-tight text-white">Sign in to Finova</h2>
+          <h2 class="text-2xl font-bold tracking-tight text-white font-display">Sign in to Finova</h2>
           <div class="p-3 text-center">
-            <p class="text-sm text-muted-foreground/50">Welcome back, let's track!</p>
+            <p class="text-sm text-muted-foreground">Welcome back, let's track!</p>
           </div>
         </div>
 
@@ -46,15 +46,15 @@
               placeholder="john@example.com"
               formControlName="email"
               required
-              class="rounded-md border border-zinc-400/50 p-3 text-sm text-muted-foreground"
+              class="rounded-md border border-input p-3 text-sm text-foreground"
             />
             @if (form.get('email')?.touched && form.get('email')?.errors?.['required']) {
-              <span class="text-xs font-medium text-red-500 dark:text-red-400"
+              <span class="text-xs font-medium text-destructive"
                 >Email is required</span
               >
             }
             @if (form.get('email')?.touched && form.get('email')?.hasError?.('email')) {
-              <span class="text-xs font-medium text-red-500 dark:text-red-400"
+              <span class="text-xs font-medium text-destructive"
                 >Enter a valid email</span
               >
             }
@@ -77,15 +77,15 @@
               placeholder="******"
               formControlName="password"
               required
-              class="rounded-md border border-zinc-400/50 p-3 text-sm text-muted-foreground"
+              class="rounded-md border border-input p-3 text-sm text-foreground"
             />
             @if (form.get('password')?.touched && form.get('password')?.errors?.['required']) {
-              <span class="text-xs font-medium text-red-500 dark:text-red-400"
+              <span class="text-xs font-medium text-destructive"
                 >Password is required</span
               >
             }
             @if (form.get('password')?.touched && form.get('password')?.errors?.['minlength']) {
-              <span class="text-xs font-medium text-red-500 dark:text-red-400"
+              <span class="text-xs font-medium text-destructive"
                 >Password must be at least 6 characters</span
               >
             }
@@ -105,7 +105,7 @@
         </form>
 
         <div class="p-4 text-center">
-          <p class="text-sm text-muted-foreground/50">
+          <p class="text-sm text-muted-foreground">
             Don't have an account?
             <a class="text-primary font-semibold" routerLink="/register"> Sign up </a>
           </p>
