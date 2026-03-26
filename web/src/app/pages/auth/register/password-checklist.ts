@@ -4,7 +4,11 @@ import {
 	computed,
 	input,
 } from '@angular/core'
-import { CheckIcon, LucideAngularModule, XIcon } from 'lucide-angular'
+import {
+	CircleCheckIcon,
+	CircleXIcon,
+	LucideAngularModule,
+} from 'lucide-angular'
 import { ZardProgressBarComponent } from '@/shared/components/ui/progress-bar'
 
 @Component({
@@ -25,18 +29,18 @@ import { ZardProgressBarComponent } from '@/shared/components/ui/progress-bar'
 			@for (rule of rules(); track rule.label) {
 				<li class="flex items-center gap-2 text-sm">
 					<i-lucide
-						[img]="rule.met ? CheckIcon : XIcon"
+						[img]="rule.met ? CircleCheckIcon : CircleXIcon"
 						[class]="
 							rule.met
 								? 'size-4 text-primary'
-								: 'size-4 text-muted-foreground/50'
+								: 'size-4 text-muted-foreground'
 						"
 					/>
 					<span
 						[class]="
 							rule.met
 								? 'text-primary'
-								: 'text-muted-foreground/50'
+								: 'text-muted-foreground'
 						"
 						>{{ rule.label }}</span
 					>
@@ -48,8 +52,8 @@ import { ZardProgressBarComponent } from '@/shared/components/ui/progress-bar'
 export class PasswordChecklist {
 	readonly password = input.required<string>()
 
-	readonly CheckIcon = CheckIcon
-	readonly XIcon = XIcon
+	readonly CircleCheckIcon = CircleCheckIcon
+	readonly CircleXIcon = CircleXIcon
 
 	readonly hasMinLength = computed(() => this.password().length >= 6)
 	readonly hasNumber = computed(() => /\d/.test(this.password()))
