@@ -5,7 +5,6 @@ import {
 	ChartColumnIcon,
 	ChartPieIcon,
 	CreditCardIcon,
-	LandmarkIcon,
 	LayoutGridIcon,
 	LucideAngularModule,
 	type LucideIconData,
@@ -65,7 +64,12 @@ export class SidebarGroup {
 			title: 'Recurrings',
 			url: '/recurrings',
 			icon: Repeat2Icon,
-		},
+    },
+    {
+      title: 'Accounts',
+      url: '/accounts',
+      icon: WalletIcon
+    },
 		{
 			title: 'Cards',
 			url: '/cards',
@@ -76,11 +80,6 @@ export class SidebarGroup {
 			url: '/categories',
 			icon: TagIcon,
 		},
-	]
-
-	readonly accountsItem: MenuItem[] = [
-		{ title: 'Virtuals', url: '/accounts', icon: WalletIcon },
-		{ title: 'Connections', url: '/connections', icon: LandmarkIcon },
 	]
 
 	readonly analyticsItem: MenuItem[] = [
