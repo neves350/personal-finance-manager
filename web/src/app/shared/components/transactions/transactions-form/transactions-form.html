@@ -31,7 +31,7 @@
       </span>
       <input
         z-input
-        class="w-full rounded-md border border-zinc-400/50 py-2 pl-10 pr-4 text-sm text-muted-foreground"
+        class="w-full rounded-md border bg-sidebar border-input py-2 pl-10 pr-4 text-sm text-foreground"
         formControlName="amount"
         placeholder="90"
       />
@@ -45,7 +45,7 @@
     <label for="title" class="text-sm">Description</label>
     <input
       z-input
-      class="rounded-md border bg-input/30 border-input p-2 text-sm text-muted-foreground"
+      class="rounded-md border bg-sidebar border-input p-2 text-sm text-foreground"
       formControlName="title"
       placeholder="E.g: Electricity bill, Salary"
     />
@@ -112,9 +112,9 @@
     </div>
   </div>
 
-  <div class="grid gap-2 border rounded-md bg-input/30 border-input p-2">
-    <z-checkbox formControlName="isPaid" class="border-input">
-      <label class="text-sm p-1 font-semibold">{{
+  <div class="grid gap-2 border rounded-md bg-sidebar border-input p-2">
+    <z-checkbox formControlName="isPaid">
+      <label class="text-sm p-1 font-base text-foreground">{{
         form.controls.type.value === 'EXPENSE' ? 'Already paid' : 'Already received'
       }}</label>
     </z-checkbox>

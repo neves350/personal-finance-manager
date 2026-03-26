@@ -136,17 +136,17 @@ export class TransactionsForm {
 	getTypeClasses(transactionType: TransactionType): string {
 		const isSelected = this.form.controls.type.value === transactionType
 
-		if (!isSelected) return 'border-zinc-700'
+		if (!isSelected) return 'border-input'
 
 		return transactionType === TransactionType.INCOME
-			? 'border-primary bg-primary/10'
-			: 'border-destructive bg-destructive/10'
+			? 'border-primary bg-primary/20'
+			: 'border-destructive bg-destructive/20'
 	}
 
 	getTypeIconClasses(transactionType: TransactionType): string {
 		const isSelected = this.form.controls.type.value === transactionType
 
-		if (!isSelected) return 'text-muted-foreground'
+		if (!isSelected) return 'text-foreground'
 
 		return transactionType === TransactionType.INCOME
 			? 'text-primary'
