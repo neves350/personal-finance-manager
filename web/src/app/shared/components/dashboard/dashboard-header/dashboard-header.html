@@ -1,8 +1,8 @@
 <div class="flex justify-between mb-6">
   @if (user(); as user) {
-    <h1 class="font-medium flex flex-col text-xl">
+    <h1 class="flex flex-col page-title">
       {{ greeting }}, {{ user.name }}
-      <span class="font-normal text-muted-foreground text-sm">
+      <span class="page-subtitle">
         Check your financial overview.
       </span>
     </h1>
