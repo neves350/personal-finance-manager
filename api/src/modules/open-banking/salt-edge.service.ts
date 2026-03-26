@@ -64,10 +64,33 @@ export class SaltEdgeService {
 					{ headers: this.headers },
 				),
 			)
-			this.logger.log(`Created Salt Edge customer: ${data.data.id}`)
+			this.logger.log(`Created Salt Edge customer: ${data.data.customer_id}`)
 			return data.data
 		} catch (error) {
 			this.handleError(error, 'createCustomer')
+		}
+	}
+
+	async getCustomerByIdentifier(
+		identifier: string,
+	): Promise<SaltEdgeCustomer | null> {
+		try {
+			const { data } = await firstValueFrom(
+				this.http.get<{ data: SaltEdgeCustomer | SaltEdgeCustomer[] }>(
+					`${this.baseUrl}/customers`,
+					{
+						headers: this.headers,
+						params: { identifier },
+					},
+				),
+			)
+			// Salt Edge may return a single object or an array depending on the filter
+			const customer = Array.isArray(data.data)
+				? data.data[0]
+				: data.data
+			return customer ?? null
+		} catch (error) {
+			this.handleError(error, 'getCustomerByIdentifier')
 		}
 	}
 
@@ -81,29 +104,29 @@ export class SaltEdgeService {
 		providerCode?: string
 		allowedCountries?: string[]
 	}): Promise<SaltEdgeConnectSession> {
-		const body: Record<string, unknown> = {
-			data: {
-				customer_id: params.customerId,
-				consent: {
-					scopes: params.consentScopes,
-					from_date: params.consentFromDate,
-				},
-				attempt: {
-					return_to: params.returnTo,
-				},
-				allowed_countries: params.allowedCountries ?? ['PT'],
+		const sessionData: Record<string, unknown> = {
+			customer_id: params.customerId,
+			consent: {
+				scopes: params.consentScopes,
+				from_date: params.consentFromDate,
+			},
+			attempt: {
+				return_to: params.returnTo,
 			},
 		}
 
 		if (params.providerCode) {
-			;(body.data as Record<string, unknown>).provider_code =
-				params.providerCode
+			sessionData.provider_code = params.providerCode
+		} else {
+			sessionData.allowed_countries = params.allowedCountries ?? ['PT']
 		}
+
+		const body = { data: sessionData }
 
 		try {
 			const { data } = await firstValueFrom(
 				this.http.post<SaltEdgeResponse<SaltEdgeConnectSession>>(
-					`${this.baseUrl}/connect_sessions/create`,
+					`${this.baseUrl}/connections/connect`,
 					body,
 					{ headers: this.headers },
 				),
@@ -115,6 +138,23 @@ export class SaltEdgeService {
 	}
 
 	// ─── Connections ───────────────────────────────────────────────────
+
+	async listConnections(customerId: string): Promise<SaltEdgeConnection[]> {
+		try {
+			const { data } = await firstValueFrom(
+				this.http.get<SaltEdgeListResponse<SaltEdgeConnection>>(
+					`${this.baseUrl}/connections`,
+					{
+						headers: this.headers,
+						params: { customer_id: customerId },
+					},
+				),
+			)
+			return data.data
+		} catch (error) {
+			this.handleError(error, 'listConnections')
+		}
+	}
 
 	async getConnection(connectionId: string): Promise<SaltEdgeConnection> {
 		try {
@@ -133,7 +173,7 @@ export class SaltEdgeService {
 	async refreshConnection(connectionId: string): Promise<SaltEdgeConnection> {
 		try {
 			const { data } = await firstValueFrom(
-				this.http.put<SaltEdgeResponse<SaltEdgeConnection>>(
+				this.http.post<SaltEdgeResponse<SaltEdgeConnection>>(
 					`${this.baseUrl}/connections/${connectionId}/refresh`,
 					{ data: {} },
 					{ headers: this.headers },

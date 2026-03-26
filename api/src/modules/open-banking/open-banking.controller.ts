@@ -39,6 +39,33 @@ export class OpenBankingController {
 	}
 
 	@UseGuards(JwtAuthGuard)
+	@Post('handle-callback')
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'Handle Salt Edge callback',
+		description:
+			'Discovers new connections after Salt Edge redirect and triggers initial sync.',
+	})
+	async handleCallback(@CurrentUser() user) {
+		const result = await this.openBankingService.handleCallback(user.userId)
+
+		// If new connections discovered, sync them
+		if (result.discovered > 0) {
+			const connections =
+				await this.openBankingService.listConnections(user.userId)
+			for (const conn of connections.data) {
+				try {
+					await this.syncService.fullSync(conn.id, user.userId)
+				} catch (error) {
+					// Log but don't fail — connection is still saved
+				}
+			}
+		}
+
+		return result
+	}
+
+	@UseGuards(JwtAuthGuard)
 	@Get('connections')
 	@ApiBearerAuth()
 	@ApiOperation({

@@ -2,7 +2,7 @@
  * Salt Edge API Response Types
  */
 export interface SaltEdgeCustomer {
-	id: string
+	customer_id: string
 	identifier: string
 	secret: string
 }

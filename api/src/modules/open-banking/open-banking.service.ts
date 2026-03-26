@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common'
+import {
+	BadGatewayException,
+	BadRequestException,
+	Injectable,
+	Logger,
+} from '@nestjs/common'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
 import { CreateConnectSessionDto } from './dtos/create-connect-session.dto'
 import { DisconnectBankDto } from './dtos/disconnect-bank.dto'
@@ -23,13 +28,30 @@ export class OpenBankingService {
 
 		if (existing) return existing
 
-		const saltEdgeCustomer = await this.saltEdge.createCustomer(userId)
+		let saltEdgeCustomerId: string
+
+		try {
+			const created = await this.saltEdge.createCustomer(userId)
+			saltEdgeCustomerId = created.customer_id
+		} catch (error) {
+			// Customer already exists in Salt Edge but not in our DB — recover it
+			if (
+				error instanceof BadGatewayException &&
+				error.message.includes('DuplicatedCustomer')
+			) {
+				const recovered = await this.saltEdge.getCustomerByIdentifier(userId)
+				if (!recovered) throw error
+				saltEdgeCustomerId = recovered.customer_id
+				this.logger.warn(
+					`Recovered existing Salt Edge customer for user ${userId}`,
+				)
+			} else {
+				throw error
+			}
+		}
 
 		const customer = await this.prisma.openBankingCustomer.create({
-			data: {
-				userId,
-				saltEdgeCustomerId: saltEdgeCustomer.id,
-			},
+			data: { userId, saltEdgeCustomerId },
 		})
 
 		this.logger.log(`Created OpenBanking customer for user ${userId}`)
@@ -46,13 +68,61 @@ export class OpenBankingService {
 
 		const session = await this.saltEdge.createConnectSession({
 			customerId: customer.saltEdgeCustomerId,
-			consentScopes: ['account_details', 'transactions_details'],
+			consentScopes: ['accounts', 'transactions'],
 			consentFromDate: fromDate,
 			returnTo: dto.returnTo,
 			providerCode: dto.providerCode,
 		})
 
 		return { connectUrl: session.connect_url }
+	}
+
+	// Handle Callback — discover new connections from Salt Edge
+	async handleCallback(userId: string) {
+		const customer = await this.prisma.openBankingCustomer.findUnique({
+			where: { userId },
+		})
+
+		if (!customer) return { discovered: 0 }
+
+		const seConnections = await this.saltEdge.listConnections(
+			customer.saltEdgeCustomerId,
+		)
+
+		let discovered = 0
+
+		for (const seConn of seConnections) {
+			const exists = await this.prisma.openBankingConnection.findUnique({
+				where: { saltEdgeConnectionId: seConn.id },
+			})
+
+			if (!exists) {
+				await this.prisma.openBankingConnection.create({
+					data: {
+						customerId: customer.id,
+						saltEdgeConnectionId: seConn.id,
+						providerCode: seConn.provider_code,
+						providerName: seConn.provider_name,
+						status: seConn.status === 'active' ? 'ACTIVE' : 'INACTIVE',
+						consentExpiresAt: seConn.consent?.expires_at
+							? new Date(seConn.consent.expires_at)
+							: null,
+						nextRefreshPossibleAt: seConn.next_refresh_possible_at
+							? new Date(seConn.next_refresh_possible_at)
+							: null,
+						lastSyncAt: seConn.last_success_at
+							? new Date(seConn.last_success_at)
+							: null,
+					},
+				})
+				discovered++
+				this.logger.log(
+					`Discovered new connection: ${seConn.provider_name} (${seConn.id})`,
+				)
+			}
+		}
+
+		return { discovered }
 	}
 
 	// List Connections
