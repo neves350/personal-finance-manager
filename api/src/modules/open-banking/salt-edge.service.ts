@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios'
-import { Injectable, Logger } from '@nestjs/common'
+import { BadGatewayException, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { isAxiosError } from 'axios'
 import { firstValueFrom } from 'rxjs'
 import type {
 	SaltEdgeAccount,
@@ -16,7 +17,7 @@ import type {
 @Injectable()
 export class SaltEdgeService {
 	private readonly logger = new Logger(SaltEdgeService.name)
-	private readonly baseUrl = 'https://www.saltedge.com/api/v5'
+	private readonly baseUrl = 'https://www.saltedge.com/api/v6'
 	private readonly appId: string
 	private readonly secret: string
 
@@ -36,18 +37,38 @@ export class SaltEdgeService {
 		}
 	}
 
+	private handleError(error: unknown, context: string): never {
+		if (isAxiosError(error)) {
+			const status = error.response?.status
+			const saltEdgeError = error.response?.data?.error
+			const message = saltEdgeError?.message ?? error.message
+			const errorClass = saltEdgeError?.class ?? 'UnknownError'
+			this.logger.error(
+				`Salt Edge [${context}] ${status} ${errorClass}: ${message}`,
+			)
+			throw new BadGatewayException(
+				`Salt Edge error (${errorClass}): ${message}`,
+			)
+		}
+		throw error
+	}
+
 	// ─── Customers ─────────────────────────────────────────────────────
 
 	async createCustomer(identifier: string): Promise<SaltEdgeCustomer> {
-		const { data } = await firstValueFrom(
-			this.http.post<SaltEdgeResponse<SaltEdgeCustomer>>(
-				`${this.baseUrl}/customers`,
-				{ data: { identifier } },
-				{ headers: this.headers },
-			),
-		)
-		this.logger.log(`Created Salt Edge customer: ${data.data.id}`)
-		return data.data
+		try {
+			const { data } = await firstValueFrom(
+				this.http.post<SaltEdgeResponse<SaltEdgeCustomer>>(
+					`${this.baseUrl}/customers`,
+					{ data: { identifier } },
+					{ headers: this.headers },
+				),
+			)
+			this.logger.log(`Created Salt Edge customer: ${data.data.id}`)
+			return data.data
+		} catch (error) {
+			this.handleError(error, 'createCustomer')
+		}
 	}
 
 	// ─── Connect Sessions ──────────────────────────────────────────────
@@ -79,61 +100,81 @@ export class SaltEdgeService {
 				params.providerCode
 		}
 
-		const { data } = await firstValueFrom(
-			this.http.post<SaltEdgeResponse<SaltEdgeConnectSession>>(
-				`${this.baseUrl}/connect_sessions/create`,
-				body,
-				{ headers: this.headers },
-			),
-		)
-		return data.data
+		try {
+			const { data } = await firstValueFrom(
+				this.http.post<SaltEdgeResponse<SaltEdgeConnectSession>>(
+					`${this.baseUrl}/connect_sessions/create`,
+					body,
+					{ headers: this.headers },
+				),
+			)
+			return data.data
+		} catch (error) {
+			this.handleError(error, 'createConnectSession')
+		}
 	}
 
 	// ─── Connections ───────────────────────────────────────────────────
 
 	async getConnection(connectionId: string): Promise<SaltEdgeConnection> {
-		const { data } = await firstValueFrom(
-			this.http.get<SaltEdgeResponse<SaltEdgeConnection>>(
-				`${this.baseUrl}/connections/${connectionId}`,
-				{ headers: this.headers },
-			),
-		)
-		return data.data
+		try {
+			const { data } = await firstValueFrom(
+				this.http.get<SaltEdgeResponse<SaltEdgeConnection>>(
+					`${this.baseUrl}/connections/${connectionId}`,
+					{ headers: this.headers },
+				),
+			)
+			return data.data
+		} catch (error) {
+			this.handleError(error, 'getConnection')
+		}
 	}
 
 	async refreshConnection(connectionId: string): Promise<SaltEdgeConnection> {
-		const { data } = await firstValueFrom(
-			this.http.put<SaltEdgeResponse<SaltEdgeConnection>>(
-				`${this.baseUrl}/connections/${connectionId}/refresh`,
-				{ data: {} },
-				{ headers: this.headers },
-			),
-		)
-		return data.data
+		try {
+			const { data } = await firstValueFrom(
+				this.http.put<SaltEdgeResponse<SaltEdgeConnection>>(
+					`${this.baseUrl}/connections/${connectionId}/refresh`,
+					{ data: {} },
+					{ headers: this.headers },
+				),
+			)
+			return data.data
+		} catch (error) {
+			this.handleError(error, 'refreshConnection')
+		}
 	}
 
 	async removeConnection(connectionId: string): Promise<void> {
-		await firstValueFrom(
-			this.http.delete(`${this.baseUrl}/connections/${connectionId}`, {
-				headers: this.headers,
-			}),
-		)
-		this.logger.log(`Removed Salt Edge connection: ${connectionId}`)
+		try {
+			await firstValueFrom(
+				this.http.delete(`${this.baseUrl}/connections/${connectionId}`, {
+					headers: this.headers,
+				}),
+			)
+			this.logger.log(`Removed Salt Edge connection: ${connectionId}`)
+		} catch (error) {
+			this.handleError(error, 'removeConnection')
+		}
 	}
 
 	// ─── Accounts ──────────────────────────────────────────────────────
 
 	async getAccounts(connectionId: string): Promise<SaltEdgeAccount[]> {
-		const { data } = await firstValueFrom(
-			this.http.get<SaltEdgeListResponse<SaltEdgeAccount>>(
-				`${this.baseUrl}/accounts`,
-				{
-					headers: this.headers,
-					params: { connection_id: connectionId },
-				},
-			),
-		)
-		return data.data
+		try {
+			const { data } = await firstValueFrom(
+				this.http.get<SaltEdgeListResponse<SaltEdgeAccount>>(
+					`${this.baseUrl}/accounts`,
+					{
+						headers: this.headers,
+						params: { connection_id: connectionId },
+					},
+				),
+			)
+			return data.data
+		} catch (error) {
+			this.handleError(error, 'getAccounts')
+		}
 	}
 
 	// ─── Transactions ──────────────────────────────────────────────────
@@ -147,29 +188,33 @@ export class SaltEdgeService {
 		let nextId: string | undefined
 
 		// Paginate through all transactions
-		do {
-			const queryParams: Record<string, string> = {
-				connection_id: params.connectionId,
-				account_id: params.accountId,
-				from_date: params.fromDate,
-			}
-			if (nextId) {
-				queryParams.from_id = nextId
-			}
+		try {
+			do {
+				const queryParams: Record<string, string> = {
+					connection_id: params.connectionId,
+					account_id: params.accountId,
+					from_date: params.fromDate,
+				}
+				if (nextId) {
+					queryParams.from_id = nextId
+				}
 
-			const { data } = await firstValueFrom(
-				this.http.get<SaltEdgeListResponse<SaltEdgeTransaction>>(
-					`${this.baseUrl}/transactions`,
-					{
-						headers: this.headers,
-						params: queryParams,
-					},
-				),
-			)
+				const { data } = await firstValueFrom(
+					this.http.get<SaltEdgeListResponse<SaltEdgeTransaction>>(
+						`${this.baseUrl}/transactions`,
+						{
+							headers: this.headers,
+							params: queryParams,
+						},
+					),
+				)
 
-			allTransactions.push(...data.data)
-			nextId = data.meta.next_id
-		} while (nextId)
+				allTransactions.push(...data.data)
+				nextId = data.meta.next_id
+			} while (nextId)
+		} catch (error) {
+			this.handleError(error, 'getTransactions')
+		}
 
 		return allTransactions
 	}
@@ -177,15 +222,19 @@ export class SaltEdgeService {
 	// ─── Providers ─────────────────────────────────────────────────────
 
 	async getProviders(countryCode = 'PT'): Promise<SaltEdgeProvider[]> {
-		const { data } = await firstValueFrom(
-			this.http.get<SaltEdgeListResponse<SaltEdgeProvider>>(
-				`${this.baseUrl}/providers`,
-				{
-					headers: this.headers,
-					params: { country_code: countryCode },
-				},
-			),
-		)
-		return data.data
+		try {
+			const { data } = await firstValueFrom(
+				this.http.get<SaltEdgeListResponse<SaltEdgeProvider>>(
+					`${this.baseUrl}/providers`,
+					{
+						headers: this.headers,
+						params: { country_code: countryCode },
+					},
+				),
+			)
+			return data.data
+		} catch (error) {
+			this.handleError(error, 'getProviders')
+		}
 	}
 }
