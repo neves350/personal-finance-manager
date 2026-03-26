@@ -1,0 +1,103 @@
+<main class="p-4 md:p-6 w-full">
+  <div class="max-w-[2000px] mx-auto py-3 xl:py-6 space-y-8">
+
+    <!-- Header -->
+    <div class="flex justify-between items-start">
+      <h1 class="flex flex-col page-title">
+        Connections
+        <span class="page-subtitle">Link your bank account to sync transactions automatically.</span>
+      </h1>
+    </div>
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="flex flex-col items-center justify-center gap-2 min-h-[40vh]">
+        <z-loader />
+        <span class="text-sm text-muted-foreground">Loading available banks...</span>
+      </div>
+    }
+
+    <!-- Error -->
+    @if (error()) {
+      <z-card class="border-destructive/50 bg-destructive/5">
+        <p class="text-sm text-destructive p-4">{{ error() }}</p>
+      </z-card>
+    }
+
+    <!-- Providers Grid -->
+    @if (!loading() && providers().length > 0) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        @for (provider of providers(); track provider.code) {
+          <z-card class="flex flex-col gap-4 p-5 hover:border-primary/40 transition-colors">
+
+            <!-- Logo + Name -->
+            <div class="flex items-center gap-3">
+              @if (provider.logoUrl) {
+                <img
+                  [src]="provider.logoUrl"
+                  [alt]="provider.name"
+                  class="size-10 rounded-lg object-contain border bg-white p-1"
+                />
+              } @else {
+                <div class="size-10 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <i-lucide [img]="BuildingIcon" class="size-5" />
+                </div>
+              }
+              <div class="flex flex-col min-w-0">
+                <span class="font-medium text-sm truncate">{{ provider.name }}</span>
+                <span class="text-xs text-muted-foreground uppercase">{{ provider.countryCode }}</span>
+              </div>
+            </div>
+
+            <!-- Status + Action -->
+            <div class="flex items-center justify-between mt-auto">
+              @if (isConnected(provider.code)) {
+                <z-badge zType="success">Connected</z-badge>
+                <z-button
+                  zType="outline"
+                  zSize="sm"
+                  class="cursor-pointer"
+                  (click)="connect(provider.code)"
+                >
+                  <i-lucide [img]="RefreshCwIcon" class="size-3" />
+                  Reconnect
+                </z-button>
+              } @else {
+                <z-badge zType="secondary">{{ provider.status }}</z-badge>
+                <z-button
+                  zSize="sm"
+                  class="cursor-pointer"
+                  [zDisabled]="connectingProvider() === provider.code"
+                  (click)="connect(provider.code)"
+                >
+                  @if (connectingProvider() === provider.code) {
+                    <z-loader class="size-3" />
+                  }
+                  Connect
+                </z-button>
+              }
+            </div>
+          </z-card>
+        }
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading() && providers().length === 0 && !error()) {
+      <z-card class="w-full">
+        <div class="flex flex-col items-center justify-center p-10 gap-4">
+          <div class="size-12 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <i-lucide [img]="BuildingIcon" class="size-6" />
+          </div>
+          <div class="text-center space-y-1">
+            <p class="font-medium">No banks available</p>
+            <span class="text-sm text-muted-foreground">
+              No providers are available for your region at the moment.
+            </span>
+          </div>
+        </div>
+      </z-card>
+    }
+
+  </div>
+</main>
