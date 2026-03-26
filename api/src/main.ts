@@ -7,10 +7,21 @@ import { json, urlencoded } from 'express'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule, { bodyParser: false })
+	const app = await NestFactory.create(AppModule, {
+		bodyParser: false,
+		rawBody: true,
+	})
 
 	// Increase body limit for base64 avatar uploads
-	app.use(json({ limit: '5mb' }))
+	// verify callback preserves raw body for webhook signature validation
+	app.use(
+		json({
+			limit: '5mb',
+			verify: (req: any, _res, buf) => {
+				req.rawBody = buf
+			},
+		}),
+	)
 	app.use(urlencoded({ extended: true, limit: '5mb' }))
 
 	// CORS
