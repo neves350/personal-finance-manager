@@ -31,6 +31,38 @@
 
   <z-divider />
 
+  <div hlmSidebarGroupLabel class="group-data-[collapsible=icon]:hidden">Accounts</div>
+  <div hlmSidebarGroupContent>
+    <ul hlmSidebarMenu class="p-2 mr-1 gap-2">
+      @for (item of accountsItem; track item.title) {
+        <li hlmSidebarMenuItem>
+          <a
+            #rla="routerLinkActive"
+            hlmSidebarMenuButton
+            [size]="'md'"
+            [routerLink]="item.url"
+            routerLinkActive
+            [tooltip]="item.title"
+            [tooltipDisabled]="!isCollapsed()"
+            [class]="
+              rla.isActive ? (isCollapsed() ? activeCollapsedClass : activeExpandedClass) : ''
+            "
+          >
+            <i-lucide
+              [img]="item.icon"
+              class="size-4.5 mb-1 group-data-[collapsible=icon]:size-5 group-data-[collapsible=icon]:mt-0.5"
+            />
+            @if (!isCollapsed()) {
+              <span class="m-2">{{ item.title }}</span>
+            }
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <z-divider />
+
   <div hlmSidebarGroupLabel class="group-data-[collapsible=icon]:hidden">Analytics</div>
   <div hlmSidebarGroupContent>
     <ul hlmSidebarMenu class="p-2 mr-1 gap-2 group-data-[collapsible=icon]:gap-3">
