@@ -15,6 +15,7 @@ import {
 	selectItemVariants,
 	type ZardSelectItemModeVariants,
 	type ZardSelectSizeVariants,
+	ZardSelectTypeVariants,
 } from './select.variants'
 
 // Interface to avoid circular dependency
@@ -68,17 +69,26 @@ export class ZardSelectItemComponent {
 
 	readonly zMode = signal<ZardSelectItemModeVariants>('normal')
 	readonly zSize = signal<ZardSelectSizeVariants>('default')
+	readonly zType = signal<ZardSelectTypeVariants>('default')
 
 	protected readonly classes = computed(() =>
 		mergeClasses(
-			selectItemVariants({ zMode: this.zMode(), zSize: this.zSize() }),
+			selectItemVariants({
+				zMode: this.zMode(),
+				zSize: this.zSize(),
+				zType: this.zType(),
+			}),
 			this.class(),
 		),
 	)
 
 	protected readonly iconClasses = computed(() =>
 		mergeClasses(
-			selectItemIconVariants({ zMode: this.zMode(), zSize: this.zSize() }),
+			selectItemIconVariants({
+				zMode: this.zMode(),
+				zSize: this.zSize(),
+				zType: this.zType(),
+			}),
 		),
 	)
 

@@ -13,11 +13,11 @@ import {
 	computed,
 	contentChildren,
 	DestroyRef,
-	effect,
 	ElementRef,
+	effect,
 	forwardRef,
-	inject,
 	Injector,
+	inject,
 	input,
 	model,
 	type OnDestroy,
@@ -33,10 +33,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 
 import type { ClassValue } from 'clsx'
-import { filter } from 'rxjs'
-
-import { mergeClasses, transform } from '@/shared/utils/merge-classes'
 import { LucideAngularModule, type LucideIconData } from 'lucide-angular'
+import { filter } from 'rxjs'
+import { mergeClasses, transform } from '@/shared/utils/merge-classes'
 import { ZardBadgeComponent } from '../badge'
 import { ZardIconComponent } from '../icon'
 import {
@@ -44,6 +43,7 @@ import {
 	selectTriggerVariants,
 	selectVariants,
 	type ZardSelectSizeVariants,
+	ZardSelectTypeVariants,
 } from './select.variants'
 import { ZardSelectItemComponent } from './select-item.component'
 
@@ -54,7 +54,13 @@ const COMPACT_MODE_WIDTH_THRESHOLD = 100
 
 @Component({
 	selector: 'z-select, [z-select]',
-	imports: [CommonModule, OverlayModule, LucideAngularModule, ZardBadgeComponent, ZardIconComponent],
+	imports: [
+		CommonModule,
+		OverlayModule,
+		LucideAngularModule,
+		ZardBadgeComponent,
+		ZardIconComponent,
+	],
 	template: `
     <button
       type="button"
@@ -70,7 +76,7 @@ const COMPACT_MODE_WIDTH_THRESHOLD = 100
       (focus)="onFocus()"
     >
       @if (zIcon()) {
-        <i-lucide [img]="zIcon()!" class="size-4 shrink-0 text-muted-foreground" />
+        <i-lucide [img]="zIcon()!" class="size-4 shrink-0 text-foreground" />
       }
       <span class="flex flex-1 flex-wrap items-center gap-2">
         @let labels = selectedLabels();
@@ -80,7 +86,7 @@ const COMPACT_MODE_WIDTH_THRESHOLD = 100
           <span class="text-muted-foreground truncate">{{ zPlaceholder() }}</span>
         }
       </span>
-      <z-icon zType="chevron-down" zSize="lg" class="opacity-50" />
+      <z-icon zType="chevron-down" zSize="lg" class="opacity-80" />
     </button>
 
     <ng-template #labelsTemplate let-label>
@@ -159,6 +165,7 @@ export class ZardSelectComponent implements ControlValueAccessor, OnDestroy {
 	readonly zIcon = input<LucideIconData | null>(null)
 	readonly zPlaceholder = input<string>('Select an option...')
 	readonly zSize = input<ZardSelectSizeVariants>('default')
+	readonly zType = input<ZardSelectTypeVariants>('default')
 	readonly zValue = model<string | string[]>(this.zMultiple() ? [] : '')
 
 	readonly zSelectionChange = output<string | string[]>()
@@ -202,6 +209,7 @@ export class ZardSelectComponent implements ControlValueAccessor, OnDestroy {
 		mergeClasses(
 			selectTriggerVariants({
 				zSize: this.zSize(),
+				zType: this.zType(),
 			}),
 		),
 	)
@@ -221,6 +229,7 @@ export class ZardSelectComponent implements ControlValueAccessor, OnDestroy {
 				navigateTo: () => this.navigateTo(item, i),
 			})
 			item.zSize.set(this.zSize())
+			item.zType.set(this.zType())
 			i++
 
 			if (hostWidth <= COMPACT_MODE_WIDTH_THRESHOLD) {

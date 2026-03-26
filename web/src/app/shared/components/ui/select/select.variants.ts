@@ -24,9 +24,14 @@ export const selectTriggerVariants = cva(
 				default: 'min-h-9 py-2 px-4 text-sm',
 				lg: 'min-h-10 py-2 text-base px-4',
 			},
+			zType: {
+				default:
+					'border border-border bg-card shadow-xs hover:bg-card/50 hover:text-foreground/70 dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+			},
 		},
 		defaultVariants: {
 			zSize: 'default',
+			zType: 'default',
 		},
 	},
 )
@@ -42,6 +47,9 @@ export const selectItemVariants = cva(
 				default: 'min-h-9 py-1.5 text-sm',
 				lg: 'min-h-10 py-2 text-base',
 			},
+			zType: {
+				default: '',
+			},
 			zMode: {
 				normal: 'pr-8 pl-2',
 				compact: 'pl-6.5 pr-2',
@@ -51,6 +59,7 @@ export const selectItemVariants = cva(
 			{
 				zMode: 'compact',
 				zSize: 'sm',
+				zType: 'default',
 				class: 'pl-5 pr-2',
 			},
 		],
@@ -71,11 +80,15 @@ export const selectItemIconVariants = cva(
 				normal: 'right-2',
 				compact: 'left-2',
 			},
+			zType: {
+				default: '',
+			},
 		},
 		compoundVariants: [
 			{
 				zMode: 'compact',
 				zSize: 'sm',
+				zType: 'default',
 				class: 'left-1',
 			},
 		],
@@ -84,6 +97,9 @@ export const selectItemIconVariants = cva(
 
 export type ZardSelectSizeVariants = NonNullable<
 	VariantProps<typeof selectTriggerVariants>['zSize']
+>
+export type ZardSelectTypeVariants = NonNullable<
+	VariantProps<typeof selectTriggerVariants>['zType']
 >
 export type ZardSelectItemModeVariants = NonNullable<
 	VariantProps<typeof selectItemVariants>['zMode']
