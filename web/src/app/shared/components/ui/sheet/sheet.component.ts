@@ -68,9 +68,9 @@ export class ZardSheetOptions<T, U> {
         type="button"
         data-testid="z-close-header-button"
         z-button
-        zType="ghost"
+        zType="outline"
         zSize="sm"
-        class="absolute top-1 right-1 cursor-pointer"
+        class="absolute top-1 right-1 mr-2 cursor-pointer"
         (click)="onCloseClick()"
       >
         <z-icon zType="x" />
@@ -80,7 +80,7 @@ export class ZardSheetOptions<T, U> {
     @if (config.zTitle || config.zDescription) {
       <header data-slot="sheet-header" class="flex flex-col gap-1.5 p-4">
         @if (config.zTitle) {
-          <h4 data-testid="z-title" data-slot="sheet-title" class="text-lg leading-none font-semibold tracking-tight">
+          <h4 data-testid="z-title" data-slot="sheet-title" class="text-lg leading-none font-semibold font-display text-foreground tracking-tight">
             {{ config.zTitle }}
           </h4>
 
