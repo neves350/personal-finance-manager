@@ -2,7 +2,7 @@
   <div class="flex flex-col">
     <div class="flex items-center justify-start">
       <span
-        class="text-xs xl:text-sm font-medium tracking-wider text-muted-foreground uppercase flex items-center gap-2"
+        class="text-xs xl:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2"
       >
         <div class="rounded-full border-2 p-2">
           <i-lucide [img]="TrendingUpIcon" class="h-4 w-4 xl:h-4.5 xl:w-4.5 text-primary" />
@@ -11,7 +11,7 @@
       </span>
     </div>
 
-    <span class="text-2xl xl:text-3xl font-bold tracking-tight text-card-foreground mt-3 xl:mt-2">
+    <span class="text-2xl xl:text-3xl font-bold font-display tracking-tight text-card-foreground mt-3 xl:mt-2">
       {{ formattedIncome() | currency: 'EUR' }}
     </span>
 
