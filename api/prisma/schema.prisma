@@ -21,7 +21,8 @@ model User {
   cards        Card[]
   bankAccounts BankAccount[]
   transfer     Transfer[]
-  categories   Category[]
+  categories          Category[]
+  openBankingCustomer OpenBankingCustomer?
 
   @@map("users")
 }
@@ -119,21 +120,24 @@ enum CardType {
 }
 
 model BankAccount {
-  id             String        @id @default(uuid())
-  userId         String        @map("user_id")
-  name           String
-  type           BankType      @default(CHECKING)
-  balance        Decimal       @db.Decimal(12, 2)
-  initialBalance Decimal       @default(0) @map("initial_balance") @db.Decimal(12, 2)
-  cards          Card[]
-  transactions   Transaction[]
-  recurrings     Recurring[]
-  goals          Goal[]
-  transfersFrom  Transfer[]    @relation("from_transfers")
-  transfersTo    Transfer[]    @relation("to_transfers")
-  createdAt      DateTime      @default(now()) @map("created_at")
-  updatedAt      DateTime      @updatedAt @map("updated_at")
-  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                 String              @id @default(uuid())
+  userId             String              @map("user_id")
+  name               String
+  type               BankType            @default(CHECKING)
+  balance            Decimal             @db.Decimal(12, 2)
+  initialBalance     Decimal             @default(0) @map("initial_balance") @db.Decimal(12, 2)
+  isLinked           Boolean             @default(false) @map("is_linked")
+  bankLogo           String?             @map("bank_logo")
+  cards              Card[]
+  transactions       Transaction[]
+  recurrings         Recurring[]
+  goals              Goal[]
+  transfersFrom      Transfer[]          @relation("from_transfers")
+  transfersTo        Transfer[]          @relation("to_transfers")
+  openBankingAccount OpenBankingAccount?
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("bank_accounts")
 }
@@ -143,6 +147,17 @@ enum BankType {
   CHECKING
   SAVINGS
   INVESTMENT
+}
+
+enum ConnectionStatus {
+  ACTIVE
+  INACTIVE
+  DISABLED
+}
+
+enum TransactionSource {
+  MANUAL
+  OPEN_BANKING
 }
 
 model Transfer {
@@ -187,22 +202,24 @@ model Category {
 }
 
 model Transaction {
-  id            String      @id @default(uuid())
-  cardId        String?     @map("card_id")
-  bankAccountId String      @map("bank_account_id")
-  categoryId    String      @map("category_id")
-  recurringId   String?     @map("recurring_id")
+  id            String            @id @default(uuid())
+  cardId        String?           @map("card_id")
+  bankAccountId String            @map("bank_account_id")
+  categoryId    String            @map("category_id")
+  recurringId   String?           @map("recurring_id")
   title         String
   type          Type
-  amount        Decimal     @db.Decimal(12, 2)
+  amount        Decimal           @db.Decimal(12, 2)
   date          DateTime
-  isPaid        Boolean     @default(false) @map("is_paid")
-  createdAt     DateTime    @default(now()) @map("created_at")
-  updatedAt     DateTime    @updatedAt @map("updated_at")
-  card          Card?       @relation(fields: [cardId], references: [id], onDelete: Cascade)
-  category      Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  bankAccount   BankAccount @relation(fields: [bankAccountId], references: [id], onDelete: Cascade)
-  recurring     Recurring?  @relation(fields: [recurringId], references: [id], onDelete: SetNull)
+  isPaid        Boolean           @default(false) @map("is_paid")
+  source        TransactionSource @default(MANUAL)
+  externalId    String?           @unique @map("external_id")
+  createdAt     DateTime          @default(now()) @map("created_at")
+  updatedAt     DateTime          @updatedAt @map("updated_at")
+  card          Card?             @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  category      Category          @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  bankAccount   BankAccount       @relation(fields: [bankAccountId], references: [id], onDelete: Cascade)
+  recurring     Recurring?        @relation(fields: [recurringId], references: [id], onDelete: SetNull)
 
   @@map("transactions")
 }
@@ -244,4 +261,51 @@ enum Frequency {
 enum PaymentMethod {
   MONEY
   CARD
+}
+
+model OpenBankingCustomer {
+  id                 String                  @id @default(uuid())
+  userId             String                  @unique @map("user_id")
+  saltEdgeCustomerId String                  @unique @map("salt_edge_customer_id")
+  createdAt          DateTime                @default(now()) @map("created_at")
+  updatedAt          DateTime                @updatedAt @map("updated_at")
+  user               User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  connections        OpenBankingConnection[]
+
+  @@map("open_banking_customers")
+}
+
+model OpenBankingConnection {
+  id                     String               @id @default(uuid())
+  customerId             String               @map("customer_id")
+  saltEdgeConnectionId   String               @unique @map("salt_edge_connection_id")
+  providerCode           String               @map("provider_code")
+  providerName           String               @map("provider_name")
+  status                 ConnectionStatus     @default(ACTIVE)
+  consentExpiresAt       DateTime?            @map("consent_expires_at")
+  lastSyncAt             DateTime?            @map("last_sync_at")
+  nextRefreshPossibleAt  DateTime?            @map("next_refresh_possible_at")
+  createdAt              DateTime             @default(now()) @map("created_at")
+  updatedAt              DateTime             @updatedAt @map("updated_at")
+  customer               OpenBankingCustomer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  accounts               OpenBankingAccount[]
+
+  @@map("open_banking_connections")
+}
+
+model OpenBankingAccount {
+  id                 String                @id @default(uuid())
+  connectionId       String                @map("connection_id")
+  bankAccountId      String                @unique @map("bank_account_id")
+  saltEdgeAccountId  String                @unique @map("salt_edge_account_id")
+  iban               String?
+  currencyCode       String                @default("EUR") @map("currency_code")
+  nature             String
+  lastSyncAt         DateTime?             @map("last_sync_at")
+  createdAt          DateTime              @default(now()) @map("created_at")
+  updatedAt          DateTime              @updatedAt @map("updated_at")
+  connection         OpenBankingConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  bankAccount        BankAccount           @relation(fields: [bankAccountId], references: [id], onDelete: Cascade)
+
+  @@map("open_banking_accounts")
 }
