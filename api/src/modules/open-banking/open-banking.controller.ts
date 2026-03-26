@@ -12,12 +12,16 @@ import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { CreateConnectSessionDto } from './dtos/create-connect-session.dto'
 import { DisconnectBankDto } from './dtos/disconnect-bank.dto'
+import { OpenBankingSyncService } from './open-banking-sync.service'
 import { OpenBankingService } from './open-banking.service'
 
 @ApiTags('Open Banking')
 @Controller('open-banking')
 export class OpenBankingController {
-	constructor(private readonly openBankingService: OpenBankingService) {}
+	constructor(
+		private readonly openBankingService: OpenBankingService,
+		private readonly syncService: OpenBankingSyncService,
+	) {}
 
 	@UseGuards(JwtAuthGuard)
 	@Post('connect')
@@ -83,6 +87,20 @@ export class OpenBankingController {
 		@CurrentUser() user,
 	) {
 		return this.openBankingService.disconnectBank(id, user.userId, dto)
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Post('connections/:id/sync')
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'Sync a bank connection',
+		description:
+			'Triggers a manual sync of accounts and transactions for this connection.',
+	})
+	async syncConnection(@Param('id') id: string, @CurrentUser() user) {
+		await this.openBankingService.getConnectionDetails(id, user.userId)
+		await this.syncService.fullSync(id, user.userId)
+		return { message: 'Sync completed successfully' }
 	}
 
 	@UseGuards(JwtAuthGuard)
