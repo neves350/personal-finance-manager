@@ -14,6 +14,7 @@ import { StatisticModule } from './modules/statistic/statistic.module'
 import { TransactionModule } from './modules/transaction/transaction.module'
 import { TransferModule } from './modules/transfer/transfer.module'
 import { UsersModule } from './modules/users/users.module'
+import { OpenBankingModule } from './modules/open-banking/open-banking.module';
 
 @Module({
 	imports: [
@@ -32,6 +33,7 @@ import { UsersModule } from './modules/users/users.module'
 		BankAccountModule,
 		TransferModule,
 		RecurringModule,
+		OpenBankingModule,
 	],
 	controllers: [],
 	providers: [],
