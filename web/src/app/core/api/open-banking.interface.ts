@@ -131,3 +131,7 @@ export interface DisconnectBankRequest {
 export interface DisconnectBankResponse {
 	message: string
 }
+
+export interface HandleCallbackResponse {
+	discovered: number
+}

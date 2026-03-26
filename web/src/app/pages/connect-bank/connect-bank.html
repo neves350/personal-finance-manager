@@ -13,7 +13,7 @@
     @if (loading()) {
       <div class="flex flex-col items-center justify-center gap-2 min-h-[40vh]">
         <z-loader />
-        <span class="text-sm text-muted-foreground">Loading available banks...</span>
+        <span class="text-sm text-muted-foreground">Loading...</span>
       </div>
     }
 
@@ -24,79 +24,217 @@
       </z-card>
     }
 
-    <!-- Providers Grid -->
-    @if (!loading() && providers().length > 0) {
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        @for (provider of providers(); track provider.code) {
-          <z-card class="flex flex-col gap-4 p-5 hover:border-primary/40 transition-colors">
+    @if (!loading()) {
 
-            <!-- Logo + Name -->
-            <div class="flex items-center gap-3">
-              @if (provider.logoUrl) {
-                <img
-                  [src]="provider.logoUrl"
-                  [alt]="provider.name"
-                  class="size-10 rounded-lg object-contain border bg-white p-1"
-                />
+      <!-- Connected Banks -->
+      @if (hasConnections()) {
+        <div class="space-y-3">
+          <h2 class="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Connected Banks</h2>
+
+          @for (connection of connections(); track connection.id) {
+            <z-card class="p-5 space-y-4">
+
+              <!-- Connection Info -->
+              <div class="flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                  <div class="size-10 flex items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
+                    <i-lucide [img]="BuildingIcon" class="size-5" />
+                  </div>
+                  <div class="flex flex-col min-w-0">
+                    <span class="font-medium text-sm">{{ connection.providerName }}</span>
+                    <span class="text-xs text-muted-foreground">{{ connection.providerCode }}</span>
+                  </div>
+                </div>
+
+                <z-badge [zType]="statusBadge(connection.status!)">{{ connection.status }}</z-badge>
+              </div>
+
+              <!-- Meta -->
+              <div class="flex flex-wrap gap-x-6 gap-y-1 text-xs text-muted-foreground">
+                <span class="flex items-center gap-1">
+                  <i-lucide [img]="RotateCwIcon" class="size-3" />
+                  Last sync: {{ formatDate(connection.lastSyncAt) }}
+                </span>
+                <span class="flex items-center gap-1">
+                  <i-lucide [img]="ClockIcon" class="size-3" />
+                  Consent expires: {{ formatDate(connection.consentExpiresAt) }}
+                </span>
+                @if (connection.accounts?.length) {
+                  <span class="flex items-center gap-1">
+                    <i-lucide [img]="CheckCircle2Icon" class="size-3" />
+                    {{ connection.accounts!.length }} account(s) linked
+                  </span>
+                }
+              </div>
+
+              <!-- Actions or Disconnect Confirmation -->
+              @if (disconnectingId() === connection.id) {
+                <div class="flex flex-col gap-3 pt-2 border-t border-border">
+                  <p class="text-sm font-medium">Disconnect {{ connection.providerName }}?</p>
+
+                  <div class="flex gap-3">
+                    <button
+                      type="button"
+                      class="flex-1 text-sm rounded-lg border p-3 text-left cursor-pointer transition-colors"
+                      [class]="keepData() ? 'border-primary bg-primary/5 text-primary' : 'border-border'"
+                      (click)="keepData.set(true)"
+                    >
+                      <span class="font-medium">Keep data</span>
+                      <p class="text-xs text-muted-foreground mt-0.5">Accounts and transactions remain in the app</p>
+                    </button>
+                    <button
+                      type="button"
+                      class="flex-1 text-sm rounded-lg border p-3 text-left cursor-pointer transition-colors"
+                      [class]="!keepData() ? 'border-destructive bg-destructive/5 text-destructive' : 'border-border'"
+                      (click)="keepData.set(false)"
+                    >
+                      <span class="font-medium">Delete data</span>
+                      <p class="text-xs text-muted-foreground mt-0.5">All synced accounts and transactions are removed</p>
+                    </button>
+                  </div>
+
+                  <div class="flex gap-2 justify-end">
+                    <z-button zType="outline" zSize="sm" class="cursor-pointer" (click)="cancelDisconnect()">
+                      <i-lucide [img]="XIcon" class="size-3" />
+                      Cancel
+                    </z-button>
+                    <z-button zType="destructive" zSize="sm" class="cursor-pointer" (click)="confirmDisconnect(connection)">
+                      <i-lucide [img]="Trash2Icon" class="size-3" />
+                      Confirm Disconnect
+                    </z-button>
+                  </div>
+                </div>
               } @else {
-                <div class="size-10 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <i-lucide [img]="BuildingIcon" class="size-5" />
+                <div class="flex gap-2 justify-end pt-2 border-t border-border">
+                  <z-button
+                    zType="outline"
+                    zSize="sm"
+                    class="cursor-pointer"
+                    [zDisabled]="syncingId() === connection.id"
+                    (click)="syncNow(connection)"
+                  >
+                    @if (syncingId() === connection.id) {
+                      <z-loader class="size-3" />
+                    } @else {
+                      <i-lucide [img]="RotateCwIcon" class="size-3" />
+                    }
+                    Sync Now
+                  </z-button>
+                  <z-button
+                    zType="outline"
+                    zSize="sm"
+                    class="cursor-pointer"
+                    [zDisabled]="refreshingId() === connection.id"
+                    (click)="refresh(connection)"
+                  >
+                    @if (refreshingId() === connection.id) {
+                      <z-loader class="size-3" />
+                    } @else {
+                      <i-lucide [img]="RefreshCwIcon" class="size-3" />
+                    }
+                    Refresh
+                  </z-button>
+                  <z-button
+                    zType="destructive"
+                    zSize="sm"
+                    class="cursor-pointer"
+                    (click)="startDisconnect(connection.id!)"
+                  >
+                    <i-lucide [img]="Trash2Icon" class="size-3" />
+                    Disconnect
+                  </z-button>
                 </div>
               }
-              <div class="flex flex-col min-w-0">
-                <span class="font-medium text-sm truncate">{{ provider.name }}</span>
-                <span class="text-xs text-muted-foreground uppercase">{{ provider.countryCode }}</span>
-              </div>
-            </div>
 
-            <!-- Status + Action -->
-            <div class="flex items-center justify-between mt-auto">
-              @if (isConnected(provider.code)) {
-                <z-badge zType="success">Connected</z-badge>
-                <z-button
-                  zType="outline"
-                  zSize="sm"
-                  class="cursor-pointer"
-                  (click)="connect(provider.code)"
-                >
-                  <i-lucide [img]="RefreshCwIcon" class="size-3" />
-                  Reconnect
-                </z-button>
-              } @else {
-                <z-badge zType="secondary">{{ provider.status }}</z-badge>
-                <z-button
-                  zSize="sm"
-                  class="cursor-pointer"
-                  [zDisabled]="connectingProvider() === provider.code"
-                  (click)="connect(provider.code)"
-                >
-                  @if (connectingProvider() === provider.code) {
-                    <z-loader class="size-3" />
+            </z-card>
+          }
+        </div>
+      }
+
+      <!-- Available Providers -->
+      @if (providers().length > 0) {
+        <div class="space-y-3">
+          <h2 class="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Available Banks</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            @for (provider of providers(); track provider.code) {
+              <z-card class="flex flex-col gap-4 p-5 hover:border-primary/40 transition-colors">
+
+                <!-- Logo + Name -->
+                <div class="flex items-center gap-3">
+                  @if (provider.logoUrl) {
+                    <img
+                      [src]="provider.logoUrl"
+                      [alt]="provider.name"
+                      class="size-10 rounded-lg object-contain border bg-white p-1"
+                    />
+                  } @else {
+                    <div class="size-10 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      <i-lucide [img]="BuildingIcon" class="size-5" />
+                    </div>
                   }
-                  Connect
-                </z-button>
-              }
-            </div>
-          </z-card>
-        }
-      </div>
-    }
+                  <div class="flex flex-col min-w-0">
+                    <span class="font-medium text-sm truncate">{{ provider.name }}</span>
+                    <span class="text-xs text-muted-foreground uppercase">{{ provider.countryCode }}</span>
+                  </div>
+                </div>
 
-    <!-- Empty State -->
-    @if (!loading() && providers().length === 0 && !error()) {
-      <z-card class="w-full">
-        <div class="flex flex-col items-center justify-center p-10 gap-4">
-          <div class="size-12 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <i-lucide [img]="BuildingIcon" class="size-6" />
-          </div>
-          <div class="text-center space-y-1">
-            <p class="font-medium">No banks available</p>
-            <span class="text-sm text-muted-foreground">
-              No providers are available for your region at the moment.
-            </span>
+                <!-- Status + Action -->
+                <div class="flex items-center justify-between mt-auto">
+                  @if (isConnected(provider.code)) {
+                    <z-badge zType="success">Connected</z-badge>
+                    <z-button zType="outline" zSize="sm" class="cursor-pointer" (click)="connect(provider.code)">
+                      <i-lucide [img]="RefreshCwIcon" class="size-3" />
+                      Reconnect
+                    </z-button>
+                  } @else {
+                    <z-badge zType="secondary">{{ provider.status }}</z-badge>
+                    <z-button
+                      zSize="sm"
+                      class="cursor-pointer"
+                      [zDisabled]="connectingProvider() === provider.code"
+                      (click)="connect(provider.code)"
+                    >
+                      @if (connectingProvider() === provider.code) {
+                        <z-loader class="size-3" />
+                      }
+                      Connect
+                    </z-button>
+                  }
+                </div>
+              </z-card>
+            }
           </div>
         </div>
-      </z-card>
+      }
+
+      <!-- Empty State (no providers available) -->
+      @if (providers().length === 0 && !error()) {
+        <div class="space-y-3">
+          <h2 class="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Available Banks</h2>
+          <z-card class="w-full">
+            <div class="flex flex-col items-center justify-center p-10 gap-4">
+              <div class="size-12 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <i-lucide [img]="BuildingIcon" class="size-6" />
+              </div>
+              <div class="text-center space-y-1">
+                <p class="font-medium">No banks available for your region</p>
+                <span class="text-sm text-muted-foreground">
+                  Your Salt Edge account is in pending mode. You can test the flow using a sandbox bank.
+                </span>
+              </div>
+              <z-button class="cursor-pointer" (click)="connect('fakebank_simple_xf')">
+                @if (connectingProvider() === 'fakebank_simple_xf') {
+                  <z-loader class="size-3" />
+                } @else {
+                  <i-lucide [img]="BuildingIcon" class="size-4" />
+                }
+                Connect Sandbox Bank
+              </z-button>
+            </div>
+          </z-card>
+        </div>
+      }
+
     }
 
   </div>

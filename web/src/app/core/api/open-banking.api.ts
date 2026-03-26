@@ -7,6 +7,7 @@ import {
 	CreateConnectSessionRequest,
 	DisconnectBankRequest,
 	DisconnectBankResponse,
+	HandleCallbackResponse,
 	OpenBankingConnectionDetailsResponse,
 	OpenBankingConnectionsResponse,
 	ProvidersResponse,
@@ -39,6 +40,19 @@ export class OpenBankingApi {
 		return this.http.post<ConnectSessionResponse>(
 			`${this.baseUrl}/connect`,
 			data,
+			{
+				withCredentials: true,
+			},
+		)
+	}
+
+	/**
+	 * HANDLE CALLBACK
+	 */
+	handleCallback(): Observable<HandleCallbackResponse> {
+		return this.http.post<HandleCallbackResponse>(
+			`${this.baseUrl}/handle-callback`,
+			{},
 			{
 				withCredentials: true,
 			},
