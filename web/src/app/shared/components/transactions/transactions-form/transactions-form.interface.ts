@@ -10,4 +10,5 @@ export interface iTransactionData {
 	cardId?: string
 	categoryId?: string
 	isPaid?: boolean
+	source?: 'MANUAL' | 'OPEN_BANKING'
 }

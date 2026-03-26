@@ -15,6 +15,9 @@
       @if (transaction().recurringId) {
         <i-lucide [img]="RepeatIcon" class="size-3 ml-2 text-destructive" />
       }
+      @if (isOpenBanking()) {
+        <i-lucide [img]="LandmarkIcon" class="size-3 ml-2 text-muted-foreground" />
+      }
     </div>
   </span>
 </td>
@@ -79,18 +82,20 @@
           <i-lucide [img]="SquarePenIcon" class="h-4 w-4 mr-2" />
           Edit
         </z-button>
-        <z-divider />
-        <z-button
-          zPopoverClose
-          zType="ghost"
-          zSize="sm"
-          zFull
-          class="text-destructive w-full justify-start"
-          (click)="deleteTransaction()"
-        >
-          <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
-          Delete
-        </z-button>
+        @if (!isOpenBanking()) {
+          <z-divider />
+          <z-button
+            zPopoverClose
+            zType="ghost"
+            zSize="sm"
+            zFull
+            class="text-destructive w-full justify-start"
+            (click)="deleteTransaction()"
+          >
+            <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
+            Delete
+          </z-button>
+        }
       </div>
     </z-popover>
   </ng-template>

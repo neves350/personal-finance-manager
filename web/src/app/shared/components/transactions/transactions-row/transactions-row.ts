@@ -11,6 +11,7 @@ import { TransactionsService } from '@core/services/transactions.service'
 import {
 	EllipsisIcon,
 	FilesIcon,
+	LandmarkIcon,
 	LucideAngularModule,
 	RepeatIcon,
 	SquarePenIcon,
@@ -52,6 +53,11 @@ export class TransactionsRow {
 	readonly Trash2Icon = Trash2Icon
 	readonly FilesIcon = FilesIcon
 	readonly RepeatIcon = RepeatIcon
+	readonly LandmarkIcon = LandmarkIcon
+
+	readonly isOpenBanking = computed(
+		() => this.transaction().source === 'OPEN_BANKING',
+	)
 
 	readonly statusIcon = computed(() => {
 		return this.transaction().isPaid
@@ -125,6 +131,7 @@ export class TransactionsRow {
 				categoryId: this.transaction().categoryId,
 				amount: this.transaction().amount,
 				bankAccountId: this.transaction().bankAccountId,
+				source: this.transaction().source,
 			} as iTransactionData,
 		})
 	}

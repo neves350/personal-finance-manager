@@ -19,6 +19,7 @@ import {
 	EyeIcon,
 	HandCoinsIcon,
 	LandmarkIcon,
+	LinkIcon,
 	LucideAngularModule,
 	SquarePenIcon,
 	Trash2Icon,
@@ -72,6 +73,9 @@ export class BankAccountsCard {
 	readonly Trash2Icon = Trash2Icon
 	readonly EyeIcon = EyeIcon
 	readonly Clock2Icon = Clock2Icon
+	readonly LinkIcon = LinkIcon
+
+	readonly isLinked = computed(() => !!this.account().isLinked)
 
 	readonly badgeType = computed(() => {
 		const balance = Number(this.account().balance)

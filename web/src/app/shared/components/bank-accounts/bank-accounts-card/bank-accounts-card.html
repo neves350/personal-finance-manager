@@ -15,6 +15,12 @@
 
     <!-- Popover Option -->
     <div class="flex items-center gap-1">
+      @if (isLinked()) {
+        <z-badge zType="secondary" class="h-5">
+          <i-lucide [img]="LinkIcon" class="size-3 mr-1" />
+          Linked
+        </z-badge>
+      }
       <z-badge [zType]="badgeType()" class="h-5">
         {{ badgeLabel() }}
       </z-badge>
@@ -28,10 +34,12 @@
   <ng-template #popoverContent>
     <z-popover class="w-50 items-start">
       <div class="flex flex-col gap-1">
-        <z-button zPopoverClose zType="ghost" zSize="sm" zFull (click)="updateCard()">
-          <i-lucide [img]="SquarePenIcon" class="size-5 mr-2" />
-          Edit
-        </z-button>
+        @if (!isLinked()) {
+          <z-button zPopoverClose zType="ghost" zSize="sm" zFull (click)="updateCard()">
+            <i-lucide [img]="SquarePenIcon" class="size-5 mr-2" />
+            Edit
+          </z-button>
+        }
 
         <z-button
           zPopoverClose
@@ -44,7 +52,7 @@
           Details
         </z-button>
       </div>
-      @if (canDelete()) {
+      @if (!isLinked() && canDelete()) {
         <z-divider />
         <z-button
           zPopoverClose

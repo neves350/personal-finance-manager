@@ -1,4 +1,4 @@
-<div class="flex justify-start">
+<div class="flex justify-start items-center">
   <z-button class="cursor-pointer mr-4" zType="ghost" routerLink="/accounts">
     <i-lucide [img]="ArrowLeftIcon" />
   </z-button>
@@ -6,4 +6,10 @@
     {{ account().name }}
     <span class="font-normal text-muted-foreground text-xs xl:text-sm"> {{ accountType() }} </span>
   </h1>
+  @if (isLinked()) {
+    <z-badge zType="secondary" class="h-5 ml-3">
+      <i-lucide [img]="LinkIcon" class="size-3 mr-1" />
+      Linked
+    </z-badge>
+  }
 </div>

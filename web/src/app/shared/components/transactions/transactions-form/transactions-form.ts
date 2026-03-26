@@ -54,6 +54,9 @@ export class TransactionsForm {
 
 	readonly transactionTypes = Object.values(TransactionType)
 	readonly isEditMode = computed(() => !!this.zData?.id)
+	readonly isOpenBanking = computed(
+		() => this.zData?.source === 'OPEN_BANKING',
+	)
 	readonly initialDate = computed(() =>
 		this.zData?.date ? new Date(this.zData.date) : new Date(),
 	)
@@ -107,6 +110,17 @@ export class TransactionsForm {
 				categoryId: this.zData.categoryId ?? '',
 				isPaid: this.zData.isPaid ?? false,
 			})
+
+			// Lock fields for Open Banking transactions (only category editable)
+			if (this.zData.source === 'OPEN_BANKING') {
+				this.form.controls.title.disable()
+				this.form.controls.amount.disable()
+				this.form.controls.date.disable()
+				this.form.controls.type.disable()
+				this.form.controls.bankAccountId.disable()
+				this.form.controls.cardId.disable()
+				this.form.controls.isPaid.disable()
+			}
 		}
 	}
 
