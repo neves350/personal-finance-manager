@@ -1,7 +1,7 @@
 <div class="grid grid-cols-1 xl:grid-cols-3 items-center gap-3">
   <z-card class="flex flex-col transition-all duration-300 hover:border-primary/40">
     <div class="flex items-center justify-start mb-3 xl:mb-2">
-      <span class="text-xs xl:text-sm font-medium tracking-wider text-muted-foreground uppercase flex items-center gap-2">
+      <span class="text-xs xl:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2">
         <div class="rounded-full border-2 p-2">
           <i-lucide [img]="TrendingUpIcon" class="h-4 w-4 xl:h-4.5 xl:w-4.5 text-primary" />
         </div>
@@ -9,7 +9,7 @@
       </span>
     </div>
 
-    <span class="text-2xl xl:text-3xl font-bold tracking-tight text-card-foreground">
+    <span class="text-2xl xl:text-3xl font-bold font-display tracking-tight text-card-foreground">
       {{ totalIncome() >= 0 ? '+' : '' }}{{ totalIncome() | currency: 'EUR' }}
     </span>
 
@@ -44,7 +44,7 @@
 
   <z-card class="flex flex-col transition-all duration-300 hover:border-primary/40">
     <div class="flex items-center justify-start mb-3 xl:mb-2">
-      <span class="text-xs xl:text-sm font-medium tracking-wider text-muted-foreground uppercase flex items-center gap-2">
+      <span class="text-xs xl:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2">
         <div class="rounded-full border-2 p-2">
           <i-lucide [img]="TrendingDownIcon" class="h-4 w-4 xl:h-4.5 xl:w-4.5 text-primary" />
         </div>
@@ -52,7 +52,7 @@
       </span>
     </div>
 
-    <span class="text-2xl xl:text-3xl font-bold tracking-tight text-card-foreground">
+    <span class="text-2xl xl:text-3xl font-bold font-display tracking-tight text-card-foreground">
       {{ totalExpenses() >= 0 ? '+' : '' }}{{ totalExpenses() | currency: 'EUR' }}
     </span>
 
@@ -87,7 +87,7 @@
 
   <z-card class="flex flex-col transition-all duration-300 hover:border-primary/40">
     <div class="flex items-center justify-start mb-3 xl:mb-2">
-      <span class="text-xs xl:text-sm font-medium tracking-wider text-muted-foreground uppercase flex items-center gap-2">
+      <span class="text-xs xl:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2">
         <div class="rounded-full border-2 p-2">
           <i-lucide [img]="CoinsIcon" class="h-4 w-4 xl:h-4.5 xl:w-4.5 text-primary" />
         </div>
@@ -95,7 +95,7 @@
       </span>
     </div>
 
-    <span class="text-2xl xl:text-3xl font-bold tracking-tight text-card-foreground">
+    <span class="text-2xl xl:text-3xl font-bold font-display tracking-tight text-card-foreground">
       {{ totalBalance() >= 0 ? '+' : '' }}{{ totalBalance() | currency: 'EUR' }}
     </span>
 
