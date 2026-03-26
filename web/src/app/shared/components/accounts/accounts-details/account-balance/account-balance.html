@@ -6,12 +6,12 @@
 
     <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
       <span class="truncate text-xs text-muted-foreground"> Current balance </span>
-      <span class="text-xl xl:text-2xl font-bold" [class]="balanceColorClass()">{{ formattedBalance() }}</span>
+      <span class="text-xl xl:text-2xl font-bold font-display" [class]="balanceColorClass()">{{ formattedBalance() }}</span>
     </div>
 
     <div class="flex gap-1 p-2 rounded-full" [class]="balanceBgColorClass()">
       <i-lucide [img]="trendIcon()" [class]="balanceColorClass()" class="size-4" />
-      <span class="text-xs xl:text-sm font-semibold" [class]="balanceColorClass()">{{ formattedBalance() }}</span>
+      <span class="text-xs xl:text-sm font-semibold font-display" [class]="balanceColorClass()">{{ formattedBalance() }}</span>
     </div>
   </div>
 
@@ -20,7 +20,7 @@
   <div class="flex items-start justify-center">
     <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
       <p class="text-xs text-muted-foreground mb-1">Initial balance</p>
-      <span class="text-xs xl:text-sm font-semibold">{{ formattedInitialBalance() }}</span>
+      <span class="text-xs xl:text-sm font-semibold font-display">{{ formattedInitialBalance() }}</span>
     </div>
     <div>
       <p class="text-xs text-muted-foreground mb-1">Total movements</p>

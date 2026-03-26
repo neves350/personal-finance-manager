@@ -1,8 +1,6 @@
 import { Component, computed, input } from '@angular/core'
 import { BankAccount, BankType } from '@core/api/bank-accounts.interface'
 import {
-	ArrowDownIcon,
-	ArrowUpIcon,
 	CoinsIcon,
 	CreditCardIcon,
 	HandCoinsIcon,
@@ -52,9 +50,9 @@ export class AccountBalance {
 
 	readonly balanceBgColorClass = computed(() => {
 		const balance = Number(this.account().balance)
-		if (balance < 0) return 'bg-expense'
+		if (balance < 0) return 'bg-destructive/20'
 		if (balance === 0) return 'bg-muted'
-		return 'bg-income'
+		return 'bg-primary/20'
 	})
 
 	readonly formattedBalance = computed(() => {

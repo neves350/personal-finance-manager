@@ -1,8 +1,8 @@
 <z-card>
   <div class="flex items-start justify-between">
-    <h1 class="font-semibold flex flex-col">
+    <h1 class="text-base font-semibold font-display flex flex-col">
       Recent movements
-      <span class="font-normal text-muted-foreground text-sm"> Recent account transactions </span>
+      <span class="text-muted-foreground text-sm"> Recent account transactions </span>
     </h1>
 
     <div class="flex gap-1">
@@ -38,7 +38,7 @@
           </div>
 
           <div class="ml-4 text-right text-sm leading-tight">
-            <span class="text-xs xl:text-sm font-semibold {{getAmountColorClass(movement)}}"
+            <span class="text-xs xl:text-sm font-semibold font-display {{getAmountColorClass(movement)}}"
             >
               {{ getAmountPrefix(movement) }}{{ formatAmount(movement.amount) }}
             </span>

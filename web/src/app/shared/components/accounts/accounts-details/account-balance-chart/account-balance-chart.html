@@ -1,24 +1,24 @@
 <z-card class="h-full flex flex-col mb-4">
   <div class="flex items-start justify-between">
-    <h1 class="font-semibold flex flex-col">
+    <h1 class="text-base font-semibold font-display flex flex-col">
       Balance evolution
-      <span class="font-normal text-muted-foreground text-sm">Last 6 months</span>
+      <span class="text-muted-foreground text-sm">Last 6 months</span>
     </h1>
 
     @if (balanceHistory().length >= 2) {
       <div
         class="flex gap-1 p-2 rounded-2xl items-center"
-        [class]="isPositiveChange() ? 'bg-income' : 'bg-expense'"
+        [class]="isPositiveChange() ? 'bg-primary/20' : 'bg-destructive/20'"
       >
         <i-lucide
           [img]="trendIcon()"
           [class]="
-            isPositiveChange() ? 'size-4 text-income-foreground' : 'size-4 text-expense-foreground'
+            isPositiveChange() ? 'size-4 text-primary' : 'size-4 text-destructive'
           "
         />
         <span
           class="text-xs xl:text-sm font-semibold"
-          [class]="isPositiveChange() ? 'text-income-foreground' : 'text-expense-foreground'"
+          [class]="isPositiveChange() ? 'text-primary font-display' : 'text-destructive font-display'"
         >
           {{ formattedChange() }}
         </span>
@@ -49,11 +49,11 @@
     <div class="flex items-start justify-center">
       <div class="ml-4 grid flex-1 text-left text-sm leading-tight">
         <p class="text-xs text-muted-foreground mb-1">{{ firstMonthLabel() }}</p>
-        <span class="text-xs xl:text-sm font-semibold">{{ firstMonthBalance() }}</span>
+        <span class="text-xs xl:text-sm font-semibold font-display">{{ firstMonthBalance() }}</span>
       </div>
       <div>
         <p class="text-xs text-muted-foreground mb-1">{{ lastMonthLabel() }}</p>
-        <span class="text-xs xl:text-sm font-semibold">{{ lastMonthBalance() }}</span>
+        <span class="text-xs xl:text-sm font-semibold font-display">{{ lastMonthBalance() }}</span>
       </div>
     </div>
   }
