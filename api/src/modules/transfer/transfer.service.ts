@@ -34,6 +34,12 @@ export class TransferService {
 
 		if (!toAccount) throw new NotFoundException('Destination account not found')
 
+		if (fromAccount.isLinked || toAccount.isLinked) {
+			throw new BadRequestException(
+				'Transfers with linked accounts are not supported. Linked accounts sync directly with your bank.',
+			)
+		}
+
 		// check's for positive balance
 		const fromBalance = Number(fromAccount.balance)
 		if (fromBalance < amount)

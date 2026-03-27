@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import type { BankAccount } from '@core/api/bank-accounts.interface'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
@@ -38,8 +38,9 @@ export class TransfersForm {
 	readonly CircleArrowDownIcon = CircleArrowDownIcon
 	readonly EuroIcon = EuroIcon
 
-	// list all accounts
-	readonly accounts = this.bankAccountsService.bankAccounts
+	readonly accounts = computed(() =>
+		this.bankAccountsService.bankAccounts().filter((a) => !a.isLinked),
+	)
 
 	form = this.fb.nonNullable.group({
 		amount: [0 as number | null, [Validators.required, Validators.min(0.01)]],
