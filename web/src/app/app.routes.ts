@@ -93,14 +93,6 @@ export const routes: Routes = [
 					),
 			},
 			{
-				path: 'connections',
-				title: 'Connect Accounts',
-				loadComponent: () =>
-					import('./pages/connect-bank/connect-bank').then(
-						(m) => m.ConnectBank,
-					),
-			},
-			{
 				path: 'account-details/:id',
 				title: 'Account Details',
 				loadComponent: () =>

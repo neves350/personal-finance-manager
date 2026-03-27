@@ -1,11 +1,15 @@
-import { Component, inject, type OnInit } from '@angular/core'
+import { Component, inject, type OnInit, signal } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
+import { OpenBankingService } from '@core/services/open-banking.service'
 import {
 	ArrowRightLeftIcon,
+	BuildingIcon,
 	CoinsIcon,
 	LucideAngularModule,
 	PlusIcon,
 } from 'lucide-angular'
+import { toast } from 'ngx-sonner'
 import { BankAccountsForm } from '@/shared/components/bank-accounts/bank-accounts-form/bank-accounts-form'
 import { BankAccountsList } from '@/shared/components/bank-accounts/bank-accounts-list/bank-accounts-list'
 import { BankAccountsTotal } from '@/shared/components/bank-accounts/bank-accounts-total/bank-accounts-total'
@@ -32,18 +36,45 @@ export class BankAccount implements OnInit {
 	readonly CoinsIcon = CoinsIcon
 	readonly PlusIcon = PlusIcon
 	readonly ArrowRightLeftIcon = ArrowRightLeftIcon
+	readonly BuildingIcon = BuildingIcon
 
+	private readonly route = inject(ActivatedRoute)
 	private readonly dialogService = inject(ZardDialogService)
 	private readonly sheetService = inject(ZardSheetService)
 	private readonly bankAccountsService = inject(BankAccountsService)
+	private readonly openBankingService = inject(OpenBankingService)
 
-	// Expose service signals to template
 	readonly accounts = this.bankAccountsService.bankAccounts
 	readonly isLoading = this.bankAccountsService.loading
 	readonly hasBankAccounts = this.bankAccountsService.hasBankAccounts
 
+	readonly connectingProvider = signal<string | null>(null)
+	readonly syncing = signal(false)
+
 	ngOnInit(): void {
-		this.bankAccountsService.loadBankAccounts().subscribe()
+		this.openBankingService.loadConnections().subscribe()
+
+		// Check if returning from Salt Edge callback
+		const isCallback =
+			this.route.snapshot.queryParamMap.get('callback') === 'success'
+
+		if (isCallback) {
+			this.syncing.set(true)
+			this.openBankingService.handleCallback().subscribe({
+				next: () => {
+					toast.success('Bank connected successfully!')
+					this.syncing.set(false)
+					this.bankAccountsService.loadBankAccounts().subscribe()
+				},
+				error: () => {
+					toast.error('Failed to sync bank connection')
+					this.syncing.set(false)
+					this.bankAccountsService.loadBankAccounts().subscribe()
+				},
+			})
+		} else {
+			this.bankAccountsService.loadBankAccounts().subscribe()
+		}
 	}
 
 	openTransfer() {
@@ -76,6 +107,18 @@ export class BankAccount implements OnInit {
 			},
 			zCustomClasses:
 				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+		})
+	}
+
+	connect(providerCode: string) {
+		this.connectingProvider.set(providerCode)
+		this.openBankingService.connectBank(providerCode).subscribe({
+			next: (url) => {
+				window.location.href = url
+			},
+			error: () => {
+				this.connectingProvider.set(null)
+			},
 		})
 	}
 }

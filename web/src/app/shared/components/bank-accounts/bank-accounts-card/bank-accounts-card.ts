@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router'
 import { BankAccount, BankType } from '@core/api/bank-accounts.interface'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
 import { CardsService } from '@core/services/cards.service'
+import { OpenBankingService } from '@core/services/open-banking.service'
 import {
 	Clock2Icon,
 	CoinsIcon,
@@ -19,8 +20,11 @@ import {
 	EyeIcon,
 	HandCoinsIcon,
 	LandmarkIcon,
+	Link2OffIcon,
 	LinkIcon,
 	LucideAngularModule,
+	RefreshCwIcon,
+	RotateCwIcon,
 	SquarePenIcon,
 	Trash2Icon,
 	TrendingDownIcon,
@@ -67,6 +71,7 @@ export class BankAccountsCard {
 	private readonly dialogService = inject(ZardDialogService)
 	private readonly bankAccountsService = inject(BankAccountsService)
 	private readonly cardsService = inject(CardsService)
+	private readonly openBankingService = inject(OpenBankingService)
 
 	readonly EllipsisVerticalIcon = EllipsisVerticalIcon
 	readonly SquarePenIcon = SquarePenIcon
@@ -74,8 +79,38 @@ export class BankAccountsCard {
 	readonly EyeIcon = EyeIcon
 	readonly Clock2Icon = Clock2Icon
 	readonly LinkIcon = LinkIcon
+	readonly Link2OffIcon = Link2OffIcon
+	readonly LandmarkIcon = LandmarkIcon
+	readonly RotateCwIcon = RotateCwIcon
+	readonly RefreshCwIcon = RefreshCwIcon
 
+	readonly syncing = signal(false)
+	readonly refreshing = signal(false)
+	readonly reconnecting = signal(false)
+
+	/** Find the OpenBanking connection that owns this account */
+	private readonly connectionFromService = computed(() =>
+		this.openBankingService
+			.connections()
+			.find((c) =>
+				c.accounts?.some((a) => a.bankAccountId === this.account().id),
+			),
+	)
+
+	/** Permanent marker — account originated from Open Banking */
 	readonly isLinked = computed(() => !!this.account().isLinked)
+
+	/** Currently connected and syncing */
+	readonly isActive = computed(
+		() => this.isLinked() && !!this.connectionFromService(),
+	)
+
+	/** Was linked but connection was removed (keepData disconnect) */
+	readonly isDisconnected = computed(
+		() => this.isLinked() && !this.connectionFromService(),
+	)
+
+	private readonly connection = computed(() => this.connectionFromService())
 
 	readonly badgeType = computed(() => {
 		const balance = Number(this.account().balance)
@@ -202,6 +237,88 @@ export class BankAccountsCard {
 				type: this.account().type,
 				balance: this.account().balance,
 			} as iSheetData,
+		})
+	}
+
+	syncConnection() {
+		const conn = this.connection()
+		if (!conn?.id) return
+		this.syncing.set(true)
+		this.openBankingService.syncConnection(conn.id).subscribe({
+			next: () => {
+				this.syncing.set(false)
+				toast.success(`${conn.providerName} synced successfully`)
+				this.bankAccountsService.loadBankAccounts().subscribe()
+			},
+			error: (err) => {
+				this.syncing.set(false)
+				toast.error(err.error?.message || 'Failed to sync')
+			},
+		})
+	}
+
+	refreshConnection() {
+		const conn = this.connection()
+		if (!conn?.id) return
+		this.refreshing.set(true)
+		this.openBankingService.refreshConnection(conn.id).subscribe({
+			next: () => {
+				this.refreshing.set(false)
+				toast.success(`${conn.providerName} refresh started`)
+			},
+			error: (err) => {
+				this.refreshing.set(false)
+				toast.error(err.error?.message || 'Failed to refresh')
+			},
+		})
+	}
+
+	reconnectConnection() {
+		this.reconnecting.set(true)
+		this.openBankingService.connectBank('fakebank_simple_xf').subscribe({
+			next: (url) => {
+				window.location.href = url
+			},
+			error: () => {
+				this.reconnecting.set(false)
+				toast.error('Failed to start reconnection')
+			},
+		})
+	}
+
+	disconnectConnection() {
+		const conn = this.connection()
+		if (!conn?.id) return
+
+		const accountCount = conn.accounts?.length ?? 0
+		const accountText =
+			accountCount > 1
+				? `All ${accountCount} accounts from this connection`
+				: 'This account'
+
+		this.dialogService.create({
+			zTitle: `Disconnect ${conn.providerName}?`,
+			zDescription: `${accountText} will be marked as disconnected. Synced transactions remain.`,
+			zCancelText: 'Cancel',
+			zWidth: '450px',
+			zOkText: 'Disconnect',
+			zOkDestructive: true,
+			zOnOk: async () => {
+				try {
+					await lastValueFrom(
+						this.openBankingService.disconnect(conn.id!, true),
+					)
+					toast.success(`${conn.providerName} disconnected`)
+					this.bankAccountsService.loadBankAccounts().subscribe()
+					return true
+				} catch (err: unknown) {
+					const error = err as { error?: { message?: string } }
+					toast.error(error.error?.message || 'Failed to disconnect')
+					return false
+				}
+			},
+			zCustomClasses:
+				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 

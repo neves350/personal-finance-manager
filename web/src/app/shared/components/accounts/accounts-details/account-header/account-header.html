@@ -6,10 +6,15 @@
     {{ account().name }}
     <span class="font-normal text-muted-foreground text-xs xl:text-sm"> {{ accountType() }} </span>
   </h1>
-  @if (isLinked()) {
+  @if (isActive()) {
     <z-badge zType="secondary" class="h-5 ml-3">
       <i-lucide [img]="LinkIcon" class="size-3 mr-1" />
       Linked
+    </z-badge>
+  } @else if (isDisconnected()) {
+    <z-badge zType="outline" class="h-5 ml-3 text-muted-foreground">
+      <i-lucide [img]="Link2OffIcon" class="size-3 mr-1" />
+      Disconnected
     </z-badge>
   }
 </div>

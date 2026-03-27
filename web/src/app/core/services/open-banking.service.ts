@@ -68,7 +68,7 @@ export class OpenBankingService {
 		return this.openBankingApi
 			.createConnectSession({
 				providerCode,
-				returnTo: `${window.location.origin}/connections?callback=success`,
+				returnTo: `${window.location.origin}/accounts?callback=success`,
 			})
 			.pipe(map((response) => response.connectUrl))
 	}

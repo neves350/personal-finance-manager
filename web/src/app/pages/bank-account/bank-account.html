@@ -1,59 +1,64 @@
 <main class="p-4 md:p-6 w-full">
-  <div class="max-w-[2000px] mx-auto py-3 xl:py-6 space-y-8">
+  <div class="max-w-500 mx-auto py-3 xl:py-6 space-y-8">
     <div class="flex justify-between">
       <h1 class="flex flex-col page-title">
         Accounts
-        <span class="page-subtitle"> Manage your accounts. </span>
+        <span class="page-subtitle"> Manage your virtual and linked bank accounts. </span>
       </h1>
 
-      <div class="justify-end">
-        <z-button class="cursor-pointer mr-2" zType="outline" (click)="openTransfer()">
+      <div class="flex items-center gap-2">
+        <z-button class="cursor-pointer" zType="outline" (click)="openTransfer()">
           <i-lucide [img]="ArrowRightLeftIcon" />
           Transfer
         </z-button>
+        <z-button class="cursor-pointer" (click)="connect('fakebank_simple_xf')">
+          @if (connectingProvider()) {
+            <z-loader class="size-3" />
+          } @else {
+            <i-lucide [img]="BuildingIcon" class="size-4" />
+          }
+          Connect Bank
+        </z-button>
         <z-button class="cursor-pointer" (click)="openSheet()">
           <i-lucide [img]="PlusIcon" />
-          New account
+          New Account
         </z-button>
       </div>
     </div>
 
-    @if (isLoading()) {
+    @if (syncing()) {
+      <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
+        <z-loader />
+        <span class="text-sm text-muted-foreground">Syncing bank connection...</span>
+      </div>
+    } @else if (isLoading()) {
       <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
         <z-loader />
         <span class="text-sm text-muted-foreground">Loading accounts...</span>
       </div>
-    } @else if (hasBankAccounts()) {
-      <app-bank-accounts-total />
-      <!-- Accounts List -->
-      <app-bank-accounts-list [accounts]="accounts()" />
     } @else {
-      <z-card class="w-full h-full flex flex-col">
-        <!-- Empty State -->
-        <div class="flex flex-col items-center justify-center p-6 mt-6">
-          <div
-            class="size-12 flex items-center justify-center rounded-lg text-primary bg-primary/20 mb-4"
-          >
-            <i-lucide [img]="CoinsIcon" />
-          </div>
 
-          <div class="flex flex-col items-center text-center">
-            <div class="space-y-2 mt-6">
-              <p class="font-medium">No accounts added</p>
-              <span class="text-muted-foreground">
-                Add your accounts to track spending and available balance.
-              </span>
+      @if (hasBankAccounts()) {
+        <app-bank-accounts-total />
+        <app-bank-accounts-list [accounts]="accounts()" />
+      } @else {
+        <z-card class="w-full h-full flex flex-col">
+          <div class="flex flex-col items-center justify-center p-6 mt-6">
+            <div class="size-12 flex items-center justify-center rounded-full text-primary bg-primary/20 mb-4">
+              <i-lucide [img]="CoinsIcon" />
+            </div>
+            <div class="flex flex-col items-center text-center">
+              <div class="space-y-2">
+                <p class="font-medium">No accounts added</p>
+                <span class="text-muted-foreground text-sm">
+                  Add a virtual account or connect your bank to get started.
+                </span>
+              </div>
             </div>
           </div>
+        </z-card>
+      }
 
-          <div class="flex flex-col items-center justify-center mt-4">
-            <z-button class="cursor-pointer" (click)="openSheet()">
-              <i-lucide [img]="PlusIcon" />
-              Add account
-            </z-button>
-          </div>
-        </div>
-      </z-card>
     }
   </div>
 </main>
