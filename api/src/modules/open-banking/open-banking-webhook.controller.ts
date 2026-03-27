@@ -11,6 +11,7 @@ import {
 import { ApiExcludeController } from '@nestjs/swagger'
 import type { Request } from 'express'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
+import { OpenBankingSyncService } from './open-banking-sync.service'
 import { validateWebhookSignature } from './helpers/signature-validator'
 import type { SaltEdgeWebhookPayload } from './interfaces/salt-edge.interface'
 import { SaltEdgeService } from './salt-edge.service'
@@ -23,6 +24,7 @@ export class OpenBankingWebhookController {
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly saltEdge: SaltEdgeService,
+		private readonly syncService: OpenBankingSyncService,
 	) {}
 
 	@Post('open-banking')
@@ -124,76 +126,18 @@ export class OpenBankingWebhookController {
 			})
 		}
 
-		// Sync accounts from Salt Edge
-		await this.syncAccounts(connection)
-
-		this.logger.log(
-			`Successfully processed webhook for connection ${saltEdgeConnectionId}`,
-		)
-	}
-
-	private async syncAccounts(connection: {
-		id: string
-		saltEdgeConnectionId: string
-		customerId: string
-	}) {
-		const seAccounts = await this.saltEdge.getAccounts(
-			connection.saltEdgeConnectionId,
-		)
-
-		// Find the user ID via the customer
+		// Find userId and delegate account sync to the sync service
 		const customer = await this.prisma.openBankingCustomer.findUnique({
 			where: { id: connection.customerId },
 		})
 
-		if (!customer) return
-
-		for (const seAccount of seAccounts) {
-			// Check if we already have this account linked
-			const existingLink = await this.prisma.openBankingAccount.findUnique({
-				where: { saltEdgeAccountId: seAccount.id },
-			})
-
-			if (existingLink) {
-				// Update balance on existing bank account
-				await this.prisma.bankAccount.update({
-					where: { id: existingLink.bankAccountId },
-					data: { balance: seAccount.balance },
-				})
-				await this.prisma.openBankingAccount.update({
-					where: { id: existingLink.id },
-					data: { lastSyncAt: new Date() },
-				})
-			} else {
-				// Create new bank account + link
-				const bankAccount = await this.prisma.bankAccount.create({
-					data: {
-						userId: customer.userId,
-						name: seAccount.name,
-						type: this.mapAccountNature(seAccount.nature),
-						balance: seAccount.balance,
-						initialBalance: seAccount.balance,
-						isLinked: true,
-					},
-				})
-
-				await this.prisma.openBankingAccount.create({
-					data: {
-						connectionId: connection.id,
-						bankAccountId: bankAccount.id,
-						saltEdgeAccountId: seAccount.id,
-						iban: seAccount.iban,
-						currencyCode: seAccount.currency_code,
-						nature: seAccount.nature,
-						lastSyncAt: new Date(),
-					},
-				})
-
-				this.logger.log(
-					`Linked new account: ${seAccount.name} (${seAccount.nature})`,
-				)
-			}
+		if (customer) {
+			await this.syncService.syncAccounts(connection.id, customer.userId)
 		}
+
+		this.logger.log(
+			`Successfully processed webhook for connection ${saltEdgeConnectionId}`,
+		)
 	}
 
 	private async handleError(saltEdgeConnectionId: string) {
@@ -207,20 +151,4 @@ export class OpenBankingWebhookController {
 		)
 	}
 
-	private mapAccountNature(
-		nature: string,
-	): 'CHECKING' | 'SAVINGS' | 'INVESTMENT' | 'WALLET' {
-		switch (nature) {
-			case 'savings':
-				return 'SAVINGS'
-			case 'investment':
-				return 'INVESTMENT'
-			case 'bonus':
-			case 'card':
-			case 'checking':
-			case 'account':
-			default:
-				return 'CHECKING'
-		}
-	}
 }

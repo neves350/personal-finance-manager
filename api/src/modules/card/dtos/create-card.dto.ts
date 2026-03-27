@@ -46,18 +46,18 @@ export class CreateCardDto {
 
 	@ApiPropertyOptional({ example: '02/26', description: 'Expiration date' })
 	@IsString()
-	@IsNotEmpty()
+	@IsOptional()
 	@Length(5, 5)
-	expirationDate: string
+	expirationDate?: string
 
 	@ApiPropertyOptional({
 		example: '121',
 		description: 'Card Verification Code',
 	})
 	@IsString()
-	@IsNotEmpty()
+	@IsOptional()
 	@Length(3, 4)
-	cvc: string
+	cvc?: string
 
 	@ApiPropertyOptional({ example: 5000.0, description: 'Credit limit' })
 	@ValidateIf((o) => o.type === CardType.CREDIT_CARD)

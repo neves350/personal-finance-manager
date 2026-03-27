@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
 import { mapSaltEdgeCategory } from './helpers/category-mapper'
+import type { SaltEdgeAccount } from './interfaces/salt-edge.interface'
 import { SaltEdgeService } from './salt-edge.service'
 
 @Injectable()
@@ -71,7 +72,7 @@ export class OpenBankingSyncService {
 			})
 
 			if (existingLink) {
-				// Update balance
+				// Update balance on the linked BankAccount stub or regular account
 				await this.prisma.bankAccount.update({
 					where: { id: existingLink.bankAccountId },
 					data: { balance: seAccount.balance },
@@ -80,73 +81,135 @@ export class OpenBankingSyncService {
 					where: { id: existingLink.id },
 					data: { lastSyncAt: new Date() },
 				})
+			} else if (this.isCardAccount(seAccount.nature, seAccount.name)) {
+				await this.createCardAccount(connectionId, userId, seAccount)
 			} else {
-				// Try to reuse a disconnected account (isLinked but no OpenBankingAccount link)
-				const disconnected = await this.prisma.bankAccount.findFirst({
-					where: {
-						userId,
-						isLinked: true,
-						name: seAccount.name,
-						openBankingAccount: null,
-					},
-				})
-
-				if (disconnected) {
-					// Reuse the disconnected account — update balance and re-link
-					await this.prisma.bankAccount.update({
-						where: { id: disconnected.id },
-						data: {
-							balance: seAccount.balance,
-							type: this.mapAccountNature(seAccount.nature),
-						},
-					})
-
-					await this.prisma.openBankingAccount.create({
-						data: {
-							connectionId,
-							bankAccountId: disconnected.id,
-							saltEdgeAccountId: seAccount.id,
-							iban: seAccount.iban,
-							currencyCode: seAccount.currency_code,
-							nature: seAccount.nature,
-							lastSyncAt: new Date(),
-						},
-					})
-
-					this.logger.log(
-						`Re-linked disconnected account: ${seAccount.name}`,
-					)
-				} else {
-					// Create new bank account + link
-					const bankAccount = await this.prisma.bankAccount.create({
-						data: {
-							userId,
-							name: seAccount.name,
-							type: this.mapAccountNature(seAccount.nature),
-							balance: seAccount.balance,
-							initialBalance: seAccount.balance,
-							isLinked: true,
-						},
-					})
-
-					await this.prisma.openBankingAccount.create({
-						data: {
-							connectionId,
-							bankAccountId: bankAccount.id,
-							saltEdgeAccountId: seAccount.id,
-							iban: seAccount.iban,
-							currencyCode: seAccount.currency_code,
-							nature: seAccount.nature,
-							lastSyncAt: new Date(),
-						},
-					})
-
-					this.logger.log(
-						`Linked new account: ${seAccount.name} (${seAccount.nature})`,
-					)
-				}
+				await this.createRegularAccount(connectionId, userId, seAccount)
 			}
 		}
+	}
+
+	private async createCardAccount(
+		connectionId: string,
+		userId: string,
+		seAccount: SaltEdgeAccount,
+	) {
+		// Try to reuse a disconnected card stub
+		const disconnected = await this.prisma.bankAccount.findFirst({
+			where: {
+				userId,
+				isLinked: true,
+				isCardAccount: true,
+				name: seAccount.name,
+				openBankingAccount: null,
+			},
+		})
+
+		let stubId: string
+
+		if (disconnected) {
+			await this.prisma.bankAccount.update({
+				where: { id: disconnected.id },
+				data: { balance: seAccount.balance },
+			})
+			stubId = disconnected.id
+			this.logger.log(`Re-linked disconnected card: ${seAccount.name}`)
+		} else {
+			const stub = await this.prisma.bankAccount.create({
+				data: {
+					userId,
+					name: seAccount.name,
+					type: 'CHECKING',
+					balance: seAccount.balance,
+					initialBalance: seAccount.balance,
+					isLinked: true,
+					isCardAccount: true,
+				},
+			})
+			await this.prisma.card.create({
+				data: {
+					userId,
+					bankAccountId: stub.id,
+					name: seAccount.name,
+					type: this.detectCardType(seAccount.nature, seAccount.extra),
+					lastFour: this.extractLastFour(seAccount.name, seAccount.iban),
+					expirationDate: this.extractExpiryDate(seAccount.extra),
+					creditLimit: seAccount.extra.credit_limit ?? undefined,
+					isLinked: true,
+					color: 'GRAY',
+				},
+			})
+			stubId = stub.id
+			this.logger.log(`Linked new card: ${seAccount.name} (${seAccount.nature})`)
+		}
+
+		await this.prisma.openBankingAccount.create({
+			data: {
+				connectionId,
+				bankAccountId: stubId,
+				saltEdgeAccountId: seAccount.id,
+				iban: seAccount.iban,
+				currencyCode: seAccount.currency_code,
+				nature: seAccount.nature,
+				lastSyncAt: new Date(),
+			},
+		})
+	}
+
+	private async createRegularAccount(
+		connectionId: string,
+		userId: string,
+		seAccount: SaltEdgeAccount,
+	) {
+		// Try to reuse a disconnected regular account
+		const disconnected = await this.prisma.bankAccount.findFirst({
+			where: {
+				userId,
+				isLinked: true,
+				isCardAccount: false,
+				name: seAccount.name,
+				openBankingAccount: null,
+			},
+		})
+
+		let accountId: string
+
+		if (disconnected) {
+			await this.prisma.bankAccount.update({
+				where: { id: disconnected.id },
+				data: {
+					balance: seAccount.balance,
+					type: this.mapAccountNature(seAccount.nature),
+				},
+			})
+			accountId = disconnected.id
+			this.logger.log(`Re-linked disconnected account: ${seAccount.name}`)
+		} else {
+			const bankAccount = await this.prisma.bankAccount.create({
+				data: {
+					userId,
+					name: seAccount.name,
+					type: this.mapAccountNature(seAccount.nature),
+					balance: seAccount.balance,
+					initialBalance: seAccount.balance,
+					isLinked: true,
+				},
+			})
+			accountId = bankAccount.id
+			this.logger.log(`Linked new account: ${seAccount.name} (${seAccount.nature})`)
+		}
+
+		await this.prisma.openBankingAccount.create({
+			data: {
+				connectionId,
+				bankAccountId: accountId,
+				saltEdgeAccountId: seAccount.id,
+				iban: seAccount.iban,
+				currencyCode: seAccount.currency_code,
+				nature: seAccount.nature,
+				lastSyncAt: new Date(),
+			},
+		})
 	}
 
 	// Sync Transactions
@@ -215,14 +278,16 @@ export class OpenBankingSyncService {
 						externalId: seTx.id,
 					},
 				})
-				synced++
+        synced++
+
+        this.logger.log(`Tx: ${seTx.description} | category: ${seTx.category} | amount: ${seTx.amount} | extra: ${JSON.stringify(seTx.extra)}`)
 			}
 
 			if (synced > 0) {
 				this.logger.log(
 					`Synced ${synced} transactions for account ${obAccount.bankAccountId}`,
 				)
-			}
+      }
 		}
 	}
 
@@ -257,5 +322,32 @@ export class OpenBankingSyncService {
 			default:
 				return 'CHECKING'
 		}
-	}
+  }
+
+  private isCardAccount(nature: string, name: string): boolean {
+    if (nature === 'card' || nature === 'credit_card') return true
+    // fallback by nome
+    return /\d{4}\s*\*+\s*\*+\s*\d{4}/.test(name) ||
+      /(mastercard|visa|maestro|amex)/i.test(name)
+  }
+
+  private detectCardType(nature: string, extra: Record<string, unknown>): 'CREDIT_CARD' | 'DEBIT_CARD' {
+    if (nature === 'credit_card') return 'CREDIT_CARD'
+    const network = extra?.card_network as string | undefined
+    if (network && /(credit|mastercard|visa|amex)/i.test(network)) return 'CREDIT_CARD'
+    return 'DEBIT_CARD'
+  }
+
+  private extractLastFour(name: string, iban: string | null): string | null {
+    const match = name.match(/(\d{4})\s*$/)
+    if (match) return match[1]
+    return iban?.slice(-4) ?? null
+  }
+
+  private extractExpiryDate(extra: Record<string, unknown>): string | null {
+    const expiryDate = extra?.expiry_date as string | undefined
+    if (!expiryDate) return null
+    const [year, month] = expiryDate.split('-')  // "2028-03-01"
+    return `${month}/${year.slice(2)}`           // "03/28"
+  }
 }

@@ -33,7 +33,14 @@ export interface SaltEdgeAccount {
 	balance: number
 	currency_code: string
 	iban: string | null
-	extra: Record<string, unknown>
+	extra: {
+		expiry_date?: string
+		card_network?: string
+		credit_limit?: number
+		closing_balance?: number
+		available_amount?: number
+		[key: string]: unknown
+	}
 }
 
 export interface SaltEdgeTransaction {
