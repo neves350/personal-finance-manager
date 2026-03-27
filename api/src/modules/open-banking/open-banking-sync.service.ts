@@ -265,17 +265,30 @@ export class OpenBankingSyncService {
 					continue
 				}
 
+				const txDate = new Date(seTx.made_on)
+				const txAmount = Math.abs(seTx.amount)
+				const txTitle = seTx.description || 'Bank transaction'
+
+				const recurringId = await this.findMatchingRecurring(
+					userId,
+					txTitle,
+					txAmount,
+					type,
+					txDate,
+				)
+
 				await this.prisma.transaction.create({
 					data: {
 						bankAccountId: obAccount.bankAccountId,
 						categoryId: category.id,
-						title: seTx.description || 'Bank transaction',
+						title: txTitle,
 						type,
-						amount: Math.abs(seTx.amount),
-						date: new Date(seTx.made_on),
+						amount: txAmount,
+						date: txDate,
 						isPaid: true,
 						source: 'OPEN_BANKING',
 						externalId: seTx.id,
+						recurringId: recurringId ?? undefined,
 					},
 				})
         synced++
@@ -350,4 +363,54 @@ export class OpenBankingSyncService {
     const [year, month] = expiryDate.split('-')  // "2028-03-01"
     return `${month}/${year.slice(2)}`           // "03/28"
   }
+
+	private normalizeDescription(text: string): string {
+		return text
+			.toLowerCase()
+			.replace(/[^a-z0-9\s]/g, '')
+			.replace(/\s+/g, ' ')
+			.trim()
+	}
+
+	private async findMatchingRecurring(
+		userId: string,
+		description: string,
+		amount: number,
+		type: 'INCOME' | 'EXPENSE',
+		date: Date,
+	): Promise<string | null> {
+		const dayOfMonth = date.getDate()
+		const normalizedTxDesc = this.normalizeDescription(description)
+		const margin = amount * 0.05
+
+		const candidates = await this.prisma.recurring.findMany({
+			where: {
+				bankAccount: { userId },
+				type,
+				amount: {
+					gte: amount - margin,
+					lte: amount + margin,
+				},
+				OR: [
+					{ monthDay: null },
+					{ monthDay: dayOfMonth },
+				],
+			},
+		})
+
+		for (const recurring of candidates) {
+			const normalizedRecurringDesc = this.normalizeDescription(
+				recurring.description,
+			)
+			if (
+				normalizedTxDesc.includes(normalizedRecurringDesc) ||
+				normalizedRecurringDesc.includes(normalizedTxDesc)
+			) {
+				return recurring.id
+			}
+		}
+
+		return null
+	}
+
 }
