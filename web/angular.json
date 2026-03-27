@@ -5,7 +5,6 @@
 		"packageManager": "npm"
 	},
 	"newProjectRoot": "projects",
-	"scripts": ["node_modules/apexcharts/dist/apexcharts.min.js"],
 	"projects": {
 		"web": {
 			"projectType": "application",
@@ -59,6 +58,11 @@
 				},
 				"serve": {
 					"builder": "@angular/build:dev-server",
+					"options": {
+					  "prebundle": {
+							"exclude": ["apexcharts"]
+						}
+					},
 					"configurations": {
 						"production": {
 							"buildTarget": "web:build:production"
