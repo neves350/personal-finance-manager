@@ -1,4 +1,4 @@
-import { Component, inject, type OnInit, signal } from '@angular/core'
+import { Component, computed, inject, type OnInit, signal } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
 import { OpenBankingService } from '@core/services/open-banking.service'
@@ -45,8 +45,11 @@ export class BankAccount implements OnInit {
 	private readonly openBankingService = inject(OpenBankingService)
 
 	readonly accounts = this.bankAccountsService.bankAccounts
+	readonly visibleAccounts = computed(() =>
+		this.accounts().filter((a) => !a.isCardAccount),
+	)
 	readonly isLoading = this.bankAccountsService.loading
-	readonly hasBankAccounts = this.bankAccountsService.hasBankAccounts
+	readonly hasBankAccounts = computed(() => this.visibleAccounts().length > 0)
 
 	readonly connectingProvider = signal<string | null>(null)
 	readonly syncing = signal(false)

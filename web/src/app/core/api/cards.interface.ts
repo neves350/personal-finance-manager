@@ -26,8 +26,9 @@ export interface Card {
 	color: CardColor
 	type: CardType
 	lastFour?: string
-	expirationDate: string
-	cvc: string
+	expirationDate?: string | null
+	cvc?: string | null
+	isLinked?: boolean
 	creditLimit?: number
 	closingDay?: number
 	dueDay?: number

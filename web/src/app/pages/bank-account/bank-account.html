@@ -40,7 +40,7 @@
 
       @if (hasBankAccounts()) {
         <app-bank-accounts-total />
-        <app-bank-accounts-list [accounts]="accounts()" />
+        <app-bank-accounts-list [accounts]="visibleAccounts()" />
       } @else {
         <z-card class="w-full h-full flex flex-col">
           <div class="flex flex-col items-center justify-center p-6 mt-6">

@@ -15,6 +15,7 @@ import {
 	CreditCardIcon,
 	EllipsisIcon,
 	EyeIcon,
+	LinkIcon,
 	LucideAngularModule,
 	LucideIconData,
 	SquarePenIcon,
@@ -22,6 +23,7 @@ import {
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
 import { lastValueFrom } from 'rxjs'
+import { ZardBadgeComponent } from '../../ui/badge'
 import { ZardButtonComponent } from '../../ui/button'
 import { ZardCardComponent } from '../../ui/card'
 import { ZardDialogService } from '../../ui/dialog'
@@ -36,6 +38,7 @@ import type { iSheetData } from '../cards-form/cards-form.interface'
 	imports: [
 		ZardCardComponent,
 		LucideAngularModule,
+		ZardBadgeComponent,
 		ZardButtonComponent,
 		ZardPopoverComponent,
 		ZardPopoverDirective,
@@ -57,6 +60,9 @@ export class CardsCard {
 	readonly Trash2Icon = Trash2Icon
 	readonly EyeIcon = EyeIcon
 	readonly EllipsisIcon = EllipsisIcon
+	readonly LinkIcon = LinkIcon
+
+	readonly isLinked = computed(() => !!this.card().isLinked)
 
 	readonly isCreditCard = computed(
 		() => this.card().type === CardType.CREDIT_CARD,
