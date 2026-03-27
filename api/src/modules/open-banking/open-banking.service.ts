@@ -203,20 +203,12 @@ export class OpenBankingService {
 		await this.saltEdge.removeConnection(connection.saltEdgeConnectionId)
 
 		if (dto.keepData) {
-			// Keep accounts/transactions but mark as disconnected
-			await this.prisma.$transaction([
-				this.prisma.bankAccount.updateMany({
-					where: {
-						openBankingAccount: {
-							connectionId: connection.id,
-						},
-					},
-					data: { isLinked: false },
-				}),
-				this.prisma.openBankingConnection.delete({
-					where: { id: connection.id },
-				}),
-			])
+			// Keep accounts/transactions — isLinked stays true as a permanent marker.
+			// Deleting the connection cascades to delete OpenBankingAccount links.
+			// Frontend derives state: isLinked + no connection = "Disconnected".
+			await this.prisma.openBankingConnection.delete({
+				where: { id: connection.id },
+			})
 		} else {
 			// Delete everything: connection + linked accounts + their transactions
 			const linkedAccounts = await this.prisma.openBankingAccount.findMany({

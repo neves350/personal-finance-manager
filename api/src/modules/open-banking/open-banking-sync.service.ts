@@ -81,33 +81,70 @@ export class OpenBankingSyncService {
 					data: { lastSyncAt: new Date() },
 				})
 			} else {
-				// Create new bank account + link
-				const bankAccount = await this.prisma.bankAccount.create({
-					data: {
+				// Try to reuse a disconnected account (isLinked but no OpenBankingAccount link)
+				const disconnected = await this.prisma.bankAccount.findFirst({
+					where: {
 						userId,
-						name: seAccount.name,
-						type: this.mapAccountNature(seAccount.nature),
-						balance: seAccount.balance,
-						initialBalance: seAccount.balance,
 						isLinked: true,
+						name: seAccount.name,
+						openBankingAccount: null,
 					},
 				})
 
-				await this.prisma.openBankingAccount.create({
-					data: {
-						connectionId,
-						bankAccountId: bankAccount.id,
-						saltEdgeAccountId: seAccount.id,
-						iban: seAccount.iban,
-						currencyCode: seAccount.currency_code,
-						nature: seAccount.nature,
-						lastSyncAt: new Date(),
-					},
-				})
+				if (disconnected) {
+					// Reuse the disconnected account — update balance and re-link
+					await this.prisma.bankAccount.update({
+						where: { id: disconnected.id },
+						data: {
+							balance: seAccount.balance,
+							type: this.mapAccountNature(seAccount.nature),
+						},
+					})
 
-				this.logger.log(
-					`Linked new account: ${seAccount.name} (${seAccount.nature})`,
-				)
+					await this.prisma.openBankingAccount.create({
+						data: {
+							connectionId,
+							bankAccountId: disconnected.id,
+							saltEdgeAccountId: seAccount.id,
+							iban: seAccount.iban,
+							currencyCode: seAccount.currency_code,
+							nature: seAccount.nature,
+							lastSyncAt: new Date(),
+						},
+					})
+
+					this.logger.log(
+						`Re-linked disconnected account: ${seAccount.name}`,
+					)
+				} else {
+					// Create new bank account + link
+					const bankAccount = await this.prisma.bankAccount.create({
+						data: {
+							userId,
+							name: seAccount.name,
+							type: this.mapAccountNature(seAccount.nature),
+							balance: seAccount.balance,
+							initialBalance: seAccount.balance,
+							isLinked: true,
+						},
+					})
+
+					await this.prisma.openBankingAccount.create({
+						data: {
+							connectionId,
+							bankAccountId: bankAccount.id,
+							saltEdgeAccountId: seAccount.id,
+							iban: seAccount.iban,
+							currencyCode: seAccount.currency_code,
+							nature: seAccount.nature,
+							lastSyncAt: new Date(),
+						},
+					})
+
+					this.logger.log(
+						`Linked new account: ${seAccount.name} (${seAccount.nature})`,
+					)
+				}
 			}
 		}
 	}
