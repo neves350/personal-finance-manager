@@ -36,6 +36,7 @@ export class BankAccountService {
 			this.prisma.bankAccount.aggregate({
 				where: {
 					userId,
+					isCardAccount: false,
 				},
 				_sum: {
 					balance: true,
