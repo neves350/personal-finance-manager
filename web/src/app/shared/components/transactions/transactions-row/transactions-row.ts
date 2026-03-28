@@ -6,6 +6,7 @@ import {
 	inject,
 	input,
 } from '@angular/core'
+import { Router } from '@angular/router'
 import { Transaction } from '@core/api/transactions.interface'
 import { TransactionsService } from '@core/services/transactions.service'
 import {
@@ -45,6 +46,7 @@ export class TransactionsRow {
 	private readonly transactionsService = inject(TransactionsService)
 	private readonly sheetService = inject(ZardSheetService)
 	private readonly dialogService = inject(ZardDialogService)
+	private readonly router = inject(Router)
 
 	readonly transaction = input.required<Transaction>()
 
@@ -58,6 +60,15 @@ export class TransactionsRow {
 	readonly isOpenBanking = computed(
 		() => this.transaction().source === 'OPEN_BANKING',
 	)
+
+	readonly recurringLabel = computed(() => {
+		const r = this.transaction().recurring
+		return r ? `Part of recurring: ${r.description}` : null
+	})
+
+	navigateToRecurring() {
+		this.router.navigate(['/recurrings'])
+	}
 
 	readonly statusIcon = computed(() => {
 		return this.transaction().isPaid

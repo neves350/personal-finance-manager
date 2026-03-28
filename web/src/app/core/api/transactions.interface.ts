@@ -29,11 +29,17 @@ export interface Transaction {
 	card?: TransactionCard
 	bankAccount?: TransactionBankAccount
 	category: TransactionCategory
+	recurring?: TransactionRecurring | null
 	isPaid: boolean
 	source?: TransactionSource
 	externalId?: string
 	createdAt?: string
 	updatedAt?: string
+}
+
+export interface TransactionRecurring {
+	id: string
+	description: string
 }
 
 export interface TransactionBankAccount {

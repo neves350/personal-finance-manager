@@ -12,8 +12,15 @@
       <span class="text-xs ml-2">
         {{ transaction().type | titlecase }}
       </span>
-      @if (transaction().recurringId) {
-        <i-lucide [img]="RepeatIcon" class="size-3 ml-2 text-destructive" />
+      @if (recurringLabel()) {
+        <button
+          type="button"
+          class="ml-2 flex items-center text-chart-2 hover:text-chart-2/70 transition-colors"
+          [title]="recurringLabel()!"
+          (click)="navigateToRecurring(); $event.stopPropagation()"
+        >
+          <i-lucide [img]="RepeatIcon" class="size-3" />
+        </button>
       }
       @if (isOpenBanking()) {
         <i-lucide [img]="LandmarkIcon" class="size-3 ml-2 text-muted-foreground" />

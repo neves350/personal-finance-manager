@@ -161,6 +161,9 @@ export class TransactionService {
 				bankAccount: {
 					select: { id: true, name: true },
 				},
+				recurring: {
+					select: { id: true, description: true },
+				},
 			},
 		})
 
@@ -205,6 +208,9 @@ export class TransactionService {
 				},
 				bankAccount: {
 					select: { id: true, name: true, balance: true },
+				},
+				recurring: {
+					select: { id: true, description: true },
 				},
 			},
 		})
