@@ -21,6 +21,13 @@
     </div>
   }
 
+  @if (isOpenBanking()) {
+    <div class="flex items-center gap-2 text-xs text-muted-foreground bg-secondary/50 rounded-lg p-3">
+      <i-lucide [img]="LandmarkIcon" class="size-4 shrink-0" />
+      Bank-synced transaction. Only description and category can be edited.
+    </div>
+  }
+
   <div class="grid gap-2">
     <label for="amount" class="text-sm">Amount</label>
     <div class="relative">
@@ -55,7 +62,7 @@
   </div>
 
   <div class="grid grid-cols-2 gap-4">
-    <div class="grid gap-2">
+    <div class="grid gap-2" [class.pointer-events-none]="isOpenBanking()" [class.opacity-50]="isOpenBanking()">
       <label for="date" class="text-sm">Date</label>
       <z-date-picker
         placeholder="Pick a date"
@@ -86,7 +93,7 @@
   <div class="grid grid-cols-2 gap-4">
     <div class="grid gap-2">
       <label for="bankAccountId" class="text-sm">Account</label>
-      <z-select class="w-full" formControlName="bankAccountId">
+      <z-select class="w-full" formControlName="bankAccountId" [zDisabled]="isOpenBanking()">
         @for (account of accounts(); track account.id) {
           <z-select-item [zValue]="$any(account.id)">
             <span>{{ account.name }}</span>
@@ -102,7 +109,7 @@
 
     <div class="grid gap-2">
       <label for="cardId" class="text-sm">Card (optional)</label>
-      <z-select class="w-full" formControlName="cardId">
+      <z-select class="w-full" formControlName="cardId" [zDisabled]="isOpenBanking()">
         @for (card of cards(); track card.id) {
           <z-select-item [zValue]="$any(card.id)">
             <span>{{ card.name }}</span>
@@ -112,7 +119,11 @@
     </div>
   </div>
 
-  <div class="grid gap-2 border rounded-md bg-sidebar border-input p-2">
+  <div
+    class="grid gap-2 border rounded-md bg-sidebar border-input p-2"
+    [class.pointer-events-none]="isOpenBanking()"
+    [class.opacity-50]="isOpenBanking()"
+  >
     <z-checkbox formControlName="isPaid">
       <label class="text-sm p-1 font-base text-foreground">{{
         form.controls.type.value === 'EXPENSE' ? 'Already paid' : 'Already received'

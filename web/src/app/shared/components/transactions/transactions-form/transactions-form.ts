@@ -6,7 +6,10 @@ import {
 } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import { TransactionType } from '@core/api/transactions.interface'
+import {
+	type CreateTransactionRequest,
+	TransactionType,
+} from '@core/api/transactions.interface'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
 import { CardsService } from '@core/services/cards.service'
 import { CategoriesService } from '@core/services/categories.service'
@@ -15,6 +18,7 @@ import {
 	ArrowDownIcon,
 	ArrowUpIcon,
 	EuroIcon,
+	LandmarkIcon,
 	LucideAngularModule,
 	type LucideIconData,
 } from 'lucide-angular'
@@ -54,9 +58,7 @@ export class TransactionsForm {
 
 	readonly transactionTypes = Object.values(TransactionType)
 	readonly isEditMode = computed(() => !!this.zData?.id)
-	readonly isOpenBanking = computed(
-		() => this.zData?.source === 'OPEN_BANKING',
-	)
+	readonly isOpenBanking = computed(() => this.zData?.source === 'OPEN_BANKING')
 	readonly initialDate = computed(() =>
 		this.zData?.date ? new Date(this.zData.date) : new Date(),
 	)
@@ -64,6 +66,7 @@ export class TransactionsForm {
 	readonly ArrowDownIcon = ArrowDownIcon
 	readonly ArrowUpIcon = ArrowUpIcon
 	readonly EuroIcon = EuroIcon
+	readonly LandmarkIcon = LandmarkIcon
 
 	form = this.fb.nonNullable.group({
 		title: ['', [Validators.required]],
@@ -80,11 +83,14 @@ export class TransactionsForm {
 		this.form.controls.type.valueChanges,
 		{ initialValue: this.form.controls.type.value },
 	)
-	readonly filteredCategories = computed(() =>
-		this.selectedType() === TransactionType.INCOME
+	readonly filteredCategories = computed(() => {
+		const type = this.isOpenBanking()
+			? (this.zData?.type as TransactionType ?? TransactionType.EXPENSE)
+			: this.selectedType()
+		return type === TransactionType.INCOME
 			? this.categoriesService.incomeCategories()
-			: this.categoriesService.expenseCategories(),
-	)
+			: this.categoriesService.expenseCategories()
+	})
 
 	constructor() {
 		if (!this.cardsService.hasCards()) {
@@ -111,9 +117,8 @@ export class TransactionsForm {
 				isPaid: this.zData.isPaid ?? false,
 			})
 
-			// Lock fields for Open Banking transactions (only category editable)
+			// Lock fields for Open Banking transactions (title and category editable)
 			if (this.zData.source === 'OPEN_BANKING') {
-				this.form.controls.title.disable()
 				this.form.controls.amount.disable()
 				this.form.controls.date.disable()
 				this.form.controls.type.disable()
@@ -178,20 +183,25 @@ export class TransactionsForm {
 		}
 
 		const formValue = this.form.getRawValue()
-		const payload = {
-			title: formValue.title,
-			type: formValue.type,
-			amount: Number(formValue.amount) || 0,
-			date: new Date(formValue.date),
-			bankAccountId: formValue.bankAccountId,
-			categoryId: formValue.categoryId,
-			...(formValue.cardId && { cardId: formValue.cardId }),
-			isPaid: formValue.isPaid,
-		}
+		const payload = this.isOpenBanking()
+			? {
+					title: formValue.title,
+					categoryId: formValue.categoryId,
+				}
+			: {
+					title: formValue.title,
+					type: formValue.type,
+					amount: Number(formValue.amount) || 0,
+					date: new Date(formValue.date),
+					bankAccountId: formValue.bankAccountId,
+					categoryId: formValue.categoryId,
+					...(formValue.cardId && { cardId: formValue.cardId }),
+					isPaid: formValue.isPaid,
+				}
 
 		const request$ = this.zData?.id
 			? this.transactionsService.update(this.zData.id, payload)
-			: this.transactionsService.create(payload)
+			: this.transactionsService.create(payload as CreateTransactionRequest)
 
 		request$.subscribe({
 			next: () => this.sheetRef.close(),
