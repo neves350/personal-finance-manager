@@ -34,6 +34,8 @@ export class CardHeader {
 		this.card().type === CardType.CREDIT_CARD ? 'Credit Card' : 'Debit Card',
 	)
 
+	readonly isLinked = computed(() => !!this.card().isLinked)
+
 	private readonly dialogService = inject(ZardDialogService)
 
 	updateCard() {

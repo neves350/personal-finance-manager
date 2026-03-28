@@ -8,7 +8,9 @@
       <span class="font-normal text-muted-foreground text-xs xl:text-sm">{{ typeLabel() }}</span>
     </h1>
   </div>
-  <z-button zType="goalGhost" (click)="updateCard()">
-    <i-lucide [img]="SquarePenIcon" />
-  </z-button>
+  @if (!isLinked()) {
+    <z-button zType="goalGhost" (click)="updateCard()">
+      <i-lucide [img]="SquarePenIcon" />
+    </z-button>
+  }
 </div>
