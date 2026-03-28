@@ -91,6 +91,7 @@ model Card {
   expirationDate String?       @map("expiration_date") @db.VarChar(5)
   cvc            String?       @db.VarChar(4)
   isLinked       Boolean       @default(false) @map("is_linked")
+  cardNetwork    String?       @map("card_network") @db.VarChar(50)
   creditLimit    Decimal?      @map("credit_limit") @db.Decimal(12, 2)
   closingDay     Int?          @map("closing_day")
   dueDay         Int?          @map("due_day")

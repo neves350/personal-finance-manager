@@ -64,6 +64,10 @@ export class CardsCard {
 
 	readonly isLinked = computed(() => !!this.card().isLinked)
 
+	readonly cardNetwork = computed(
+		() => this.card().cardNetwork?.toLowerCase() ?? null,
+	)
+
 	readonly isCreditCard = computed(
 		() => this.card().type === CardType.CREDIT_CARD,
 	)

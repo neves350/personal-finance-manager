@@ -1,8 +1,26 @@
 <z-card class="p-5 h-full flex flex-col cursor-pointer glass-card-hover" [routerLink]="['/card-details', card().id]">
   <div class="flex justify-between items-center">
     <div class="flex items-center gap-3">
-      <div [class]="textColorClass()" class="size-10 items-center flex justify-center rounded-lg">
-        <i-lucide [img]="cardIcon().icon" class="size-5" />
+      <div [class]="textColorClass()" class="size-10 items-center flex justify-center rounded-lg overflow-hidden">
+        @if (cardNetwork() === 'mastercard') {
+          <svg viewBox="0 0 38 24" class="size-8" aria-label="Mastercard">
+            <circle cx="15" cy="12" r="7" fill="#EB001B" />
+            <circle cx="23" cy="12" r="7" fill="#F79E1B" />
+            <path d="M19 6.8A7 7 0 0 1 22.2 12 7 7 0 0 1 19 17.2 7 7 0 0 1 15.8 12 7 7 0 0 1 19 6.8z" fill="#FF5F00" />
+          </svg>
+        } @else if (cardNetwork() === 'visa') {
+          <span class="font-black text-[11px] tracking-tighter italic text-blue-500">VISA</span>
+        } @else if (cardNetwork() === 'amex') {
+          <span class="font-black text-[9px] tracking-tighter text-blue-400">AMEX</span>
+        } @else if (cardNetwork() === 'maestro') {
+          <svg viewBox="0 0 38 24" class="size-8" aria-label="Maestro">
+            <circle cx="15" cy="12" r="7" fill="#EB001B" />
+            <circle cx="23" cy="12" r="7" fill="#00A2E5" opacity="0.9" />
+            <path d="M19 6.8A7 7 0 0 1 22.2 12 7 7 0 0 1 19 17.2 7 7 0 0 1 15.8 12 7 7 0 0 1 19 6.8z" fill="#7B0099" opacity="0.8"/>
+          </svg>
+        } @else {
+          <i-lucide [img]="cardIcon().icon" class="size-5" />
+        }
       </div>
       <div>
         <p class="text-base font-semibold">{{ card().name }}</p>
@@ -57,19 +75,19 @@
                 <i-lucide [img]="SquarePenIcon" class="h-4 w-4 mr-2" />
                 Edit
               </z-button>
-              <z-divider />
-              <z-button
-                zType="ghost"
-                zSize="sm"
-                zPopoverClose
-                zFull
-                class="text-destructive w-full justify-start"
-                (click)="deleteCard(); $event.stopPropagation()"
-              >
-                <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
-                Delete
-              </z-button>
             }
+            <z-divider />
+            <z-button
+              zType="ghost"
+              zSize="sm"
+              zPopoverClose
+              zFull
+              class="text-destructive w-full justify-start"
+              (click)="deleteCard(); $event.stopPropagation()"
+            >
+              <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
+              Delete
+            </z-button>
           </div>
         </z-popover>
       </ng-template>

@@ -125,6 +125,23 @@ export class CardController {
 	}
 
 	@UseGuards(JwtAuthGuard)
+	@Get('cards/:id/expenses')
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'Get card monthly expenses',
+		description: 'Get total expenses for a card within a date range.',
+	})
+	async getMonthlyExpenses(
+		@Param('id') id: string,
+		@Query('startDate') startDate: string,
+		@Query('endDate') endDate: string,
+		@CurrentUser() user,
+	) {
+		await this.cardService.findOne(id, user.userId)
+		return this.cardService.monthlyExpenses(id, startDate, endDate)
+	}
+
+	@UseGuards(JwtAuthGuard)
 	@Get('cards/:id/cashflow')
 	@ApiBearerAuth()
 	@ApiOperation({

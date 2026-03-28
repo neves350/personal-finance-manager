@@ -29,6 +29,7 @@ export interface Card {
 	expirationDate?: string | null
 	cvc?: string | null
 	isLinked?: boolean
+	cardNetwork?: string | null
 	creditLimit?: number
 	closingDay?: number
 	dueDay?: number

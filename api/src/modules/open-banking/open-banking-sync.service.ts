@@ -146,6 +146,7 @@ export class OpenBankingSyncService {
 					lastFour: this.extractLastFour(seAccount.name, seAccount.iban),
 					expirationDate: this.extractExpiryDate(seAccount.extra),
 					creditLimit: seAccount.extra.credit_limit ?? undefined,
+					cardNetwork: this.normalizeCardNetwork(seAccount.extra, seAccount.name),
 					isLinked: true,
 					color: 'GRAY',
 				},
@@ -381,6 +382,20 @@ export class OpenBankingSyncService {
     const [year, month] = expiryDate.split('-')  // "2028-03-01"
     return `${month}/${year.slice(2)}`           // "03/28"
   }
+
+	private normalizeCardNetwork(
+		extra: Record<string, unknown>,
+		name: string,
+	): string | null {
+		const network = (extra?.card_network as string | undefined)?.toLowerCase() ?? ''
+		const nameLower = name.toLowerCase()
+
+		if (network.includes('master') || nameLower.includes('mastercard')) return 'mastercard'
+		if (network.includes('visa') || nameLower.includes('visa')) return 'visa'
+		if (network.includes('amex') || nameLower.includes('american express')) return 'amex'
+		if (network.includes('maestro') || nameLower.includes('maestro')) return 'maestro'
+		return null
+	}
 
 	private normalizeDescription(text: string): string {
 		return text
