@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Cron, CronExpression } from '@nestjs/schedule'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
+import { RecurringDetectionService } from '../recurring/recurring-detection.service'
 import { mapSaltEdgeCategory } from './helpers/category-mapper'
 import type { SaltEdgeAccount } from './interfaces/salt-edge.interface'
 import { SaltEdgeService } from './salt-edge.service'
@@ -12,6 +13,7 @@ export class OpenBankingSyncService {
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly saltEdge: SaltEdgeService,
+		private readonly recurringDetection: RecurringDetectionService,
 	) {}
 
 	// Cron: Sync every 6 hours
@@ -50,6 +52,15 @@ export class OpenBankingSyncService {
 		await this.prisma.openBankingConnection.update({
 			where: { id: connectionId },
 			data: { lastSyncAt: new Date() },
+		})
+
+		// Run pattern detection non-blocking after sync completes
+		setImmediate(() => {
+			this.recurringDetection
+				.detectRecurringPatterns(userId)
+				.catch((err) =>
+					this.logger.error(`Pattern detection failed: ${err.message}`),
+				)
 		})
 	}
 
