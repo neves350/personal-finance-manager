@@ -242,6 +242,8 @@ model Recurring {
   createdAt       DateTime       @default(now()) @map("created_at")
   updatedAt       DateTime       @updatedAt @map("updated_at")
   lastGeneratedAt DateTime?      @map("last_generated_at")
+  autoDetected    Boolean        @default(false) @map("auto_detected")
+  patternHash     String?        @unique @map("pattern_hash")
   transactions    Transaction[]
   card            Card?          @relation(fields: [cardId], references: [id], onDelete: Cascade)
   category        Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
