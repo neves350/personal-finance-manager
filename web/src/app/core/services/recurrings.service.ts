@@ -86,6 +86,10 @@ export class RecurringsService {
 			)
 	}
 
+	confirm(recurringId: string): Observable<Recurring> {
+		return this.update(recurringId, { autoDetected: false })
+	}
+
 	delete(recurringId: string, deleteTransactions = false): Observable<string> {
 		this.loading.set(true)
 

@@ -35,6 +35,7 @@ export interface Recurring {
 	startDate: Date
 	endDate?: Date
 	category: RecurringCategory
+	autoDetected?: boolean
 	createdAt?: string
 	updatedAt?: string
 }
@@ -85,6 +86,7 @@ export interface UpdateRecurringRequest {
 	bankAccountId?: string
 	categoryId?: string
 	cardId?: string
+	autoDetected?: boolean
 }
 
 /**

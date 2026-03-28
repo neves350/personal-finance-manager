@@ -1,6 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger'
 import { Type } from 'class-transformer'
 import {
+	IsBoolean,
 	IsDate,
 	IsEnum,
 	IsInt,
@@ -94,4 +95,9 @@ export class UpdateRecurringDto {
 	@IsOptional()
 	@IsUUID()
 	categoryId?: string
+
+	@ApiPropertyOptional()
+	@IsBoolean()
+	@IsOptional()
+	autoDetected?: boolean
 }

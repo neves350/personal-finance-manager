@@ -14,7 +14,15 @@
             <i-lucide [img]="typeInfo(recurring).icon" class="size-5" />
           </div>
           <span class="grid text-left text-sm leading-tight">
-            <span class="truncate font-medium">{{ recurring.description }}</span>
+            <span class="flex items-center gap-2">
+              <span class="truncate font-medium">{{ recurring.description }}</span>
+              @if (recurring.autoDetected) {
+                <z-badge zType="secondary" class="h-4 px-1.5 text-[10px] shrink-0">
+                  <i-lucide [img]="SparklesIcon" class="size-2.5 mr-0.5" />
+                  Auto
+                </z-badge>
+              }
+            </span>
             <span class="truncate text-xs text-muted-foreground"
               >Day {{ recurring.monthDay }} of every month</span
             >

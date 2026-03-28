@@ -17,6 +17,7 @@ import {
 	LucideAngularModule,
 	type LucideIconData,
 	PencilIcon,
+	SparklesIcon,
 	Trash2Icon,
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
@@ -58,6 +59,7 @@ export class RecurringsCard {
 
 	readonly PencilIcon = PencilIcon
 	readonly Trash2Icon = Trash2Icon
+	readonly SparklesIcon = SparklesIcon
 
 	private readonly typeMap: Record<
 		RecurringType,
