@@ -147,6 +147,13 @@ export class BankAccountService {
 			)
 		}
 
+		// Delete transfers referencing this account (no cascade in schema)
+		await this.prisma.transfer.deleteMany({
+			where: {
+				OR: [{ fromAccountId: id }, { toAccountId: id }],
+			},
+		})
+
 		await this.prisma.bankAccount.delete({
 			where: { id },
 		})
