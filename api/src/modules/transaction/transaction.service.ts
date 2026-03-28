@@ -256,11 +256,10 @@ export class TransactionService {
 			if (
 				dto.amount !== undefined ||
 				dto.date !== undefined ||
-				dto.title !== undefined ||
 				dto.type !== undefined
 			) {
 				throw new BadRequestException(
-					'Cannot edit amount, date, title or type of a bank-synced transaction.',
+					'Cannot edit amount, date or type of a bank-synced transaction.',
 				)
 			}
 		}
