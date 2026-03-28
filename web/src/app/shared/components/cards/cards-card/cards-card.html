@@ -45,29 +45,31 @@
               <i-lucide [img]="EyeIcon" class="h-4 w-4 mr-2" />
               Details
             </z-button>
-            <z-button
-              zPopoverClose
-              zType="ghost"
-              zSize="sm"
-              zFull
-              class="w-full justify-start"
-              (click)="updateCard(); $event.stopPropagation()"
-            >
-              <i-lucide [img]="SquarePenIcon" class="h-4 w-4 mr-2" />
-              Edit
-            </z-button>
-            <z-divider />
-            <z-button
-              zType="ghost"
-              zSize="sm"
-              zPopoverClose
-              zFull
-              class="text-destructive w-full justify-start"
-              (click)="deleteCard(); $event.stopPropagation()"
-            >
-              <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
-              Delete
-            </z-button>
+            @if (!isLinked()) {
+              <z-button
+                zPopoverClose
+                zType="ghost"
+                zSize="sm"
+                zFull
+                class="w-full justify-start"
+                (click)="updateCard(); $event.stopPropagation()"
+              >
+                <i-lucide [img]="SquarePenIcon" class="h-4 w-4 mr-2" />
+                Edit
+              </z-button>
+              <z-divider />
+              <z-button
+                zType="ghost"
+                zSize="sm"
+                zPopoverClose
+                zFull
+                class="text-destructive w-full justify-start"
+                (click)="deleteCard(); $event.stopPropagation()"
+              >
+                <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
+                Delete
+              </z-button>
+            }
           </div>
         </z-popover>
       </ng-template>

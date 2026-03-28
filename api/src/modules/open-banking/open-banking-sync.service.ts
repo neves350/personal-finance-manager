@@ -240,6 +240,12 @@ export class OpenBankingSyncService {
 					.split('T')[0]
 
 		for (const obAccount of connection.accounts) {
+			// For card stubs, find the associated Card to set cardId on transactions
+			const linkedCard = await this.prisma.card.findFirst({
+				where: { bankAccountId: obAccount.bankAccountId, isLinked: true },
+				select: { id: true },
+			})
+
 			const seTransactions = await this.saltEdge.getTransactions({
 				connectionId: connection.saltEdgeConnectionId,
 				accountId: obAccount.saltEdgeAccountId,
@@ -300,6 +306,7 @@ export class OpenBankingSyncService {
 						source: 'OPEN_BANKING',
 						externalId: seTx.id,
 						recurringId: recurringId ?? undefined,
+						cardId: linkedCard?.id ?? undefined,
 					},
 				})
         synced++
