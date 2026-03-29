@@ -2,13 +2,13 @@
   <img
     [src]="logoUrl()"
     [alt]="providerName()"
-    class="size-8 rounded-full object-contain bg-white shrink-0"
+    class="size-10 rounded-lg object-contain bg-white shrink-0"
     (error)="imgError.set(true)"
   />
 } @else {
   <div
-    class="size-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-    [style.background-color]="fallback().color"
+    class="size-10 rounded-lg flex items-center justify-center text-foreground text-xs font-bold shrink-0"
+    [class]="fallback().color"
   >
     {{ fallback().initials }}
   </div>

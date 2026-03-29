@@ -21,12 +21,12 @@ export class ProviderLogo {
 	readonly fallback = computed(() => {
 		const name = this.providerName()
 		const colors = [
-			'#3B82F6',
-			'#10B981',
-			'#8B5CF6',
-			'#F59E0B',
-			'#EF4444',
-			'#06B6D4',
+			'bg-chart-1',
+			'bg-chart-2',
+			'bg-chart-3',
+			'bg-chart-4',
+			'bg-chart-5',
+			'bg-chart-6',
 		]
 		const hash = name.split('').reduce((a, c) => a + c.charCodeAt(0), 0)
 		const initials = name
