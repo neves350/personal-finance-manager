@@ -130,7 +130,6 @@ model BankAccount {
   initialBalance     Decimal             @default(0) @map("initial_balance") @db.Decimal(12, 2)
   isLinked           Boolean             @default(false) @map("is_linked")
   isCardAccount      Boolean             @default(false) @map("is_card_account")
-  bankLogo           String?             @map("bank_logo")
   cards              Card[]
   transactions       Transaction[]
   recurrings         Recurring[]

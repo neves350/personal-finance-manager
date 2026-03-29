@@ -20,7 +20,6 @@ export interface BankAccount {
 	totalMovements?: number
 	isLinked?: boolean
 	isCardAccount?: boolean
-	bankLogo?: string
 	createdAt?: string
 	updatedAt?: string
 }
