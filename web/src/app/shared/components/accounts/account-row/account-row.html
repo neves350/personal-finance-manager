@@ -1,0 +1,83 @@
+<div
+  class="flex items-center gap-3 py-3 px-4 hover:bg-accent/20 transition-colors rounded-lg group cursor-pointer"
+  [routerLink]="['/account-details', account().id]"
+>
+  <!-- account logo-->
+  @if (isLinked()) {
+    <app-provider-logo [logoUrl]="providerLogoUrl()" [providerName]="account().name" />
+  } @else {
+    <div
+      class="size-10 flex items-center justify-center rounded-lg text-primary bg-primary/20 shrink-0"
+    >
+      <i-lucide [img]="typeIcon()" class="size-4.5" />
+    </div>
+  }
+
+  <!-- account info -->
+  <div class="flex-1 min-w-0">
+    <p class="text-sm font-semibold truncate">{{ account().name }}</p>
+    <p class="text-xs text-muted-foreground">{{ subtitle() }}</p>
+  </div>
+
+  <!-- account balance, badge and actions -->
+  <div class="flex items-center gap-2 shrink-0">
+    <span class="text-sm font-bold font-display tabular-nums" [class]="balanceColorClass()">
+      {{ account().balance | currency: 'EUR' }}
+    </span>
+    <z-badge [zType]="badgeType()" class="h-5">{{ badgeLabel() }}</z-badge>
+
+    <z-button
+      zPopover
+      [zContent]="actionsMenu"
+      zType="ghost"
+      zSize="sm"
+      class="size-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+    >
+      <i-lucide [img]="EllipsisVerticalIcon" class="size-4" />
+    </z-button>
+  </div>
+</div>
+
+<!-- popover -->
+<ng-template #actionsMenu>
+  <z-popover class="w-44 items-start">
+    <div class="flex flex-col">
+      <z-button
+        zPopoverClose
+        zType="ghost"
+        zSize="sm"
+        zFull
+        class="justify-start"
+        [routerLink]="['/account-details', account().id]"
+      >
+        <i-lucide [img]="EyeIcon" class="size-4 mr-2" />
+        Details
+      </z-button>
+      @if (canEdit()) {
+        <z-button
+          zPopoverClose
+          zType="ghost"
+          zSize="sm"
+          zFull
+          class="justify-start"
+          (click)="editAccount()"
+        >
+          <i-lucide [img]="SquarePenIcon" class="size-4 mr-2" />
+          Edit
+        </z-button>
+        <z-divider />
+        <z-button
+          zPopoverClose
+          zType="ghost"
+          zSize="sm"
+          zFull
+          class="justify-start text-destructive"
+          (click)="deleteAccount()"
+        >
+          <i-lucide [img]="Trash2Icon" class="size-4 mr-2" />
+          Delete
+        </z-button>
+      }
+    </div>
+  </z-popover>
+</ng-template>
