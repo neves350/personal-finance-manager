@@ -1,0 +1,103 @@
+<div
+  class="flex items-center gap-3 py-3 px-4 hover:bg-accent/20 transition-colors rounded-lg group cursor-pointer"
+  [routerLink]="['/card-details', card().id]"
+>
+  <!-- card logo -->
+  @if (isLinked() && providerLogoUrl()) {
+    <app-provider-logo [logoUrl]="providerLogoUrl()" [providerName]="card().name" />
+  } @else if (cardNetwork() === 'mastercard') {
+    <div class="size-10 flex items-center justify-center rounded-lg bg-muted overflow-hidden">
+      <svg viewBox="0 0 38 24" class="size-8" aria-label="Mastercard">
+        <circle cx="15" cy="12" r="7" fill="#EB001B" />
+        <circle cx="23" cy="12" r="7" fill="#F79E1B" />
+        <path
+          d="M19 6.8A7 7 0 0 1 22.2 12 7 7 0 0 1 19 17.2 7 7 0 0 1 15.8 12 7 7 0 0 1 19 6.8z"
+          fill="#FF5F00"
+        />
+      </svg>
+    </div>
+  } @else if (cardNetwork() === 'visa') {
+    <div class="size-10 flex items-center justify-center rounded-lg bg-muted">
+      <span class="font-black text-[11px] tracking-tighter italic text-blue-500">VISA</span>
+    </div>
+  } @else {
+    <!-- no network -->
+    <app-provider-logo [providerName]="card().name" />
+  }
+
+  <!-- card info -->
+  <div class="flex-1 min-w-0">
+    <p class="text-sm font-semibold truncate">{{ card().name }}</p>
+    <p class="text-xs text-muted-foreground">{{ subtitle() }}</p>
+  </div>
+
+  <!-- card balance, badge and actions -->
+  <div class="flex items-center gap-2 shrink-0">
+    <span class="text-sm font-bold font-display tabular-nums" [class]="balanceColorClass()">{{
+      balance() | currency: 'EUR'
+    }}</span>
+
+    @if (card().creditLimit) {
+      <span class="text-xs text-muted-foreground">
+        / {{ card().creditLimit | currency: 'EUR' : 'symbol' : '1.0-0' }} limit
+      </span>
+    }
+    <z-badge [zType]="badgeType()" class="h-5">
+      {{ balance() < 0 ? 'Negative' : balance() === 0 ? 'Unavailable' : 'Available' }}
+    </z-badge>
+
+    <z-button
+      zPopover
+      [zContent]="actionsMenu"
+      zType="ghost"
+      zSize="sm"
+      class="size-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+    >
+      <i-lucide [img]="EllipsisVerticalIcon" class="size-4" />
+    </z-button>
+  </div>
+</div>
+
+<!-- popover -->
+<ng-template #actionsMenu>
+  <z-popover class="w-44 items-start">
+    <div class="flex flex-col">
+      <z-button
+        zPopoverClose
+        zType="ghost"
+        zSize="sm"
+        zFull
+        class="justify-start"
+        [routerLink]="['/card-details', card().id]"
+      >
+        <i-lucide [img]="EyeIcon" class="size-4 mr-2" />
+        Details
+      </z-button>
+      @if (canEdit()) {
+        <z-button
+          zPopoverClose
+          zType="ghost"
+          zSize="sm"
+          zFull
+          class="justify-start"
+          (click)="editCard()"
+        >
+          <i-lucide [img]="SquarePenIcon" class="size-4 mr-2" />
+          Edit
+        </z-button>
+        <z-divider />
+        <z-button
+          zPopoverClose
+          zType="ghost"
+          zSize="sm"
+          zFull
+          class="justify-start text-destructive"
+          (click)="deleteCard()"
+        >
+          <i-lucide [img]="Trash2Icon" class="size-4 mr-2" />
+          Delete
+        </z-button>
+      }
+    </div>
+  </z-popover>
+</ng-template>
