@@ -1,0 +1,69 @@
+<div
+  class="flex items-center gap-3 py-3 px-4 hover:bg-accent/20 transition-colors rounded-lg group"
+>
+  <app-provider-logo
+    [logoUrl]="connection().providerLogoUrl"
+    [providerName]="connection().providerName ?? ''"
+  />
+
+  <div class="flex-1 min-w-0">
+    <p class="text-sm font-semibold truncate">{{ connection().providerName }}</p>
+    <p class="text-xs text-muted-foreground">
+      {{ accountCount() }} {{ accountCount() === 1 ? 'account' : 'accounts' }}
+      @if (lastSyncLabel()) {
+        · Synced {{ lastSyncLabel() }}
+      }
+    </p>
+  </div>
+
+  <div class="flex items-center gap-2 shrink-0">
+    @if (consentExpiringSoon()) {
+      <z-badge zType="warning" zShape="pill" class="h-5">Expiring soon</z-badge>
+    }
+    <z-badge [zType]="isActive() ? 'available' : 'negative'" zShape="pill" class="h-5">
+      {{ isActive() ? 'Active' : 'Inactive' }}
+    </z-badge>
+
+    <!-- sync button -->
+    <z-button
+      zType="ghost"
+      zSize="sm"
+      class="size-8 p-0"
+      [zLoading]="syncing()"
+      (click)="sync()"
+      title="Sync now"
+    >
+      <i-lucide [img]="RotateCwIcon" class="size-4" [class.animate-spin]="syncing()" />
+    </z-button>
+
+    <!-- disconnect button -->
+    <z-button
+      zPopover
+      [zContent]="actionsMenu"
+      zType="ghost"
+      zSize="sm"
+      class="size-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+    >
+      <i-lucide [img]="EllipsisVerticalIcon" class="size-4" />
+    </z-button>
+  </div>
+</div>
+
+<!-- popover -->
+<ng-template #actionsMenu>
+  <z-popover class="w-44 items-start">
+    <div class="flex flex-col">
+      <z-button
+        zPopoverClose
+        zType="ghost"
+        zSize="sm"
+        zFull
+        class="justify-start text-destructive"
+        (click)="disconnect()"
+      >
+        <i-lucide [img]="Trash2Icon" class="size-4 mr-2" />
+        Disconnect
+      </z-button>
+    </div>
+  </z-popover>
+</ng-template>
