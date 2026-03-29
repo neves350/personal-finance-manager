@@ -53,8 +53,7 @@ export class SaltEdgeService {
 		throw error
 	}
 
-	// ─── Customers ─────────────────────────────────────────────────────
-
+	// Customers
 	async createCustomer(identifier: string): Promise<SaltEdgeCustomer> {
 		try {
 			const { data } = await firstValueFrom(
@@ -85,17 +84,14 @@ export class SaltEdgeService {
 				),
 			)
 			// Salt Edge may return a single object or an array depending on the filter
-			const customer = Array.isArray(data.data)
-				? data.data[0]
-				: data.data
+			const customer = Array.isArray(data.data) ? data.data[0] : data.data
 			return customer ?? null
 		} catch (error) {
 			this.handleError(error, 'getCustomerByIdentifier')
 		}
 	}
 
-	// ─── Connect Sessions ──────────────────────────────────────────────
-
+	// Connect Sessions
 	async createConnectSession(params: {
 		customerId: string
 		consentScopes: string[]
@@ -137,8 +133,7 @@ export class SaltEdgeService {
 		}
 	}
 
-	// ─── Connections ───────────────────────────────────────────────────
-
+	// Connections
 	async listConnections(customerId: string): Promise<SaltEdgeConnection[]> {
 		try {
 			const { data } = await firstValueFrom(
@@ -198,8 +193,7 @@ export class SaltEdgeService {
 		}
 	}
 
-	// ─── Accounts ──────────────────────────────────────────────────────
-
+	// Accounts
 	async getAccounts(connectionId: string): Promise<SaltEdgeAccount[]> {
 		try {
 			const { data } = await firstValueFrom(
@@ -217,8 +211,7 @@ export class SaltEdgeService {
 		}
 	}
 
-	// ─── Transactions ──────────────────────────────────────────────────
-
+	// Transactions
 	async getTransactions(params: {
 		connectionId: string
 		accountId: string
@@ -259,8 +252,7 @@ export class SaltEdgeService {
 		return allTransactions
 	}
 
-	// ─── Providers ─────────────────────────────────────────────────────
-
+	// Providers
 	async getProviders(countryCode = 'PT'): Promise<SaltEdgeProvider[]> {
 		try {
 			const { data } = await firstValueFrom(
@@ -275,6 +267,20 @@ export class SaltEdgeService {
 			return data.data
 		} catch (error) {
 			this.handleError(error, 'getProviders')
+		}
+	}
+
+	async getProvider(providerCode: string): Promise<SaltEdgeProvider | null> {
+		try {
+			const { data } = await firstValueFrom(
+				this.http.get<SaltEdgeResponse<SaltEdgeProvider>>(
+					`${this.baseUrl}/providers/${providerCode}`,
+					{ headers: this.headers },
+				),
+			)
+			return data.data
+		} catch {
+			return null // if provider are unknown stays null
 		}
 	}
 }

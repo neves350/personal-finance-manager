@@ -97,12 +97,15 @@ export class OpenBankingService {
 			})
 
 			if (!exists) {
+				const provider = await this.saltEdge.getProvider(seConn.provider_code)
+
 				await this.prisma.openBankingConnection.create({
 					data: {
 						customerId: customer.id,
 						saltEdgeConnectionId: seConn.id,
 						providerCode: seConn.provider_code,
 						providerName: seConn.provider_name,
+						providerLogoUrl: provider?.logo_url ?? null,
 						status: seConn.status === 'active' ? 'ACTIVE' : 'INACTIVE',
 						consentExpiresAt: seConn.consent?.expires_at
 							? new Date(seConn.consent.expires_at)

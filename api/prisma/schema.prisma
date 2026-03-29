@@ -286,6 +286,7 @@ model OpenBankingConnection {
   saltEdgeConnectionId   String               @unique @map("salt_edge_connection_id")
   providerCode           String               @map("provider_code")
   providerName           String               @map("provider_name")
+  providerLogoUrl        String?              @map("provider_logo_url")
   status                 ConnectionStatus     @default(ACTIVE)
   consentExpiresAt       DateTime?            @map("consent_expires_at")
   lastSyncAt             DateTime?            @map("last_sync_at")

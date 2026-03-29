@@ -47,6 +47,7 @@ export interface OpenBankingConnection {
 	saltEdgeConnectionId?: string
 	providerCode?: string
 	providerName?: string
+	providerLogoUrl?: string | null
 	status?: ConnectionStatus
 	consentExpiresAt?: string
 	lastSyncAt?: string
