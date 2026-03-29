@@ -1,0 +1,15 @@
+@if (logoUrl() && !imgError()) {
+  <img
+    [src]="logoUrl()"
+    [alt]="providerName()"
+    class="size-8 rounded-full object-contain bg-white shrink-0"
+    (error)="imgError.set(true)"
+  />
+} @else {
+  <div
+    class="size-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
+    [style.background-color]="fallback().color"
+  >
+    {{ fallback().initials }}
+  </div>
+}
