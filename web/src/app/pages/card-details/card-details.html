@@ -1,0 +1,14 @@
+<main class="p-4 w-full">
+  <div class="max-w-5xl mx-auto py-3 space-y-8">
+    <app-card-header [card]="activeCard" (cardUpdated)="refreshCard()" />
+
+    <div class="grid grid-cols-1 xl:grid-cols-3 mt-6">
+      <div class="xl:col-span-2 xl:mr-4">
+        <app-card-cashflow [card]="activeCard" />
+      </div>
+      <app-card-summary [card]="activeCard" />
+    </div>
+
+    <app-card-recent [card]="activeCard" />
+  </div>
+</main>

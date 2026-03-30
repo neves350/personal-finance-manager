@@ -105,11 +105,10 @@ export class OpenBankingSyncService {
 		userId: string,
 		seAccount: SaltEdgeAccount,
 	) {
-		// Try to reuse a disconnected card stub
+		// Try to reuse a disconnected card stub (isLinked may be false after disconnect)
 		const disconnected = await this.prisma.bankAccount.findFirst({
 			where: {
 				userId,
-				isLinked: true,
 				isCardAccount: true,
 				name: seAccount.name,
 				openBankingAccount: null,
@@ -121,7 +120,12 @@ export class OpenBankingSyncService {
 		if (disconnected) {
 			await this.prisma.bankAccount.update({
 				where: { id: disconnected.id },
-				data: { balance: seAccount.balance },
+				data: { balance: seAccount.balance, isLinked: true },
+			})
+			// Re-link any card associated with this stub
+			await this.prisma.card.updateMany({
+				where: { bankAccountId: disconnected.id },
+				data: { isLinked: true },
 			})
 			stubId = disconnected.id
 			this.logger.log(`Re-linked disconnected card: ${seAccount.name}`)
@@ -173,11 +177,10 @@ export class OpenBankingSyncService {
 		userId: string,
 		seAccount: SaltEdgeAccount,
 	) {
-		// Try to reuse a disconnected regular account
+		// Try to reuse a disconnected regular account (isLinked may be false after disconnect)
 		const disconnected = await this.prisma.bankAccount.findFirst({
 			where: {
 				userId,
-				isLinked: true,
 				isCardAccount: false,
 				name: seAccount.name,
 				openBankingAccount: null,
@@ -192,6 +195,7 @@ export class OpenBankingSyncService {
 				data: {
 					balance: seAccount.balance,
 					type: this.mapAccountNature(seAccount.nature),
+					isLinked: true,
 				},
 			})
 			accountId = disconnected.id

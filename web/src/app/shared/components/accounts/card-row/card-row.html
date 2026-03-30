@@ -2,10 +2,8 @@
   class="flex items-center gap-3 py-3 px-4 hover:bg-accent/20 transition-colors rounded-lg group cursor-pointer"
   [routerLink]="['/card-details', card().id]"
 >
-  <!-- card logo -->
-  @if (isLinked() && providerLogoUrl()) {
-    <app-provider-logo [logoUrl]="providerLogoUrl()" [providerName]="card().name" />
-  } @else if (cardNetwork() === 'mastercard') {
+  <!-- card logo: card network first, provider logo as fallback for linked cards -->
+  @if (cardNetwork() === 'mastercard') {
     <div class="size-10 flex items-center justify-center rounded-lg bg-muted overflow-hidden">
       <svg viewBox="0 0 38 24" class="size-8" aria-label="Mastercard">
         <circle cx="15" cy="12" r="7" fill="#EB001B" />
@@ -20,8 +18,9 @@
     <div class="size-10 flex items-center justify-center rounded-lg bg-muted">
       <span class="font-black text-[11px] tracking-tighter italic text-blue-500">VISA</span>
     </div>
+  } @else if (isLinked() && providerLogoUrl()) {
+    <app-provider-logo [logoUrl]="providerLogoUrl()" [providerName]="card().name" />
   } @else {
-    <!-- no network -->
     <app-provider-logo [providerName]="card().name" />
   }
 
