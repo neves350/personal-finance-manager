@@ -1,73 +1,77 @@
-import { OverlayModule } from '@angular/cdk/overlay';
+import { OverlayModule } from '@angular/cdk/overlay'
 import {
-  BasePortalOutlet,
-  CdkPortalOutlet,
-  type ComponentPortal,
-  PortalModule,
-  type TemplatePortal,
-} from '@angular/cdk/portal';
+	BasePortalOutlet,
+	CdkPortalOutlet,
+	type ComponentPortal,
+	PortalModule,
+	type TemplatePortal,
+} from '@angular/cdk/portal'
 import {
-  ChangeDetectionStrategy,
-  Component,
-  type ComponentRef,
-  computed,
-  ElementRef,
-  type EmbeddedViewRef,
-  type EventEmitter,
-  inject,
-  NgModule,
-  output,
-  type TemplateRef,
-  type Type,
-  viewChild,
-  type ViewContainerRef,
-} from '@angular/core';
-
-import { mergeClasses, noopFn } from '@/shared/utils/merge-classes';
-
-import type { ZardDialogRef } from './dialog-ref';
-import { ZardDialogService } from './dialog.service';
-import { dialogVariants } from './dialog.variants';
-import { ZardButtonComponent } from '@/shared/components/ui/button/button.component';
-import { ZardIconComponent } from '@/shared/components/ui/icon/icon.component';
-import type { ZardIcon } from '@/shared/components/ui/icon/icons';
+	ChangeDetectionStrategy,
+	Component,
+	type ComponentRef,
+	computed,
+	ElementRef,
+	type EmbeddedViewRef,
+	type EventEmitter,
+	inject,
+	NgModule,
+	output,
+	type TemplateRef,
+	type Type,
+	viewChild,
+	type ViewContainerRef,
+} from '@angular/core'
+import { ZardButtonComponent } from '@/shared/components/ui/button/button.component'
+import { ZardIconComponent } from '@/shared/components/ui/icon/icon.component'
+import type { ZardIcon } from '@/shared/components/ui/icon/icons'
+import { mergeClasses, noopFn } from '@/shared/utils/merge-classes'
+import { ZardDialogService } from './dialog.service'
+import { dialogVariants } from './dialog.variants'
+import type { ZardDialogRef } from './dialog-ref'
 
 // Used by the NgModule provider definition
 
-export type OnClickCallback<T> = (instance: T) => false | void | object;
+// biome-ignore lint/suspicious/noConfusingVoidType: void is intentional for callback return type compatibility
+export type OnClickCallback<T> = (instance: T) => false | void | object
 export class ZardDialogOptions<T, U> {
-  zCancelIcon?: ZardIcon;
-  zCancelText?: string | null;
-  zClosable?: boolean;
-  zContent?: string | TemplateRef<T> | Type<T>;
-  zCustomClasses?: string;
-  zData?: U;
-  zDescription?: string;
-  zHideFooter?: boolean;
-  zMaskClosable?: boolean;
-  zOkDestructive?: boolean;
-  zOkDisabled?: boolean;
-  zOkIcon?: ZardIcon;
-  zOkText?: string | null;
-  zOnCancel?: EventEmitter<T> | OnClickCallback<T> = noopFn;
-  zOnOk?: EventEmitter<T> | OnClickCallback<T> = noopFn;
-  zTitle?: string | TemplateRef<T>;
-  zViewContainerRef?: ViewContainerRef;
-  zWidth?: string;
+	zCancelIcon?: ZardIcon
+	zCancelText?: string | null
+	zClosable?: boolean
+	zContent?: string | TemplateRef<T> | Type<T>
+	zCustomClasses?: string
+	zData?: U
+	zDescription?: string
+	zHideFooter?: boolean
+	zMaskClosable?: boolean
+	zOkDestructive?: boolean
+	zOkDisabled?: boolean
+	zOkIcon?: ZardIcon
+	zOkText?: string | null
+	zOnCancel?: EventEmitter<T> | OnClickCallback<T> = noopFn
+	zOnOk?: EventEmitter<T> | OnClickCallback<T> = noopFn
+	zTitle?: string | TemplateRef<T>
+	zViewContainerRef?: ViewContainerRef
+	zWidth?: string
 }
 
 @Component({
-  selector: 'z-dialog',
-  imports: [OverlayModule, PortalModule, ZardButtonComponent, ZardIconComponent],
-  template: `
+	selector: 'z-dialog',
+	imports: [
+		OverlayModule,
+		PortalModule,
+		ZardButtonComponent,
+		ZardIconComponent,
+	],
+	template: `
     @if (config.zClosable || config.zClosable === undefined) {
       <button
         type="button"
         data-testid="z-close-header-button"
         z-button
-        zType="ghost"
+        zType="outline"
         zSize="sm"
-        class="absolute top-1 right-1"
+        class="absolute top-1 right-1 mr-2 cursor-pointer"
         (click)="onCloseClick()"
       >
         <z-icon zType="x" />
@@ -125,7 +129,7 @@ export class ZardDialogOptions<T, U> {
       </footer>
     }
   `,
-  styles: `
+	styles: `
     :host {
       opacity: 1;
       transform: scale(1);
@@ -149,63 +153,70 @@ export class ZardDialogOptions<T, U> {
         transform 150ms ease-in;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[class]': 'classes()',
-    '[style.width]': 'config.zWidth ? config.zWidth : null',
-    'animate.enter': 'dialog-enter',
-    'animate.leave': 'dialog-leave',
-  },
-  exportAs: 'zDialog',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	host: {
+		'[class]': 'classes()',
+		'[style.width]': 'config.zWidth ? config.zWidth : null',
+		'animate.enter': 'dialog-enter',
+		'animate.leave': 'dialog-leave',
+	},
+	exportAs: 'zDialog',
 })
 export class ZardDialogComponent<T, U> extends BasePortalOutlet {
-  private readonly host = inject(ElementRef<HTMLElement>);
-  protected readonly config = inject(ZardDialogOptions<T, U>);
+	private readonly host = inject(ElementRef<HTMLElement>)
+	protected readonly config = inject(ZardDialogOptions<T, U>)
 
-  protected readonly classes = computed(() => mergeClasses(dialogVariants(), this.config.zCustomClasses));
-  dialogRef?: ZardDialogRef<T>;
+	protected readonly classes = computed(() =>
+		mergeClasses(dialogVariants(), this.config.zCustomClasses),
+	)
+	dialogRef?: ZardDialogRef<T>
 
-  protected readonly isStringContent = typeof this.config.zContent === 'string';
+	protected readonly isStringContent = typeof this.config.zContent === 'string'
 
-  readonly portalOutlet = viewChild.required(CdkPortalOutlet);
+	readonly portalOutlet = viewChild.required(CdkPortalOutlet)
 
-  okTriggered = output<void>();
-  cancelTriggered = output<void>();
+	okTriggered = output<void>()
+	cancelTriggered = output<void>()
 
-  constructor() {
-    super();
-  }
+	getNativeElement(): HTMLElement {
+		return this.host.nativeElement
+	}
 
-  getNativeElement(): HTMLElement {
-    return this.host.nativeElement;
-  }
+	attachComponentPortal<T>(portal: ComponentPortal<T>): ComponentRef<T> {
+		if (this.portalOutlet()?.hasAttached()) {
+			throw new Error(
+				'Attempting to attach modal content after content is already attached',
+			)
+		}
+		return this.portalOutlet()?.attachComponentPortal(portal)
+	}
 
-  attachComponentPortal<T>(portal: ComponentPortal<T>): ComponentRef<T> {
-    if (this.portalOutlet()?.hasAttached()) {
-      throw new Error('Attempting to attach modal content after content is already attached');
-    }
-    return this.portalOutlet()?.attachComponentPortal(portal);
-  }
+	attachTemplatePortal<C>(portal: TemplatePortal<C>): EmbeddedViewRef<C> {
+		if (this.portalOutlet()?.hasAttached()) {
+			throw new Error(
+				'Attempting to attach modal content after content is already attached',
+			)
+		}
 
-  attachTemplatePortal<C>(portal: TemplatePortal<C>): EmbeddedViewRef<C> {
-    if (this.portalOutlet()?.hasAttached()) {
-      throw new Error('Attempting to attach modal content after content is already attached');
-    }
+		return this.portalOutlet()?.attachTemplatePortal(portal)
+	}
 
-    return this.portalOutlet()?.attachTemplatePortal(portal);
-  }
+	onOkClick() {
+		this.okTriggered.emit()
+	}
 
-  onOkClick() {
-    this.okTriggered.emit();
-  }
-
-  onCloseClick() {
-    this.cancelTriggered.emit();
-  }
+	onCloseClick() {
+		this.cancelTriggered.emit()
+	}
 }
 
 @NgModule({
-  imports: [ZardButtonComponent, ZardDialogComponent, OverlayModule, PortalModule],
-  providers: [ZardDialogService],
+	imports: [
+		ZardButtonComponent,
+		ZardDialogComponent,
+		OverlayModule,
+		PortalModule,
+	],
+	providers: [ZardDialogService],
 })
 export class ZardDialogModule {}
