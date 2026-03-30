@@ -1,40 +1,30 @@
-<div class="mb-4">
-  <!-- header -->
-  <button
-    type="button"
-    class="flex w-full items-center justify-between py-2 px-4 text-left hover:bg-accent/30 rounded-lg transition-colors"
-    (click)="toggle()"
-  >
-    <div class="flex items-center gap-2">
-      <span class="text-sm font-semibold text-foreground">{{ title() }}</span>
-      <span class="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded-md">{{
-        count()
-      }}</span>
-    </div>
-    <i-lucide
-      [img]="ChevronDownIcon"
-      class="size-4 text-muted-foreground transition-colors duration-200"
-      [class.rotate-180]="!collapsed()"
-    />
-  </button>
-
-  <z-divider />
-
-  <!-- rows -->
-  @if (!collapsed()) {
-    <ng-content />
-
-    <!-- footer -->
-    <z-divider />
-
-    <div class="flex justify-between items-center px-4 py-2">
-      <span class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Total</span>
-      <span
-        class="text-sm font-bold font-display tabular-nums"
-        [class.text-destructive]="total() < 0"
-      >
-        {{ total() | currency: 'EUR' }}
+<z-accordion zType="single" [zCollapsible]="true" [zDefaultValue]="'section'" class="mb-4">
+  <z-accordion-item zValue="section">
+    <div
+      zAccordionTrigger
+      class="flex w-full items-center gap-2 py-2 px-2 border-none! bg-transparent! rounded-lg! hover:bg-accent/30 transition-colors cursor-pointer"
+    >
+      <span class="text-base font-semibold font-title text-foreground">{{ title() }}</span>
+      <span class="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded-md">
+        {{ count() }}
       </span>
+
+      @if (showTotal()) {
+        <span
+          class="ml-auto text-base font-bold font-display tabular-nums"
+          [class.text-destructive]="total() < 0"
+        >
+          <span
+            class="ml-auto mr-2 text-sm font-bold text-muted-foreground font-title tabular-nums"
+          >
+            TOTAL:
+          </span>
+          {{ total() | currency: 'EUR' }}
+        </span>
+      }
     </div>
-  }
-</div>
+
+    <!-- rows -->
+    <ng-content />
+  </z-accordion-item>
+</z-accordion>
