@@ -38,6 +38,7 @@ import { ProviderLogo } from '../provider-logo/provider-logo'
 		ZardButtonComponent,
 		LucideAngularModule,
 		ZardPopoverDirective,
+		ZardPopoverCloseDirective,
 		ZardPopoverComponent,
 		ZardPopoverCloseDirective,
 	],
