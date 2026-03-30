@@ -68,14 +68,14 @@ export const routes: Routes = [
 			},
 			{
 				path: 'cards',
-				title: 'Cards',
-				loadComponent: () => import('./pages/cards/cards').then((m) => m.Cards),
+				redirectTo: '/accounts',
+				pathMatch: 'full',
 			},
 			{
 				path: 'card-details/:id',
 				title: 'Card Details',
 				loadComponent: () =>
-					import('./pages/cards/card-details/card-details').then(
+					import('./pages/card-details/card-details').then(
 						(m) => m.CardDetails,
 					),
 				resolve: {

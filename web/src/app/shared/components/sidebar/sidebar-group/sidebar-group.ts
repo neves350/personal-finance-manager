@@ -4,7 +4,6 @@ import {
 	ArrowRightLeftIcon,
 	ChartColumnIcon,
 	ChartPieIcon,
-	CreditCardIcon,
 	LayoutGridIcon,
 	LucideAngularModule,
 	type LucideIconData,
@@ -64,16 +63,11 @@ export class SidebarGroup {
 			title: 'Recurrings',
 			url: '/recurrings',
 			icon: Repeat2Icon,
-    },
-    {
-      title: 'Accounts',
-      url: '/accounts',
-      icon: WalletIcon
-    },
+		},
 		{
-			title: 'Cards',
-			url: '/cards',
-			icon: CreditCardIcon,
+			title: 'Accounts',
+			url: '/accounts',
+			icon: WalletIcon,
 		},
 		{
 			title: 'Categories',
