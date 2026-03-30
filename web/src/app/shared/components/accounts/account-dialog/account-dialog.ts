@@ -6,11 +6,11 @@ import {
 } from '@angular/core'
 import { OpenBankingService } from '@core/services/open-banking.service'
 import {
-	CheckIcon,
-	LandmarkIcon,
+	CircleCheckIcon,
+	LinkIcon,
 	LucideAngularModule,
-	PencilIcon,
 	SparklesIcon,
+	SquarePenIcon,
 } from 'lucide-angular'
 import { BankAccountsForm } from '../../bank-accounts/bank-accounts-form/bank-accounts-form'
 import { ZardDialogRef, ZardDialogService } from '../../ui/dialog'
@@ -25,10 +25,10 @@ export class AccountDialog {
 	readonly selectAutomatic = output<void>()
 	readonly selectManual = output<void>()
 
-	readonly LandmarkIcon = LandmarkIcon
-	readonly PencilIcon = PencilIcon
+	readonly LinkIcon = LinkIcon
+	readonly SquarePenIcon = SquarePenIcon
 	readonly SparklesIcon = SparklesIcon
-	readonly CheckIcon = CheckIcon
+	readonly CircleCheckIcon = CircleCheckIcon
 
 	private readonly dialogRef = inject(ZardDialogRef)
 	private readonly dialogService = inject(ZardDialogService)

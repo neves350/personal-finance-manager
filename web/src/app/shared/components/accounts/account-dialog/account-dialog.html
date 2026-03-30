@@ -1,7 +1,3 @@
-<p class="text-sm text-muted-foreground text-center mb-6">
-  Choose how you want to add your account
-</p>
-
 <div class="grid grid-cols-2 gap-4">
   <!-- automatic button -->
   <button
@@ -9,34 +5,59 @@
     class="flex flex-col items-start gap-3 rounded-xl border-2 border-primary/30 bg-primary/5 p-4 text-left transition-colors hover:border-primary hover:bg-primary/10 cursor-pointer"
     (click)="connectBank()"
   >
-    <div class="flex items-center gap-2">
-      <i-lucide [img]="LandmarkIcon" class="size-5 text-primary" />
-      <span class="font-semibold text-sm">Automatic</span>
-      <i-lucide [img]="SparklesIcon" class="size-3 text-primary" />
+    <div class="flex flex-col gap-1 w-full items-center">
+      <div class="p-3 rounded-lg bg-primary/15">
+        <i-lucide [img]="LinkIcon" class="size-6 text-primary" />
+      </div>
+      <div class="flex items-center gap-1">
+        <span class="font-semibold text-sm mt-1">Automatic</span>
+        <i-lucide [img]="SparklesIcon" class="size-3.5 text-primary" />
+      </div>
     </div>
-    <p class="text-xs text-muted-foreground">Connect via Open Banking</p>
+
+    <p class="text-xs text-muted-foreground w-full text-center">Connect via Open Banking</p>
     <ul class="text-xs text-muted-foreground space-y-1">
-      <li>✓ Real-time balances</li>
-      <li>✓ Auto-import transactions</li>
-      <li>✓ Auto-sync</li>
+      <li class="flex items-center gap-1">
+        <i-lucide [img]="CircleCheckIcon" class="size-3.5 text-primary shrink-0" /> Real-time
+        balances
+      </li>
+      <li class="flex items-center gap-1">
+        <i-lucide [img]="CircleCheckIcon" class="size-3.5 text-primary shrink-0" /> Auto-import
+        transactions
+      </li>
+      <li class="flex items-center gap-1">
+        <i-lucide [img]="CircleCheckIcon" class="size-3.5 text-primary shrink-0" /> Auto-sync
+      </li>
     </ul>
   </button>
 
   <!-- manual button -->
   <button
     type="button"
-    class="flex flex-col items-start gap-3 rounded-xl border-2 border-border p-4 text-left transition-colors hover:border-foreground/30 hover:bg-accent cursor-pointer"
+    class="flex flex-col items-start gap-3 rounded-xl border-2 border-border p-4 text-left transition-colors hover:border-primary hover:bg-primary/10 cursor-pointer"
     (click)="openManual()"
   >
-    <div class="flex items-center gap-2">
-      <i-lucide [img]="PencilIcon" class="size-5" />
-      <span class="font-semibold text-sm">Manual</span>
+    <div class="flex flex-col gap-1 w-full items-center">
+      <div class="p-3 rounded-lg bg-foreground/15">
+        <i-lucide [img]="SquarePenIcon" class="size-6 text-foreground" />
+      </div>
+      <div class="flex items-center gap-1">
+        <span class="font-semibold text-sm mt-1">Manual</span>
+      </div>
     </div>
-    <p class="text-xs text-muted-foreground">Track without a bank connection</p>
+
+    <p class="text-xs text-muted-foreground w-full text-center">Track without a bank connection</p>
     <ul class="text-xs text-muted-foreground space-y-1">
-      <li>✓ Cash accounts</li>
-      <li>✓ Foreign banks</li>
-      <li>✓ Unsupported banks</li>
+      <li class="flex items-center gap-1">
+        <i-lucide [img]="CircleCheckIcon" class="size-3.5 text-foreground shrink-0" /> Cash accounts
+      </li>
+      <li class="flex items-center gap-1">
+        <i-lucide [img]="CircleCheckIcon" class="size-3.5 text-foreground shrink-0" /> Foreign banks
+      </li>
+      <li class="flex items-center gap-1">
+        <i-lucide [img]="CircleCheckIcon" class="size-3.5 text-foreground shrink-0" /> Unsupported
+        banks
+      </li>
     </ul>
   </button>
 </div>
