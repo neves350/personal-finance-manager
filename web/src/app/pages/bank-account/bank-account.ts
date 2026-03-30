@@ -17,6 +17,7 @@ import { AccountRow } from '@/shared/components/accounts/account-row/account-row
 import { AccountsSection } from '@/shared/components/accounts/accounts-section/accounts-section'
 import { CardRow } from '@/shared/components/accounts/card-row/card-row'
 import { ConnectionRow } from '@/shared/components/accounts/connection-row/connection-row'
+import { CardsForm } from '@/shared/components/cards/cards-form/cards-form'
 import { TransfersForm } from '@/shared/components/transfers/transfers-form/transfers-form'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
@@ -156,6 +157,23 @@ export class BankAccount implements OnInit {
 			zHideFooter: false,
 			zOkText: 'Send Transfer',
 			zOnOk: (instance: TransfersForm) => {
+				instance.submit()
+				return false
+			},
+			zCustomClasses:
+				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+		})
+	}
+
+	openAddCard() {
+		this.sheetService.create({
+			zTitle: 'Add Card',
+			zContent: CardsForm,
+			zWidth: '500px',
+			zSide: 'right',
+			zHideFooter: false,
+			zOkText: 'Send Transfer',
+			zOnOk: (instance: CardsForm) => {
 				instance.submit()
 				return false
 			},
