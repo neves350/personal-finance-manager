@@ -17,17 +17,13 @@ import {
 	LucideAngularModule,
 	RotateCwIcon,
 	Trash2Icon,
+	UnlinkIcon,
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
 import { lastValueFrom } from 'rxjs'
 import { ZardBadgeComponent } from '../../ui/badge'
 import { ZardButtonComponent } from '../../ui/button'
 import { ZardDialogService } from '../../ui/dialog'
-import {
-	ZardPopoverCloseDirective,
-	ZardPopoverComponent,
-	ZardPopoverDirective,
-} from '../../ui/popover'
 import { ProviderLogo } from '../provider-logo/provider-logo'
 
 @Component({
@@ -37,10 +33,6 @@ import { ProviderLogo } from '../provider-logo/provider-logo'
 		ZardBadgeComponent,
 		ZardButtonComponent,
 		LucideAngularModule,
-		ZardPopoverDirective,
-		ZardPopoverCloseDirective,
-		ZardPopoverComponent,
-		ZardPopoverCloseDirective,
 	],
 	templateUrl: './connection-row.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -52,6 +44,7 @@ export class ConnectionRow {
 	readonly RotateCwIcon = RotateCwIcon
 	readonly EllipsisVerticalIcon = EllipsisVerticalIcon
 	readonly Trash2Icon = Trash2Icon
+	readonly UnlinkIcon = UnlinkIcon
 
 	readonly syncing = signal(false)
 

@@ -11,7 +11,7 @@
     <p class="text-xs text-muted-foreground">
       {{ accountCount() }} {{ accountCount() === 1 ? 'account' : 'accounts' }}
       @if (lastSyncLabel()) {
-        · Synced {{ lastSyncLabel() }}
+        • Synced {{ lastSyncLabel() }}
       }
     </p>
   </div>
@@ -38,32 +38,14 @@
 
     <!-- disconnect button -->
     <z-button
-      zPopover
-      [zContent]="actionsMenu"
+      zPopoverClose
       zType="ghost"
       zSize="sm"
-      class="size-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+      class="justify-start text-destructive"
+      (click)="disconnect()"
     >
-      <i-lucide [img]="EllipsisVerticalIcon" class="size-4" />
+      <i-lucide [img]="UnlinkIcon" class="size-4 mr-2" />
+      Disconnect
     </z-button>
   </div>
 </div>
-
-<!-- popover -->
-<ng-template #actionsMenu>
-  <z-popover class="w-44 items-start">
-    <div class="flex flex-col">
-      <z-button
-        zPopoverClose
-        zType="ghost"
-        zSize="sm"
-        zFull
-        class="justify-start text-destructive"
-        (click)="disconnect()"
-      >
-        <i-lucide [img]="Trash2Icon" class="size-4 mr-2" />
-        Disconnect
-      </z-button>
-    </div>
-  </z-popover>
-</ng-template>
