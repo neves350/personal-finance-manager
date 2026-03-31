@@ -53,6 +53,7 @@ export class AuthService {
 				data: Categories.map((category) => ({
 					title: category.title,
 					icon: category.icon,
+					color: category.color,
 					type: category.type,
 					isDefault: true,
 					userId: user.id,
@@ -170,6 +171,7 @@ export class AuthService {
 					data: Categories.map((category) => ({
 						title: category.title,
 						icon: category.icon,
+						color: category.color,
 						type: category.type,
 						isDefault: true,
 						userId: newUser.id,
