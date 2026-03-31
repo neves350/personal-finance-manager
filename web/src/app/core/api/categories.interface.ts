@@ -13,6 +13,7 @@ export interface Category {
 	id?: string
 	title: string
 	icon: string
+	color?: string
 	isDefault: boolean
 	type: CategoryType
 	createdAt?: string
@@ -25,6 +26,7 @@ export interface Category {
 export interface CreateCategoryRequest {
 	title: string
 	icon: string
+	color?: string
 	type: CategoryType
 }
 
@@ -34,6 +36,7 @@ export interface CreateCategoryRequest {
 export interface UpdateCategoryRequest {
 	title?: string
 	icon?: string
+	color?: string
 	type?: CategoryType
 }
 
