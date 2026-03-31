@@ -28,7 +28,7 @@ export class CategoryService {
 	async findAll(userId: string, type?: CategoryType) {
 		return this.prisma.category.findMany({
 			where: {
-				OR: [{ userId }, { isDefault: true }],
+				userId,
 				...(type && { type }),
 			},
 		})
