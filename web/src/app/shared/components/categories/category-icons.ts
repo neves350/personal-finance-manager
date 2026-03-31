@@ -69,49 +69,4 @@ export const CATEGORY_ICON_MAP: Record<string, LucideIconData> = {
 	bandage: Bandage,
 }
 
-export const CATEGORY_ICON_GROUPS = [
-	{
-		label: 'Food',
-		icons: ['utensils', 'coffee', 'wine', 'shopping-basket', 'shopping-bag'],
-	},
-	{
-		label: 'Transport',
-		icons: ['car', 'bus', 'fuel', 'plane'],
-	},
-	{
-		label: 'Home',
-		icons: ['house', 'lightbulb', 'wifi', 'wrench'],
-	},
-	{
-		label: 'Leisure',
-		icons: ['gamepad-2', 'music', 'film', 'dumbbell', 'joystick'],
-	},
-	{
-		label: 'Finance',
-		icons: [
-			'briefcase',
-			'trending-up',
-			'circle-dollar-sign',
-			'repeat-2',
-			'chart-no-axes-combined',
-			'rotate-ccw',
-		],
-	},
-	{
-		label: 'Personal',
-		icons: [
-			'gift',
-			'shirt',
-			'graduation-cap',
-			'heart-pulse',
-			'paw-print',
-			'bandage',
-		],
-	},
-	{
-		label: 'Other',
-		icons: ['shopping-cart', 'tag'],
-	},
-]
-
 export const CATEGORY_ICON_NAMES = Object.keys(CATEGORY_ICON_MAP)

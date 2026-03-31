@@ -1,26 +1,19 @@
 import {
 	ChangeDetectionStrategy,
 	Component,
+	computed,
 	forwardRef,
 	signal,
 } from '@angular/core'
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 import { LucideAngularModule } from 'lucide-angular'
-import {
-	ZardPopoverCloseDirective,
-	ZardPopoverComponent,
-	ZardPopoverDirective,
-} from '../../ui/popover'
-import { CATEGORY_ICON_GROUPS, CATEGORY_ICON_MAP } from '../category-icons'
+import { CATEGORY_ICON_MAP, CATEGORY_ICON_NAMES } from '../category-icons'
+
+const PREVIEW_COUNT = 11
 
 @Component({
 	selector: 'app-icon-picker',
-	imports: [
-		LucideAngularModule,
-		ZardPopoverDirective,
-		ZardPopoverCloseDirective,
-		ZardPopoverComponent,
-	],
+	imports: [LucideAngularModule],
 	templateUrl: './icon-picker.html',
 	providers: [
 		{
@@ -33,9 +26,17 @@ import { CATEGORY_ICON_GROUPS, CATEGORY_ICON_MAP } from '../category-icons'
 })
 export class IconPicker implements ControlValueAccessor {
 	readonly iconMap = CATEGORY_ICON_MAP
-	readonly iconGroups = CATEGORY_ICON_GROUPS
+	readonly total = CATEGORY_ICON_NAMES.length
+	readonly totalLabel = `${CATEGORY_ICON_NAMES.length} total`
 
 	protected readonly selectedIcon = signal<string>('')
+	protected readonly expanded = signal(false)
+
+	protected readonly visibleIcons = computed(() =>
+		this.expanded()
+			? CATEGORY_ICON_NAMES
+			: CATEGORY_ICON_NAMES.slice(0, PREVIEW_COUNT),
+	)
 
 	private onChange: (value: string) => void = () => {}
 	private onTouched: () => void = () => {}
@@ -44,6 +45,10 @@ export class IconPicker implements ControlValueAccessor {
 		this.selectedIcon.set(icon)
 		this.onChange(icon)
 		this.onTouched()
+	}
+
+	toggleExpanded(): void {
+		this.expanded.update((v) => !v)
 	}
 
 	getIconClasses(icon: string): string {
