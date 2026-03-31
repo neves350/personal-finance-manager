@@ -1,4 +1,11 @@
-import { Component, computed, inject, input, output } from '@angular/core'
+import {
+	Component,
+	computed,
+	inject,
+	input,
+	type OnInit,
+	output,
+} from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import type { Category } from '@core/api/categories.interface'
@@ -36,7 +43,7 @@ import type { iCategorySheetData } from './categories-form.interface'
 	],
 	templateUrl: './categories-form.html',
 })
-export class CategoriesForm {
+export class CategoriesForm implements OnInit {
 	private readonly fb = inject(FormBuilder)
 	private readonly categoriesService = inject(CategoriesService)
 	private readonly zData: iCategorySheetData = inject(Z_SHEET_DATA)
@@ -107,6 +114,17 @@ export class CategoriesForm {
 		return categoryType === CategoryType.INCOME
 			? 'text-primary'
 			: 'text-destructive'
+	}
+
+	ngOnInit(): void {
+		if (this.zData?.id) {
+			this.form.patchValue({
+				title: this.zData.title ?? '',
+				icon: this.zData.icon ?? '',
+				color: this.zData.color ?? '',
+				type: this.zData.type ?? CategoryType.EXPENSE,
+			})
+		}
 	}
 
 	submit(): void {

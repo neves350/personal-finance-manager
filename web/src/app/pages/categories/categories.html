@@ -1,29 +1,38 @@
 <main class="p-6 xl:p-8">
-  <div class="max-w-500 mx-auto py-3 space-y-6">
+  <div class="max-w-300 mx-auto py-3 space-y-6">
     <div class="flex justify-between items-start">
       <h1 class="flex flex-col page-title">
         Categories
-        <span class="page-subtitle">
-          Organize your transactions with custom categories.
-        </span>
+        <span class="page-subtitle"> Organize your transactions with custom categories. </span>
       </h1>
+
+      <div class="flex items-center gap-3">
+        <z-button zType="default" (click)="addCategory()">
+          <i-lucide [img]="PlusIcon" />
+          New Category
+        </z-button>
+      </div>
     </div>
 
-    <app-categories-form [category]="editingCategory()" (editDone)="onEditDone()" />
-
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
-      <app-categories-list
-        [categories]="expenseCategories()"
-        title="Expenses Categories"
-        dotColor="bg-destructive"
-        (edit)="onEdit($event)"
-      />
-      <app-categories-list
-        [categories]="incomeCategories()"
-        title="Income Categories"
-        dotColor="bg-primary"
-        (edit)="onEdit($event)"
-      />
-    </div>
+    @if (isLoading()) {
+      <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
+        <z-loader />
+        <span class="text-sm text-muted-foreground">Loading categories...</span>
+      </div>
+    } @else {
+      <z-tab-group
+        class="items-center"
+        zAlignTabs="center"
+        zTabsPosition="custom"
+        zActivePosition="custom"
+      >
+        <z-tab [label]="'Expenses (' + expenseCategories().length + ')'">
+          <app-categories-list [categories]="expenseCategories()" />
+        </z-tab>
+        <z-tab [label]="'Income (' + incomeCategories().length + ')'">
+          <app-categories-list [categories]="incomeCategories()" />
+        </z-tab>
+      </z-tab-group>
+    }
   </div>
 </main>
