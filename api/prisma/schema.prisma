@@ -8,19 +8,19 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  googleId     String?       @unique @map("google_id")
-  email        String        @unique
-  name         String
-  passwordHash String?       @map("password_hash")
-  avatarUrl    String?       @default("default") @map("avatar_url")
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
-  token        Token[]
-  goals        Goal[]
-  cards        Card[]
-  bankAccounts BankAccount[]
-  transfer     Transfer[]
+  id                  String               @id @default(uuid())
+  googleId            String?              @unique @map("google_id")
+  email               String               @unique
+  name                String
+  passwordHash        String?              @map("password_hash")
+  avatarUrl           String?              @default("default") @map("avatar_url")
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @updatedAt @map("updated_at")
+  token               Token[]
+  goals               Goal[]
+  cards               Card[]
+  bankAccounts        BankAccount[]
+  transfer            Transfer[]
   categories          Category[]
   openBankingCustomer OpenBankingCustomer?
 
@@ -139,7 +139,7 @@ model BankAccount {
   openBankingAccount OpenBankingAccount?
   createdAt          DateTime            @default(now()) @map("created_at")
   updatedAt          DateTime            @updatedAt @map("updated_at")
-  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("bank_accounts")
 }
@@ -191,6 +191,7 @@ model Category {
   userId       String        @map("user_id")
   title        String
   icon         String
+  color        String?
   isDefault    Boolean       @default(false) @map("is_default")
   type         Type
   transactions Transaction[]
@@ -280,37 +281,37 @@ model OpenBankingCustomer {
 }
 
 model OpenBankingConnection {
-  id                     String               @id @default(uuid())
-  customerId             String               @map("customer_id")
-  saltEdgeConnectionId   String               @unique @map("salt_edge_connection_id")
-  providerCode           String               @map("provider_code")
-  providerName           String               @map("provider_name")
-  providerLogoUrl        String?              @map("provider_logo_url")
-  status                 ConnectionStatus     @default(ACTIVE)
-  consentExpiresAt       DateTime?            @map("consent_expires_at")
-  lastSyncAt             DateTime?            @map("last_sync_at")
-  nextRefreshPossibleAt  DateTime?            @map("next_refresh_possible_at")
-  createdAt              DateTime             @default(now()) @map("created_at")
-  updatedAt              DateTime             @updatedAt @map("updated_at")
-  customer               OpenBankingCustomer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  accounts               OpenBankingAccount[]
+  id                    String               @id @default(uuid())
+  customerId            String               @map("customer_id")
+  saltEdgeConnectionId  String               @unique @map("salt_edge_connection_id")
+  providerCode          String               @map("provider_code")
+  providerName          String               @map("provider_name")
+  providerLogoUrl       String?              @map("provider_logo_url")
+  status                ConnectionStatus     @default(ACTIVE)
+  consentExpiresAt      DateTime?            @map("consent_expires_at")
+  lastSyncAt            DateTime?            @map("last_sync_at")
+  nextRefreshPossibleAt DateTime?            @map("next_refresh_possible_at")
+  createdAt             DateTime             @default(now()) @map("created_at")
+  updatedAt             DateTime             @updatedAt @map("updated_at")
+  customer              OpenBankingCustomer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  accounts              OpenBankingAccount[]
 
   @@map("open_banking_connections")
 }
 
 model OpenBankingAccount {
-  id                 String                @id @default(uuid())
-  connectionId       String                @map("connection_id")
-  bankAccountId      String                @unique @map("bank_account_id")
-  saltEdgeAccountId  String                @unique @map("salt_edge_account_id")
-  iban               String?
-  currencyCode       String                @default("EUR") @map("currency_code")
-  nature             String
-  lastSyncAt         DateTime?             @map("last_sync_at")
-  createdAt          DateTime              @default(now()) @map("created_at")
-  updatedAt          DateTime              @updatedAt @map("updated_at")
-  connection         OpenBankingConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
-  bankAccount        BankAccount           @relation(fields: [bankAccountId], references: [id], onDelete: Cascade)
+  id                String                @id @default(uuid())
+  connectionId      String                @map("connection_id")
+  bankAccountId     String                @unique @map("bank_account_id")
+  saltEdgeAccountId String                @unique @map("salt_edge_account_id")
+  iban              String?
+  currencyCode      String                @default("EUR") @map("currency_code")
+  nature            String
+  lastSyncAt        DateTime?             @map("last_sync_at")
+  createdAt         DateTime              @default(now()) @map("created_at")
+  updatedAt         DateTime              @updatedAt @map("updated_at")
+  connection        OpenBankingConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  bankAccount       BankAccount           @relation(fields: [bankAccountId], references: [id], onDelete: Cascade)
 
   @@map("open_banking_accounts")
 }

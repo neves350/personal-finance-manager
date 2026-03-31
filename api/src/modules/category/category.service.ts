@@ -9,7 +9,7 @@ export class CategoryService {
 	constructor(private readonly prisma: PrismaService) {}
 
 	async create(createCategory: CreateCategory, userId: string) {
-		const { title, icon, type } = createCategory
+		const { title, icon, type, color } = createCategory
 
 		// create category
 		const category = this.prisma.category.create({
@@ -17,6 +17,7 @@ export class CategoryService {
 				title,
 				icon,
 				type,
+				color,
 				isDefault: false,
 				userId,
 			},

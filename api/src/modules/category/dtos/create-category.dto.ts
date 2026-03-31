@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator'
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator'
 
 enum CategoryType {
 	INCOME = 'INCOME',
@@ -16,6 +16,11 @@ export class CreateCategory {
 	@IsNotEmpty()
 	@ApiProperty()
 	icon: string
+
+	@IsString()
+	@IsOptional()
+	@ApiProperty()
+	color?: string
 
 	@IsEnum(CategoryType)
 	@IsNotEmpty()
