@@ -4,5 +4,6 @@ export interface iCategorySheetData {
 	id?: string
 	title?: string
 	icon?: string
+	color?: string
 	type?: CategoryType
 }

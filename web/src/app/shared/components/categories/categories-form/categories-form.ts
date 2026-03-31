@@ -1,38 +1,46 @@
 import { Component, computed, inject, input, output } from '@angular/core'
+import { toSignal } from '@angular/core/rxjs-interop'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import { CategoryType } from '@core/api/categories.interface'
 import type { Category } from '@core/api/categories.interface'
+import { CategoryType } from '@core/api/categories.interface'
 import { CategoriesService } from '@core/services/categories.service'
 import {
+	ArrowDownIcon,
+	ArrowUpIcon,
 	CirclePlusIcon,
 	LucideAngularModule,
+	type LucideIconData,
 	SaveIcon,
 	XIcon,
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
-import { ZardButtonComponent } from '../../ui/button'
-import { ZardCardComponent } from '../../ui/card'
+import { ZardBadgeComponent } from '../../ui/badge'
+import { ZardDividerComponent } from '../../ui/divider'
 import { ZardInputDirective } from '../../ui/input'
-import { ZardSelectComponent, ZardSelectItemComponent } from '../../ui/select'
+import { Z_SHEET_DATA, ZardSheetRef } from '../../ui/sheet'
+import { CategoryColorPicker } from '../category-color-picker/category-color-picker'
+import { CATEGORY_ICON_NAMES } from '../category-icons'
 import { IconPicker } from '../icon-picker/icon-picker'
+import type { iCategorySheetData } from './categories-form.interface'
 
 @Component({
 	selector: 'app-categories-form',
 	imports: [
 		ReactiveFormsModule,
-		ZardSelectItemComponent,
-		ZardSelectComponent,
+		ZardBadgeComponent,
 		IconPicker,
-		ZardButtonComponent,
 		LucideAngularModule,
-		ZardCardComponent,
 		ZardInputDirective,
+		ZardDividerComponent,
+		CategoryColorPicker,
 	],
 	templateUrl: './categories-form.html',
 })
 export class CategoriesForm {
-	private readonly categoriesService = inject(CategoriesService)
 	private readonly fb = inject(FormBuilder)
+	private readonly categoriesService = inject(CategoriesService)
+	private readonly zData: iCategorySheetData = inject(Z_SHEET_DATA)
+	private readonly sheetRef = inject(ZardSheetRef)
 
 	readonly category = input<Category | null>(null)
 	readonly editDone = output<void>()
@@ -40,18 +48,31 @@ export class CategoriesForm {
 	readonly CirclePlusIcon = CirclePlusIcon
 	readonly SaveIcon = SaveIcon
 	readonly XIcon = XIcon
+	readonly totalIconsLabel = `${CATEGORY_ICON_NAMES.length} total`
 
 	form = this.fb.nonNullable.group({
 		title: ['', [Validators.required]],
 		icon: ['', [Validators.required]],
+		color: [''],
 		type: [CategoryType.EXPENSE, [Validators.required]],
 	})
 
-	readonly isEditMode = computed(() => !!this.category()?.id)
+	readonly isEditMode = computed(() => !!this.zData?.id)
 	readonly categoryTypes = Object.values(CategoryType)
 
+	private readonly formValues = toSignal(this.form.valueChanges, {
+		initialValue: this.form.value,
+	})
+
+	readonly previewData = computed(() => ({
+		title: this.formValues()?.title || 'Category Title',
+		icon: this.formValues().icon || '',
+		color: this.formValues()?.color || '',
+		type: this.formValues()?.type || CategoryType.EXPENSE,
+	}))
+
 	readonly typeLabels: Record<CategoryType, string> = {
-		[CategoryType.EXPENSE]: 'Expense',
+		[CategoryType.EXPENSE]: 'Expenses',
 		[CategoryType.INCOME]: 'Income',
 	}
 
@@ -59,17 +80,33 @@ export class CategoriesForm {
 		return this.typeLabels[type]
 	}
 
-	fillForm(category: Category): void {
-		this.form.patchValue({
-			title: category.title ?? '',
-			icon: category.icon ?? '',
-			type: category.type ?? CategoryType.EXPENSE,
-		})
+	readonly typeIcons: Record<CategoryType, LucideIconData> = {
+		[CategoryType.EXPENSE]: ArrowDownIcon,
+		[CategoryType.INCOME]: ArrowUpIcon,
 	}
 
-	cancelEdit(): void {
-		this.resetForm()
-		this.editDone.emit()
+	selectType(type: CategoryType): void {
+		this.form.controls.type.setValue(type)
+	}
+
+	getTypeClasses(categoryType: CategoryType): string {
+		const isSelected = this.form.controls.type.value === categoryType
+
+		if (!isSelected) return 'border-input'
+
+		return categoryType === CategoryType.INCOME
+			? 'border-primary bg-primary/20'
+			: 'border-destructive bg-destructive/20'
+	}
+
+	getTypeIconClasses(categoryType: CategoryType): string {
+		const isSelected = this.form.controls.type.value === categoryType
+
+		if (!isSelected) return 'text-foreground'
+
+		return categoryType === CategoryType.INCOME
+			? 'text-primary'
+			: 'text-destructive'
 	}
 
 	submit(): void {
@@ -82,6 +119,7 @@ export class CategoriesForm {
 		const payload = {
 			title: formValue.title,
 			icon: formValue.icon,
+			color: formValue.color,
 			type: formValue.type,
 		}
 
@@ -95,22 +133,13 @@ export class CategoriesForm {
 		request$.subscribe({
 			next: () => {
 				toast.success(`Category ${action} successfully`)
-				this.resetForm()
-				this.editDone.emit()
+				this.sheetRef.close()
 			},
 			error: () => {
 				toast.error(
 					`Failed to ${this.isEditMode() ? 'update' : 'create'} category`,
 				)
 			},
-		})
-	}
-
-	private resetForm(): void {
-		this.form.reset({
-			title: '',
-			icon: '',
-			type: CategoryType.EXPENSE,
 		})
 	}
 }

@@ -1,0 +1,21 @@
+<div class="flex flex-wrap gap-3" role="radiogroup" aria-label="Category color">
+  @for (color of colors; track color) {
+    <button
+      type="button"
+      role="radio"
+      [attr.aria-checked]="isSelected(color)"
+      [attr.aria-label]="color"
+      [style.--c]="color"
+      [class]="
+        isSelected(color)
+          ? 'size-8 rounded-full flex items-center justify-center cursor-pointer ring-2 ring-offset-2 ring-border bg-(--c) transition-transform hover:scale-110'
+          : 'size-8 rounded-full flex items-center justify-center cursor-pointer bg-(--c) transition-transform hover:scale-110'
+      "
+      (click)="selectColor(color)"
+    >
+      @if (isSelected(color)) {
+        <i-lucide [img]="CheckIcon" class="size-4 text-foreground" />
+      }
+    </button>
+  }
+</div>

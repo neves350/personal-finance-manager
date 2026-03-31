@@ -1,54 +1,50 @@
-<z-card class="p-3 space-y-3 xl:p-3 xl:space-y-3 mb-4">
-  <div class="flex items-center gap-2 text-sm font-medium text-muted-foreground mb-4">
-    <i-lucide [img]="isEditMode() ? SaveIcon : CirclePlusIcon" class="size-4" />
-    {{ isEditMode() ? 'Edit Category' : 'New Category' }}
+<z-divider />
+
+<form [formGroup]="form" class="grid flex-1 auto-rows-min gap-6 px-4 py-4 m-2">
+  <div class="grid gap-2">
+    <label for="title" class="text-sm">Name</label>
+    <input
+      z-input
+      class="rounded-md border border-zinc-400/50 p-2 text-sm text-muted-foreground"
+      formControlName="title"
+      placeholder="Supermaket"
+    />
+    @if (form.controls.title.touched && form.controls.title.errors?.['required']) {
+      <span class="text-xs text-destructive">Name is required</span>
+    }
   </div>
 
-  <form [formGroup]="form">
-    <div class="flex gap-4 items-end">
-      <div class="flex-1 space-y-2">
-        <label for="title" class="text-sm">Name</label>
-        <input
-          z-input
-          class="rounded-md border border-zinc-400/50 p-2 text-sm text-muted-foreground"
-          formControlName="title"
-          placeholder="E.g: Restaurant"
-        />
-        @if (form.controls.title.touched && form.controls.title.errors?.['required']) {
-          <span class="text-xs text-destructive">Name is required</span>
-        }
-      </div>
-
-      <div class="grid gap-1">
-        <label for="type" class="text-sm">Type</label>
-        <z-select class="w-28 xl:w-32" formControlName="type">
-          @for (categoryType of categoryTypes; track categoryType) {
-            <z-select-item [zValue]="categoryType">
-              <span>{{ getTypeLabel(categoryType) }}</span>
-            </z-select-item>
-          }
-        </z-select>
-      </div>
-
-      <div class="space-y-2">
-        <label class="text-sm">Icon</label>
-        <app-icon-picker formControlName="icon" />
-      </div>
-
-      @if (isEditMode()) {
-        <z-button zType="outline" (click)="cancelEdit()">
-          <i-lucide [img]="XIcon" class="size-4" />
-        </z-button>
-        <z-button (click)="submit()">
-          <i-lucide [img]="SaveIcon" class="size-4" />
-          Save
-        </z-button>
-      } @else {
-        <z-button (click)="submit()">
-          <i-lucide [img]="CirclePlusIcon" class="size-4" />
-          Add
-        </z-button>
+  <div class="grid gap-2">
+    <label for="type" class="text-sm">Type</label>
+    <div class="grid grid-cols-2 gap-4">
+      @for (categoryType of categoryTypes; track categoryType) {
+        <button
+          type="button"
+          class="flex cursor-pointer justify-center items-center gap-2 rounded-2xl border-2 p-4 text-center transition-colors"
+          [class]="getTypeClasses(categoryType)"
+          (click)="selectType(categoryType)"
+        >
+          <i-lucide
+            [img]="typeIcons[categoryType]"
+            class="size-5"
+            [class]="getTypeIconClasses(categoryType)"
+          />
+          <span class="text-sm font-semibold">{{ getTypeLabel(categoryType) }}</span>
+        </button>
       }
     </div>
-  </form>
-</z-card>
+  </div>
+
+  <div class="grid gap-2">
+    <label class="text-sm">Colors</label>
+    <app-category-color-picker formControlName="color" />
+  </div>
+
+  <div class="grid gap-2">
+    <div class="flex items-center justify-between">
+      <label class="text-sm">Icon</label>
+      <z-badge zType="available" [textContent]="totalIconsLabel" />
+    </div>
+    <app-icon-picker formControlName="icon" />
+  </div>
+</form>
