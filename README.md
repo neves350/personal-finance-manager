@@ -1,4 +1,4 @@
-# Spendly
+# Novo Fin
 
 A full-stack expense tracking application built as a learning project. Monorepo with **NestJS** backend and **Angular 21** frontend.
 
@@ -54,7 +54,7 @@ A full-stack expense tracking application built as a learning project. Monorepo 
 ## Project Structure
 
 ```
-spendly/
+novofin/
 ├── api/                    # NestJS REST API
 │   ├── prisma/             #   Database schema & migrations
 │   └── src/
@@ -74,38 +74,38 @@ spendly/
 ## Application Flow
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    ANGULAR SPA (port 4200)                       │
-│                                                                 │
-│  ┌───────────┐   ┌────────────┐   ┌──────────────────────────┐ │
-│  │  Guest     │   │   Auth     │   │  Protected Pages         │ │
-│  │  Pages     │   │   Flow     │   │  (behind authGuard)      │ │
-│  │            │   │            │   │                          │ │
-│  │ /login    ─┼──►│  AuthApi   │   │  /dashboard      Overview      │ │
-│  │ /register  │   │     ↓      │   │  /transactions   Income/expense │ │
-│  │ /recover   │   │  AuthSvc   │   │  /recurrings     Recurring txns  │ │
-│  │ /reset     │   │  (signals) │   │  /accounts       Bank accounts  │ │
-│  └────────────┘   └─────┬──────┘   │  /cards          Card mgmt     │ │
-│                         │          │  /goals          Savings goals  │ │
-│                         │          │  /statistics     Analytics      │ │
-│                         │          │  /categories     Categories     │ │
-│                         │          │  /settings       User prefs     │ │
-│                         │          └───────────┬──────────────┘ │
-│                         ▼                      │                │
-│               ┌──────────────────┐             │                │
-│               │ authInterceptor  │◄────────────┘                │
-│               │ • withCredentials│                               │
-│               │ • 401 → refresh  │                               │
-│               │ • retry request  │                               │
-│               └────────┬─────────┘                              │
-└────────────────────────┼────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────┐
+│                    ANGULAR SPA (port 4200)                               │
+│                                                                          │
+│  ┌────────────┐   ┌────────────┐   ┌──────────────────────────────────┐  │
+│  │  Guest     │   │   Auth     │   │  Protected Pages                 │  │
+│  │  Pages     │   │   Flow     │   │  (behind authGuard)              │  │
+│  │            │   │            │   │                                  │  │
+│  │ /login    ─┼──►│  AuthApi   │   │  /dashboard      Overview        │  │
+│  │ /register  │   │     ↓      │   │  /transactions   Income/expense  │  │
+│  │ /recover   │   │  AuthSvc   │   │  /recurrings     Recurring txns  │  │
+│  │ /reset     │   │  (signals) │   │  /accounts       Bank accounts   │  │
+│  └────────────┘   └─────┬──────┘   │  /cards          Card mgmt       │  │
+│                         │          │  /goals          Savings goals   │  │
+│                         │          │  /statistics     Analytics       │  │
+│                         │          │  /categories     Categories      │  │
+│                         │          │  /settings       User prefs      │  │
+│                         │          └───────────┬──────────────────────┘  │
+│                         ▼                      │                         │
+│               ┌──────────────────┐             │                         │
+│               │ authInterceptor  │◄────────────┘                         │
+│               │ • withCredentials│                                       │
+│               │ • 401 → refresh  │                                       │
+│               │ • retry request  │                                       │
+│               └────────┬─────────┘                                       │
+└────────────────────────┼─────────────────────────────────────────────────┘
                          │  HTTP + httpOnly cookies
                          ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    NESTJS API (port 3000)                        │
+│                    NESTJS API (port 3000)                       │
 │                                                                 │
 │  ┌───────────────────────────────────────────────────────────┐  │
-│  │                  Middleware Layer                          │  │
+│  │                  Middleware Layer                         │  │
 │  │  cookie-parser → ValidationPipe → JwtAuthGuard            │  │
 │  └─────────────────────────┬─────────────────────────────────┘  │
 │                            │                                    │
@@ -123,6 +123,8 @@ spendly/
 │  │  /statistics    → overview, by-category, trends, daily    │  │
 │  │  /export        → CSV + PDF transaction export            │  │
 │  │  /goals         → CRUD goals + deposits                   │  │
+│  │  /open-banking  → connect/sync/disconnect bank accounts   │  │
+│  │  /webhooks      → Salt Edge webhook receiver              │  │
 │  └─────────────────────────┬─────────────────────────────────┘  │
 │                            │                                    │
 │  ┌─────────────────────────▼─────────────────────────────────┐  │
@@ -132,19 +134,27 @@ spendly/
 └────────────────────────────┼────────────────────────────────────┘
                              │
                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    POSTGRESQL (Neon)                             │
-│                                                                 │
+┌───────────────────────────────────────────────────────────────┐
+│                    POSTGRESQL (Neon)                          │
+│                                                               │
 │  ┌────────┐ ┌──────────────┐ ┌───────┐ ┌─────────────┐        │
 │  │ users  │ │bank_accounts │ │ cards │ │transactions │        │
 │  └────────┘ └──────────────┘ └───────┘ └─────────────┘        │
 │  ┌────────┐ ┌──────────────┐ ┌───────┐ ┌─────────────┐        │
 │  │ tokens │ │  transfers   │ │ goals │ │ categories  │        │
 │  └────────┘ └──────────────┘ └───────┘ └─────────────┘        │
-│  ┌──────────┐ ┌────────────┐                                   │
-│  │ deposits │ │ recurrings │                                   │
-│  └──────────┘ └────────────┘                                   │
-└─────────────────────────────────────────────────────────────────┘
+│  ┌──────────┐ ┌────────────┐                                  │
+│  │ deposits │ │ recurrings │                                  │
+│  └──────────┘ └────────────┘                                  │
+│  ┌────────────────────┐ ┌─────────────────────┐               │
+│  │ open_banking_      │ │ open_banking_       │               │
+│  │ customers          │ │ connections         │               │
+│  └────────────────────┘ └─────────────────────┘               │
+│  ┌────────────────────┐                                       │
+│  │ open_banking_      │                                       │
+│  │ accounts           │                                       │
+│  └────────────────────┘                                       │
+└───────────────────────────────────────────────────────────────┘
 ```
 
 ## Authentication Flow
@@ -157,13 +167,13 @@ spendly/
     │                  │                   │                  │
     │  POST /login     │                   │  GET /accounts   │
     │  {email, pass}   │                   │  Cookie: token   │
-    ├─────────────────►│                   ├─────────────────►│
+    ├────────────────► │                   ├────────────────► │
     │                  │                   │                  │
     │  validate creds  │                   │  JwtAuthGuard    │
     │  sign JWT pair   │                   │  extract user    │
     │  set cookies     │                   │  @CurrentUser()  │
     │                  │                   │                  │
-    │◄─────────────────┤                   │◄─────────────────┤
+    │ ◄────────────────┤                   │ ◄────────────────┤
     │  Set-Cookie:     │                   │  200 OK          │
     │  access (15min)  │                   │                  │
     │  refresh (7d)    │
@@ -174,20 +184,20 @@ spendly/
 
   Client              API
     │  GET /resource    │
-    ├─────────────────►│
+    ├─────────────────► │
     │  401 Unauthorized │
-    │◄─────────────────┤
+    │ ◄─────────────────┤
     │                   │
     │  POST /refresh    │   ← interceptor catches 401
     │  Cookie: refresh  │
-    ├──────────────────►│
+    ├─────────────────► │
     │  new cookies      │
-    │◄──────────────────┤
+    │ ◄─────────────────┤
     │                   │
     │  retry original   │   ← retry with new token
-    ├──────────────────►│
+    ├─────────────────► │
     │  200 OK           │
-    │◄──────────────────┤
+    │ ◄─────────────────┤
 ```
 
 ## Database Schema
@@ -204,8 +214,8 @@ spendly/
 └──────┬───────┘  │    │ balance          │  │    │ type   (enum)│
        │          │    │ initialBalance   │  │    │ lastFour     │
        │ 1:N      │    └────────┬─────────┘  │    │ creditLimit  │
-       │          │             │             │    └──────┬───────┘
-       ▼          │             │ 1:N         │           │ 1:N
+       │          │             │            │    └──────┬───────┘
+       ▼          │             │ 1:N        │           │ 1:N
 ┌──────────────┐  │    ┌────────▼─────────┐  │    ┌──────▼───────┐
 │   Category   │  │    │    Transfer      │  │    │ Transaction  │
 ├──────────────┤  │    ├──────────────────┤  │    ├──────────────┤
@@ -248,6 +258,23 @@ spendly/
 │ date             │
 │ cardId    (FK)?  │
 └──────────────────┘
+
+Open Banking (Salt Edge integration)
+
+┌──────────────────────┐       ┌───────────────────────┐       ┌──────────────────────┐
+│ OpenBankingCustomer  │       │ OpenBankingConnection │       │  OpenBankingAccount  │
+├──────────────────────┤       ├───────────────────────┤       ├──────────────────────┤
+│ id              (PK) │──1:N──│ id              (PK)  │──1:N──│ id              (PK) │
+│ userId          (FK) │       │ customerId      (FK)  │       │ connectionId    (FK) │
+│ saltEdgeCustomerId   │       │ saltEdgeConnectionId  │       │ bankAccountId   (FK) │
+│ createdAt            │       │ providerCode          │       │ saltEdgeAccountId    │
+│ updatedAt            │       │ providerName          │       │ iban                 │
+└──────────────────────┘       │ providerLogoUrl       │       │ currencyCode         │
+                               │ status      (enum)    │       │ nature               │
+                               │ consentExpiresAt      │       │ lastSyncAt           │
+                               │ lastSyncAt            │       └──────────────────────┘
+                               │ nextRefreshPossibleAt │
+                               └───────────────────────┘
 ```
 
 ## Getting Started
