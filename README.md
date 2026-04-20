@@ -11,17 +11,21 @@ A full-stack expense tracking application built as a learning project. Monorepo 
 
 ## Screenshots
 
-| Dashboard | Transactions |
-|-----------|-------------|
-| ![Dashboard](screenshots/Dashboard.png) | ![Transactions](screenshots/Transactions.png) |
+| Dashboard |
+|-----------|
+| ![Dashboard](screenshots/Dashboard.png) |
+
+| Recurrings | Transactions |
+|------------|--------------|
+| ![Recurrings](screenshots/Recurrings.png) | ![Transactions](screenshots/Transactions.png) |
 
 | Statistics | Goals |
 |------------|-------|
 | ![Statistics](screenshots/Statistics.png) | ![Goals](screenshots/Goals.png) |
 
-| Cards | Settings |
-|-------|---------|
-| ![Cards](screenshots/Cards.png) | ![Settings](screenshots/Settings.png) |
+| Accounts | Settings |
+|----------|----------|
+| ![Accounts](screenshots/Accounts.png) | ![Settings](screenshots/Settings.png) |
 
 ## Features
 
