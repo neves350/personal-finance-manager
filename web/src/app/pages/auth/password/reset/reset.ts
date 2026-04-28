@@ -8,7 +8,7 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
-import { AuthService } from '@core/services/auth/auth.service'
+import { AuthService } from '@core/services/auth.service'
 import { PasswordChecklist } from '@pages/auth/register/password-checklist'
 import {
 	ArrowRightIcon,

@@ -1,7 +1,7 @@
 import { HttpErrorResponse, type HttpInterceptorFn } from '@angular/common/http'
 import { inject } from '@angular/core'
 import { Router } from '@angular/router'
-import { AuthService } from '@core/services/auth/auth.service'
+import { AuthService } from '@core/services/auth.service'
 import { catchError, switchMap, throwError } from 'rxjs'
 
 let isRefreshing = false

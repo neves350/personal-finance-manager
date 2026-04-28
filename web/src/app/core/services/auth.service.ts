@@ -1,10 +1,10 @@
 import { computed, Injectable, inject, signal } from '@angular/core'
 import { Router } from '@angular/router'
-import { AuthApi } from '@core/api/auth/auth-api'
-import type { AuthResponse } from '@core/api/auth/types/auth-response.type'
-import type { LoginRequest } from '@core/api/auth/types/login-request.type'
-import type { RegisterRequest } from '@core/api/auth/types/register-request.type'
-import type { User } from '@core/api/auth/types/user.type'
+import { AuthApi } from '@core/api/auth-api'
+import type { AuthResponse } from '@core/types/auth-response.type'
+import type { LoginRequest } from '@core/types/login-request.type'
+import type { RegisterRequest } from '@core/types/register-request.type'
+import type { User } from '@core/types/user.type'
 import { catchError, map, Observable, of, switchMap, tap } from 'rxjs'
 
 @Injectable({

@@ -9,7 +9,7 @@ import {
 	PeriodType,
 	type StatisticsQueryParams,
 } from '@core/api/statistics.interface'
-import { AuthService } from '@core/services/auth/auth.service'
+import { AuthService } from '@core/services/auth.service'
 import {
 	ArrowRightLeftIcon,
 	CalendarDaysIcon,

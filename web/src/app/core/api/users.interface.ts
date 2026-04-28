@@ -1,4 +1,4 @@
-export type { User } from './auth/types/user.type'
+export type { User } from '../types/user.type'
 
 export interface UpdateUserRequest {
 	name?: string

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router, RouterLink } from '@angular/router'
-import { AuthService } from '@core/services/auth/auth.service'
+import { AuthService } from '@core/services/auth.service'
 import { ArrowRightIcon, LucideAngularModule } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
 import { ZardAvatarComponent } from '@/shared/components/ui/avatar'

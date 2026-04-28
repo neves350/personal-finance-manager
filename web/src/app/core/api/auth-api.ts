@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
 import { Observable } from 'rxjs'
-import { environment } from '../../../../environments/environment'
-import type { AuthResponse } from './types/auth-response.type'
-import type { LoginRequest } from './types/login-request.type'
-import type { RegisterRequest } from './types/register-request.type'
-import type { User } from './types/user.type'
+import { environment } from '../../../environments/environment'
+import type { AuthResponse } from '../types/auth-response.type'
+import type { LoginRequest } from '../types/login-request.type'
+import type { RegisterRequest } from '../types/register-request.type'
+import type { User } from '../types/user.type'
 
 @Injectable({
 	providedIn: 'root',
