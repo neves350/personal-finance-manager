@@ -1,4 +1,5 @@
 import { BankAccount, BankType } from '@core/api/bank-accounts.interface'
+import { Category, CategoryType } from '@core/api/categories.interface'
 import { User } from '@core/api/users.interface'
 import { AuthResponse } from '@core/types/auth-response.type'
 
@@ -21,7 +22,9 @@ export function makeAuthResponse(user?: User): AuthResponse {
 	}
 }
 
-// Bank Accounts
+/**
+ * Bank Accounts
+ */
 export function makeBankAccount(
 	overrides: Partial<BankAccount> = {},
 ): BankAccount {
@@ -34,6 +37,23 @@ export function makeBankAccount(
 		totalMovements: 1,
 		isLinked: true,
 		isCardAccount: false,
+		createdAt: '2026-01-01T00:00:00.000Z',
+		updatedAt: '2026-01-01T00:00:00.000Z',
+		...overrides,
+	}
+}
+
+/**
+ * Categories
+ */
+export function makeCategory(overrides: Partial<Category> = {}): Category {
+	return {
+		id: 'category-1',
+		title: 'Category 1',
+		icon: 'phone',
+		color: 'BLUE',
+		isDefault: false,
+		type: CategoryType.EXPENSE,
 		createdAt: '2026-01-01T00:00:00.000Z',
 		updatedAt: '2026-01-01T00:00:00.000Z',
 		...overrides,

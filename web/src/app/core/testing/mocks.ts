@@ -32,3 +32,14 @@ export const mockBankAccounts = {
 	delete: vi.fn(),
 	getBalanceHistory: vi.fn(),
 }
+
+/**
+ * Categories
+ */
+export const mockCategories = {
+	findAll: vi.fn(),
+	findById: vi.fn(),
+	create: vi.fn(),
+	update: vi.fn(),
+	delete: vi.fn(),
+}
