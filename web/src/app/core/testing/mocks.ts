@@ -43,3 +43,18 @@ export const mockCategories = {
 	update: vi.fn(),
 	delete: vi.fn(),
 }
+
+/**
+ * Cards
+ */
+export const mockCards = {
+	findAll: vi.fn(),
+	findById: vi.fn(),
+	create: vi.fn(),
+	update: vi.fn(),
+	delete: vi.fn(),
+	monthlyExpenses: vi.fn(),
+	cashflow: vi.fn(),
+	recentTransactions: vi.fn(),
+	countByBankAccount: vi.fn(),
+}

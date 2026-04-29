@@ -1,4 +1,5 @@
 import { BankAccount, BankType } from '@core/api/bank-accounts.interface'
+import { Card, CardColor, CardType } from '@core/api/cards.interface'
 import { Category, CategoryType } from '@core/api/categories.interface'
 import { User } from '@core/api/users.interface'
 import { AuthResponse } from '@core/types/auth-response.type'
@@ -56,6 +57,25 @@ export function makeCategory(overrides: Partial<Category> = {}): Category {
 		type: CategoryType.EXPENSE,
 		createdAt: '2026-01-01T00:00:00.000Z',
 		updatedAt: '2026-01-01T00:00:00.000Z',
+		...overrides,
+	}
+}
+
+/**
+ * Cards
+ */
+export function makeCard(overrides: Partial<Card> = {}): Card {
+	return {
+		id: 'card-1',
+		name: 'Card 1',
+		color: CardColor.BLUE,
+		type: CardType.DEBIT_CARD,
+		lastFour: '1234',
+		expirationDate: '2026-01-01T00:00:00.000Z',
+		cvc: '123',
+		isLinked: false,
+		cardNetwork: null,
+		createdAt: '2026-01-01T00:00:00.000Z',
 		...overrides,
 	}
 }
