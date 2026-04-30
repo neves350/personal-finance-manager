@@ -1,6 +1,7 @@
 import { BankAccount, BankType } from '@core/api/bank-accounts.interface'
 import { Card, CardColor, CardType } from '@core/api/cards.interface'
 import { Category, CategoryType } from '@core/api/categories.interface'
+import { Transaction, TransactionType } from '@core/api/transactions.interface'
 import { User } from '@core/api/users.interface'
 import { AuthResponse } from '@core/types/auth-response.type'
 
@@ -75,6 +76,33 @@ export function makeCard(overrides: Partial<Card> = {}): Card {
 		cvc: '123',
 		isLinked: false,
 		cardNetwork: null,
+		createdAt: '2026-01-01T00:00:00.000Z',
+		...overrides,
+	}
+}
+
+/**
+ * Transactions
+ */
+export function makeTransaction(
+	overrides: Partial<Transaction> = {},
+): Transaction {
+	return {
+		id: 'transaction-1',
+		cardId: 'card-1',
+		bankAccountId: 'bankAccount-1',
+		categoryId: 'category-1',
+		title: 'Transaction 1',
+		type: TransactionType.EXPENSE,
+		amount: 100,
+		date: new Date(),
+		category: {
+			id: 'category-1',
+			title: 'Category 1',
+			icon: 'phone',
+			type: CategoryType.EXPENSE,
+		},
+		isPaid: true,
 		createdAt: '2026-01-01T00:00:00.000Z',
 		...overrides,
 	}

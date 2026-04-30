@@ -58,3 +58,14 @@ export const mockCards = {
 	recentTransactions: vi.fn(),
 	countByBankAccount: vi.fn(),
 }
+
+/**
+ * Transactions
+ */
+export const mockTransactions = {
+	findAll: vi.fn(),
+	findById: vi.fn(),
+	create: vi.fn(),
+	update: vi.fn(),
+	delete: vi.fn(),
+}
