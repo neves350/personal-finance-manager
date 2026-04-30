@@ -94,6 +94,16 @@ export const mockRecurrings = {
 }
 
 /**
+ * Statistics
+ */
+export const mockStatistics = {
+	getOverview: vi.fn(),
+	getTrends: vi.fn(),
+	getByCategory: vi.fn(),
+	getDailyTotals: vi.fn(),
+}
+
+/**
  * Transfers
  */
 export const mockTransfers = {
