@@ -69,3 +69,16 @@ export const mockTransactions = {
 	update: vi.fn(),
 	delete: vi.fn(),
 }
+
+/**
+ * Goals
+ */
+export const mockGoals = {
+	findAll: vi.fn(),
+	findById: vi.fn(),
+	create: vi.fn(),
+	update: vi.fn(),
+	delete: vi.fn(),
+	addDeposit: vi.fn(),
+	getDeposits: vi.fn(),
+}

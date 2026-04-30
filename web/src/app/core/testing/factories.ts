@@ -1,6 +1,8 @@
 import { BankAccount, BankType } from '@core/api/bank-accounts.interface'
 import { Card, CardColor, CardType } from '@core/api/cards.interface'
 import { Category, CategoryType } from '@core/api/categories.interface'
+import { Deposit } from '@core/api/deposits.interface'
+import { Goal, GoalType } from '@core/api/goals.interface'
 import { Transaction, TransactionType } from '@core/api/transactions.interface'
 import { User } from '@core/api/users.interface'
 import { AuthResponse } from '@core/types/auth-response.type'
@@ -103,6 +105,57 @@ export function makeTransaction(
 			type: CategoryType.EXPENSE,
 		},
 		isPaid: true,
+		createdAt: '2026-01-01T00:00:00.000Z',
+		...overrides,
+	}
+}
+
+/**
+ * Goals
+ */
+export function makeGoal(overrides: Partial<Goal> = {}): Goal {
+	return {
+		id: 'goal-1',
+		title: 'Goal 1',
+		amount: 500,
+		currentAmount: 100,
+		type: GoalType.SAVINGS,
+		startDate: '2026-01-01T00:00:00.000Z',
+		progress: 60,
+		isCompleted: false,
+		paceStatus: 'ON_TRACK',
+		breakdown: {
+			daily: 10,
+			weekly: 70,
+			monthly: 280,
+			daysRemaining: 20,
+		},
+		category: {
+			id: 'c-1',
+			title: 'Category 1',
+			icon: 'text',
+			type: CategoryType.EXPENSE,
+		},
+		bankAccount: {
+			id: 'b-1',
+			name: 'Bank Account 1',
+			type: BankType.CHECKING,
+		},
+		createdAt: '2026-01-01T00:00:00.000Z',
+		updatedAt: '2026-01-01T00:00:00.000Z',
+		...overrides,
+	}
+}
+
+/**
+ * Deposit
+ */
+export function makeDeposit(overrides: Partial<Deposit> = {}): Deposit {
+	return {
+		id: 'deposit-1',
+		goalId: 'goal-1',
+		amount: 100,
+		date: '2026-01-01T00:00:00.000Z',
 		createdAt: '2026-01-01T00:00:00.000Z',
 		...overrides,
 	}
