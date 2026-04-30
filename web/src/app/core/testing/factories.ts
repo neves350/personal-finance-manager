@@ -3,6 +3,11 @@ import { Card, CardColor, CardType } from '@core/api/cards.interface'
 import { Category, CategoryType } from '@core/api/categories.interface'
 import { Deposit } from '@core/api/deposits.interface'
 import { Goal, GoalType } from '@core/api/goals.interface'
+import {
+	FrequencyType,
+	Recurring,
+	RecurringType,
+} from '@core/api/recurrings.interface'
 import { Transaction, TransactionType } from '@core/api/transactions.interface'
 import { User } from '@core/api/users.interface'
 import { AuthResponse } from '@core/types/auth-response.type'
@@ -156,6 +161,31 @@ export function makeDeposit(overrides: Partial<Deposit> = {}): Deposit {
 		goalId: 'goal-1',
 		amount: 100,
 		date: '2026-01-01T00:00:00.000Z',
+		createdAt: '2026-01-01T00:00:00.000Z',
+		...overrides,
+	}
+}
+
+/**
+ * Recurrings
+ */
+export function makeRecurring(overrides: Partial<Recurring> = {}): Recurring {
+	return {
+		id: 'recurring-1',
+		cardId: 'card-1',
+		bankAccountId: 'account-1',
+		categoryId: 'category-1',
+		type: RecurringType.INCOME,
+		description: 'Recurring 1',
+		amount: 100,
+		monthDay: 28,
+		frequency: FrequencyType.MONTH,
+		startDate: new Date(),
+		category: {
+			id: 'category-1',
+			title: 'Category 1',
+			type: CategoryType.INCOME,
+		},
 		createdAt: '2026-01-01T00:00:00.000Z',
 		...overrides,
 	}

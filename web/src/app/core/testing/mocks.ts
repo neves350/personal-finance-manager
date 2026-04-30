@@ -82,3 +82,13 @@ export const mockGoals = {
 	addDeposit: vi.fn(),
 	getDeposits: vi.fn(),
 }
+
+/**
+ * Recurrings
+ */
+export const mockRecurrings = {
+	findAll: vi.fn(),
+	create: vi.fn(),
+	update: vi.fn(),
+	delete: vi.fn(),
+}
