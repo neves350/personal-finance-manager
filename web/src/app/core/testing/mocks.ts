@@ -92,3 +92,12 @@ export const mockRecurrings = {
 	update: vi.fn(),
 	delete: vi.fn(),
 }
+
+/**
+ * Transfers
+ */
+export const mockTransfers = {
+	findAll: vi.fn(),
+	findById: vi.fn(),
+	create: vi.fn(),
+}

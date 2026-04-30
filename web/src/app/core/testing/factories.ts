@@ -9,6 +9,7 @@ import {
 	RecurringType,
 } from '@core/api/recurrings.interface'
 import { Transaction, TransactionType } from '@core/api/transactions.interface'
+import { Transfer, TransferStatus } from '@core/api/transfers.interface'
 import { User } from '@core/api/users.interface'
 import { AuthResponse } from '@core/types/auth-response.type'
 
@@ -186,6 +187,23 @@ export function makeRecurring(overrides: Partial<Recurring> = {}): Recurring {
 			title: 'Category 1',
 			type: CategoryType.INCOME,
 		},
+		createdAt: '2026-01-01T00:00:00.000Z',
+		...overrides,
+	}
+}
+
+/**
+ * Transfers
+ */
+export function makeTransfer(overrides: Partial<Transfer> = {}): Transfer {
+	return {
+		id: 'transfer-1',
+		amount: 50,
+		fromAccountId: 'account-1',
+		toAccountId: 'account-2',
+		date: new Date(),
+		description: 'Transfer 1',
+		status: TransferStatus.COMPLETED,
 		createdAt: '2026-01-01T00:00:00.000Z',
 		...overrides,
 	}
