@@ -5,7 +5,7 @@ export const mockAuth = {
 	googleLogin: vi.fn(),
 	register: vi.fn(),
 	refresh: vi.fn(),
-	loadProfile: vi.fn(),
+	getProfile: vi.fn(),
 	verifyAuth: vi.fn(),
 	requestPasswordRecover: vi.fn(),
 	resetPassword: vi.fn(),
