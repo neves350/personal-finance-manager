@@ -5,7 +5,7 @@ import {
 	inject,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { AuthService } from '@core/services/auth/auth.service'
+import { AuthService } from '@core/services/auth.service'
 import {
 	ChevronDownIcon,
 	LogOutIcon,

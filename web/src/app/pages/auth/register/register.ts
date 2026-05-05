@@ -7,7 +7,7 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router, RouterLink } from '@angular/router'
-import { AuthService } from '@core/services/auth/auth.service'
+import { AuthService } from '@core/services/auth.service'
 import { GoogleAuthService } from '@core/services/google-auth.service'
 import {
 	ArrowRightIcon,

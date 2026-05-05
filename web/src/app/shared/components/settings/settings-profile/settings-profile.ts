@@ -8,7 +8,7 @@ import {
 } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
-import { AuthService } from '@core/services/auth/auth.service'
+import { AuthService } from '@core/services/auth.service'
 import { UsersService } from '@core/services/users.service'
 import { toast } from 'ngx-sonner'
 import { ZardAvatarComponent } from '../../ui/avatar'
