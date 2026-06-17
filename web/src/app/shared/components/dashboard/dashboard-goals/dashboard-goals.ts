@@ -29,6 +29,7 @@ export class DashboardGoals {
 	getRemainingAmount(goal: Goal): number {
 		return goal.amount - goal.currentAmount
 	}
+
 	constructor() {
 		this.goalsService.loadGoals().subscribe()
 	}

@@ -4,31 +4,31 @@
   </div>
 
   @if (hasGoals()) {
-    <div class="xl:space-y-5 grid grid-cols-2 xl:grid-cols-3 gap-3 xl:gap-4">
-      @for (goal of displayGoals(); track goal.id) {
-        <z-card class="mb-1 border-2 glass-card-hover">
-          <div class="flex items-center gap-3">
-            <div class="rounded-xl bg-primary/15 flex items-center justify-center shrink-0 size-12 mt-2">
-              <span class="text-xs font-bold text-primary">{{ goal.progress }}%</span>
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center justify-between mb-1">
-                <p class="text-sm font-medium truncate">{{ goal.title }}</p>
-                <p class="text-sm font-bold font-display">{{ goal.amount | currency: 'EUR' }}</p>
-              </div>
-              <div class="w-full h-1.5 rounded-full bg-secondary">
-                <div class="h-full rounded-full transition-all bg-primary" style="width: {{ goal.progress }}%;"></div>
-              </div>
-              <p class="text-[11px] text-muted-foreground mt-1">{{ getRemainingAmount(goal) | currency: 'EUR' }} left</p>
-            </div>
+  <div class="xl:space-y-5 grid grid-cols-2 xl:grid-cols-3 gap-3 xl:gap-4">
+    @for (goal of displayGoals(); track goal.id) {
+    <z-card class="mb-1 glass-card">
+      <div class="flex items-center gap-3">
+        <div class="rounded-sm bg-primary/15 flex items-center justify-center shrink-0 size-12 mt-2">
+          <span class="text-xs font-bold text-primary">{{ goal.progress }}%</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between mb-1">
+            <p class="text-sm font-medium truncate">{{ goal.title }}</p>
+            <p class="text-sm font-bold font-display">{{ goal.amount | currency: 'EUR' }}</p>
           </div>
-        </z-card>
-      }
-    </div>
+          <div class="w-full h-1.5 rounded-full bg-secondary">
+            <div class="h-full rounded-full transition-all bg-primary" style="width: {{ goal.progress }}%;"></div>
+          </div>
+          <p class="text-xs text-muted-foreground mt-1">{{ getRemainingAmount(goal) | currency: 'EUR' }} left</p>
+        </div>
+      </div>
+    </z-card>
+    }
+  </div>
   } @else {
-    <div class="flex flex-col items-center justify-center py-8 text-muted-foreground">
-      <p class="text-sm">No active goals</p>
-      <a routerLink="/goals" class="text-primary text-sm mt-2 hover:underline">Create a goal</a>
-    </div>
+  <div class="flex flex-col items-center justify-center py-8 text-muted-foreground">
+    <p class="text-sm">No active goals</p>
+    <a routerLink="/goals" class="text-primary text-sm mt-2 hover:underline">Create a goal</a>
+  </div>
   }
 </z-card>
