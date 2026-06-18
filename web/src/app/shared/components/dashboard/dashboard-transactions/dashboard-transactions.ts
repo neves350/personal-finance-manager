@@ -58,10 +58,16 @@ export class DashboardTransactions {
 	readonly iconMap = {
 		transfer: {
 			icon: ArrowRightLeftIcon,
-			bg: 'bg-chart-2/20 text-chart-2',
+			card: 'border-chart-2/60 text-chart-2 rounded-full border-2',
 		},
-		income: { icon: ArrowUpIcon, bg: 'bg-primary/20 text-primary' },
-		expense: { icon: ArrowDownIcon, bg: 'bg-destructive/20 text-destructive' },
+		income: {
+			icon: ArrowUpIcon,
+			card: 'border-primary/60 text-primary rounded-full border-2',
+		},
+		expense: {
+			icon: ArrowDownIcon,
+			card: 'border-destructive/60 text-destructive rounded-full border-2',
+		},
 	}
 
 	readonly recentMovements = computed((): Movement[] => {
