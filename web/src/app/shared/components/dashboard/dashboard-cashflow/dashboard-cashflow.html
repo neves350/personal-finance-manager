@@ -1,4 +1,4 @@
-<z-card>
+<z-card class="h-full">
   <div class="flex items-center justify-between mb-4">
     <div>
       <h2 class="text-base font-semibold font-display flex items-center gap-2">Cashflow</h2>
@@ -7,20 +7,11 @@
   </div>
 
   @if (chartOptions()) {
-    <div class="w-full overflow-hidden">
-      <apx-chart
-        [series]="chartOptions()!.series!"
-        [chart]="chartOptions()!.chart!"
-        [xaxis]="chartOptions()!.xaxis!"
-        [yaxis]="chartOptions()!.yaxis!"
-        [stroke]="chartOptions()!.stroke!"
-        [grid]="chartOptions()!.grid!"
-        [tooltip]="chartOptions()!.tooltip!"
-        [legend]="chartOptions()!.legend!"
-        [colors]="chartOptions()!.colors!"
-        [dataLabels]="chartOptions()!.dataLabels!"
-        [markers]="chartOptions()!.markers!"
-      />
-    </div>
+  <div class="w-full overflow-hidden">
+    <apx-chart [series]="chartOptions()!.series!" [chart]="chartOptions()!.chart!" [xaxis]="chartOptions()!.xaxis!"
+      [yaxis]="chartOptions()!.yaxis!" [stroke]="chartOptions()!.stroke!" [grid]="chartOptions()!.grid!"
+      [tooltip]="chartOptions()!.tooltip!" [legend]="chartOptions()!.legend!" [colors]="chartOptions()!.colors!"
+      [dataLabels]="chartOptions()!.dataLabels!" [markers]="chartOptions()!.markers!" />
+  </div>
   }
 </z-card>
