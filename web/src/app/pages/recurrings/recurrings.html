@@ -8,14 +8,8 @@
             Manage your recurring expenses and income.
           </span>
         </h1>
-        <z-button
-          class="self-start"
-          zPopover
-          [zContent]="popoverContent"
-          zPlacement="right"
-          zTrigger="hover"
-          zType="ghost"
-        >
+        <z-button class="self-start" zPopover [zContent]="popoverContent" zPlacement="right" zTrigger="hover"
+          zType="ghost">
           <i-lucide [img]="CircleAlertIcon" />
         </z-button>
       </div>
@@ -41,116 +35,95 @@
     </ng-template>
 
     @if (isLoading()) {
-      <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
-        <z-loader />
-        <span class="text-sm text-muted-foreground">Loading recurring transactions...</span>
-      </div>
+    <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
+      <z-loader />
+      <span class="text-sm text-muted-foreground">Loading recurring transactions...</span>
+    </div>
     } @else {
-      <z-segmented
-        [zOptions]="tabOptions()"
-        [zDefaultValue]="'all'"
-        (zChange)="activeTab.set($event)"
-      />
+    <z-segmented [zOptions]="tabOptions()" [zDefaultValue]="'all'" (zChange)="activeTab.set($event)" />
 
-      @if (activeTab() === 'all') {
-        @if (hasRecurrings()) {
-          <app-recurrings-summary />
-          <app-recurrings-card [recurrings]="recurrings()" />
-        } @else {
-          <z-card class="flex flex-col mt-4">
-            <div class="flex flex-col items-center justify-center p-6 mt-6">
-              <div
-                class="size-12 flex items-center justify-center rounded-full bg-primary/20 text-primary mb-4"
-              >
-                <i-lucide [img]="RepeatIcon" class="size-5" />
-              </div>
-              <div class="flex flex-col items-center text-center">
-                <div class="space-y-2">
-                  <p class="font-medium">No recurring transactions</p>
-                  <span class="text-muted-foreground text-sm">
-                    Create templates for recurring monthly expenses and income, such as rent, Netflix,
-                    salary, etc.
-                  </span>
-                </div>
-              </div>
-            </div>
-          </z-card>
-        }
-      }
-
-      @if (activeTab() === 'detected') {
-        @if (hasDetected()) {
-          <div class="space-y-3">
-            <p class="text-sm text-muted-foreground">
-              These patterns were automatically detected from your bank transactions.
-              Confirm to keep them or dismiss to remove.
-            </p>
-            @for (recurring of detectedRecurrings(); track recurring.id) {
-              <z-card class="p-4">
-                <div class="flex items-center justify-between gap-4">
-                  <div class="flex items-center gap-3 min-w-0">
-                    <div
-                      class="size-9 shrink-0 flex items-center justify-center rounded-full bg-chart-2/10 text-chart-2"
-                    >
-                      <i-lucide [img]="SparklesIcon" class="size-4" />
-                    </div>
-                    <div class="grid min-w-0">
-                      <span class="truncate text-sm font-medium">{{ recurring.description }}</span>
-                      <span class="text-xs text-muted-foreground">
-                        {{ recurring.frequency === 'MONTH' ? 'Monthly' : 'Annual' }}
-                        @if (recurring.monthDay) {
-                          · Day {{ recurring.monthDay }}
-                        }
-                        · {{ recurring.category.title }}
-                      </span>
-                    </div>
-                  </div>
-                  <div class="flex items-center gap-3 shrink-0">
-                    <span
-                      class="text-sm font-semibold"
-                      [class]="recurring.type === 'INCOME' ? 'text-primary' : 'text-destructive'"
-                    >
-                      {{ recurring.type === 'INCOME' ? '+' : '-' }}€{{ recurring.amount }}
-                    </span>
-                    <z-button
-                      zType="default"
-                      zSize="sm"
-                      (click)="confirmRecurring(recurring.id!)"
-                    >
-                      Confirm
-                    </z-button>
-                    <z-button
-                      zType="ghost"
-                      zSize="sm"
-                      class="text-muted-foreground"
-                      (click)="ignoreRecurring(recurring.id!)"
-                    >
-                      <i-lucide [img]="Trash2Icon" class="size-4" />
-                      Dismiss
-                    </z-button>
-                  </div>
-                </div>
-              </z-card>
-            }
+    @if (activeTab() === 'all') {
+    @if (hasRecurrings()) {
+    <app-recurrings-summary />
+    <app-recurrings-card [recurrings]="recurrings()" />
+    } @else {
+    <z-card class="dashed-card bg-background mt-4">
+      <div class="flex flex-col items-center justify-center p-6 mt-6">
+        <div class="size-12 flex items-center justify-center rounded-sm bg-primary/20 text-primary mb-4">
+          <i-lucide [img]="RepeatIcon" class="size-5" />
+        </div>
+        <div class="flex flex-col items-center text-center">
+          <div class="space-y-2">
+            <p class="font-medium">No recurring transactions</p>
+            <span class="text-muted-foreground text-sm">
+              Create templates for recurring monthly expenses and income, such as rent, Netflix,
+              salary, etc.
+            </span>
           </div>
-        } @else {
-          <z-card class="flex flex-col mt-4">
-            <div class="flex flex-col items-center justify-center p-6 mt-6">
-              <div
-                class="size-12 flex items-center justify-center rounded-full bg-chart-2/20 text-chart-2 mb-4"
-              >
-                <i-lucide [img]="SparklesIcon" class="size-5" />
-              </div>
-              <div class="flex flex-col items-center text-center space-y-2">
-                <p class="font-medium">No patterns detected yet</p>
-                <span class="text-muted-foreground text-sm">
-                  Connect a bank account and sync transactions to automatically detect recurring patterns.
-                </span>
-              </div>
+        </div>
+      </div>
+    </z-card>
+    }
+    }
+
+    @if (activeTab() === 'detected') {
+    @if (hasDetected()) {
+    <div class="space-y-3">
+      <p class="text-sm text-muted-foreground">
+        These patterns were automatically detected from your bank transactions.
+        Confirm to keep them or dismiss to remove.
+      </p>
+      @for (recurring of detectedRecurrings(); track recurring.id) {
+      <z-card class="p-4">
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="size-9 shrink-0 flex items-center justify-center rounded-full bg-chart-2/10 text-chart-2">
+              <i-lucide [img]="SparklesIcon" class="size-4" />
             </div>
-          </z-card>
-        }
+            <div class="grid min-w-0">
+              <span class="truncate text-sm font-medium">{{ recurring.description }}</span>
+              <span class="text-xs text-muted-foreground">
+                {{ recurring.frequency === 'MONTH' ? 'Monthly' : 'Annual' }}
+                @if (recurring.monthDay) {
+                · Day {{ recurring.monthDay }}
+                }
+                · {{ recurring.category.title }}
+              </span>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-sm font-semibold"
+              [class]="recurring.type === 'INCOME' ? 'text-primary' : 'text-destructive'">
+              {{ recurring.type === 'INCOME' ? '+' : '-' }}€{{ recurring.amount }}
+            </span>
+            <z-button zType="default" zSize="sm" (click)="confirmRecurring(recurring.id!)">
+              Confirm
+            </z-button>
+            <z-button zType="ghost" zSize="sm" class="text-muted-foreground" (click)="ignoreRecurring(recurring.id!)">
+              <i-lucide [img]="Trash2Icon" class="size-4" />
+              Dismiss
+            </z-button>
+          </div>
+        </div>
+      </z-card>
       }
+    </div>
+    } @else {
+    <z-card class="dashed-card bg-background mt-4">
+      <div class="flex flex-col items-center justify-center p-6 mt-6">
+        <div class="size-12 flex items-center justify-center rounded-sm bg-chart-2/20 text-chart-2 mb-4">
+          <i-lucide [img]="SparklesIcon" class="size-5" />
+        </div>
+        <div class="flex flex-col items-center text-center space-y-2">
+          <p class="font-medium">No patterns detected yet</p>
+          <span class="text-muted-foreground text-sm">
+            Connect a bank account and sync transactions to automatically detect recurring patterns.
+          </span>
+        </div>
+      </div>
+    </z-card>
+    }
+    }
     }
   </div>
 </main>
