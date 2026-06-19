@@ -20,32 +20,30 @@
     <app-transactions-toolbar (searchChange)="searchQuery.set($event)" />
 
     @if (isLoading()) {
-      <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
-        <z-loader />
-        <span class="text-sm text-muted-foreground">Loading transactions...</span>
-      </div>
+    <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
+      <z-loader />
+      <span class="text-sm text-muted-foreground">Loading transactions...</span>
+    </div>
     } @else if (hasTransactions()) {
-      <app-transactions-summary />
-      <app-transactions-list [transactions]="filteredTransactions()" />
+    <app-transactions-summary />
+    <app-transactions-list [transactions]="filteredTransactions()" />
     } @else {
-      <z-card class="w-full h-full flex flex-col mt-4">
-        <div class="flex flex-col items-center justify-center p-6">
-          <div
-            class="size-12 flex items-center justify-center rounded-full bg-primary/20 text-primary mb-4"
-          >
-            <i-lucide [img]="ArrowRightLeftIcon" class="size-5" />
-          </div>
+    <z-card class="dashed-card bg-background mt-4">
+      <div class="flex flex-col items-center justify-center p-6">
+        <div class="size-12 flex items-center justify-center rounded-sm bg-primary/20 text-primary mb-4">
+          <i-lucide [img]="ArrowRightLeftIcon" class="size-5" />
+        </div>
 
-          <div class="flex flex-col items-center text-center">
-            <div class="space-y-2">
-              <p class="font-medium">No activity</p>
-              <span class="text-muted-foreground text-sm">
-                You haven't registered anything this month yet.
-              </span>
-            </div>
+        <div class="flex flex-col items-center text-center">
+          <div class="space-y-2">
+            <p class="font-medium">No activity</p>
+            <span class="text-muted-foreground text-sm">
+              You haven't registered anything this month yet.
+            </span>
           </div>
         </div>
-      </z-card>
+      </div>
+    </z-card>
     }
   </div>
 </main>
