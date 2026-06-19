@@ -23,108 +23,79 @@
     </div>
 
     @if (syncing()) {
-      <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
-        <z-loader />
-        <span class="text-sm text-muted-foreground">Syncing bank connection...</span>
-      </div>
+    <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
+      <z-loader />
+      <span class="text-sm text-muted-foreground">Syncing bank connection...</span>
+    </div>
     } @else if (isLoading()) {
-      <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
-        <z-loader />
-        <span class="text-sm text-muted-foreground">Loading accounts...</span>
-      </div>
+    <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
+      <z-loader />
+      <span class="text-sm text-muted-foreground">Loading accounts...</span>
+    </div>
     } @else if (isEmpty()) {
-      <z-card class="w-full h-full flex flex-col">
-        <div class="flex flex-col items-center justify-center p-6 mt-6">
-          <div
-            class="size-12 flex items-center justify-center rounded-full text-primary bg-primary/20 mb-4"
-          >
-            <i-lucide [img]="CoinsIcon" />
-          </div>
-          <div class="flex flex-col items-center text-center">
-            <div class="space-y-2">
-              <p class="font-medium">No accounts added</p>
-              <span class="text-muted-foreground text-sm">
-                Add a virtual account or connect your bank to get started.
-              </span>
-            </div>
+    <z-card class="dashed-card bg-background">
+      <div class="flex flex-col items-center justify-center p-6 mt-6">
+        <div class="size-12 flex items-center justify-center rounded-sm text-primary bg-primary/20 mb-4">
+          <i-lucide [img]="CoinsIcon" />
+        </div>
+        <div class="flex flex-col items-center text-center">
+          <div class="space-y-2">
+            <p class="font-medium">No accounts added</p>
+            <span class="text-muted-foreground text-sm">
+              Add a virtual account or connect your bank to get started.
+            </span>
           </div>
         </div>
-      </z-card>
+      </div>
+    </z-card>
     } @else {
-      <!-- inactive connections -->
-      @if (hasInactiveConnections()) {
-        <div
-          class="flex items-center gap-3 rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-600"
-        >
-          <span class="font-medium">One or more bank connections are inactive.</span>
-          <span class="text-muted-foreground">Reconnect to resume syncing.</span>
-        </div>
-      }
+    <!-- inactive connections -->
+    @if (hasInactiveConnections()) {
+    <div
+      class="flex items-center gap-3 rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-600">
+      <span class="font-medium">One or more bank connections are inactive.</span>
+      <span class="text-muted-foreground">Reconnect to resume syncing.</span>
+    </div>
+    }
 
-      <!-- credit cards -->
-      @if (creditCards().length) {
-        <app-accounts-section
-          title="Credit Cards"
-          [count]="creditCards().length"
-          [total]="creditCardsTotal()"
-        >
-          @for (card of creditCards(); track card.id) {
-            <app-card-row
-              [card]="card"
-              [balance]="getCardBalance(card)"
-              [providerLogoUrl]="getProviderLogoForAccount(card.bankAccountId)"
-            />
-          }
-        </app-accounts-section>
+    <!-- credit cards -->
+    @if (creditCards().length) {
+    <app-accounts-section title="Credit Cards" [count]="creditCards().length" [total]="creditCardsTotal()">
+      @for (card of creditCards(); track card.id) {
+      <app-card-row [card]="card" [balance]="getCardBalance(card)"
+        [providerLogoUrl]="getProviderLogoForAccount(card.bankAccountId)" />
       }
+    </app-accounts-section>
+    }
 
-      <!-- debit cards -->
-      @if (debitCards().length) {
-        <app-accounts-section
-          title="Debit Cards"
-          [count]="debitCards().length"
-          [total]="debitCardsTotal()"
-        >
-          @for (card of debitCards(); track card.id) {
-            <app-card-row
-              [card]="card"
-              [balance]="getCardBalance(card)"
-              [providerLogoUrl]="getProviderLogoForAccount(card.bankAccountId)"
-            />
-          }
-        </app-accounts-section>
+    <!-- debit cards -->
+    @if (debitCards().length) {
+    <app-accounts-section title="Debit Cards" [count]="debitCards().length" [total]="debitCardsTotal()">
+      @for (card of debitCards(); track card.id) {
+      <app-card-row [card]="card" [balance]="getCardBalance(card)"
+        [providerLogoUrl]="getProviderLogoForAccount(card.bankAccountId)" />
       }
+    </app-accounts-section>
+    }
 
-      <!-- accounts -->
-      @if (bankAccountsList().length) {
-        <app-accounts-section
-          title="Accounts"
-          [count]="bankAccountsList().length"
-          [total]="bankAccountsTotal()"
-        >
-          @for (account of bankAccountsList(); track account.id) {
-            <app-account-row
-              [account]="account"
-              [providerLogoUrl]="getProviderLogoForAccount(account.id)"
-              [iban]="getIbanForAccount(account.id)"
-            />
-          }
-        </app-accounts-section>
+    <!-- accounts -->
+    @if (bankAccountsList().length) {
+    <app-accounts-section title="Accounts" [count]="bankAccountsList().length" [total]="bankAccountsTotal()">
+      @for (account of bankAccountsList(); track account.id) {
+      <app-account-row [account]="account" [providerLogoUrl]="getProviderLogoForAccount(account.id)"
+        [iban]="getIbanForAccount(account.id)" />
       }
+    </app-accounts-section>
+    }
 
-      <!-- connections -->
-      @if (connections().length) {
-        <app-accounts-section
-          title="Connections"
-          [count]="connections().length"
-          [total]="0"
-          [showTotal]="false"
-        >
-          @for (conn of connections(); track conn.id) {
-            <app-connection-row [connection]="conn" (disconnected)="refreshAll()" />
-          }
-        </app-accounts-section>
+    <!-- connections -->
+    @if (connections().length) {
+    <app-accounts-section title="Connections" [count]="connections().length" [total]="0" [showTotal]="false">
+      @for (conn of connections(); track conn.id) {
+      <app-connection-row [connection]="conn" (disconnected)="refreshAll()" />
       }
+    </app-accounts-section>
+    }
     }
   </div>
 </main>
