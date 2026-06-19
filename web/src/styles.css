@@ -320,49 +320,11 @@
 
 @layer utilities {
   .glass-card {
-    @apply bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl;
+    @apply bg-card backdrop-blur-sm border border-border rounded-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5;
   }
 
-  .glass-card-hover {
-    @apply bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5;
-  }
-
-  .corner-card {
-    position: relative;
-    background: var(--card);
-    padding: 1rem 1.25rem;
-    border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
-  }
-
-  .corner-card::before,
-  .corner-card::after,
-  .corner-card > i::before,
-  .corner-card > i::after {
-    content: '';
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    border: 0 solid var(--border);
-    pointer-events: none;
-    transition: border-color 150ms;
-  }
-
-  .corner-card > i {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  .corner-card::before     { top: 0; left: 0;     border-top-width: 1.5px; border-left-width: 1.5px; }
-  .corner-card::after      { top: 0; right: 0;    border-top-width: 1.5px; border-right-width: 1.5px; }
-  .corner-card > i::before { bottom: 0; left: 0;  border-bottom-width: 1.5px; border-left-width: 1.5px; }
-  .corner-card > i::after  { bottom: 0; right: 0; border-bottom-width: 1.5px; border-right-width: 1.5px; }
-
-  .corner-card:hover:where(.interactive)::before,
-  .corner-card:hover:where(.interactive)::after,
-  .corner-card:hover:where(.interactive) > i::before,
-  .corner-card:hover:where(.interactive) > i::after {
-    border-color: var(--primary);
+  .dashed-card {
+    @apply flex flex-col backdrop-blur-sm border border-dashed rounded-sm min-h-120 justify-center;
   }
 }
 
