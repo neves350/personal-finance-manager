@@ -6,11 +6,10 @@ import {
 	LucideAngularModule,
 } from 'lucide-angular'
 import { ZardButtonComponent } from '../../ui/button'
-import { ZardDividerComponent } from '../../ui/divider'
 
 @Component({
 	selector: 'app-transactions-navigation',
-	imports: [ZardButtonComponent, LucideAngularModule, ZardDividerComponent],
+	imports: [ZardButtonComponent, LucideAngularModule],
 	templateUrl: './transactions-navigation.html',
 })
 export class TransactionsNavigation {

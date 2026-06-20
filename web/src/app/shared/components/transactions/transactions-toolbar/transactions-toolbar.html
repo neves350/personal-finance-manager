@@ -1,9 +1,6 @@
-<div class="flex items-center justify-between p-3 gap-4 bg-card border-3 rounded-md">
+<div class="flex items-center justify-between p-3 gap-4 bg-card border rounded-sm">
   <app-transactions-navigation />
 
-  <app-transactions-search
-    (search)="onSearch($event)"
-    (filterChange)="onFilterChange($event)"
-    (filterReset)="onFilterReset()"
-  />
+  <app-transactions-search (search)="onSearch($event)" (filterChange)="onFilterChange($event)"
+    (filterReset)="onFilterReset()" />
 </div>
