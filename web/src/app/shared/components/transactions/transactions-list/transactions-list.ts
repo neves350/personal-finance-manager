@@ -1,21 +1,13 @@
 import { Component, computed, input, signal } from '@angular/core'
-import { Transaction } from '@core/api/transactions.interface'
+import type { Transaction } from '@core/api/transactions.interface'
 import {
-	ArrowDown01Icon,
-	ArrowDownAZIcon,
-	ArrowUp01Icon,
-	ArrowUpAZIcon,
+	ArrowUpDownIcon,
 	LucideAngularModule,
 	type LucideIconData,
 } from 'lucide-angular'
+import { ZardButtonComponent } from '../../ui/button'
 import { ZardPaginationComponent } from '../../ui/pagination'
-import {
-	ZardTableBodyComponent,
-	ZardTableComponent,
-	ZardTableHeadComponent,
-	ZardTableHeaderComponent,
-	ZardTableRowComponent,
-} from '../../ui/table/table.component'
+import { ZardSelectImports } from '../../ui/select/select.imports'
 import { TransactionsRow } from '../transactions-row/transactions-row'
 
 type SortKey =
@@ -26,17 +18,20 @@ type SortKey =
 	| 'amount'
 	| 'status'
 
+interface TransactionGroup {
+	date: string
+	label: string
+	transactions: Transaction[]
+}
+
 @Component({
 	selector: 'app-transactions-list',
 	imports: [
 		LucideAngularModule,
 		TransactionsRow,
 		ZardPaginationComponent,
-		ZardTableComponent,
-		ZardTableHeaderComponent,
-		ZardTableRowComponent,
-		ZardTableHeadComponent,
-		ZardTableBodyComponent,
+		ZardSelectImports,
+		ZardButtonComponent,
 	],
 	templateUrl: './transactions-list.html',
 })
@@ -51,11 +46,27 @@ export class TransactionsList {
 		direction: 'asc' | 'desc'
 	}>({ key: 'date', direction: 'desc' })
 
+	readonly ArrowUpDownIcon = ArrowUpDownIcon
+
+	readonly sortOptions: { key: SortKey; label: string }[] = [
+		{ key: 'date', label: 'Date' },
+		{ key: 'description', label: 'Description' },
+		{ key: 'account', label: 'Account' },
+		{ key: 'category', label: 'Category' },
+		{ key: 'amount', label: 'Amount' },
+		{ key: 'status', label: 'Status' },
+	]
+
+	readonly sortLabel = computed(() => {
+		const { key } = this.sortState()
+		return this.sortOptions.find((o) => o.key === key)?.label ?? 'Date'
+	})
+
 	readonly totalPages = computed(() =>
 		Math.ceil(this.transactions().length / this.pageSize),
 	)
 
-	readonly sortedGoals = computed(() => {
+	readonly sortedTransactions = computed(() => {
 		const { key, direction } = this.sortState()
 		const modifier = direction === 'asc' ? 1 : -1
 
@@ -63,7 +74,8 @@ export class TransactionsList {
 			switch (key) {
 				case 'date':
 					return (
-						(new Date(a.date).getTime() - new Date(b.date).getTime()) * modifier
+						(new Date(a.date).getTime() - new Date(b.date).getTime()) *
+						modifier
 					)
 				case 'description':
 					return a.title.localeCompare(b.title) * modifier
@@ -81,33 +93,62 @@ export class TransactionsList {
 		})
 	})
 
-	readonly paginatedTransactions = computed(() => {
-		const startPage = (this.currentPage() - 1) * this.pageSize
-		return this.sortedGoals().slice(startPage, startPage + this.pageSize)
+	// readonly paginatedTransactions = computed(() => {
+	// 	const startPage = (this.currentPage() - 1) * this.pageSize
+	// 	return this.sortedTransactions().slice(startPage, startPage + this.pageSize)
+	// })
+
+	readonly paginatedGroups = computed<TransactionGroup[]>(() => {
+		const groups = new Map<string, Transaction[]>()
+
+		for (const transaction of this.sortedTransactions()) {
+			const dayKey = String(transaction.date).slice(0, 10)
+			const existing = groups.get(dayKey)
+			if (existing) {
+				existing.push(transaction)
+			} else {
+				groups.set(dayKey, [transaction])
+			}
+		}
+
+		const today = new Date().toISOString().slice(0, 10)
+		const yesterday = new Date(Date.now() - 86_400_000)
+			.toISOString()
+			.slice(0, 10)
+
+		return Array.from(groups.entries())
+			.sort((a, b) => b[0].localeCompare(a[0]))
+			.map(([date, transactions]) => ({
+				date,
+				label: this.buildDateLabel(date, today, yesterday),
+				transactions,
+			}))
 	})
 
-	toggleSort(key: SortKey) {
-		const current = this.sortState()
-		if (current.key === key) {
-			this.sortState.set({
-				key,
-				direction: current.direction === 'asc' ? 'desc' : 'asc',
-			})
-		} else {
-			this.sortState.set({ key, direction: 'asc' })
-		}
+	onSortChange(key: string) {
+		this.sortState.set({ key: key as SortKey, direction: 'desc' })
 		this.currentPage.set(1)
 	}
 
-	sortTextIcon(key: SortKey): LucideIconData {
+	toggleSortDirection() {
 		const current = this.sortState()
-		if (current.key !== key) return ArrowDownAZIcon
-		return current.direction === 'asc' ? ArrowUpAZIcon : ArrowDownAZIcon
+		this.sortState.set({
+			...current,
+			direction: current.direction === 'asc' ? 'desc' : 'asc',
+		})
+		this.currentPage.set(1)
 	}
 
-	sortNumberIcon(key: SortKey): LucideIconData {
-		const current = this.sortState()
-		if (current.key !== key) return ArrowDown01Icon
-		return current.direction === 'asc' ? ArrowUp01Icon : ArrowDown01Icon
+	private buildDateLabel(
+		date: string,
+		today: string,
+		yesterday: string,
+	): string {
+		if (date === today) return 'Today'
+		if (date === yesterday) return 'Yesterday'
+		return new Date(date).toLocaleDateString('en-US', {
+			month: 'long',
+			day: 'numeric',
+		})
 	}
 }

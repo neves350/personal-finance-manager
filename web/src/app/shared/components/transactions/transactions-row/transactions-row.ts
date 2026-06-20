@@ -29,7 +29,8 @@ import { ZardSheetService } from '../../ui/sheet'
 import type { iTransactionData } from '../transactions-form/transactions-form.interface'
 
 @Component({
-	selector: 'tr[app-transactions-row]',
+	selector: 'app-transactions-row',
+	host: { class: 'block' },
 	imports: [
 		LucideAngularModule,
 		ZardButtonComponent,

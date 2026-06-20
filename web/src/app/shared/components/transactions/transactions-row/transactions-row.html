@@ -1,109 +1,104 @@
-<!-- Date -->
-<td z-table-cell>
-  <span class="text-xs xl:text-sm text-muted-foreground font-medium">{{ formattedDate() }}</span>
-</td>
+<div class="flex items-center gap-4 px-4 py-3 bg-card border rounded-sm">
+  <!-- Description -->
+  <div class="flex-1 min-w-0">
+    <span class="text-xs xl:text-sm font-medium flex flex-col">
+      {{ transaction().title | titlecase }}
+      <div class="flex items-center mt-1" [class]="typeIcon().class">
+        <span class="size-1.5 xl:size-2 rounded-full animate-pulse" [class]="typeIcon().dot"></span>
+        <span class="text-xs ml-2">
+          {{ transaction().type | titlecase }}
+        </span>
+        @if (recurringLabel()) {
+          <button
+            type="button"
+            class="ml-2 flex items-center text-chart-2 hover:text-chart-2/70 transition-colors"
+            [title]="recurringLabel()!"
+            (click)="navigateToRecurring(); $event.stopPropagation()"
+          >
+            <i-lucide [img]="RepeatIcon" class="size-3" />
+          </button>
+        }
+        @if (isOpenBanking()) {
+          <i-lucide [img]="LandmarkIcon" class="size-3 ml-2 text-muted-foreground" />
+        }
+      </div>
+    </span>
+  </div>
 
-<!-- Description -->
-<td z-table-cell>
-  <span class="text-xs xl:text-sm font-medium flex flex-col"
-    >{{ transaction().title | titlecase }}
-    <div class="flex items-center mt-1" [class]="typeIcon().class">
-      <span class="size-1.5 xl:size-2 rounded-full animate-pulse" [class]="typeIcon().dot"></span>
-      <span class="text-xs ml-2">
-        {{ transaction().type | titlecase }}
-      </span>
-      @if (recurringLabel()) {
-        <button
-          type="button"
-          class="ml-2 flex items-center text-chart-2 hover:text-chart-2/70 transition-colors"
-          [title]="recurringLabel()!"
-          (click)="navigateToRecurring(); $event.stopPropagation()"
-        >
-          <i-lucide [img]="RepeatIcon" class="size-3" />
-        </button>
-      }
-      @if (isOpenBanking()) {
-        <i-lucide [img]="LandmarkIcon" class="size-3 ml-2 text-muted-foreground" />
-      }
-    </div>
-  </span>
-</td>
+  <!-- Account -->
+  <div class="hidden xl:block">
+    <z-badge zShape="soft" class="h-5 p-3 text-muted-foreground" zType="outline">
+      {{ transaction().bankAccount?.name }}
+    </z-badge>
+  </div>
 
-<!-- Account -->
-<td z-table-cell>
-  <z-badge zShape="soft" class="h-5 p-3 text-muted-foreground" zType="outline">
-    {{ transaction().bankAccount?.name }}
-  </z-badge>
-</td>
+  <!-- Category -->
+  <div class="hidden xl:block">
+    <z-badge zShape="pill" class="h-5 p-3" zType="outline">
+      {{ transaction().category.title }}
+    </z-badge>
+  </div>
 
-<!-- Category -->
-<td z-table-cell>
-  <z-badge zShape="pill" class="h-5 p-3" zType="outline">
-    {{ transaction().category.title }}
-  </z-badge>
-</td>
-
-<!-- Status -->
-<td z-table-cell>
-  <div class="flex items-center gap-2 text-xs xl:text-sm" [class]="statusIcon().class">
+  <!-- Status -->
+  <div class="hidden xl:flex items-center gap-2 text-xs xl:text-sm" [class]="statusIcon().class">
     <span class="size-1.5 xl:size-2 rounded-full animate-pulse" [class]="statusIcon().dot"></span>
     {{ statusIcon().label }}
   </div>
-</td>
 
-<!-- Amount -->
-<td z-table-cell>
-  <span class="text-xs xl:text-sm font-semibold" [class]="amountClass()">
-    {{ formattedAmount() }}
-  </span>
-</td>
+  <!-- Amount -->
+  <div class="text-right min-w-20">
+    <span class="text-xs xl:text-sm font-semibold" [class]="amountClass()">
+      {{ formattedAmount() }}
+    </span>
+  </div>
 
-<!-- Actions -->
-<td z-table-cell>
-  <z-button zPopover [zContent]="popoverContent" zSize="sm" zShape="circle" zType="ghost">
-    <i-lucide [img]="EllipsisIcon" />
-  </z-button>
+  <!-- Actions -->
+  <div>
+    <z-button zPopover [zContent]="popoverContent" zSize="sm" zShape="circle" zType="ghost">
+      <i-lucide [img]="EllipsisIcon" />
+    </z-button>
 
-  <ng-template #popoverContent>
-    <z-popover class="w-50 items-start">
-      <div class="flex flex-col gap-1">
-        <z-button
-          zPopoverClose
-          zType="ghost"
-          zSize="sm"
-          zFull
-          class="w-full justify-start"
-          (click)="duplicateTransaction()"
-        >
-          <i-lucide [img]="FilesIcon" class="h-4 w-4 mr-2" />
-          Duplicate
-        </z-button>
-        <z-button
-          zPopoverClose
-          zType="ghost"
-          zSize="sm"
-          zFull
-          class="w-full justify-start"
-          (click)="updateTransaction()"
-        >
-          <i-lucide [img]="SquarePenIcon" class="h-4 w-4 mr-2" />
-          Edit
-        </z-button>
-        @if (!isOpenBanking()) {
-          <z-divider />
+    <ng-template #popoverContent>
+      <z-popover class="w-50 items-start">
+        <div class="flex flex-col gap-1">
           <z-button
             zPopoverClose
             zType="ghost"
             zSize="sm"
             zFull
-            class="text-destructive w-full justify-start"
-            (click)="deleteTransaction()"
+            class="w-full justify-start"
+            (click)="duplicateTransaction()"
           >
-            <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
-            Delete
+            <i-lucide [img]="FilesIcon" class="h-4 w-4 mr-2" />
+            Duplicate
           </z-button>
-        }
-      </div>
-    </z-popover>
-  </ng-template>
-</td>
+          <z-button
+            zPopoverClose
+            zType="ghost"
+            zSize="sm"
+            zFull
+            class="w-full justify-start"
+            (click)="updateTransaction()"
+          >
+            <i-lucide [img]="SquarePenIcon" class="h-4 w-4 mr-2" />
+            Edit
+          </z-button>
+          @if (!isOpenBanking()) {
+            <z-divider />
+            <z-button
+              zPopoverClose
+              zType="ghost"
+              zSize="sm"
+              zFull
+              class="text-destructive w-full justify-start"
+              (click)="deleteTransaction()"
+            >
+              <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
+              Delete
+            </z-button>
+          }
+        </div>
+      </z-popover>
+    </ng-template>
+  </div>
+</div>

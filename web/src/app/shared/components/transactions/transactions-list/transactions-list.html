@@ -1,54 +1,19 @@
-<div class="mt-4 overflow-hidden overflow-x-auto rounded-md border-2">
-  <table z-table zSize="comfortable">
-    <thead z-table-header class="bg-table">
-      <tr z-table-row>
-        <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('date')">
-          <div class="flex items-center gap-1 text-muted-foreground">
-            Date
-            <i-lucide [img]="sortNumberIcon('date')" class="size-3 xl:size-3.5 text-muted-foreground" />
-          </div>
-        </th>
-        <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('description')">
-          <div class="flex items-center gap-1 text-muted-foreground">
-            Description
-            <i-lucide [img]="sortTextIcon('description')" class="size-3 xl:size-3.5 text-muted-foreground" />
-          </div>
-        </th>
-        <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('account')">
-          <div class="flex items-center gap-1 text-muted-foreground">
-            Account
-            <i-lucide [img]="sortTextIcon('account')" class="size-3 xl:size-3.5 text-muted-foreground" />
-          </div>
-        </th>
-        <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('category')">
-          <div class="flex items-center gap-1 text-muted-foreground">
-            Category
-            <i-lucide [img]="sortTextIcon('category')" class="size-3 xl:size-3.5 text-muted-foreground" />
-          </div>
-        </th>
-        <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('status')">
-          <div class="flex items-center gap-1 text-muted-foreground">
-            Status
-            <i-lucide [img]="sortTextIcon('status')" class="size-3 xl:size-3.5 text-muted-foreground" />
-          </div>
-        </th>
-        <th z-table-head class="cursor-pointer select-none" (click)="toggleSort('amount')">
-          <div class="flex items-center gap-1 text-muted-foreground">
-            Amount
-            <i-lucide [img]="sortNumberIcon('amount')" class="size-3 xl:size-3.5 text-muted-foreground" />
-          </div>
-        </th>
-        <th z-table-head class="w-20"></th>
-      </tr>
-    </thead>
-    <tbody z-table-body class="bg-table">
-      @for (transaction of paginatedTransactions(); track transaction.id) {
-        <tr app-transactions-row [transaction]="transaction"></tr>
-      }
-    </tbody>
-  </table>
+<div class="mt-4 space-y-6">
+  @for (group of paginatedGroups(); track group.date) {
+    <div>
+      <h3 class="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3 px-1">
+        {{ group.label }}
+      </h3>
+      <div class="space-y-2">
+        @for (transaction of group.transactions; track transaction.id) {
+          <app-transactions-row [transaction]="transaction" />
+        }
+      </div>
+    </div>
+  }
 </div>
-<div class="p-2">
+
+<!-- <div class="p-2">
   <z-pagination
     zType="table"
     [zTotal]="totalPages()"
@@ -57,4 +22,4 @@
     [(zPageIndex)]="currentPage"
     [zSize]="'sm'"
   />
-</div>
+</div> -->
