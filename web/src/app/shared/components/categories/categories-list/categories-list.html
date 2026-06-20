@@ -1,47 +1,30 @@
 <div class="grid grid-cols-2 xl:grid-cols-3 gap-3">
   @for (category of categories(); track category.id) {
-    <z-card class="py-0 gap-0 transition-all duration-300 hover:border-primary/40">
-      <div class="max-h-200 overflow-y-auto -mr-4 pr-4 my-2">
-        <div class="flex items-center justify-between py-3 group">
-          <div class="flex items-center gap-3">
-            <z-badge
-              [style.--cat-color]="category.color || 'var(--primary)'"
-              class="bg-(--cat-color)/20"
-              zShape="soft"
-            >
-              <i-lucide
-                [img]="iconMap[category.icon] ?? iconMap['tag']"
-                class="size-4.5 text-(--cat-color)"
-              />
-            </z-badge>
-            <span class="text-sm text-foreground font-semibold">{{
-              category.title | titlecase
+  <z-card class="py-0 gap-0 glass-card">
+    <div class="max-h-200 overflow-y-auto -mr-4 pr-4 my-2">
+      <div class="flex items-center justify-between py-3 group">
+        <div class="flex items-center gap-3">
+          <z-badge [style.--cat-color]="category.color || 'var(--primary)'" class="bg-(--cat-color)/20" zShape="soft">
+            <i-lucide [img]="iconMap[category.icon] ?? iconMap['tag']" class="size-4.5 text-(--cat-color)" />
+          </z-badge>
+          <span class="text-sm text-foreground font-semibold">{{
+            category.title | titlecase
             }}</span>
-          </div>
-          @if (!category.isDefault) {
-            <div class="flex items-center gap-1">
-              <button
-                z-button
-                zType="ghost"
-                zSize="sm"
-                (click)="editCategory(category)"
-                class="hover:bg-secondary text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-all"
-              >
-                <i-lucide [img]="SquarePenIcon" class="size-4" />
-              </button>
-              <button
-                z-button
-                zType="ghost"
-                zSize="sm"
-                (click)="deleteCategory(category)"
-                class="hover:bg-secondary text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-all"
-              >
-                <i-lucide [img]="Trash2Icon" class="size-4" />
-              </button>
-            </div>
-          }
         </div>
+        @if (!category.isDefault) {
+        <div class="flex items-center gap-1">
+          <button z-button zType="ghost" zSize="sm" (click)="editCategory(category)"
+            class="hover:bg-secondary text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-all">
+            <i-lucide [img]="SquarePenIcon" class="size-4" />
+          </button>
+          <button z-button zType="ghost" zSize="sm" (click)="deleteCategory(category)"
+            class="hover:bg-secondary text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-all">
+            <i-lucide [img]="Trash2Icon" class="size-4" />
+          </button>
+        </div>
+        }
       </div>
-    </z-card>
+    </div>
+  </z-card>
   }
 </div>
