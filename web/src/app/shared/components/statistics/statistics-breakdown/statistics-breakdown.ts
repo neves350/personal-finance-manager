@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core'
 import { StatisticsService } from '@core/services/statistics.service'
-import { LucideAngularModule } from 'lucide-angular'
+import { LucideAngularModule, ReceiptIcon } from 'lucide-angular'
 import { CATEGORY_ICON_MAP } from '../../categories/category-icons'
 import { ZardCardComponent } from '../../ui/card'
 
@@ -17,6 +17,7 @@ export class StatisticsBreakdown {
 	private readonly statisticsService = inject(StatisticsService)
 
 	readonly iconMap = CATEGORY_ICON_MAP
+	readonly ReceiptIcon = ReceiptIcon
 
 	readonly topCategories = computed(() =>
 		this.statisticsService.expenseCategories().slice(0, 3),
