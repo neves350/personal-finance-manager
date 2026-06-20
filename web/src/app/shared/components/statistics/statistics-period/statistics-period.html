@@ -1,4 +1,4 @@
-<z-card class="mt-3 xl:mt-4">
+<z-card class="mt-3 xl:mt-4 h-122 glass-card">
   <div class="flex justify-between items-start">
     <div>
       <h2 class="text-base font-semibold font-display flex items-center gap-2">Compare periods</h2>
@@ -7,21 +7,12 @@
   </div>
 
   @if (chartOptions()) {
-    <div class="mt-4">
-      <apx-chart
-        #chart
-        [series]="chartOptions()!.series!"
-        [chart]="chartOptions()!.chart!"
-        [xaxis]="chartOptions()!.xaxis!"
-        [yaxis]="chartOptions()!.yaxis!"
-        [colors]="chartOptions()!.colors!"
-        [legend]="chartOptions()!.legend!"
-        [plotOptions]="chartOptions()!.plotOptions!"
-        [dataLabels]="chartOptions()!.dataLabels!"
-        [tooltip]="chartOptions()!.tooltip!"
-        [grid]="chartOptions()!.grid!"
-        [responsive]="chartOptions()!.responsive!"
-      />
-    </div>
+  <div class="mt-4">
+    <apx-chart #chart [series]="chartOptions()!.series!" [chart]="chartOptions()!.chart!"
+      [xaxis]="chartOptions()!.xaxis!" [yaxis]="chartOptions()!.yaxis!" [colors]="chartOptions()!.colors!"
+      [legend]="chartOptions()!.legend!" [plotOptions]="chartOptions()!.plotOptions!"
+      [dataLabels]="chartOptions()!.dataLabels!" [tooltip]="chartOptions()!.tooltip!" [grid]="chartOptions()!.grid!"
+      [responsive]="chartOptions()!.responsive!" />
+  </div>
   }
 </z-card>

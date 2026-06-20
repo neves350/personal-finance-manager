@@ -1,43 +1,36 @@
-<z-card class="h-full">
+<z-card class="h-full glass-card">
 	<div class="flex items-center justify-between">
 		<h1 class="text-base font-semibold font-display">Top expenses</h1>
 		<span class="text-xs xl:text-sm text-muted-foreground">
-		Total: €{{ formatAmount(expenseTotal()) }}
+			Total: €{{ formatAmount(expenseTotal()) }}
 		</span>
 	</div>
 
 	<div class="mt-6">
 		<div class="h-3 flex gap-1.5 items-center justify-center">
 			@for (category of topCategories(); track category.categoryId; let i = $index) {
-				<div
-					class="h-full rounded-full"
-					[style.width.%]="category.percentage"
-					[class]="getBarClass(i)"
-				></div>
+			<div class="h-full rounded-full" [style.width.%]="category.percentage" [class]="getBarClass(i)"></div>
 			}
 		</div>
 	</div>
 
 	<div class="mt-4 divide-y divide-border">
 		@for (category of topCategories(); track category.categoryId; let i = $index) {
-			<div class="flex items-center justify-between py-3">
-				<div class="flex items-center gap-3">
-					<div class="size-3 rounded-full" [class]="getDotClass(i)"></div>
-					<i-lucide
-						[img]="iconMap[category.categoryIcon]"
-						class="size-4 text-muted-foreground"
-					/>
-					<span class="text-sm">{{ category.categoryTitle }}</span>
-				</div>
-				<div class="flex items-center gap-4">
-					<span class="text-xs xl:text-sm text-muted-foreground">
-					{{ category.percentage }}%
-					</span>
-					<span class="text-sm font-semibold w-20 text-right">
-					€{{ formatAmount(category.total) }}
-					</span>
-				</div>
+		<div class="flex items-center justify-between py-3">
+			<div class="flex items-center gap-3">
+				<div class="size-3 rounded-full" [class]="getDotClass(i)"></div>
+				<i-lucide [img]="iconMap[category.categoryIcon]" class="size-4 text-muted-foreground" />
+				<span class="text-sm">{{ category.categoryTitle }}</span>
 			</div>
+			<div class="flex items-center gap-4">
+				<span class="text-xs xl:text-sm text-muted-foreground">
+					{{ category.percentage }}%
+				</span>
+				<span class="text-sm font-semibold w-20 text-right">
+					€{{ formatAmount(category.total) }}
+				</span>
+			</div>
+		</div>
 		}
 	</div>
 </z-card>

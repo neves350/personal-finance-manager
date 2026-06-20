@@ -1,7 +1,8 @@
 <div class="grid grid-cols-1 xl:grid-cols-3 items-center gap-3">
-  <z-card class="flex flex-col transition-all duration-300 hover:border-primary/40">
+  <z-card class="flex flex-col glass-card">
     <div class="flex items-center justify-start mb-3 xl:mb-2">
-      <span class="text-xs xl:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2">
+      <span
+        class="text-xs xl:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2">
         <div class="rounded-full border-2 p-2">
           <i-lucide [img]="TrendingUpIcon" class="h-4 w-4 xl:h-4.5 xl:w-4.5 text-primary" />
         </div>
@@ -15,11 +16,8 @@
 
     <div class="flex items-end justify-between gap-1 mt-2">
       <div class="flex flex-wrap items-center gap-1">
-        <i-lucide
-          [img]="incomeChange() >= 0 ? ArrowUpIcon : ArrowDownIcon"
-          class="size-3 font-semibold"
-          [class]="incomeChange() >= 0 ? 'text-primary' : 'text-destructive'"
-        />
+        <i-lucide [img]="incomeChange() >= 0 ? ArrowUpIcon : ArrowDownIcon" class="size-3 font-semibold"
+          [class]="incomeChange() >= 0 ? 'text-primary' : 'text-destructive'" />
         <span [class]="incomeChange() >= 0 ? 'text-primary' : 'text-destructive'" class="text-sm">
           {{ incomeChange() >= 0 ? '+' : '' }}{{ incomeChange() }}%
         </span>
@@ -27,24 +25,17 @@
       </div>
 
       @if (incomeSparkline(); as spark) {
-        <apx-chart
-          class="shrink-0 -mb-1 -mr-1"
-          [series]="spark.series!"
-          [chart]="spark.chart!"
-          [colors]="spark.colors!"
-          [stroke]="spark.stroke!"
-          [xaxis]="spark.xaxis!"
-          [yaxis]="spark.yaxis!"
-          [grid]="spark.grid!"
-          [tooltip]="spark.tooltip!"
-        />
+      <apx-chart class="shrink-0 -mb-1 -mr-1" [series]="spark.series!" [chart]="spark.chart!" [colors]="spark.colors!"
+        [stroke]="spark.stroke!" [xaxis]="spark.xaxis!" [yaxis]="spark.yaxis!" [grid]="spark.grid!"
+        [tooltip]="spark.tooltip!" />
       }
     </div>
   </z-card>
 
-  <z-card class="flex flex-col transition-all duration-300 hover:border-primary/40">
+  <z-card class="flex flex-col glass-card">
     <div class="flex items-center justify-start mb-3 xl:mb-2">
-      <span class="text-xs xl:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2">
+      <span
+        class="text-xs xl:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2">
         <div class="rounded-full border-2 p-2">
           <i-lucide [img]="TrendingDownIcon" class="h-4 w-4 xl:h-4.5 xl:w-4.5 text-primary" />
         </div>
@@ -58,11 +49,8 @@
 
     <div class="flex items-end justify-between gap-1 mt-2">
       <div class="flex flex-wrap items-center gap-1">
-        <i-lucide
-          [img]="expensesChange() >= 0 ? ArrowUpIcon : ArrowDownIcon"
-          class="size-3 font-semibold"
-          [class]="expensesChange() >= 0 ? 'text-primary' : 'text-destructive'"
-        />
+        <i-lucide [img]="expensesChange() >= 0 ? ArrowUpIcon : ArrowDownIcon" class="size-3 font-semibold"
+          [class]="expensesChange() >= 0 ? 'text-primary' : 'text-destructive'" />
         <span [class]="expensesChange() >= 0 ? 'text-primary' : 'text-destructive'" class="text-sm">
           {{ expensesChange() >= 0 ? '+' : '' }}{{ expensesChange() }}%
         </span>
@@ -70,24 +58,17 @@
       </div>
 
       @if (expenseSparkline(); as spark) {
-        <apx-chart
-          class="shrink-0 -mb-1 -mr-1"
-          [series]="spark.series!"
-          [chart]="spark.chart!"
-          [colors]="spark.colors!"
-          [stroke]="spark.stroke!"
-          [xaxis]="spark.xaxis!"
-          [yaxis]="spark.yaxis!"
-          [grid]="spark.grid!"
-          [tooltip]="spark.tooltip!"
-        />
+      <apx-chart class="shrink-0 -mb-1 -mr-1" [series]="spark.series!" [chart]="spark.chart!" [colors]="spark.colors!"
+        [stroke]="spark.stroke!" [xaxis]="spark.xaxis!" [yaxis]="spark.yaxis!" [grid]="spark.grid!"
+        [tooltip]="spark.tooltip!" />
       }
     </div>
   </z-card>
 
-  <z-card class="flex flex-col transition-all duration-300 hover:border-primary/40">
+  <z-card class="flex flex-col glass-card">
     <div class="flex items-center justify-start mb-3 xl:mb-2">
-      <span class="text-xs xl:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2">
+      <span
+        class="text-xs xl:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2">
         <div class="rounded-full border-2 p-2">
           <i-lucide [img]="CoinsIcon" class="h-4 w-4 xl:h-4.5 xl:w-4.5 text-primary" />
         </div>
@@ -101,11 +82,8 @@
 
     <div class="flex items-end justify-between gap-1 mt-2">
       <div class="flex flex-wrap items-center gap-1">
-        <i-lucide
-          [img]="balanceChange() >= 0 ? ArrowUpIcon : ArrowDownIcon"
-          class="size-3 font-semibold"
-          [class]="balanceChange() >= 0 ? 'text-primary' : 'text-destructive'"
-        />
+        <i-lucide [img]="balanceChange() >= 0 ? ArrowUpIcon : ArrowDownIcon" class="size-3 font-semibold"
+          [class]="balanceChange() >= 0 ? 'text-primary' : 'text-destructive'" />
         <span [class]="balanceChange() >= 0 ? 'text-primary' : 'text-destructive'" class="text-sm">
           {{ balanceChange() >= 0 ? '+' : '' }}{{ balanceChange() }}%
         </span>
@@ -113,17 +91,9 @@
       </div>
 
       @if (balanceSparkline(); as spark) {
-        <apx-chart
-          class="shrink-0 -mb-1 -mr-1"
-          [series]="spark.series!"
-          [chart]="spark.chart!"
-          [colors]="spark.colors!"
-          [stroke]="spark.stroke!"
-          [xaxis]="spark.xaxis!"
-          [yaxis]="spark.yaxis!"
-          [grid]="spark.grid!"
-          [tooltip]="spark.tooltip!"
-        />
+      <apx-chart class="shrink-0 -mb-1 -mr-1" [series]="spark.series!" [chart]="spark.chart!" [colors]="spark.colors!"
+        [stroke]="spark.stroke!" [xaxis]="spark.xaxis!" [yaxis]="spark.yaxis!" [grid]="spark.grid!"
+        [tooltip]="spark.tooltip!" />
       }
     </div>
   </z-card>
