@@ -145,8 +145,8 @@ export class RecurringsForm {
 		if (!isSelected) return 'border-zinc-700'
 
 		return recurringType === RecurringType.INCOME
-			? 'border-primary bg-primary/10'
-			: 'border-destructive bg-destructive/10'
+			? 'border-primary bg-primary/20'
+			: 'border-destructive bg-destructive/20'
 	}
 
 	getTypeIconClasses(recurringType: RecurringType): string {
