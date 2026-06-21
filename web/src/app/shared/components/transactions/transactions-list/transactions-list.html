@@ -1,15 +1,15 @@
-<div class="mt-4 space-y-6">
+<div class="mt-8 space-y-6">
   @for (group of paginatedGroups(); track group.date) {
-    <div>
-      <h3 class="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3 px-1">
-        {{ group.label }}
-      </h3>
-      <div class="space-y-2">
-        @for (transaction of group.transactions; track transaction.id) {
-          <app-transactions-row [transaction]="transaction" />
-        }
-      </div>
+  <div>
+    <h3 class="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3 px-1">
+      {{ group.label }}
+    </h3>
+    <div class="space-y-2">
+      @for (transaction of group.transactions; track transaction.id) {
+      <app-transactions-row [transaction]="transaction" />
+      }
     </div>
+  </div>
   }
 </div>
 
