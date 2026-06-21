@@ -19,8 +19,8 @@ import {
 import { TransactionsForm } from '../../transactions/transactions-form/transactions-form'
 import { TransfersForm } from '../../transfers/transfers-form/transfers-form'
 import { ZardButtonComponent } from '../../ui/button'
-import { ZardDialogService } from '../../ui/dialog'
 import { ZardSelectComponent, ZardSelectItemComponent } from '../../ui/select'
+import { ZardSheetService } from '../../ui/sheet'
 
 @Component({
 	selector: 'app-dashboard-header',
@@ -34,7 +34,7 @@ import { ZardSelectComponent, ZardSelectItemComponent } from '../../ui/select'
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardHeader {
-	private readonly dialogService = inject(ZardDialogService)
+	private readonly sheetService = inject(ZardSheetService)
 	private readonly authService = inject(AuthService)
 
 	readonly user = this.authService.currentUser
@@ -51,10 +51,11 @@ export class DashboardHeader {
 	}
 
 	openTransfer() {
-		this.dialogService.create({
+		this.sheetService.create({
 			zTitle: 'New Transfer',
 			zContent: TransfersForm,
 			zWidth: '500px',
+			zSide: 'right',
 			zHideFooter: false,
 			zOkText: 'Send Transfer',
 			zOnOk: (instance: TransfersForm) => {
@@ -62,15 +63,16 @@ export class DashboardHeader {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 
 	openTransaction() {
-		this.dialogService.create({
+		this.sheetService.create({
 			zTitle: 'New Transaction',
 			zContent: TransactionsForm,
 			zWidth: '500px',
+			zSide: 'right',
 			zHideFooter: false,
 			zOkText: 'Create Transaction',
 			zOnOk: (instance: TransactionsForm) => {
@@ -78,7 +80,7 @@ export class DashboardHeader {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 
