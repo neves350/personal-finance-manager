@@ -5,16 +5,17 @@ import { PrismaModule } from './infrastructure/db/prisma.module'
 import { MailModule } from './infrastructure/mail/mail.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { BankAccountModule } from './modules/bank-account/bank-account.module'
+import { BudgetModule } from './modules/budget/budget.module'
 import { CardModule } from './modules/card/card.module'
 import { CategoryModule } from './modules/category/category.module'
 import { ExportModule } from './modules/export/export.module'
 import { GoalModule } from './modules/goal/goal.module'
+import { OpenBankingModule } from './modules/open-banking/open-banking.module'
 import { RecurringModule } from './modules/recurring/recurring.module'
 import { StatisticModule } from './modules/statistic/statistic.module'
 import { TransactionModule } from './modules/transaction/transaction.module'
 import { TransferModule } from './modules/transfer/transfer.module'
 import { UsersModule } from './modules/users/users.module'
-import { OpenBankingModule } from './modules/open-banking/open-banking.module';
 
 @Module({
 	imports: [
@@ -34,6 +35,7 @@ import { OpenBankingModule } from './modules/open-banking/open-banking.module';
 		TransferModule,
 		RecurringModule,
 		OpenBankingModule,
+		BudgetModule,
 	],
 	controllers: [],
 	providers: [],
