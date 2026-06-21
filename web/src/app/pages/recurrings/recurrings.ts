@@ -65,7 +65,10 @@ export class Recurrings {
 	readonly hasDetected = computed(() => this.detectedRecurrings().length > 0)
 
 	readonly tabOptions = computed<SegmentedOption[]>(() => [
-		{ value: 'all', label: 'All' },
+		{
+			value: 'all',
+			label: `All${this.recurrings().length > 0 ? ` (${this.recurrings().length})` : ''}`,
+		},
 		{
 			value: 'detected',
 			label: `Detected${this.detectedRecurrings().length > 0 ? ` (${this.detectedRecurrings().length})` : ''}`,
