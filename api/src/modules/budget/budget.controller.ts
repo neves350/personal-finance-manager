@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { BudgetService } from './budget.service'
 import { CreateBudgetDto } from './dtos/create-budget.dto'
+import { UpdateBudgetDto } from './dtos/update-budget.dto'
 
 @ApiTags('Budgets')
 @Controller('budgets')
@@ -48,6 +49,26 @@ export class BudgetController {
 	})
 	async findCurrent(@CurrentUser() user) {
 		return this.budgetService.findCurrent(user.userId)
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Patch(':id')
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'Update a budget',
+		description: 'Updates the budget note. Month and year are immutable.',
+	})
+	async update(
+		@CurrentUser() user,
+		@Param('id') id: string,
+		@Body() dto: UpdateBudgetDto,
+	) {
+		const budget = await this.budgetService.update(user.userId, id, dto)
+
+		return {
+			budget,
+			message: 'Budget updated successfully',
+		}
 	}
 
 	@UseGuards(JwtAuthGuard)

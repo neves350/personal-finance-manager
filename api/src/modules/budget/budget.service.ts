@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	ConflictException,
 	Injectable,
 	NotFoundException,
@@ -8,6 +9,7 @@ import { PrismaClientKnownRequestError } from 'src/generated/prisma/internal/pri
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
 import { NumberHelper } from '../statistic/helpers/number.helper'
 import { CreateBudgetDto } from './dtos/create-budget.dto'
+import { UpdateBudgetDto } from './dtos/update-budget.dto'
 
 type EnvelopeStatus = 'on_track' | 'warning' | 'overspent'
 
@@ -40,6 +42,19 @@ export class BudgetService {
 			}
 			throw error
 		}
+	}
+
+	async update(userId: string, id: string, dto: UpdateBudgetDto) {
+		const budget = await this.prisma.budget.findFirst({
+			where: { id, userId },
+		})
+
+		if (!budget) throw new BadRequestException('Budget not found')
+
+		return this.prisma.budget.update({
+			where: { id },
+			data: { note: dto.note },
+		})
 	}
 
 	async findAll(userId: string) {
