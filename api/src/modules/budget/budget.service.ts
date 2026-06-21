@@ -9,6 +9,7 @@ import { PrismaClientKnownRequestError } from 'src/generated/prisma/internal/pri
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
 import { NumberHelper } from '../statistic/helpers/number.helper'
 import { CreateBudgetDto } from './dtos/create-budget.dto'
+import { CreateEnvelopeDto } from './dtos/create-envelope.dto'
 import { UpdateBudgetDto } from './dtos/update-budget.dto'
 
 type EnvelopeStatus = 'on_track' | 'warning' | 'overspent'
@@ -97,7 +98,13 @@ export class BudgetService {
 				envelopes: {
 					include: {
 						category: {
-							select: { id: true, title: true, icon: true, color: true, type: true },
+							select: {
+								id: true,
+								title: true,
+								icon: true,
+								color: true,
+								type: true,
+							},
 						},
 					},
 				},
@@ -165,6 +172,57 @@ export class BudgetService {
 			updatedAt: budget.updatedAt,
 			envelopes,
 			summary,
+		}
+	}
+
+	async addEnvelope(userId: string, budgetId: string, dto: CreateEnvelopeDto) {
+		const budget = await this.prisma.budget.findFirst({
+			where: { id: budgetId, userId },
+		})
+
+		if (!budget) throw new BadRequestException('Budget not found')
+
+		const category = await this.prisma.category.findFirst({
+			where: { id: dto.categoryId, userId },
+		})
+
+		if (!category) throw new BadRequestException('Category not found')
+
+		if (category.type !== Type.EXPENSE) {
+			throw new BadRequestException(
+				'Only expense categories can be used as envelopes',
+			)
+		}
+
+		try {
+			return await this.prisma.envelope.create({
+				data: {
+					budgetId,
+					categoryId: dto.categoryId,
+					allocatedAmount: dto.allocatedAmount,
+				},
+				include: {
+					category: {
+						select: {
+							id: true,
+							title: true,
+							icon: true,
+							color: true,
+							type: true,
+						},
+					},
+				},
+			})
+		} catch (error) {
+			if (
+				error instanceof PrismaClientKnownRequestError &&
+				error.code === 'P2002'
+			) {
+				throw new ConflictException(
+					'This category already has an envelope in this budget',
+				)
+			}
+			throw error
 		}
 	}
 

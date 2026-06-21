@@ -1,9 +1,20 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common'
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	ParseIntPipe,
+	Patch,
+	Post,
+	UseGuards,
+} from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { BudgetService } from './budget.service'
 import { CreateBudgetDto } from './dtos/create-budget.dto'
+import { CreateEnvelopeDto } from './dtos/create-envelope.dto'
 import { UpdateBudgetDto } from './dtos/update-budget.dto'
 
 @ApiTags('Budgets')
@@ -81,6 +92,31 @@ export class BudgetController {
 	})
 	async delete(@CurrentUser() user, @Param('id') id: string) {
 		return this.budgetService.delete(user.userId, id)
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Post(':budgetId/envelopes')
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'Add envelope to budget',
+		description:
+			'Creates a new envelope linking an expense category to the budget with an allocated amount.',
+	})
+	async addEnvelope(
+		@CurrentUser() user,
+		@Param('budgetId') budgetId: string,
+		@Body() dto: CreateEnvelopeDto,
+	) {
+		const envelope = await this.budgetService.addEnvelope(
+			user.userId,
+			budgetId,
+			dto,
+		)
+
+		return {
+			envelope,
+			message: 'Envelope added successfully',
+		}
 	}
 
 	@UseGuards(JwtAuthGuard)
