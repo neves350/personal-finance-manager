@@ -22,6 +22,7 @@ model User {
   bankAccounts        BankAccount[]
   transfer            Transfer[]
   categories          Category[]
+  budgets             Budget[]
   openBankingCustomer OpenBankingCustomer?
 
   @@map("users")
@@ -197,6 +198,7 @@ model Category {
   transactions Transaction[]
   recurrings   Recurring[]
   goals        Goal[]
+  envelopes    Envelope[]
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -314,4 +316,36 @@ model OpenBankingAccount {
   bankAccount       BankAccount           @relation(fields: [bankAccountId], references: [id], onDelete: Cascade)
 
   @@map("open_banking_accounts")
+}
+
+model Budget {
+  id        String     @id @default(uuid())
+  userId    String     @map("user_id")
+  month     Int
+  year      Int
+  note      String?
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  envelopes Envelope[]
+
+  @@unique([userId, month, year])
+  @@index([userId])
+  @@map("budgets")
+}
+
+model Envelope {
+  id              String   @id @default(uuid())
+  budgetId        String   @map("budget_id")
+  categoryId      String   @map("category_id")
+  allocatedAmount Decimal  @map("allocated_amount") @db.Decimal(12, 2)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  budget          Budget   @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  category        Category @relation(fields: [categoryId], references: [id])
+
+  @@unique([budgetId, categoryId])
+  @@index([budgetId])
+  @@index([categoryId])
+  @@map("envelopes")
 }
