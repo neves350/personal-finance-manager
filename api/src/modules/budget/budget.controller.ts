@@ -16,6 +16,7 @@ import { BudgetService } from './budget.service'
 import { CreateBudgetDto } from './dtos/create-budget.dto'
 import { CreateEnvelopeDto } from './dtos/create-envelope.dto'
 import { UpdateBudgetDto } from './dtos/update-budget.dto'
+import { UpdateEnvelopeDto } from './dtos/update-envelope.dto'
 
 @ApiTags('Budgets')
 @Controller('budgets')
@@ -116,6 +117,33 @@ export class BudgetController {
 		return {
 			envelope,
 			message: 'Envelope added successfully',
+		}
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Patch(':budgetId/envelopes/:id')
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'Update envelope allocation',
+		description:
+			'Updates the allocated amount of an envelope. The category is immutable.',
+	})
+	async updateEnvelope(
+		@CurrentUser() user,
+		@Param('budgetId') budgetId: string,
+		@Param('id') id: string,
+		@Body() dto: UpdateEnvelopeDto,
+	) {
+		const envelope = await this.budgetService.updateEnvelope(
+			user.userId,
+			budgetId,
+			id,
+			dto,
+		)
+
+		return {
+			envelope,
+			message: 'Envelope updated successfully',
 		}
 	}
 

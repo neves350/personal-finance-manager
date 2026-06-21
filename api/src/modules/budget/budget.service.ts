@@ -11,6 +11,7 @@ import { NumberHelper } from '../statistic/helpers/number.helper'
 import { CreateBudgetDto } from './dtos/create-budget.dto'
 import { CreateEnvelopeDto } from './dtos/create-envelope.dto'
 import { UpdateBudgetDto } from './dtos/update-budget.dto'
+import { UpdateEnvelopeDto } from './dtos/update-envelope.dto'
 
 type EnvelopeStatus = 'on_track' | 'warning' | 'overspent'
 
@@ -224,6 +225,35 @@ export class BudgetService {
 			}
 			throw error
 		}
+	}
+
+	async updateEnvelope(
+		userId: string,
+		budgetId: string,
+		envelopeId: string,
+		dto: UpdateEnvelopeDto,
+	) {
+		const envelope = await this.prisma.envelope.findFirst({
+			where: { id: envelopeId, budget: { id: budgetId, userId } },
+		})
+
+		if (!envelope) throw new BadRequestException('Envelope not found')
+
+		return this.prisma.envelope.update({
+			where: { id: envelopeId },
+			data: { allocatedAmount: dto.allocatedAmount },
+			include: {
+				category: {
+					select: {
+						id: true,
+						title: true,
+						icon: true,
+						color: true,
+						type: true,
+					},
+				},
+			},
+		})
 	}
 
 	private async getSpentByCategory(
