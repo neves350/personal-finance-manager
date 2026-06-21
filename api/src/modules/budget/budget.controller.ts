@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
@@ -69,6 +69,18 @@ export class BudgetController {
 			budget,
 			message: 'Budget updated successfully',
 		}
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Delete(':id')
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'Delete a budget',
+		description:
+			'Permanently deletes a budget and all associated envelopes (cascade).',
+	})
+	async delete(@CurrentUser() user, @Param('id') id: string) {
+		return this.budgetService.delete(user.userId, id)
 	}
 
 	@UseGuards(JwtAuthGuard)

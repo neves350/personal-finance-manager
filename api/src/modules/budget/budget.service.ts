@@ -57,6 +57,20 @@ export class BudgetService {
 		})
 	}
 
+	async delete(userId: string, id: string) {
+		const budget = await this.prisma.budget.findFirst({
+			where: { id, userId },
+		})
+
+		if (!budget) throw new BadRequestException('Budget not found')
+
+		await this.prisma.budget.delete({
+			where: { id },
+		})
+
+		return { message: 'Budget deleted successfully' }
+	}
+
 	async findAll(userId: string) {
 		return this.prisma.budget.findMany({
 			where: { userId },
