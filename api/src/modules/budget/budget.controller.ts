@@ -10,6 +10,18 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import {
+	ApiAddEnvelopeResponses,
+	ApiCopyPreviousResponses,
+	ApiCreateBudgetResponses,
+	ApiDeleteBudgetResponses,
+	ApiFindAllBudgetsResponses,
+	ApiFindBudgetResponses,
+	ApiRemoveEnvelopeResponses,
+	ApiTransferEnvelopeResponses,
+	ApiUpdateBudgetResponses,
+	ApiUpdateEnvelopeResponses,
+} from 'src/common/decorators/api-responses/budget-responses.decorator'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { BudgetService } from './budget.service'
@@ -31,6 +43,7 @@ export class BudgetController {
 		summary: 'Create a new budget',
 		description: 'Creates a new budget with month, year and note.',
 	})
+	@ApiCreateBudgetResponses()
 	async create(@Body() dto: CreateBudgetDto, @CurrentUser() user) {
 		const budget = await this.budgetService.create(dto, user.userId)
 
@@ -48,6 +61,7 @@ export class BudgetController {
 		description:
 			'Returns all budgets for the authenticated user, ordered by most recent.',
 	})
+	@ApiFindAllBudgetsResponses()
 	async findAll(@CurrentUser() user) {
 		return this.budgetService.findAll(user.userId)
 	}
@@ -60,6 +74,7 @@ export class BudgetController {
 		description:
 			'Returns the budget for the current month with envelopes and calculated spent amounts.',
 	})
+	@ApiFindBudgetResponses()
 	async findCurrent(@CurrentUser() user) {
 		return this.budgetService.findCurrent(user.userId)
 	}
@@ -71,6 +86,7 @@ export class BudgetController {
 		summary: 'Update a budget',
 		description: 'Updates the budget note. Month and year are immutable.',
 	})
+	@ApiUpdateBudgetResponses()
 	async update(
 		@CurrentUser() user,
 		@Param('id') id: string,
@@ -92,6 +108,7 @@ export class BudgetController {
 		description:
 			'Permanently deletes a budget and all associated envelopes (cascade).',
 	})
+	@ApiDeleteBudgetResponses()
 	async delete(@CurrentUser() user, @Param('id') id: string) {
 		return this.budgetService.delete(user.userId, id)
 	}
@@ -104,6 +121,7 @@ export class BudgetController {
 		description:
 			'Creates a new envelope linking an expense category to the budget with an allocated amount.',
 	})
+	@ApiAddEnvelopeResponses()
 	async addEnvelope(
 		@CurrentUser() user,
 		@Param('budgetId') budgetId: string,
@@ -129,6 +147,7 @@ export class BudgetController {
 		description:
 			'Updates the allocated amount of an envelope. The category is immutable.',
 	})
+	@ApiUpdateEnvelopeResponses()
 	async updateEnvelope(
 		@CurrentUser() user,
 		@Param('budgetId') budgetId: string,
@@ -155,6 +174,7 @@ export class BudgetController {
 		summary: 'Remove envelope from budget',
 		description: 'Permanently removes an envelope from the budget.',
 	})
+	@ApiRemoveEnvelopeResponses()
 	async removeEnvelope(
 		@CurrentUser() user,
 		@Param('budgetId') budgetId: string,
@@ -171,6 +191,7 @@ export class BudgetController {
 		description:
 			'Moves allocated amount from one envelope to another within the same budget.',
 	})
+	@ApiTransferEnvelopeResponses()
 	async transferEnvelopes(
 		@CurrentUser() user,
 		@Param('budgetId') budgetId: string,
@@ -196,6 +217,7 @@ export class BudgetController {
 		description:
 			'Copies all envelopes from the previous month budget into this one with the same categories and amounts.',
 	})
+	@ApiCopyPreviousResponses()
 	async copyFromPrevious(
 		@CurrentUser() user,
 		@Param('id') id: string,
@@ -211,6 +233,7 @@ export class BudgetController {
 		description:
 			'Returns a specific month budget with envelopes and calculated spent amounts.',
 	})
+	@ApiFindBudgetResponses()
 	async findByMonthYear(
 		@CurrentUser() user,
 		@Param('year', ParseIntPipe) year: number,
