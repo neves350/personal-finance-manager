@@ -27,6 +27,18 @@ export class BudgetController {
 	}
 
 	@UseGuards(JwtAuthGuard)
+	@Get()
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'List all budgets',
+		description:
+			'Returns all budgets for the authenticated user, ordered by most recent.',
+	})
+	async findAll(@CurrentUser() user) {
+		return this.budgetService.findAll(user.userId)
+	}
+
+	@UseGuards(JwtAuthGuard)
 	@Get('current')
 	@ApiBearerAuth()
 	@ApiOperation({

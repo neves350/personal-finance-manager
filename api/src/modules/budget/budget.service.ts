@@ -42,6 +42,20 @@ export class BudgetService {
 		}
 	}
 
+	async findAll(userId: string) {
+		return this.prisma.budget.findMany({
+			where: { userId },
+			orderBy: [{ year: 'desc' }, { month: 'desc' }],
+			select: {
+				id: true,
+				month: true,
+				year: true,
+				note: true,
+				createdAt: true,
+			},
+		})
+	}
+
 	async findCurrent(userId: string) {
 		const now = new Date()
 		return this.findByMonthYear(userId, now.getMonth() + 1, now.getFullYear())
