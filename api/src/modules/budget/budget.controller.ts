@@ -189,6 +189,21 @@ export class BudgetController {
 	}
 
 	@UseGuards(JwtAuthGuard)
+	@Post(':id/copy-previous')
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'Copy previous month envelopes',
+		description:
+			'Copies all envelopes from the previous month budget into this one with the same categories and amounts.',
+	})
+	async copyFromPrevious(
+		@CurrentUser() user,
+		@Param('id') id: string,
+	) {
+		return this.budgetService.copyFromPrevious(user.userId, id)
+	}
+
+	@UseGuards(JwtAuthGuard)
 	@Get(':year/:month')
 	@ApiBearerAuth()
 	@ApiOperation({

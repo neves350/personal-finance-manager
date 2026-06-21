@@ -338,6 +338,49 @@ export class BudgetService {
 		}
 	}
 
+	async copyFromPrevious(userId: string, budgetId: string) {
+		const budget = await this.prisma.budget.findFirst({
+			where: { id: budgetId, userId },
+			include: { envelopes: true },
+		})
+
+		if (!budget) throw new BadRequestException('Budget not found')
+
+		if (budget.envelopes.length > 0) {
+			throw new BadRequestException(
+				'Budget already has envelopes. Remove them before copying.',
+			)
+		}
+
+		const prevMonth = budget.month === 1 ? 12 : budget.month - 1
+		const prevYear = budget.month === 1 ? budget.year - 1 : budget.year
+
+		const previousBudget = await this.prisma.budget.findUnique({
+			where: { userId_month_year: { userId, month: prevMonth, year: prevYear } },
+			include: { envelopes: true },
+		})
+
+		if (!previousBudget) {
+			throw new NotFoundException('No budget found for the previous month')
+		}
+
+		if (previousBudget.envelopes.length === 0) {
+			throw new BadRequestException(
+				'Previous month budget has no envelopes to copy',
+			)
+		}
+
+		await this.prisma.envelope.createMany({
+			data: previousBudget.envelopes.map((e) => ({
+				budgetId,
+				categoryId: e.categoryId,
+				allocatedAmount: e.allocatedAmount,
+			})),
+		})
+
+		return this.findByMonthYear(userId, budget.month, budget.year)
+	}
+
 	private async getSpentByCategory(
 		userId: string,
 		month: number,
