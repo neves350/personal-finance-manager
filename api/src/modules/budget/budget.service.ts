@@ -10,6 +10,7 @@ import { PrismaService } from 'src/infrastructure/db/prisma.service'
 import { NumberHelper } from '../statistic/helpers/number.helper'
 import { CreateBudgetDto } from './dtos/create-budget.dto'
 import { CreateEnvelopeDto } from './dtos/create-envelope.dto'
+import { TransferEnvelopeDto } from './dtos/transfer-envelope.dto'
 import { UpdateBudgetDto } from './dtos/update-budget.dto'
 import { UpdateEnvelopeDto } from './dtos/update-envelope.dto'
 
@@ -268,6 +269,73 @@ export class BudgetService {
 		})
 
 		return { message: 'Envelope removed successfully' }
+	}
+
+	async transferBetweenEnvelopes(
+		userId: string,
+		budgetId: string,
+		dto: TransferEnvelopeDto,
+	) {
+		if (dto.fromEnvelopeId === dto.toEnvelopeId) {
+			throw new BadRequestException('Cannot transfer to the same envelope')
+		}
+
+		const [source, target] = await Promise.all([
+			this.prisma.envelope.findFirst({
+				where: { id: dto.fromEnvelopeId, budget: { id: budgetId, userId } },
+			}),
+			this.prisma.envelope.findFirst({
+				where: { id: dto.toEnvelopeId, budget: { id: budgetId, userId } },
+			}),
+		])
+
+		if (!source) throw new BadRequestException('Source envelope not found')
+		if (!target) throw new BadRequestException('Target envelope not found')
+
+		const sourceAmount = NumberHelper.toNumber(source.allocatedAmount)
+		if (dto.amount > sourceAmount) {
+			throw new BadRequestException(
+				'Transfer amount exceeds source envelope allocation',
+			)
+		}
+
+		const [updatedSource, updatedTarget] = await this.prisma.$transaction([
+			this.prisma.envelope.update({
+				where: { id: dto.fromEnvelopeId },
+				data: { allocatedAmount: { decrement: dto.amount } },
+				include: {
+					category: {
+						select: {
+							id: true,
+							title: true,
+							icon: true,
+							color: true,
+							type: true,
+						},
+					},
+				},
+			}),
+			this.prisma.envelope.update({
+				where: { id: dto.toEnvelopeId },
+				data: { allocatedAmount: { increment: dto.amount } },
+				include: {
+					category: {
+						select: {
+							id: true,
+							title: true,
+							icon: true,
+							color: true,
+							type: true,
+						},
+					},
+				},
+			}),
+		])
+
+		return {
+			from: updatedSource,
+			to: updatedTarget,
+		}
 	}
 
 	private async getSpentByCategory(

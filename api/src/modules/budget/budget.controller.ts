@@ -15,6 +15,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { BudgetService } from './budget.service'
 import { CreateBudgetDto } from './dtos/create-budget.dto'
 import { CreateEnvelopeDto } from './dtos/create-envelope.dto'
+import { TransferEnvelopeDto } from './dtos/transfer-envelope.dto'
 import { UpdateBudgetDto } from './dtos/update-budget.dto'
 import { UpdateEnvelopeDto } from './dtos/update-envelope.dto'
 
@@ -160,6 +161,31 @@ export class BudgetController {
 		@Param('id') id: string,
 	) {
 		return this.budgetService.removeEnvelope(user.userId, budgetId, id)
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Post(':budgetId/envelopes/transfer')
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'Transfer between envelopes',
+		description:
+			'Moves allocated amount from one envelope to another within the same budget.',
+	})
+	async transferEnvelopes(
+		@CurrentUser() user,
+		@Param('budgetId') budgetId: string,
+		@Body() dto: TransferEnvelopeDto,
+	) {
+		const result = await this.budgetService.transferBetweenEnvelopes(
+			user.userId,
+			budgetId,
+			dto,
+		)
+
+		return {
+			...result,
+			message: 'Transfer completed successfully',
+		}
 	}
 
 	@UseGuards(JwtAuthGuard)
