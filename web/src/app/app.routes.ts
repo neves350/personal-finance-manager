@@ -112,6 +112,12 @@ export const routes: Routes = [
 					import('./pages/categories/categories').then((m) => m.Categories),
 			},
 			{
+				path: 'budgets',
+				title: 'Budgets',
+				loadComponent: () =>
+					import('./pages/budgets/budgets').then((m) => m.Budgets),
+			},
+			{
 				path: 'goals',
 				title: 'Goals',
 				loadComponent: () => import('./pages/goals/goals').then((m) => m.Goals),

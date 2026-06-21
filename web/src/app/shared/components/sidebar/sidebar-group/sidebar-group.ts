@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 import {
 	ArrowRightLeftIcon,
+	BadgeEuroIcon,
 	ChartColumnIcon,
 	ChartPieIcon,
 	LayoutGridIcon,
@@ -89,6 +90,11 @@ export class SidebarGroup {
 			title: 'Goals',
 			url: '/goals',
 			icon: ChartPieIcon,
+		},
+		{
+			title: 'Budgets',
+			url: '/budgets',
+			icon: BadgeEuroIcon,
 		},
 	]
 
