@@ -70,5 +70,20 @@ export const mockPrisma = {
 		update: jest.fn(),
 		delete: jest.fn(),
 	},
+	budget: {
+		create: jest.fn(),
+		findMany: jest.fn(),
+		findFirst: jest.fn(),
+		findUnique: jest.fn(),
+		update: jest.fn(),
+		delete: jest.fn(),
+	},
+	envelope: {
+		create: jest.fn(),
+		createMany: jest.fn(),
+		findFirst: jest.fn(),
+		update: jest.fn(),
+		delete: jest.fn(),
+	},
 	$transaction: jest.fn(),
 }
