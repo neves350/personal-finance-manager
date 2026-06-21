@@ -7,10 +7,10 @@ import {
 	input,
 } from '@angular/core'
 import { Router } from '@angular/router'
-import { Transaction } from '@core/api/transactions.interface'
+import type { Transaction } from '@core/api/transactions.interface'
 import { TransactionsService } from '@core/services/transactions.service'
 import {
-	EllipsisIcon,
+	EllipsisVerticalIcon,
 	FilesIcon,
 	LandmarkIcon,
 	LucideAngularModule,
@@ -51,7 +51,7 @@ export class TransactionsRow {
 
 	readonly transaction = input.required<Transaction>()
 
-	readonly EllipsisIcon = EllipsisIcon
+	readonly EllipsisVerticalIcon = EllipsisVerticalIcon
 	readonly SquarePenIcon = SquarePenIcon
 	readonly Trash2Icon = Trash2Icon
 	readonly FilesIcon = FilesIcon
@@ -79,41 +79,33 @@ export class TransactionsRow {
 					class: 'text-primary font-medium',
 				}
 			: {
-					dot: 'bg-chart-4 shadow-[0_0_6px_var(--color-chart-4)]',
+					dot: 'bg-warning shadow-[0_0_6px_var(--color-warning)]',
 					label: 'Pending',
-					class: 'text-chart-4 font-medium',
+					class: 'text-warning font-medium',
 				}
 	})
 
-	readonly typeIcon = computed(() => {
+	readonly typeBadge = computed(() => {
 		return this.transaction().type === 'EXPENSE'
 			? {
 					dot: 'bg-destructive shadow-[0_0_6px_var(--color-destructive)]',
-					class: 'text-destructive font-medium',
+					label: 'Expense',
+					class: 'text-destructive',
 				}
 			: {
 					dot: 'bg-primary shadow-[0_0_6px_var(--color-primary)]',
-					class: 'text-primary font-medium',
+					label: 'Income',
+					class: 'text-primary',
 				}
 	})
 
 	readonly formattedAmount = computed(() => {
 		const { amount, type } = this.transaction()
-
-		const formatted = amount
-
-		return type === 'INCOME' ? `+€${formatted}` : `-€${formatted}`
+		return type === 'INCOME' ? `+€${amount}` : `-€${amount}`
 	})
 
 	readonly amountClass = computed(() =>
 		this.transaction().type === 'INCOME' ? 'text-primary' : 'text-destructive',
-	)
-
-	readonly formattedDate = computed(() =>
-		new Date(this.transaction().date).toLocaleDateString('en-US', {
-			month: 'short',
-			day: 'numeric',
-		}),
 	)
 
 	async updateTransaction() {

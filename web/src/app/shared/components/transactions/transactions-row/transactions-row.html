@@ -1,101 +1,77 @@
-<div class="flex items-center gap-4 px-4 py-3 bg-card border rounded-sm">
-  <!-- Description -->
+<div class="flex items-center gap-4 px-4 py-3 glass-card">
+  <!-- Title + Type Badge -->
   <div class="flex-1 min-w-0">
-    <span class="text-xs xl:text-sm font-medium flex flex-col">
+    <p class="text-sm font-medium truncate">
       {{ transaction().title | titlecase }}
-      <div class="flex items-center mt-1" [class]="typeIcon().class">
-        <span class="size-1.5 xl:size-2 rounded-full animate-pulse" [class]="typeIcon().dot"></span>
-        <span class="text-xs ml-2">
-          {{ transaction().type | titlecase }}
-        </span>
-        @if (recurringLabel()) {
-          <button
-            type="button"
-            class="ml-2 flex items-center text-chart-2 hover:text-chart-2/70 transition-colors"
-            [title]="recurringLabel()!"
-            (click)="navigateToRecurring(); $event.stopPropagation()"
-          >
-            <i-lucide [img]="RepeatIcon" class="size-3" />
-          </button>
-        }
-        @if (isOpenBanking()) {
-          <i-lucide [img]="LandmarkIcon" class="size-3 ml-2 text-muted-foreground" />
-        }
+    </p>
+    <div class="flex items-center gap-2 mt-0.5">
+      <div class="flex items-center gap-1.5 text-xs shrink-0" [class]="typeBadge().class">
+        <span class="size-1.5 rounded-full" [class]="typeBadge().dot"></span>
+        {{ typeBadge().label }}
       </div>
-    </span>
+      @if (recurringLabel()) {
+      <button type="button" class="flex items-center text-chart-2 hover:text-chart-2/70 transition-colors"
+        [title]="recurringLabel()!" (click)="navigateToRecurring(); $event.stopPropagation()">
+        <i-lucide [img]="RepeatIcon" class="size-3" />
+      </button>
+      }
+      @if (isOpenBanking()) {
+      <i-lucide [img]="LandmarkIcon" class="size-3 text-muted-foreground" />
+      }
+    </div>
   </div>
 
   <!-- Account -->
-  <div class="hidden xl:block">
+  <div class="hidden xl:block shrink-0">
     <z-badge zShape="soft" class="h-5 p-3 text-muted-foreground" zType="outline">
       {{ transaction().bankAccount?.name }}
     </z-badge>
   </div>
 
-  <!-- Category -->
-  <div class="hidden xl:block">
-    <z-badge zShape="pill" class="h-5 p-3" zType="outline">
-      {{ transaction().category.title }}
-    </z-badge>
-  </div>
+  <!-- Category Name -->
+  <span class="hidden xl:block text-xs text-muted-foreground shrink-0 w-20">
+    {{ transaction().category.title }}
+  </span>
 
   <!-- Status -->
-  <div class="hidden xl:flex items-center gap-2 text-xs xl:text-sm" [class]="statusIcon().class">
-    <span class="size-1.5 xl:size-2 rounded-full animate-pulse" [class]="statusIcon().dot"></span>
+  <div class="hidden xl:flex items-center gap-2 text-xs shrink-0" [class]="statusIcon().class">
+    <span class="size-2 rounded-full" [class]="statusIcon().dot"></span>
     {{ statusIcon().label }}
   </div>
 
   <!-- Amount -->
-  <div class="text-right min-w-20">
-    <span class="text-xs xl:text-sm font-semibold" [class]="amountClass()">
+  <div class="text-right shrink-0 min-w-20">
+    <span class="text-sm font-semibold" [class]="amountClass()">
       {{ formattedAmount() }}
     </span>
   </div>
 
   <!-- Actions -->
-  <div>
+  <div class="shrink-0">
     <z-button zPopover [zContent]="popoverContent" zSize="sm" zShape="circle" zType="ghost">
-      <i-lucide [img]="EllipsisIcon" />
+      <i-lucide [img]="EllipsisVerticalIcon" />
     </z-button>
 
     <ng-template #popoverContent>
       <z-popover class="w-50 items-start">
         <div class="flex flex-col gap-1">
-          <z-button
-            zPopoverClose
-            zType="ghost"
-            zSize="sm"
-            zFull
-            class="w-full justify-start"
-            (click)="duplicateTransaction()"
-          >
+          <z-button zPopoverClose zType="ghost" zSize="sm" zFull class="w-full justify-start"
+            (click)="duplicateTransaction()">
             <i-lucide [img]="FilesIcon" class="h-4 w-4 mr-2" />
             Duplicate
           </z-button>
-          <z-button
-            zPopoverClose
-            zType="ghost"
-            zSize="sm"
-            zFull
-            class="w-full justify-start"
-            (click)="updateTransaction()"
-          >
+          <z-button zPopoverClose zType="ghost" zSize="sm" zFull class="w-full justify-start"
+            (click)="updateTransaction()">
             <i-lucide [img]="SquarePenIcon" class="h-4 w-4 mr-2" />
             Edit
           </z-button>
           @if (!isOpenBanking()) {
-            <z-divider />
-            <z-button
-              zPopoverClose
-              zType="ghost"
-              zSize="sm"
-              zFull
-              class="text-destructive w-full justify-start"
-              (click)="deleteTransaction()"
-            >
-              <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
-              Delete
-            </z-button>
+          <z-divider />
+          <z-button zPopoverClose zType="ghost" zSize="sm" zFull class="text-destructive w-full justify-start"
+            (click)="deleteTransaction()">
+            <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
+            Delete
+          </z-button>
           }
         </div>
       </z-popover>
