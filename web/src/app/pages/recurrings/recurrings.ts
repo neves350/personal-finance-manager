@@ -19,7 +19,6 @@ import { lastValueFrom } from 'rxjs'
 import { RecurringsCard } from '@/shared/components/recurrings/recurrings-card/recurrings-card'
 import { RecurringsForm } from '@/shared/components/recurrings/recurrings-form/recurrings-form'
 import { RecurringsSummary } from '@/shared/components/recurrings/recurrings-summary/recurrings-summary'
-import { ZardBadgeComponent } from '@/shared/components/ui/badge'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
 import { ZardLoaderComponent } from '@/shared/components/ui/loader'
@@ -28,8 +27,8 @@ import {
 	ZardPopoverDirective,
 } from '@/shared/components/ui/popover'
 import {
-	ZardSegmentedComponent,
 	type SegmentedOption,
+	ZardSegmentedComponent,
 } from '@/shared/components/ui/segmented'
 import { ZardSheetService } from '@/shared/components/ui/sheet'
 
@@ -45,7 +44,6 @@ import { ZardSheetService } from '@/shared/components/ui/sheet'
 		ZardLoaderComponent,
 		RecurringsSummary,
 		ZardSegmentedComponent,
-		ZardBadgeComponent,
 	],
 	templateUrl: './recurrings.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -115,7 +113,7 @@ export class Recurrings {
 				return false
 			},
 			zCustomClasses:
-				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 }

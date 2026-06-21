@@ -161,7 +161,7 @@ export class BankAccount implements OnInit {
 				return false
 			},
 			zCustomClasses:
-				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 
@@ -178,7 +178,7 @@ export class BankAccount implements OnInit {
 				return false
 			},
 			zCustomClasses:
-				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 
@@ -190,7 +190,7 @@ export class BankAccount implements OnInit {
 			zWidth: '580px',
 			zHideFooter: true,
 			zCustomClasses:
-				'rounded-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'rounded-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zOnOk: () => {},
 		})
 	}
