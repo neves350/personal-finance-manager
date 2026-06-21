@@ -195,11 +195,9 @@ export class TransactionsService {
 			return 'Yesterday'
 		}
 
-		// "Feb 14, 2026" format — simple and readable
 		return new Date(date).toLocaleDateString('en-US', {
-			month: 'short',
+			month: 'long',
 			day: 'numeric',
-			year: 'numeric',
 		})
 	}
 }
