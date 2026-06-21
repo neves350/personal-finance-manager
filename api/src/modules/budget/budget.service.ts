@@ -256,6 +256,20 @@ export class BudgetService {
 		})
 	}
 
+	async removeEnvelope(userId: string, budgetId: string, envelopeId: string) {
+		const envelope = await this.prisma.envelope.findFirst({
+			where: { id: envelopeId, budget: { id: budgetId, userId } },
+		})
+
+		if (!envelope) throw new BadRequestException('Envelope not found')
+
+		await this.prisma.envelope.delete({
+			where: { id: envelopeId },
+		})
+
+		return { message: 'Envelope removed successfully' }
+	}
+
 	private async getSpentByCategory(
 		userId: string,
 		month: number,

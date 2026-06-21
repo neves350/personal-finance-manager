@@ -148,6 +148,21 @@ export class BudgetController {
 	}
 
 	@UseGuards(JwtAuthGuard)
+	@Delete(':budgetId/envelopes/:id')
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: 'Remove envelope from budget',
+		description: 'Permanently removes an envelope from the budget.',
+	})
+	async removeEnvelope(
+		@CurrentUser() user,
+		@Param('budgetId') budgetId: string,
+		@Param('id') id: string,
+	) {
+		return this.budgetService.removeEnvelope(user.userId, budgetId, id)
+	}
+
+	@UseGuards(JwtAuthGuard)
 	@Get(':year/:month')
 	@ApiBearerAuth()
 	@ApiOperation({
