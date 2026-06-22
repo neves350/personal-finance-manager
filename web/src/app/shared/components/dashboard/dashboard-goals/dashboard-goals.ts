@@ -5,14 +5,20 @@ import {
 	computed,
 	inject,
 } from '@angular/core'
-import type { Goal } from '@core/api/goals.interface'
+import { RouterLink } from '@angular/router'
+import { type Goal, GoalType } from '@core/api/goals.interface'
 import { GoalsService } from '@core/services/goals.service'
-import { CoinsIcon, LucideAngularModule } from 'lucide-angular'
+import {
+	type LucideIconData,
+	LucideAngularModule,
+	PiggyBankIcon,
+	ReceiptIcon,
+} from 'lucide-angular'
 import { ZardCardComponent } from '../../ui/card'
 
 @Component({
 	selector: 'app-dashboard-goals',
-	imports: [ZardCardComponent, LucideAngularModule, CurrencyPipe],
+	imports: [ZardCardComponent, LucideAngularModule, CurrencyPipe, RouterLink],
 	templateUrl: './dashboard-goals.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -20,10 +26,23 @@ export class DashboardGoals {
 	private readonly goalsService = inject(GoalsService)
 
 	readonly hasGoals = this.goalsService.hasGoals
-	readonly CoinsIcon = CoinsIcon
+
+	readonly goalTypeIcons: Record<
+		GoalType,
+		{ icon: LucideIconData; style: string }
+	> = {
+		[GoalType.SAVINGS]: {
+			icon: PiggyBankIcon,
+			style: 'bg-primary/15 text-primary',
+		},
+		[GoalType.SPENDING_LIMIT]: {
+			icon: ReceiptIcon,
+			style: 'bg-destructive/15 text-destructive',
+		},
+	}
 
 	readonly displayGoals = computed(() =>
-		this.goalsService.activeGoals().slice(0, 6),
+		this.goalsService.activeGoals().slice(0, 4),
 	)
 
 	getRemainingAmount(goal: Goal): number {

@@ -4,20 +4,23 @@
   </div>
 
   @if (hasGoals()) {
-  <div class="xl:space-y-5 grid grid-cols-2 xl:grid-cols-3 gap-3 xl:gap-4">
+  <div class="xl:space-y-5 grid grid-cols-2 gap-3 xl:gap-4">
     @for (goal of displayGoals(); track goal.id) {
     <z-card class="mb-1 glass-card">
       <div class="flex items-center gap-3">
-        <div class="rounded-sm bg-primary/15 flex items-center justify-center shrink-0 size-12 mt-2">
-          <span class="text-xs font-bold text-primary">{{ goal.progress }}%</span>
+        <div class="rounded-sm flex items-center justify-center shrink-0 size-12" [class]="goalTypeIcons[goal.type].style">
+          <i-lucide [img]="goalTypeIcons[goal.type].icon" class="size-5" />
         </div>
         <div class="flex-1 min-w-0">
           <div class="flex items-center justify-between mb-1">
             <p class="text-sm font-medium truncate">{{ goal.title }}</p>
             <p class="text-sm font-bold font-display">{{ goal.amount | currency: 'EUR' }}</p>
           </div>
-          <div class="w-full h-1.5 rounded-full bg-secondary">
-            <div class="h-full rounded-full transition-all bg-primary" style="width: {{ goal.progress }}%;"></div>
+          <div class="flex items-center gap-2">
+            <div class="flex-1 h-1.5 rounded-full bg-secondary">
+              <div class="h-full rounded-full transition-all bg-primary" style="width: {{ goal.progress }}%;"></div>
+            </div>
+            <span class="text-xs font-medium text-primary shrink-0">{{ goal.progress }}%</span>
           </div>
           <p class="text-xs text-muted-foreground mt-1">{{ getRemainingAmount(goal) | currency: 'EUR' }} left</p>
         </div>
