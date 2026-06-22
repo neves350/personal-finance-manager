@@ -33,6 +33,7 @@ const BREADCRUMB_MAP: Record<string, BreadcrumbItem[]> = {
 
 	'/goals': [{ label: 'Planning' }, { label: 'Goals' }],
 	'/goal-details': [{ label: 'Planning' }, { label: 'Goal Details' }],
+	'/budgets': [{ label: 'Planning' }, { label: 'Budets' }],
 
 	'/settings': [{ label: 'Others' }, { label: 'Settings' }],
 }
