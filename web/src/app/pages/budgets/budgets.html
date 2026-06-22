@@ -1,0 +1,53 @@
+<main class="p-4 md:p-6 w-full">
+  <div class="max-w-500 mx-auto py-3 xl:py-6 space-y-8">
+    <div class="flex justify-between">
+      <h1 class="flex flex-col page-title">
+        Budgets
+        <span class="page-subtitle">
+          Track your budgets and see if you're on the right track.
+        </span>
+      </h1>
+
+      <div class="flex items-center gap-2">
+        <z-button class="cursor-pointer" zType="default" (click)="openEnvelope()">
+          <i-lucide [img]="PlusIcon" />
+          Envelope
+        </z-button>
+        <z-button class="cursor-pointer" zType="outline" (click)="openEnvelope()">
+          <i-lucide [img]="PlusIcon" />
+          Transfer
+        </z-button>
+        <z-button class="cursor-pointer" zType="outline" (click)="openEnvelope()">
+          <i-lucide [img]="PlusIcon" />
+          Copy Previous Month
+        </z-button>
+      </div>
+    </div>
+
+    @if (isLoading()) {
+    <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
+      <z-loader />
+      <span class="text-sm text-muted-foreground">Loading budgets...</span>
+    </div>
+    } @else if (hasBudgets()) {
+    <app-envelope-list [envelopes]="envelopes()" [budgetId]="budget()!.id" />
+    } @else {
+    <z-card class="dashed-card bg-background mt-4">
+      <div class="flex flex-col items-center justify-center p-6 mt-6">
+        <div class="size-12 flex items-center justify-center rounded-sm bg-primary/20 text-primary mb-4">
+          <i-lucide [img]="BadgeEuroIcon" class="size-5" />
+        </div>
+
+        <div class="flex flex-col items-center text-center">
+          <div class="space-y-2">
+            <p class="font-medium">No budgets added</p>
+            <span class="text-muted-foreground">
+              Set budgets to ...
+            </span>
+          </div>
+        </div>
+      </div>
+    </z-card>
+    }
+  </div>
+</main>
