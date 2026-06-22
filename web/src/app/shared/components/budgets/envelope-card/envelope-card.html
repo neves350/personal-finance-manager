@@ -1,0 +1,72 @@
+<z-card class="flex flex-col glass-card">
+  <!-- Header: Amount + Category + Menu -->
+  <div class="flex items-start justify-between">
+    <div class="grid text-left leading-tight">
+      <span class="text-lg xl:text-xl font-bold font-display">
+        {{ envelope().allocatedAmount | currency: 'EUR' }}
+      </span>
+      <span class="text-sm text-muted-foreground">
+        {{ envelope().category.title }}
+      </span>
+    </div>
+
+    <z-button zPopover [zContent]="popoverContent" zType="sidebarGhost"
+      class="text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors">
+      <i-lucide [img]="EllipsisIcon" class="size-5" />
+    </z-button>
+  </div>
+
+  <!-- Popover Menu -->
+  <ng-template #popoverContent>
+    <z-popover class="w-50 items-start">
+      <div class="flex flex-col gap-1">
+        <z-button zPopoverClose zType="ghost" zSize="sm" zFull (click)="editEnvelope()" class="w-full justify-start">
+          <i-lucide [img]="SquarePenIcon" class="h-4 w-4 mr-2" />
+          Edit
+        </z-button>
+      </div>
+
+      <z-divider />
+
+      <z-button zPopoverClose zType="ghost" zSize="sm" zFull class="text-destructive w-full justify-start"
+        (click)="deleteEnvelope()">
+        <i-lucide [img]="Trash2Icon" class="h-4 w-4 mr-2" />
+        Remove
+      </z-button>
+    </z-popover>
+  </ng-template>
+
+  <!-- Progress Bar -->
+  <div class="mt-4">
+    <z-progress-bar [progress]="envelope().progress" [zType]="progressType()" class="bg-secondary" />
+    <div class="flex justify-between text-xs mt-1">
+      <span [class]="statusBadge().color + ' font-semibold'">
+        {{ envelope().progress }}%
+      </span>
+      <span class="text-muted-foreground">
+        {{ 100 - envelope().progress }}%
+      </span>
+    </div>
+  </div>
+
+  <z-divider />
+
+  <!-- Details -->
+  <div class="grid gap-2 text-sm">
+    <div class="flex justify-between">
+      <span class="text-muted-foreground">Spent</span>
+      <span class="font-medium">{{ envelope().spentAmount | currency: 'EUR' }}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-muted-foreground">Remaining</span>
+      <span class="font-medium">{{ envelope().remainingAmount | currency: 'EUR' }}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-muted-foreground">Status</span>
+      <span [class]="'font-medium flex items-center gap-1.5 ' + statusBadge().color">
+        <span [class]="'size-1.5 rounded-full animate-pulse ' + statusBadge().dot"></span>
+        {{ statusBadge().label }}
+      </span>
+    </div>
+  </div>
+</z-card>
