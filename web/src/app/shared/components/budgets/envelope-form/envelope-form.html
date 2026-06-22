@@ -1,0 +1,48 @@
+<z-divider />
+
+<form [formGroup]="form" class="grid flex-1 auto-rows-min gap-6 px-4 py-4">
+  <!-- Category Select -->
+  @if (!isEditMode()) {
+    <div class="grid gap-2">
+      <label class="text-sm">Category</label>
+      <z-select class="w-full" formControlName="categoryId">
+        @for (category of availableCategories(); track category.id) {
+          <z-select-item [zValue]="$any(category.id)">
+            <span>{{ category.title }}</span>
+          </z-select-item>
+        }
+      </z-select>
+      @if (availableCategories().length === 0) {
+        <span class="text-xs text-muted-foreground">
+          All expense categories are already assigned to envelopes.
+        </span>
+      }
+      @if (form.controls.categoryId.touched && form.controls.categoryId.errors?.['required']) {
+        <span class="text-xs text-destructive">Category is required</span>
+      }
+    </div>
+  }
+
+  <!-- Allocated Amount -->
+  <div class="grid gap-2">
+    <label class="text-sm">Allocated Amount</label>
+    <div class="relative">
+      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+        <i-lucide [img]="EuroIcon" class="size-4" />
+      </span>
+      <input
+        z-input
+        type="number"
+        class="w-full rounded-md border border-zinc-400/50 py-2 pl-10 pr-4 text-sm text-muted-foreground"
+        formControlName="allocatedAmount"
+        placeholder="0.00"
+      />
+    </div>
+    @if (form.controls.allocatedAmount.touched && form.controls.allocatedAmount.errors?.['required']) {
+      <span class="text-xs text-destructive">Amount is required</span>
+    }
+    @if (form.controls.allocatedAmount.touched && form.controls.allocatedAmount.errors?.['min']) {
+      <span class="text-xs text-destructive">Amount must be greater than 0</span>
+    }
+  </div>
+</form>
