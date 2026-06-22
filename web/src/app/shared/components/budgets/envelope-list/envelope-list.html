@@ -1,0 +1,5 @@
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 xl:gap-4 mt-4">
+  @for (envelope of envelopes(); track envelope.id) {
+    <app-envelope-card [envelope]="envelope" [budgetId]="budgetId()" />
+  }
+</div>
