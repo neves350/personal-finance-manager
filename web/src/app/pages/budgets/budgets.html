@@ -8,20 +8,26 @@
         </span>
       </h1>
 
+      @if (hasBudgets()) {
       <div class="flex items-center gap-2">
         <z-button class="cursor-pointer" zType="default" (click)="openEnvelope()">
           <i-lucide [img]="PlusIcon" />
           Envelope
         </z-button>
-        <z-button class="cursor-pointer" zType="outline" (click)="openEnvelope()">
-          <i-lucide [img]="PlusIcon" />
+        @if (envelopes().length >= 2) {
+        <z-button class="cursor-pointer" zType="outline" (click)="openTransfer()">
+          <i-lucide [img]="ArrowLeftRightIcon" />
           Transfer
         </z-button>
-        <z-button class="cursor-pointer" zType="outline" (click)="openEnvelope()">
-          <i-lucide [img]="PlusIcon" />
-          Copy Previous Month
+        }
+        @if (envelopes().length === 0) {
+        <z-button class="cursor-pointer" zType="outline" (click)="copyPrevious()">
+          <i-lucide [img]="CopyIcon" />
+          Copy Previous
         </z-button>
+        }
       </div>
+      }
     </div>
 
     @if (isLoading()) {

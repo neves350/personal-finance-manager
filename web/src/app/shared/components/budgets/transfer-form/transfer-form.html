@@ -1,0 +1,70 @@
+<z-divider />
+
+<form [formGroup]="form" class="grid flex-1 auto-rows-min gap-6 px-4 py-4">
+  <!-- From Envelope Select -->
+  <div class="grid gap-2">
+    <label class="text-sm">From</label>
+    <z-select class="w-full" formControlName="fromEnvelopeId" zPlaceholder="Select source envelope">
+      @for (envelope of envelopes(); track envelope.id) {
+        <z-select-item [zValue]="envelope.id">
+          <span class="flex w-full justify-between gap-4">
+            <span>{{ envelope.category.title }}</span>
+            <span class="text-xs text-muted-foreground">
+              {{ envelope.allocatedAmount | currency: 'EUR' }}
+            </span>
+          </span>
+        </z-select-item>
+      }
+    </z-select>
+    @if (form.controls.fromEnvelopeId.touched && form.controls.fromEnvelopeId.errors?.['required']) {
+      <span class="text-xs text-destructive">Source envelope is required</span>
+    }
+  </div>
+
+  <div class="size-10 grid items-center justify-center justify-self-center rounded-full bg-primary/10 text-primary">
+    <i-lucide [img]="CircleArrowDownIcon" class="size-5" />
+  </div>
+
+  <!-- To Envelope Select -->
+  <div class="grid gap-2">
+    <label class="text-sm">To</label>
+    <z-select class="w-full" formControlName="toEnvelopeId" zPlaceholder="Select destination envelope">
+      @for (envelope of envelopes(); track envelope.id) {
+        <z-select-item [zValue]="envelope.id">
+          <span class="flex w-full justify-between gap-4">
+            <span>{{ envelope.category.title }}</span>
+            <span class="text-xs text-muted-foreground">
+              {{ envelope.allocatedAmount | currency: 'EUR' }}
+            </span>
+          </span>
+        </z-select-item>
+      }
+    </z-select>
+    @if (form.controls.toEnvelopeId.touched && form.controls.toEnvelopeId.errors?.['required']) {
+      <span class="text-xs text-destructive">Destination envelope is required</span>
+    }
+  </div>
+
+  <!-- Amount Input -->
+  <div class="grid gap-2">
+    <label class="text-sm">Amount</label>
+    <div class="relative">
+      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+        <i-lucide [img]="EuroIcon" class="size-4" />
+      </span>
+      <input
+        z-input
+        type="number"
+        class="w-full rounded-md border border-zinc-400/50 py-2 pl-10 pr-4 text-sm text-muted-foreground"
+        formControlName="amount"
+        placeholder="0.00"
+      />
+    </div>
+    @if (form.controls.amount.touched && form.controls.amount.errors?.['required']) {
+      <span class="text-xs text-destructive">Amount is required</span>
+    }
+    @if (form.controls.amount.touched && form.controls.amount.errors?.['min']) {
+      <span class="text-xs text-destructive">Amount must be greater than 0</span>
+    }
+  </div>
+</form>
