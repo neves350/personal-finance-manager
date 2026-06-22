@@ -8,6 +8,7 @@ import {
 	PlusIcon,
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
+import { BudgetSummary } from '@/shared/components/budgets/budget-summary/budget-summary'
 import { EnvelopeForm } from '@/shared/components/budgets/envelope-form/envelope-form'
 import { EnvelopeList } from '@/shared/components/budgets/envelope-list/envelope-list'
 import { TransferForm } from '@/shared/components/budgets/transfer-form/transfer-form'
@@ -24,6 +25,7 @@ import { ZardLoaderComponent } from '@/shared/components/ui/loader'
 		ZardLoaderComponent,
 		ZardCardComponent,
 		EnvelopeList,
+		BudgetSummary,
 	],
 	templateUrl: './budgets.html',
 })
@@ -40,6 +42,7 @@ export class Budgets {
 	readonly isLoading = this.budgetsService.loading
 	readonly budget = this.budgetsService.budget
 	readonly envelopes = this.budgetsService.envelopes
+	readonly summary = this.budgetsService.summary
 
 	ngOnInit(): void {
 		this.budgetsService.loadBudget().subscribe({

@@ -36,6 +36,9 @@
       <span class="text-sm text-muted-foreground">Loading budgets...</span>
     </div>
     } @else if (hasBudgets()) {
+    @if (summary(); as s) {
+      <app-budget-summary [summary]="s" />
+    }
     <app-envelope-list [envelopes]="envelopes()" [budgetId]="budget()!.id" />
     } @else {
     <z-card class="dashed-card bg-background mt-4">

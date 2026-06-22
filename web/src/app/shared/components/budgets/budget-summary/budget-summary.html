@@ -1,0 +1,80 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+  <!-- Budget Usage -->
+  <z-card class="flex flex-col glass-card">
+    <div class="flex items-center justify-between mb-1">
+      <span class="text-sm text-muted-foreground">Budget</span>
+      <span class="text-xs font-medium border rounded-sm px-2 py-0.5 text-muted-foreground uppercase tracking-wider">
+        {{ spentPercent() }}% used
+      </span>
+    </div>
+
+    <span class="text-2xl xl:text-3xl font-bold font-display tracking-tight">
+      {{ summary().totalAllocated | currency: 'EUR' }}
+    </span>
+
+    <div class="mt-3 flex h-2 w-full overflow-hidden rounded-full bg-secondary">
+      <div
+        class="h-full transition-all rounded-full"
+        [class]="spentBarType() === 'destructive' ? 'bg-destructive' : spentBarType() === 'accent' ? 'bg-chart-1' : 'bg-primary'"
+        [style.width.%]="spentPercent()"
+      ></div>
+    </div>
+
+    <div class="flex items-center gap-4 mt-2">
+      <span class="flex items-center gap-1.5 text-xs">
+        <span class="size-2 rounded-full" [class]="spentBarType() === 'destructive' ? 'bg-destructive' : spentBarType() === 'accent' ? 'bg-chart-1' : 'bg-primary'"></span>
+        Spent {{ summary().totalSpent | currency: 'EUR' }}
+      </span>
+      <span class="flex items-center gap-1.5 text-xs text-muted-foreground">
+        <span class="size-2 rounded-full bg-secondary"></span>
+        Remaining {{ summary().totalRemaining | currency: 'EUR' }}
+      </span>
+    </div>
+  </z-card>
+
+  <!-- Envelope Status -->
+  <z-card class="flex flex-col glass-card">
+    <div class="flex items-center justify-between mb-1">
+      <span class="text-sm text-muted-foreground">Envelopes</span>
+      <span class="text-xs font-medium border rounded-sm px-2 py-0.5 text-muted-foreground uppercase tracking-wider">
+        {{ summary().envelopeCount }} total
+      </span>
+    </div>
+
+    <span class="text-2xl xl:text-3xl font-bold font-display tracking-tight">
+      {{ onTrackCount() }}
+      <span class="text-base font-normal text-muted-foreground">on track</span>
+    </span>
+
+    <div class="mt-3 flex h-2 w-full overflow-hidden rounded-full bg-secondary">
+      @if (statusPercent().onTrack > 0) {
+        <div class="h-full bg-primary transition-all" [style.width.%]="statusPercent().onTrack"></div>
+      }
+      @if (statusPercent().warning > 0) {
+        <div class="h-full bg-chart-1 transition-all" [style.width.%]="statusPercent().warning"></div>
+      }
+      @if (statusPercent().overspent > 0) {
+        <div class="h-full bg-destructive transition-all" [style.width.%]="statusPercent().overspent"></div>
+      }
+    </div>
+
+    <div class="flex items-center gap-4 mt-2">
+      <span class="flex items-center gap-1.5 text-xs">
+        <span class="size-2 rounded-full bg-primary"></span>
+        On track {{ onTrackCount() }}
+      </span>
+      @if (summary().warningCount > 0) {
+        <span class="flex items-center gap-1.5 text-xs">
+          <span class="size-2 rounded-full bg-chart-1"></span>
+          Warning {{ summary().warningCount }}
+        </span>
+      }
+      @if (summary().overspentCount > 0) {
+        <span class="flex items-center gap-1.5 text-xs">
+          <span class="size-2 rounded-full bg-destructive"></span>
+          Overspent {{ summary().overspentCount }}
+        </span>
+      }
+    </div>
+  </z-card>
+</div>
