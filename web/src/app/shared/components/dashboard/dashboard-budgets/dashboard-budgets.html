@@ -1,0 +1,41 @@
+<z-card class="h-full">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-base font-semibold font-display">Budget overview</h1>
+    @if (hasBudget()) {
+      <span class="text-xs text-muted-foreground">
+        {{ envelopesAbove80() }} of {{ envelopeCount() }} above 80%
+      </span>
+    }
+  </div>
+
+  @if (hasBudget()) {
+  <div class="space-y-4">
+    @for (envelope of topCritical(); track envelope.id) {
+    <div class="flex items-center gap-3">
+      <div class="rounded-sm flex items-center justify-center shrink-0 size-12 bg-primary/10">
+        <i-lucide [img]="iconMap[envelope.category.icon] ?? iconMap['tag']" class="size-5 text-primary" />
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between mb-1">
+          <p class="text-sm font-medium truncate">{{ envelope.category.title }}</p>
+          <p class="text-sm font-bold font-display">{{ envelope.allocatedAmount | currency: 'EUR' }}</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <z-progress-bar class="flex-1" [progress]="envelope.progress" [zType]="getProgressType(envelope.status)" zSize="sm" />
+          <span class="text-xs font-medium shrink-0"
+            [class]="getProgressType(envelope.status) === 'destructive' ? 'text-destructive' : getProgressType(envelope.status) === 'accent' ? 'text-chart-1' : 'text-primary'">
+            {{ envelope.progress }}%
+          </span>
+        </div>
+        <p class="text-xs text-muted-foreground mt-1">{{ envelope.remainingAmount | currency: 'EUR' }} left</p>
+      </div>
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="flex flex-col items-center justify-center py-8 text-muted-foreground">
+    <p class="text-sm">No budget for {{ monthLabel() }}</p>
+    <a routerLink="/budgets" class="text-primary text-sm mt-2 hover:underline">Create a budget</a>
+  </div>
+  }
+</z-card>

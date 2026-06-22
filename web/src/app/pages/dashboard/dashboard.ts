@@ -4,6 +4,7 @@ import {
 	type StatisticsQueryParams,
 } from '@core/api/statistics.interface'
 import { StatisticsService } from '@core/services/statistics.service'
+import { DashboardBudgets } from '@/shared/components/dashboard/dashboard-budgets/dashboard-budgets'
 import { DashboardCard } from '@/shared/components/dashboard/dashboard-card/dashboard-card'
 import { DashboardCashflow } from '@/shared/components/dashboard/dashboard-cashflow/dashboard-cashflow'
 import { DashboardGoals } from '@/shared/components/dashboard/dashboard-goals/dashboard-goals'
@@ -18,6 +19,7 @@ import { DashboardTransactions } from '@/shared/components/dashboard/dashboard-t
 		DashboardCashflow,
 		DashboardSpending,
 		DashboardGoals,
+		DashboardBudgets,
 		DashboardTransactions,
 		DashboardCard,
 	],
