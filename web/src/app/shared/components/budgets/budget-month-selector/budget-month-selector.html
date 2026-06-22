@@ -1,0 +1,11 @@
+<div class="flex items-center justify-start gap-2 xl:gap-4 mb-6">
+  <z-button zType="ghost" zSize="sm" (click)="prevMonth()">
+    <i-lucide [img]="ChevronLeftIcon" class="size-4" />
+  </z-button>
+  <span class="text-sm font-medium w-20 text-center">{{ monthLabel() }}</span>
+  <z-button zType="ghost" zSize="sm" (click)="nextMonth()">
+    <i-lucide [img]="ChevronRightIcon" class="size-4" />
+  </z-button>
+
+  <z-button class="shrink-0" [zType]="todayButtonType()" zSize="sm" (click)="goToCurrentMonth()">Today</z-button>
+</div>

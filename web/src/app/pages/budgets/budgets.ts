@@ -8,6 +8,7 @@ import {
 	PlusIcon,
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
+import { BudgetMonthSelector } from '@/shared/components/budgets/budget-month-selector/budget-month-selector'
 import { BudgetSummary } from '@/shared/components/budgets/budget-summary/budget-summary'
 import { EnvelopeForm } from '@/shared/components/budgets/envelope-form/envelope-form'
 import { EnvelopeList } from '@/shared/components/budgets/envelope-list/envelope-list'
@@ -26,6 +27,7 @@ import { ZardLoaderComponent } from '@/shared/components/ui/loader'
 		ZardCardComponent,
 		EnvelopeList,
 		BudgetSummary,
+		BudgetMonthSelector,
 	],
 	templateUrl: './budgets.html',
 })
