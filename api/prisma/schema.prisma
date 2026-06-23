@@ -23,6 +23,7 @@ model User {
   transfer            Transfer[]
   categories          Category[]
   budgets             Budget[]
+  notifications       Notification[]
   openBankingCustomer OpenBankingCustomer?
 
   @@map("users")
@@ -348,4 +349,32 @@ model Envelope {
   @@index([budgetId])
   @@index([categoryId])
   @@map("envelopes")
+}
+
+model Notification {
+  id         String           @id @default(uuid())
+  userId     String           @map("user_id")
+  type       NotificationType
+  title      String
+  message    String
+  entityType String           @map("entity_type")
+  entityId   String           @map("entity_id")
+  isRead     Boolean          @default(false) @map("is_read")
+  year       Int
+  month      Int
+  createdAt  DateTime         @default(now()) @map("created_at")
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type, entityType, entityId, year, month], name: "notification_dedup")
+  @@index([userId, isRead])
+  @@index([userId, createdAt])
+  @@map("notifications")
+}
+
+enum NotificationType {
+  RECURRING_INCOME_EXPECTED
+  BUDGET_THRESHOLD_REACHED
+  BUDGET_EXCEEDED
+  GOAL_COMPLETED
+  GOAL_DEADLINE_APPROACHING
 }
