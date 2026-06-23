@@ -10,6 +10,7 @@ import { CardModule } from './modules/card/card.module'
 import { CategoryModule } from './modules/category/category.module'
 import { ExportModule } from './modules/export/export.module'
 import { GoalModule } from './modules/goal/goal.module'
+import { NotificationModule } from './modules/notification/notification.module'
 import { OpenBankingModule } from './modules/open-banking/open-banking.module'
 import { RecurringModule } from './modules/recurring/recurring.module'
 import { StatisticModule } from './modules/statistic/statistic.module'
@@ -36,6 +37,7 @@ import { UsersModule } from './modules/users/users.module'
 		RecurringModule,
 		OpenBankingModule,
 		BudgetModule,
+		NotificationModule,
 	],
 	controllers: [],
 	providers: [],
