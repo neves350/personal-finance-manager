@@ -1,4 +1,4 @@
-# Spendly API
+# Novo Fin API
 
 REST API backend built with **NestJS 11**, **Prisma 7**, and **PostgreSQL**.
 
@@ -17,10 +17,11 @@ src/
 │   ├── category/              #   Default + custom categories
 │   ├── transfer/              #   Account-to-account transfers
 │   ├── recurring/             #   Recurring transaction management
-│   ├── transfer/              #   Account-to-account transfers
 │   ├── statistic/             #   Overview, by-category, trends, daily totals
 │   ├── export/                #   CSV + PDF transaction export
-│   └── goal/                  #   Savings goals + deposits
+│   ├── goal/                  #   Savings goals + deposits
+│   ├── budget/                #   Envelope budgeting + envelopes
+│   └── open-banking/          #   Salt Edge bank connection & sync
 ├── infrastructure/
 │   ├── db/                    #   PrismaService (Neon adapter)
 │   └── mail/                  #   Email service (nodemailer)
@@ -180,6 +181,41 @@ Incoming Request
 | DELETE | `/goals/:id`                | Yes  | Delete goal              |
 | POST   | `/goals/:id/deposits`       | Yes  | Add deposit to goal      |
 | GET    | `/goals/:id/deposits`       | Yes  | List deposits for goal   |
+
+### Budgets (`/budgets`)
+
+| Method | Route                                     | Auth | Description                          |
+| ------ | ----------------------------------------- | ---- | ------------------------------------ |
+| GET    | `/budgets`                                | Yes  | List all budgets                     |
+| POST   | `/budgets`                                | Yes  | Create budget                        |
+| GET    | `/budgets/current`                        | Yes  | Get current month budget             |
+| GET    | `/budgets/:year/:month`                   | Yes  | Get budget by month and year         |
+| PATCH  | `/budgets/:id`                            | Yes  | Update budget                        |
+| DELETE | `/budgets/:id`                            | Yes  | Delete budget (cascades envelopes)   |
+| POST   | `/budgets/:budgetId/envelopes`            | Yes  | Add envelope to budget               |
+| PATCH  | `/budgets/:budgetId/envelopes/:id`        | Yes  | Update envelope allocation           |
+| DELETE | `/budgets/:budgetId/envelopes/:id`        | Yes  | Remove envelope from budget          |
+| POST   | `/budgets/:budgetId/envelopes/transfer`   | Yes  | Transfer between envelopes           |
+| POST   | `/budgets/:id/copy-previous`              | Yes  | Copy envelopes from previous month   |
+
+### Open Banking (`/open-banking`)
+
+| Method | Route                                    | Auth | Description                     |
+| ------ | ---------------------------------------- | ---- | ------------------------------- |
+| POST   | `/open-banking/connect`                  | Yes  | Initiate bank connection        |
+| POST   | `/open-banking/handle-callback`          | Yes  | Handle Salt Edge callback       |
+| GET    | `/open-banking/connections`              | Yes  | List all connections            |
+| GET    | `/open-banking/connections/:id`          | Yes  | Get connection details          |
+| POST   | `/open-banking/connections/:id/refresh`  | Yes  | Refresh connection data         |
+| POST   | `/open-banking/connections/:id/sync`     | Yes  | Sync transactions               |
+| DELETE | `/open-banking/connections/:id`          | Yes  | Disconnect bank                 |
+| GET    | `/open-banking/providers`                | Yes  | List available bank providers   |
+
+### Webhooks (`/webhooks`)
+
+| Method | Route                      | Auth | Description                     |
+| ------ | -------------------------- | ---- | ------------------------------- |
+| POST   | `/webhooks/open-banking`   | No   | Salt Edge webhook receiver      |
 
 ## Key Patterns
 

@@ -1,4 +1,4 @@
-# Spendly Web
+# Novo Fin Web
 
 Angular 21 single-page application with **standalone components**, **signals**, and **TailwindCSS 4**.
 
@@ -15,6 +15,7 @@ src/app/
 │   │   ├── cards.api          #     CardsApi
 │   │   ├── categories.api     #     CategoriesApi
 │   │   ├── goals.api          #     GoalsApi
+│   │   ├── budgets.api        #     BudgetsApi
 │   │   ├── recurrings.api     #     RecurringsApi
 │   │   ├── statistics.api     #     StatisticsApi
 │   │   ├── transfers.api      #     TransfersApi
@@ -26,6 +27,7 @@ src/app/
 │   │   ├── cards              #     CardsService
 │   │   ├── categories         #     CategoriesService
 │   │   ├── goals              #     GoalsService
+│   │   ├── budgets            #     BudgetsService
 │   │   ├── recurrings         #     RecurringsService
 │   │   ├── statistics         #     StatisticsService
 │   │   ├── transactions       #     TransactionsService
@@ -51,6 +53,7 @@ src/app/
 │   ├── bank-account/          #   Account list + detail view (balance history)
 │   ├── cards/                 #   Card list + detail view (cashflow chart)
 │   ├── categories/            #   Category management with icons
+│   ├── budgets/               #   Envelope budgeting per month
 │   ├── goals/                 #   Savings goals + detail view (heatmap)
 │   ├── statistics/            #   Analytics: overview, by-category, trends
 │   └── settings/              #   Profile, security, appearance (theme)
@@ -60,12 +63,16 @@ src/app/
         ├── header/            #   Top navigation bar
         ├── sidebar/           #   Collapsible sidebar navigation
         ├── dashboard/         #   Dashboard widgets
-        │   ├── dashboard-cards/    Balance, income, expense, goal cards
-        │   ├── dashboard-chart/    Category + transaction charts
-        │   └── dashboard-transactions/  Recent transactions list
+        │   ├── dashboard-card/     Balance, income, expense, savings rate
+        │   ├── dashboard-cashflow/ Cashflow chart
+        │   ├── dashboard-spending/ Spending breakdown chart
+        │   ├── dashboard-transactions/  Recent transactions list
+        │   ├── dashboard-goals/    Goals progress widget
+        │   └── dashboard-budgets/  Budget overview widget
         ├── bank-accounts/     #   Account list, card, form, totals
         ├── cards/             #   Card list, preview, form, color picker
         ├── categories/        #   Category list, form, icon picker
+        ├── budgets/           #   Envelope card, list, forms, month selector
         ├── transfers/         #   Transfer form
         ├── ui/                #   Base UI components (button, input, dialog...)
         └── ui/spartan/        #   Spartan UI primitives (shadcn for Angular)
@@ -101,15 +108,15 @@ src/app/
     │  └──────────┘  │
     └────────────────┘
              │
-     ┌───────┼───────┬──────────┬──────────┬──────────┬──────────┐
-     │       │       │          │          │          │          │
- Dashboard Txns Recurrings Accounts  Cards  Categories Goals Statistics Settings
-     │               │          │       │          │       │
-     │               │          │       │     ┌────┴────┐  │
-     │            monthly/   Detail→  Detail→  List   Form  Detail→
-     │            annual    (balance, (cashflow, +IconPicker (heatmap,
-     │                       chart,    chart,              deposits)
-     │                       recent)   recent)
+     ┌───────┼───────┬──────────┬──────────┬──────────┬─────────┬──────────┐
+     │       │       │          │          │          │         │          │
+ Dashboard Txns Recurrings Accounts  Cards  Categories Budgets Goals Statistics Settings
+     │               │          │       │          │     │       │
+     │               │          │       │     ┌────┴──┐  │  Detail→
+     │            monthly/   Detail→  Detail→ List Form  │  (heatmap,
+     │            annual    (balance, (cashflow, +Icon   │   deposits)
+     │                       chart,    chart,  Picker  Envelopes
+     │                       recent)   recent)       MonthSelector
      │
      │    ┌──┴──────────────────┐
      │  List  Card  Form  Totals  Detail→(balance, chart, recent)
@@ -117,13 +124,14 @@ src/app/
   ┌──┴──────────────────────────────┐
   │  DashboardCards                 │
   │  (BalanceCard, IncomeCard,      │
-  │   ExpenseCard, GoalCard)        │
+  │   ExpenseCard, SavingsRateCard) │
   ├─────────────────────────────────┤
-  │  DashboardCharts                │
-  │  (CategoryChart, TxnChart)      │
+  │  DashboardCashflow              │
+  │  DashboardSpending              │
   ├─────────────────────────────────┤
   │  DashboardTransactions          │
-  │  (Recent transaction list)      │
+  │  DashboardGoals                 │
+  │  DashboardBudgets               │
   └─────────────────────────────────┘
 ```
 
@@ -167,6 +175,7 @@ Example: AuthService
 | `/cards`               | auth    | Cards          | Manage cards                     |
 | `/card-details/:id`    | auth    | CardDetails    | Card detail + cashflow chart     |
 | `/categories`          | auth    | Categories     | Manage categories                |
+| `/budgets`             | auth    | Budgets        | Envelope budgeting per month     |
 | `/goals`               | auth    | Goals          | Savings goals + spending limits  |
 | `/goal-details/:id`    | auth    | GoalsDetails   | Goal detail + heatmap            |
 | `/statistics`          | auth    | Statistics     | Analytics & reporting            |
@@ -185,9 +194,9 @@ Example: AuthService
 
 Located in `shared/components/ui/`:
 
-`avatar` `badge` `button` `calendar` `card` `checkbox` `date-picker`
-`dialog` `divider` `dropdown` `icon` `input` `popover` `progress-bar`
-`select` `sheet`
+`accordion` `avatar` `badge` `breadcrumb` `button` `calendar` `card`
+`checkbox` `date-picker` `dialog` `divider` `dropdown` `icon` `input`
+`loader` `pagination` `popover` `progress-bar` `segmented` `select` `sheet`
 
 ### Theming
 

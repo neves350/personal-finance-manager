@@ -35,10 +35,12 @@ A full-stack expense tracking application built as a learning project. Monorepo 
 - Income & expense transaction recording with search and filtering
 - Recurring transactions (monthly/annual) with auto-generation
 - Transfers between accounts with status tracking
+- Envelope budgeting with monthly budgets, category allocations, and envelope transfers
 - Savings goals and spending limits with deposit tracking and heatmap
 - Statistics dashboard with charts (by category, trends, daily totals, overview)
 - CSV and PDF export of transactions
 - Custom & default expense/income categories with icons
+- Open banking integration (Salt Edge) for account syncing
 - Password recovery via email
 - Light & dark theme support
 
@@ -58,7 +60,7 @@ novofin/
 ├── api/                    # NestJS REST API
 │   ├── prisma/             #   Database schema & migrations
 │   └── src/
-│       ├── modules/        #   Feature modules (auth, bank-account, card, ...)
+│       ├── modules/        #   Feature modules (auth, bank-account, budget, ...)
 │       ├── infrastructure/ #   Prisma & mail services
 │       └── common/         #   Shared decorators & utilities
 ├── web/                    # Angular 21 SPA
@@ -87,6 +89,7 @@ novofin/
 │  │ /reset     │   │  (signals) │   │  /accounts       Bank accounts   │  │
 │  └────────────┘   └─────┬──────┘   │  /cards          Card mgmt       │  │
 │                         │          │  /goals          Savings goals   │  │
+│                         │          │  /budgets        Envelope budget │  │
 │                         │          │  /statistics     Analytics       │  │
 │                         │          │  /categories     Categories      │  │
 │                         │          │  /settings       User prefs      │  │
@@ -123,6 +126,7 @@ novofin/
 │  │  /statistics    → overview, by-category, trends, daily    │  │
 │  │  /export        → CSV + PDF transaction export            │  │
 │  │  /goals         → CRUD goals + deposits                   │  │
+│  │  /budgets       → envelope budgeting + transfers          │  │
 │  │  /open-banking  → connect/sync/disconnect bank accounts   │  │
 │  │  /webhooks      → Salt Edge webhook receiver              │  │
 │  └─────────────────────────┬─────────────────────────────────┘  │
@@ -143,9 +147,9 @@ novofin/
 │  ┌────────┐ ┌──────────────┐ ┌───────┐ ┌─────────────┐        │
 │  │ tokens │ │  transfers   │ │ goals │ │ categories  │        │
 │  └────────┘ └──────────────┘ └───────┘ └─────────────┘        │
-│  ┌──────────┐ ┌────────────┐                                  │
-│  │ deposits │ │ recurrings │                                  │
-│  └──────────┘ └────────────┘                                  │
+│  ┌──────────┐ ┌────────────┐ ┌─────────┐ ┌───────────┐        │
+│  │ deposits │ │ recurrings │ │ budgets │ │ envelopes │        │
+│  └──────────┘ └────────────┘ └─────────┘ └───────────┘        │
 │  ┌────────────────────┐ ┌─────────────────────┐               │
 │  │ open_banking_      │ │ open_banking_       │               │
 │  │ customers          │ │ connections         │               │
@@ -258,6 +262,17 @@ novofin/
 │ date             │
 │ cardId    (FK)?  │
 └──────────────────┘
+
+┌──────────────────┐       ┌──────────────────┐
+│     Budget       │       │    Envelope      │
+├──────────────────┤       ├──────────────────┤
+│ id           (PK)│──1:N──│ id           (PK)│
+│ userId       (FK)│       │ budgetId     (FK)│
+│ month            │       │ categoryId   (FK)│
+│ year             │       │ amount           │
+│ note             │       └──────────────────┘
+└──────────────────┘
+  unique(userId, month, year)
 
 Open Banking (Salt Edge integration)
 
