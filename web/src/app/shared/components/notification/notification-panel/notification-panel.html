@@ -6,7 +6,7 @@
   </button>
   @if (displayBadge(); as badge) {
   <span
-    class="bg-destructive text-destructive-foreground pointer-events-none absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full text-[10px] font-bold">
+    class="bg-destructive text-destructive-foreground pointer-events-none absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full text-xs font-bold">
     {{ badge }}
   </span>
   }
@@ -39,22 +39,25 @@
     } @else {
     @for (group of groups(); track group.label) {
     <div>
-      <p class="text-muted-foreground bg-muted/50 px-4 py-1 text-[11px] font-medium">
+      <p class="text-muted-foreground bg-muted/50 px-4 py-1 text-sm font-medium">
         {{ group.label }}
       </p>
       @for (notification of group.notifications; track notification.id) {
       <button class="hover:bg-muted/50 flex w-full items-start gap-2.5 px-4 py-2.5 text-left transition-colors"
         (click)="onNotificationClick(notification); $event.stopPropagation()">
-        <span class="mt-1.5 size-2 shrink-0 rounded-full"
-          [class]="notification.isRead ? 'bg-transparent' : 'bg-primary'"></span>
         <div class="min-w-0 flex-1">
-          <p class="truncate text-sm" [class]="notification.isRead ? 'font-normal' : 'font-semibold'">
-            {{ notification.title }}
-          </p>
-          <p class="text-muted-foreground mt-0.5 line-clamp-2 text-xs leading-relaxed">
+          <div class="flex items-center gap-1.5">
+            <p class="truncate text-sm" [class]="notification.isRead ? 'font-normal' : 'font-semibold'">
+              {{ notification.title }}
+            </p>
+            @if (!notification.isRead) {
+            <span class="bg-primary shadow-[0_0_6px_var(--color-primary) size-1.5 shrink-0 rounded-full"></span>
+            }
+          </div>
+          <p class="text-muted-foreground mt-0.5 line-clamp-2 text-sm leading-relaxed">
             {{ notification.message }}
           </p>
-          <p class="text-muted-foreground mt-0.5 text-[11px]">
+          <p class="text-muted-foreground mt-0.5 text-xs">
             {{ notification.createdAt | date: 'shortTime' }}
           </p>
         </div>
