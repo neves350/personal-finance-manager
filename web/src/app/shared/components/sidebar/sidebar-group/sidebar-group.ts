@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router'
 import {
 	ArrowRightLeftIcon,
 	BadgeEuroIcon,
+	BellIcon,
 	ChartColumnIcon,
 	ChartPieIcon,
 	LayoutGridIcon,
@@ -99,6 +100,11 @@ export class SidebarGroup {
 	]
 
 	readonly settingsItem: MenuItem[] = [
+		{
+			title: 'Notifications',
+			url: '/notifications',
+			icon: BellIcon,
+		},
 		{
 			title: 'System Settings',
 			url: '/settings',
