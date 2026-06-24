@@ -6,17 +6,29 @@ import {
 import { Test, TestingModule } from '@nestjs/testing'
 import { mockPrisma } from 'src/__mocks__/prisma.mock'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
+import { NotificationService } from '../notification/notification.service'
 import { TransactionType } from './dtos/query-transaction.dto'
 import { TransactionService } from './transaction.service'
+
+const mockNotificationService = {
+	checkBudgetThresholds: jest.fn().mockResolvedValue(undefined),
+	checkSpendingLimitGoals: jest.fn().mockResolvedValue(undefined),
+}
 
 describe('TransactionService', () => {
 	let service: TransactionService
 
 	beforeEach(async () => {
+		jest.clearAllMocks()
+
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				TransactionService,
 				{ provide: PrismaService, useValue: mockPrisma },
+				{
+					provide: NotificationService,
+					useValue: mockNotificationService,
+				},
 			],
 		}).compile()
 
@@ -303,6 +315,90 @@ describe('TransactionService', () => {
 			await expect(
 				service.delete('transaction-id', 'other-id'),
 			).rejects.toThrow(ForbiddenException)
+		})
+	})
+
+	describe('notification hooks', () => {
+		it('should fire notification checks after create', async () => {
+			mockPrisma.category.findFirst.mockResolvedValue({
+				id: 'category-id',
+			})
+			mockPrisma.bankAccount.findFirst.mockResolvedValue({
+				id: 'account-id',
+				userId: 'user-id',
+			})
+			mockPrisma.$transaction.mockImplementation(async (fn) =>
+				fn({
+					transaction: {
+						create: jest.fn().mockResolvedValue({
+							id: 'tx-id',
+							title: 'Test',
+							categoryId: 'category-id',
+							date: new Date('2026-06-15'),
+						}),
+					},
+					bankAccount: {
+						update: jest.fn().mockResolvedValue({}),
+					},
+				}),
+			)
+
+			await service.create(
+				{
+					title: 'Test',
+					amount: 50,
+					type: TransactionType.EXPENSE,
+					date: new Date('2026-06-15'),
+					bankAccountId: 'account-id',
+					categoryId: 'category-id',
+				},
+				'user-id',
+			)
+
+			expect(
+				mockNotificationService.checkBudgetThresholds,
+			).toHaveBeenCalledWith('user-id', expect.any(Date))
+			expect(
+				mockNotificationService.checkSpendingLimitGoals,
+			).toHaveBeenCalledWith(
+				'user-id',
+				'category-id',
+				expect.any(Date),
+			)
+		})
+
+		it('should fire notification checks after delete', async () => {
+			mockPrisma.transaction.findFirst.mockResolvedValue({
+				id: 'tx-id',
+				type: 'EXPENSE',
+				amount: '50.00',
+				categoryId: 'cat-1',
+				date: new Date('2026-06-10'),
+				bankAccountId: 'account-id',
+				bankAccount: {
+					id: 'account-id',
+					userId: 'user-id',
+				},
+			})
+			mockPrisma.$transaction.mockImplementation(async (fn) =>
+				fn({
+					transaction: {
+						delete: jest.fn().mockResolvedValue({}),
+					},
+					bankAccount: {
+						update: jest.fn().mockResolvedValue({}),
+					},
+				}),
+			)
+
+			await service.delete('tx-id', 'user-id')
+
+			expect(
+				mockNotificationService.checkBudgetThresholds,
+			).toHaveBeenCalledWith('user-id', expect.any(Date))
+			expect(
+				mockNotificationService.checkSpendingLimitGoals,
+			).toHaveBeenCalledWith('user-id', 'cat-1', expect.any(Date))
 		})
 	})
 })
