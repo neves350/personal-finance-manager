@@ -120,4 +120,5 @@ export const mockNotifications = {
 	getUnreadCount: vi.fn(),
 	markAsRead: vi.fn(),
 	markAllAsRead: vi.fn(),
+	delete: vi.fn(),
 }

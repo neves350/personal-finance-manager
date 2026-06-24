@@ -145,6 +145,36 @@ describe('NotificationsService', () => {
 		})
 	})
 
+	describe('deleteNotification()', () => {
+		it('should remove notification from list', async () => {
+			const n1 = makeNotification({ id: 'n-1', isRead: false })
+			const n2 = makeNotification({ id: 'n-2', isRead: true })
+			service.notifications.set([n1, n2])
+			service.unreadCount.set(1)
+
+			mockNotifications.delete.mockReturnValue(of(undefined))
+
+			await firstValueFrom(service.deleteNotification('n-1'))
+
+			expect(mockNotifications.delete).toHaveBeenCalledWith('n-1')
+			expect(service.notifications()).toEqual([n2])
+			expect(service.unreadCount()).toBe(0)
+		})
+
+		it('should not decrement unread count when deleting a read notification', async () => {
+			const n1 = makeNotification({ id: 'n-1', isRead: true })
+			service.notifications.set([n1])
+			service.unreadCount.set(3)
+
+			mockNotifications.delete.mockReturnValue(of(undefined))
+
+			await firstValueFrom(service.deleteNotification('n-1'))
+
+			expect(service.notifications()).toEqual([])
+			expect(service.unreadCount()).toBe(3)
+		})
+	})
+
 	describe('displayBadge', () => {
 		it('should return null when unread count is 0', () => {
 			service.unreadCount.set(0)
