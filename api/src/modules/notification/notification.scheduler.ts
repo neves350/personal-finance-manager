@@ -53,7 +53,7 @@ export class NotificationScheduler {
 
 				const user = recurring.bankAccount.user
 				const title = 'Recurring Income Expected'
-				const message = `Your recurring income "${recurring.description}" of $${Number(recurring.amount)} is expected in 3 days.`
+				const message = `Your recurring income "${recurring.description}" of €${Number(recurring.amount)} is expected in 3 days.`
 
 				const notification =
 					await this.notificationService.createNotification({
