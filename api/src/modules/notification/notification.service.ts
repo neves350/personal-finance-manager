@@ -1,6 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
+import type { NotificationType } from 'src/generated/prisma/enums'
+import { PrismaClientKnownRequestError } from 'src/generated/prisma/internal/prismaNamespace'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
 import { QueryNotificationDto } from './dtos/query-notification.dto'
+
+interface CreateNotificationData {
+	userId: string
+	type: NotificationType
+	title: string
+	message: string
+	entityType: string
+	entityId: string
+}
 
 @Injectable()
 export class NotificationService {
@@ -60,5 +71,27 @@ export class NotificationService {
 			where: { userId, isRead: false },
 			data: { isRead: true },
 		})
+	}
+
+	async createNotification(data: CreateNotificationData) {
+		const now = new Date()
+
+		try {
+			return await this.prisma.notification.create({
+				data: {
+					...data,
+					year: now.getFullYear(),
+					month: now.getMonth() + 1,
+				},
+			})
+		} catch (error) {
+			if (
+				error instanceof PrismaClientKnownRequestError &&
+				error.code === 'P2002'
+			) {
+				return null
+			}
+			throw error
+		}
 	}
 }
