@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { GoalType } from 'src/generated/prisma/enums'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
+import { NotificationService } from '../notification/notification.service'
 import { CreateDepositDto } from './dtos/create-deposit.dto'
 import { CreateGoalDto } from './dtos/create-goal.dto'
 import { UpdateGoalDto } from './dtos/update-goal.dto'
@@ -15,6 +16,7 @@ export class GoalService {
 		readonly spendingLimitService: SpendingLimitService,
 		private readonly savingsService: SavingsService,
 		private readonly heatmapService: HeatmapService,
+		private readonly notificationService: NotificationService,
 	) {}
 	/**
 	 * CREATE
@@ -402,6 +404,18 @@ export class GoalService {
 			updatedGoal.startDate,
 			updatedGoal.endDate,
 		)
+
+		if (isCompleted) {
+			this.notificationService
+				.checkSavingsGoalCompletion(
+					userId,
+					goalId,
+					finalAmount,
+					finalTarget,
+					updatedGoal.title,
+				)
+				.catch(() => {})
+		}
 
 		return {
 			deposit: { ...deposit, amount: Number(deposit.amount) },

@@ -7,6 +7,7 @@ import {
 
 import { Prisma, type Transaction } from 'src/generated/prisma/client'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
+import { NotificationService } from '../notification/notification.service'
 import { CreateTransactionDto } from './dtos/create-transaction.dto'
 import { PaginatedResult } from './dtos/paginated-result.dto'
 import { QueryTransactionDto } from './dtos/query-transaction.dto'
@@ -14,7 +15,10 @@ import { UpdateTransactionDto } from './dtos/update-transaction.dto'
 
 @Injectable()
 export class TransactionService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(
+		private readonly prisma: PrismaService,
+		private readonly notificationService: NotificationService,
+	) {}
 
 	async create(dto: CreateTransactionDto, userId: string) {
 		const { title, type, date, isPaid, bankAccountId, cardId, categoryId } = dto
@@ -58,8 +62,8 @@ export class TransactionService {
 
 		if (!bankAccount) throw new NotFoundException('Account not found')
 
-		return this.prisma.$transaction(async (tx) => {
-			const transaction = await tx.transaction.create({
+		const transaction = await this.prisma.$transaction(async (tx) => {
+			const created = await tx.transaction.create({
 				data: {
 					title,
 					type,
@@ -81,8 +85,11 @@ export class TransactionService {
 					},
 				},
 			})
-			return transaction
+			return created
 		})
+
+		this.fireNotificationChecks(userId, categoryId, new Date(date))
+		return transaction
 	}
 
 	async findAll(
@@ -266,7 +273,7 @@ export class TransactionService {
 
 		const amount = dto.amount ? new Prisma.Decimal(dto.amount) : undefined
 
-		return this.prisma.$transaction(async (tx) => {
+		const updated = await this.prisma.$transaction(async (tx) => {
 			// reverse old transaction balance
 			const oldReverse =
 				oldTransaction.type === 'INCOME'
@@ -278,7 +285,7 @@ export class TransactionService {
 				data: { balance: { increment: oldReverse } },
 			})
 
-			const updated = await tx.transaction.update({
+			const result = await tx.transaction.update({
 				where: { id: transactionId },
 				data: { ...dto, amount },
 			})
@@ -290,12 +297,17 @@ export class TransactionService {
 				newType === 'INCOME' ? Number(newAmount) : -Number(newAmount)
 
 			await tx.bankAccount.update({
-				where: { id: updated.bankAccountId },
+				where: { id: result.bankAccountId },
 				data: { balance: { increment: newChange } },
 			})
 
-			return updated
+			return result
 		})
+
+		const categoryId = updated.categoryId ?? oldTransaction.categoryId
+		const txDate = updated.date ?? oldTransaction.date
+		this.fireNotificationChecks(userId, categoryId, new Date(txDate))
+		return updated
 	}
 
 	async delete(transactionId: string, userId: string) {
@@ -338,6 +350,24 @@ export class TransactionService {
 			})
 		})
 
+		this.fireNotificationChecks(
+			userId,
+			transaction.categoryId,
+			new Date(transaction.date),
+		)
 		return { message: 'Transaction deleted successfully' }
+	}
+
+	private fireNotificationChecks(
+		userId: string,
+		categoryId: string,
+		date: Date,
+	) {
+		this.notificationService
+			.checkBudgetThresholds(userId, date)
+			.catch(() => {})
+		this.notificationService
+			.checkSpendingLimitGoals(userId, categoryId, date)
+			.catch(() => {})
 	}
 }
