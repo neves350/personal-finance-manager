@@ -1,0 +1,97 @@
+<main class="p-6 xl:p-8">
+  <div class="max-w-500 mx-auto py-3 space-y-6">
+    <div class="flex justify-between items-start">
+      <h1 class="flex flex-col page-title">
+        Notifications
+        <span class="page-subtitle">
+          Stay up to date with your budgets, goals, and recurring income.
+        </span>
+      </h1>
+
+      @if (unreadCount() > 0) {
+        <z-button zType="default" (click)="markAllAsRead()">
+          <i-lucide [img]="CheckCheckIcon" />
+          Mark all as read
+        </z-button>
+      }
+    </div>
+
+    @if (loading()) {
+      <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
+        <z-loader />
+        <span class="text-sm text-muted-foreground">Loading notifications...</span>
+      </div>
+    } @else if (hasNotifications()) {
+      <div class="space-y-6">
+        @for (group of groups(); track group.label) {
+          <div>
+            <h3 class="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3 px-1">
+              {{ group.label }}
+            </h3>
+            <div class="space-y-2">
+              @for (notification of group.notifications; track notification.id) {
+                <z-card
+                  class="cursor-pointer transition-colors hover:bg-muted/50"
+                  (click)="onNotificationClick(notification)"
+                >
+                  <div class="flex items-start gap-3 p-4">
+                    <span
+                      class="mt-1.5 size-2.5 shrink-0 rounded-full"
+                      [class]="notification.isRead ? 'bg-muted' : 'bg-primary'"
+                    ></span>
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-center justify-between gap-4">
+                        <p
+                          class="truncate text-sm"
+                          [class]="notification.isRead ? 'font-normal' : 'font-semibold'"
+                        >
+                          {{ notification.title }}
+                        </p>
+                        <span class="text-muted-foreground shrink-0 text-xs">
+                          {{ notification.createdAt | date: 'short' }}
+                        </span>
+                      </div>
+                      <p class="text-muted-foreground mt-1 text-sm leading-relaxed">
+                        {{ notification.message }}
+                      </p>
+                    </div>
+                  </div>
+                </z-card>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (totalPages() > 1) {
+        <div class="pt-2">
+          <z-pagination
+            zType="table"
+            [zTotal]="totalPages()"
+            [zPageSize]="pageSize"
+            [zTotalItems]="totalItems()"
+            [(zPageIndex)]="currentPage"
+            (zPageIndexChange)="onPageChange($event)"
+            zSize="sm"
+          />
+        </div>
+      }
+    } @else {
+      <z-card class="dashed-card bg-background mt-4">
+        <div class="flex flex-col items-center justify-center p-6">
+          <div class="size-12 flex items-center justify-center rounded-sm bg-primary/20 text-primary mb-4">
+            <i-lucide [img]="BellIcon" class="size-5" />
+          </div>
+          <div class="flex flex-col items-center text-center">
+            <div class="space-y-2">
+              <p class="font-medium">No notifications</p>
+              <span class="text-muted-foreground text-sm">
+                You're all caught up! Notifications will appear here when something needs your attention.
+              </span>
+            </div>
+          </div>
+        </div>
+      </z-card>
+    }
+  </div>
+</main>
