@@ -111,3 +111,13 @@ export const mockTransfers = {
 	findById: vi.fn(),
 	create: vi.fn(),
 }
+
+/**
+ * Notifications
+ */
+export const mockNotifications = {
+	findAll: vi.fn(),
+	getUnreadCount: vi.fn(),
+	markAsRead: vi.fn(),
+	markAllAsRead: vi.fn(),
+}

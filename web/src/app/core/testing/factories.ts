@@ -1,3 +1,7 @@
+import {
+	Notification,
+	NotificationType,
+} from '@core/api/notifications.interface'
 import { BankAccount, BankType } from '@core/api/bank-accounts.interface'
 import { Card, CardColor, CardType } from '@core/api/cards.interface'
 import { Category, CategoryType } from '@core/api/categories.interface'
@@ -12,6 +16,28 @@ import { Transaction, TransactionType } from '@core/api/transactions.interface'
 import { Transfer, TransferStatus } from '@core/api/transfers.interface'
 import { User } from '@core/api/users.interface'
 import { AuthResponse } from '@core/types/auth-response.type'
+
+/**
+ * Notifications
+ */
+export function makeNotification(
+	overrides: Partial<Notification> = {},
+): Notification {
+	return {
+		id: 'notification-1',
+		userId: 'user-1',
+		type: NotificationType.BUDGET_EXCEEDED,
+		title: 'Budget Exceeded: Food',
+		message: "You've spent $120 of your $100 Food budget.",
+		entityType: 'ENVELOPE',
+		entityId: 'envelope-1',
+		isRead: false,
+		year: 2026,
+		month: 6,
+		createdAt: '2026-06-24T10:00:00.000Z',
+		...overrides,
+	}
+}
 
 export function makeUser(overrides: Partial<User> = {}): User {
 	return {
