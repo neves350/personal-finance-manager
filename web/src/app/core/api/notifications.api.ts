@@ -19,6 +19,8 @@ export class NotificationsApi {
 		let params = new HttpParams()
 		if (query.page) params = params.set('page', query.page)
 		if (query.limit) params = params.set('limit', query.limit)
+		if (query.isRead !== undefined) params = params.set('isRead', query.isRead)
+		if (query.search) params = params.set('search', query.search)
 
 		return this.http.get<NotificationsResponse>(this.baseUrl, {
 			params,
@@ -47,5 +49,11 @@ export class NotificationsApi {
 			{},
 			{ withCredentials: true },
 		)
+	}
+
+	delete(id: string): Observable<void> {
+		return this.http.delete<void>(`${this.baseUrl}/${id}`, {
+			withCredentials: true,
+		})
 	}
 }

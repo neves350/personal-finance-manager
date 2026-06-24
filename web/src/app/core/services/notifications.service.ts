@@ -107,6 +107,20 @@ export class NotificationsService {
 		)
 	}
 
+	deleteNotification(id: string): Observable<void> {
+		return this.api.delete(id).pipe(
+			tap(() => {
+				const removed = this.notifications().find((n) => n.id === id)
+				this.notifications.update((list) =>
+					list.filter((n) => n.id !== id),
+				)
+				if (removed && !removed.isRead) {
+					this.unreadCount.update((c) => Math.max(0, c - 1))
+				}
+			}),
+		)
+	}
+
 	togglePanel() {
 		this.panelOpen.update((open) => !open)
 	}

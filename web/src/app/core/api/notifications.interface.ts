@@ -23,6 +23,8 @@ export interface Notification {
 export interface NotificationsQueryParams {
 	page?: number
 	limit?: number
+	isRead?: boolean
+	search?: string
 }
 
 export interface NotificationsPaginationMeta {
