@@ -117,6 +117,99 @@ describe('NotificationService', () => {
 		})
 	})
 
+	describe('delete', () => {
+		it('should delete a notification owned by the user', async () => {
+			mockPrisma.notification.findFirst.mockResolvedValue({
+				id: 'n1',
+				userId: 'user-1',
+			})
+			mockPrisma.notification.delete.mockResolvedValue({})
+
+			await service.delete('n1', 'user-1')
+
+			expect(mockPrisma.notification.findFirst).toHaveBeenCalledWith({
+				where: { id: 'n1', userId: 'user-1' },
+			})
+			expect(mockPrisma.notification.delete).toHaveBeenCalledWith({
+				where: { id: 'n1' },
+			})
+		})
+
+		it('should throw if notification not found', async () => {
+			mockPrisma.notification.findFirst.mockResolvedValue(null)
+
+			await expect(
+				service.delete('invalid', 'user-1'),
+			).rejects.toThrow(NotFoundException)
+		})
+	})
+
+	describe('findAll filtering', () => {
+		it('should filter by isRead when provided', async () => {
+			mockPrisma.notification.count.mockResolvedValue(0)
+			mockPrisma.notification.findMany.mockResolvedValue([])
+
+			await service.findAll('user-1', {
+				page: 1,
+				limit: 20,
+				isRead: false,
+			})
+
+			expect(mockPrisma.notification.count).toHaveBeenCalledWith({
+				where: { userId: 'user-1', isRead: false },
+			})
+			expect(mockPrisma.notification.findMany).toHaveBeenCalledWith(
+				expect.objectContaining({
+					where: { userId: 'user-1', isRead: false },
+				}),
+			)
+		})
+
+		it('should filter by search when provided', async () => {
+			mockPrisma.notification.count.mockResolvedValue(0)
+			mockPrisma.notification.findMany.mockResolvedValue([])
+
+			await service.findAll('user-1', {
+				page: 1,
+				limit: 20,
+				search: 'budget',
+			})
+
+			expect(mockPrisma.notification.count).toHaveBeenCalledWith({
+				where: {
+					userId: 'user-1',
+					OR: [
+						{ title: { contains: 'budget', mode: 'insensitive' } },
+						{ message: { contains: 'budget', mode: 'insensitive' } },
+					],
+				},
+			})
+		})
+
+		it('should combine isRead and search filters', async () => {
+			mockPrisma.notification.count.mockResolvedValue(0)
+			mockPrisma.notification.findMany.mockResolvedValue([])
+
+			await service.findAll('user-1', {
+				page: 1,
+				limit: 20,
+				isRead: true,
+				search: 'goal',
+			})
+
+			expect(mockPrisma.notification.count).toHaveBeenCalledWith({
+				where: {
+					userId: 'user-1',
+					isRead: true,
+					OR: [
+						{ title: { contains: 'goal', mode: 'insensitive' } },
+						{ message: { contains: 'goal', mode: 'insensitive' } },
+					],
+				},
+			})
+		})
+	})
+
 	describe('createNotification', () => {
 		it('should create a notification with current year/month', async () => {
 			const created = { id: 'n1', userId: 'user-1' }

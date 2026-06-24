@@ -92,6 +92,7 @@ export const mockPrisma = {
 		update: jest.fn(),
 		updateMany: jest.fn(),
 		count: jest.fn(),
+		delete: jest.fn(),
 		deleteMany: jest.fn(),
 	},
 	$transaction: jest.fn(),
