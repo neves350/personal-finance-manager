@@ -1,16 +1,23 @@
-import { Component, computed, inject } from '@angular/core'
-import { toSignal } from '@angular/core/rxjs-interop'
+import {
+	Component,
+	computed,
+	DestroyRef,
+	inject,
+	OnInit,
+} from '@angular/core'
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop'
 import { NavigationEnd, Router } from '@angular/router'
-import { BellIcon, LucideAngularModule, SlashIcon } from 'lucide-angular'
-import { filter, map } from 'rxjs'
+import { NotificationsService } from '@core/services/notifications.service'
+import { LucideAngularModule, SlashIcon } from 'lucide-angular'
+import { filter, interval, map, startWith, switchMap } from 'rxjs'
 import { BreadcrumbService } from '@/shared/services/breadcrumb.service'
+import { NotificationPanel } from '../notification/notification-panel/notification-panel'
 import { ProfileButton } from '../profile-button/profile-button'
 import { Theme } from '../theme/theme'
 import {
 	ZardBreadcrumbComponent,
 	ZardBreadcrumbItemComponent,
 } from '../ui/breadcrumb'
-import { ZardButtonComponent } from '../ui/button'
 import { ZardDividerComponent } from '../ui/divider'
 
 interface BreadcrumbItem {
@@ -36,6 +43,7 @@ const BREADCRUMB_MAP: Record<string, BreadcrumbItem[]> = {
 	'/budgets': [{ label: 'Planning' }, { label: 'Budgets' }],
 
 	'/settings': [{ label: 'Others' }, { label: 'Settings' }],
+	'/notifications': [{ label: 'Others' }, { label: 'Notifications' }],
 }
 
 @Component({
@@ -47,19 +55,20 @@ const BREADCRUMB_MAP: Record<string, BreadcrumbItem[]> = {
 		LucideAngularModule,
 		ProfileButton,
 		ZardDividerComponent,
-		ZardButtonComponent,
+		NotificationPanel,
 	],
 	templateUrl: './header.html',
 	host: {
 		class: 'flex-1',
 	},
 })
-export class Header {
+export class Header implements OnInit {
 	private readonly router = inject(Router)
 	private readonly breadcrumbsService = inject(BreadcrumbService)
+	private readonly destroyRef = inject(DestroyRef)
+	private readonly notificationsService = inject(NotificationsService)
 
 	readonly SlashIcon = SlashIcon
-	readonly BellIcon = BellIcon
 
 	private readonly currentUrl = toSignal(
 		this.router.events.pipe(
@@ -82,4 +91,14 @@ export class Header {
 
 		return base
 	})
+
+	ngOnInit() {
+		interval(60_000)
+			.pipe(
+				startWith(0),
+				switchMap(() => this.notificationsService.refreshUnreadCount()),
+				takeUntilDestroyed(this.destroyRef),
+			)
+			.subscribe()
+	}
 }

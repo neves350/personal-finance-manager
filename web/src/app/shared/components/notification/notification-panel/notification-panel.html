@@ -1,0 +1,77 @@
+<!-- Bell trigger -->
+<div class="relative">
+  <button type="button" z-button zType="ghost" z-dropdown [zDropdownMenu]="notifMenu" zAlign="end" (click)="onOpen()"
+    aria-label="Notifications">
+    <i-lucide [img]="BellIcon" class="size-4.5" />
+  </button>
+  @if (displayBadge(); as badge) {
+  <span
+    class="bg-destructive text-destructive-foreground pointer-events-none absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full text-[10px] font-bold">
+    {{ badge }}
+  </span>
+  }
+</div>
+
+<!-- Dropdown content -->
+<z-dropdown-menu-content #notifMenu="zDropdownMenuContent" class="w-90 max-h-120! p-0!">
+  <!-- Header -->
+  <div class="flex items-center justify-between px-4 py-2.5">
+    <h3 class="text-sm font-semibold">Notifications</h3>
+    @if (unreadCount() > 0) {
+    <button type="button"
+      class="text-primary hover:text-primary/80 flex items-center gap-1 text-xs font-medium cursor-pointer"
+      (click)="markAllAsRead(); $event.stopPropagation()">
+      <i-lucide [img]="CheckCheckIcon" class="size-3.5" />
+      Mark all read
+    </button>
+    }
+  </div>
+
+  <z-divider class="-mx-1" />
+
+  <!-- Body -->
+  <div class="max-h-90 overflow-y-auto">
+    @if (groups().length === 0) {
+    <div class="text-muted-foreground flex flex-col items-center justify-center gap-2 py-10">
+      <i-lucide [img]="BellIcon" class="size-8 opacity-30" />
+      <p class="text-xs">No notifications yet</p>
+    </div>
+    } @else {
+    @for (group of groups(); track group.label) {
+    <div>
+      <p class="text-muted-foreground bg-muted/50 px-4 py-1 text-[11px] font-medium">
+        {{ group.label }}
+      </p>
+      @for (notification of group.notifications; track notification.id) {
+      <button class="hover:bg-muted/50 flex w-full items-start gap-2.5 px-4 py-2.5 text-left transition-colors"
+        (click)="onNotificationClick(notification); $event.stopPropagation()">
+        <span class="mt-1.5 size-2 shrink-0 rounded-full"
+          [class]="notification.isRead ? 'bg-transparent' : 'bg-primary'"></span>
+        <div class="min-w-0 flex-1">
+          <p class="truncate text-sm" [class]="notification.isRead ? 'font-normal' : 'font-semibold'">
+            {{ notification.title }}
+          </p>
+          <p class="text-muted-foreground mt-0.5 line-clamp-2 text-xs leading-relaxed">
+            {{ notification.message }}
+          </p>
+          <p class="text-muted-foreground mt-0.5 text-[11px]">
+            {{ notification.createdAt | date: 'shortTime' }}
+          </p>
+        </div>
+      </button>
+      }
+    </div>
+    }
+    }
+  </div>
+
+  <z-divider class="-mx-1" />
+
+  <!-- Footer -->
+  <div class="px-2 py-4">
+    <button class="text-primary hover:text-primary/80 w-full text-center text-xs font-medium cursor-pointer uppercase"
+      (click)="navigateToAll(); $event.stopPropagation()">
+      View all notifications
+    </button>
+  </div>
+</z-dropdown-menu-content>
