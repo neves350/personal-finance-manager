@@ -7,91 +7,140 @@
           Stay up to date with your budgets, goals, and recurring income.
         </span>
       </h1>
-
-      @if (unreadCount() > 0) {
-        <z-button zType="default" (click)="markAllAsRead()">
-          <i-lucide [img]="CheckCheckIcon" />
-          Mark all as read
-        </z-button>
-      }
     </div>
 
-    @if (loading()) {
-      <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">
-        <z-loader />
-        <span class="text-sm text-muted-foreground">Loading notifications...</span>
-      </div>
-    } @else if (hasNotifications()) {
-      <div class="space-y-6">
-        @for (group of groups(); track group.label) {
-          <div>
-            <h3 class="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3 px-1">
-              {{ group.label }}
-            </h3>
-            <div class="space-y-2">
-              @for (notification of group.notifications; track notification.id) {
-                <z-card
-                  class="cursor-pointer transition-colors hover:bg-muted/50"
-                  (click)="onNotificationClick(notification)"
-                >
-                  <div class="flex items-start gap-3 p-4">
-                    <span
-                      class="mt-1.5 size-2.5 shrink-0 rounded-full"
-                      [class]="notification.isRead ? 'bg-muted' : 'bg-primary'"
-                    ></span>
-                    <div class="min-w-0 flex-1">
-                      <div class="flex items-center justify-between gap-4">
-                        <p
-                          class="truncate text-sm"
-                          [class]="notification.isRead ? 'font-normal' : 'font-semibold'"
-                        >
-                          {{ notification.title }}
-                        </p>
-                        <span class="text-muted-foreground shrink-0 text-xs">
-                          {{ notification.createdAt | date: 'short' }}
-                        </span>
-                      </div>
-                      <p class="text-muted-foreground mt-1 text-sm leading-relaxed">
-                        {{ notification.message }}
-                      </p>
-                    </div>
-                  </div>
-                </z-card>
-              }
-            </div>
-          </div>
-        }
-      </div>
-
-      @if (totalPages() > 1) {
-        <div class="pt-2">
-          <z-pagination
-            zType="table"
-            [zTotal]="totalPages()"
-            [zPageSize]="pageSize"
-            [zTotalItems]="totalItems()"
-            [(zPageIndex)]="currentPage"
-            (zPageIndexChange)="onPageChange($event)"
-            zSize="sm"
-          />
-        </div>
-      }
-    } @else {
-      <z-card class="dashed-card bg-background mt-4">
-        <div class="flex flex-col items-center justify-center p-6">
-          <div class="size-12 flex items-center justify-center rounded-sm bg-primary/20 text-primary mb-4">
-            <i-lucide [img]="BellIcon" class="size-5" />
-          </div>
-          <div class="flex flex-col items-center text-center">
-            <div class="space-y-2">
-              <p class="font-medium">No notifications</p>
-              <span class="text-muted-foreground text-sm">
-                You're all caught up! Notifications will appear here when something needs your attention.
-              </span>
-            </div>
-          </div>
-        </div>
-      </z-card>
-    }
+    <z-tab-group zTabsPosition="custom" zActivePosition="custom" (zTabChange)="onTabChange($event)">
+      <z-tab [label]="unreadLabel()">
+        <ng-container *ngTemplateOutlet="notificationContent" />
+      </z-tab>
+      <z-tab [label]="readLabel()">
+        <ng-container *ngTemplateOutlet="notificationContent" />
+      </z-tab>
+    </z-tab-group>
   </div>
 </main>
+
+<ng-template #notificationContent>
+  <!-- Toolbar -->
+  <div class="flex items-center justify-between gap-4 py-4">
+    <div class="relative">
+      <i-lucide [img]="SearchIcon" class="absolute left-1.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+      <input z-input placeholder="Search for notification" class="pl-9 w-50 xl:w-80" [value]="searchQuery()"
+        (input)="onSearch($event)" />
+    </div>
+
+    <div class="flex items-center gap-2">
+      @if (activeTab() === 'unread' && unreadCount() > 0) {
+      <z-button zType="outline" zSize="sm" (click)="markAllAsRead()">
+        <i-lucide [img]="CheckCheckIcon" class="size-4" />
+        Mark all as read
+      </z-button>
+      }
+    </div>
+  </div>
+
+  <!-- Content -->
+  @if (loading()) {
+  <div class="flex flex-col items-center justify-center gap-2 min-h-[40vh]">
+    <z-loader />
+    <span class="text-sm text-muted-foreground">Loading notifications...</span>
+  </div>
+  } @else if (hasNotifications()) {
+  <div>
+    @for (group of groups(); track group.label) {
+    <div>
+      <h3 class="font-medium text-muted-foreground uppercase tracking-wider mb-1 mt-4 px-1">
+        {{ group.label }}
+      </h3>
+      @for (notification of group.notifications; track notification.id) {
+      <div
+        class="flex items-center border-b border-border last:border-b-0 cursor-pointer transition-colors hover:bg-muted/50"
+        (click)="onNotificationClick(notification)">
+        <!-- Unread dot -->
+        <div class="w-6 flex justify-center shrink-0">
+          @if (!notification.isRead) {
+          <span class="bg-primary shadow-[0_0_6px_var(--color-primary) size-2 rounded-full mr-4"></span>
+          }
+        </div>
+
+        <!-- Content -->
+        <div class="min-w-0 flex-1 py-4">
+          <p [class]="notification.isRead ? 'font-normal' : 'font-semibold'">
+            {{ notification.title }}
+          </p>
+          <p class="text-muted-foreground mt-0.5 text-sm leading-relaxed line-clamp-1">
+            {{ notification.message }}
+          </p>
+        </div>
+
+        <!-- Timestamp -->
+        <span class="text-muted-foreground shrink-0 text-sm px-4">
+          {{ notification.createdAt | date: 'medium' }}
+        </span>
+
+        <!-- Actions -->
+        <div class="shrink-0 pr-2" (click)="$event.stopPropagation()">
+          <z-button zPopover [zContent]="popoverContent" zType="ghost" zSize="sm"
+            class="text-muted-foreground hover:text-foreground">
+            <i-lucide [img]="EllipsisIcon" class="size-4" />
+          </z-button>
+
+          <ng-template #popoverContent>
+            <z-popover class="w-44 items-start">
+              @if (!notification.isRead) {
+              <z-button zPopoverClose zType="ghost" zSize="sm" zFull class="w-full justify-start"
+                (click)="markAsRead(notification)">
+                <i-lucide [img]="CheckCheckIcon" class="size-4 mr-2" />
+                Mark as read
+              </z-button>
+              }
+              <z-button zPopoverClose zType="ghost" zSize="sm" zFull class="text-destructive w-full justify-start"
+                (click)="deleteNotification(notification)">
+                <i-lucide [img]="Trash2Icon" class="size-4 mr-2" />
+                Delete
+              </z-button>
+            </z-popover>
+          </ng-template>
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  @if (totalPages() > 1) {
+  <div class="pt-2">
+    <z-pagination zType="table" [zTotal]="totalPages()" [zPageSize]="pageSize" [zTotalItems]="totalItems()"
+      [(zPageIndex)]="currentPage" (zPageIndexChange)="onPageChange($event)" zSize="sm" />
+  </div>
+  }
+  } @else {
+  <z-card class="dashed-card bg-background mt-4">
+    <div class="flex flex-col items-center justify-center p-6">
+      <div class="size-12 flex items-center justify-center rounded-sm bg-primary/20 text-primary mb-4">
+        <i-lucide [img]="BellIcon" class="size-5" />
+      </div>
+      <div class="flex flex-col items-center text-center">
+        <div class="space-y-2">
+          @if (searchQuery()) {
+          <p class="font-medium">No results found</p>
+          <span class="text-muted-foreground text-sm">
+            No notifications match your search.
+          </span>
+          } @else if (activeTab() === 'unread') {
+          <p class="font-medium">No unread notifications</p>
+          <span class="text-muted-foreground text-sm">
+            You're all caught up! Check the "Read" tab for past notifications.
+          </span>
+          } @else {
+          <p class="font-medium">No read notifications</p>
+          <span class="text-muted-foreground text-sm">
+            Notifications you've read will appear here.
+          </span>
+          }
+        </div>
+      </div>
+    </div>
+  </z-card>
+  }
+</ng-template>
