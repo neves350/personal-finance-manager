@@ -2,19 +2,30 @@ import { BadRequestException } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
 import { mockPrisma } from 'src/__mocks__/prisma.mock'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
+import { NotificationService } from '../notification/notification.service'
 import { GoalService } from './goal.service'
 import { HeatmapService } from './helpers/heatmap.helper'
 import { SavingsService } from './helpers/savings.helper'
 import { SpendingLimitService } from './helpers/spending-limit.helper'
 
+const mockNotificationService = {
+	checkSavingsGoalCompletion: jest.fn().mockResolvedValue(undefined),
+}
+
 describe('GoalService', () => {
 	let service: GoalService
 
 	beforeEach(async () => {
+		jest.clearAllMocks()
+
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				GoalService,
 				{ provide: PrismaService, useValue: mockPrisma },
+				{
+					provide: NotificationService,
+					useValue: mockNotificationService,
+				},
 				SpendingLimitService,
 				SavingsService,
 				HeatmapService,
@@ -239,6 +250,62 @@ describe('GoalService', () => {
 			await expect(
 				service.addDeposit('user-id', 'goal-id', { amount: 10 }),
 			).rejects.toThrow(BadRequestException)
+		})
+	})
+
+	describe('addDeposit notification hook', () => {
+		it('should fire notification check when goal is completed', async () => {
+			mockPrisma.goal.findFirst.mockResolvedValue({
+				id: 'goal-id',
+				type: 'SAVINGS',
+				currentAmount: '90',
+				amount: '100',
+				userId: 'user-id',
+			})
+			mockPrisma.$transaction.mockResolvedValue([
+				{ id: 'deposit-id', amount: '10', goalId: 'goal-id' },
+				{
+					id: 'goal-id',
+					title: 'My Goal',
+					amount: '100',
+					currentAmount: '100',
+					startDate: new Date('2026-01-01'),
+					endDate: new Date('2026-12-31'),
+				},
+			])
+
+			await service.addDeposit('user-id', 'goal-id', { amount: 10 })
+
+			expect(
+				mockNotificationService.checkSavingsGoalCompletion,
+			).toHaveBeenCalledWith('user-id', 'goal-id', 100, 100, 'My Goal')
+		})
+
+		it('should not fire notification check when goal is not completed', async () => {
+			mockPrisma.goal.findFirst.mockResolvedValue({
+				id: 'goal-id',
+				type: 'SAVINGS',
+				currentAmount: '0',
+				amount: '100',
+				userId: 'user-id',
+			})
+			mockPrisma.$transaction.mockResolvedValue([
+				{ id: 'deposit-id', amount: '10', goalId: 'goal-id' },
+				{
+					id: 'goal-id',
+					title: 'My Goal',
+					amount: '100',
+					currentAmount: '10',
+					startDate: new Date('2026-01-01'),
+					endDate: new Date('2026-12-31'),
+				},
+			])
+
+			await service.addDeposit('user-id', 'goal-id', { amount: 10 })
+
+			expect(
+				mockNotificationService.checkSavingsGoalCompletion,
+			).not.toHaveBeenCalled()
 		})
 	})
 
