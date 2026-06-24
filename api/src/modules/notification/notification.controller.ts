@@ -14,10 +14,15 @@ export class NotificationController {
 	@Get()
 	@ApiBearerAuth()
 	@ApiOperation({ summary: 'Get all notifications (paginated)' })
-	async findAll(
-		@Query() query: QueryNotificationDto,
-		@CurrentUser() user,
-	) {
+	async findAll(@Query() query: QueryNotificationDto, @CurrentUser() user) {
 		return this.notificationService.findAll(user.userId, query)
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Get('unread-count')
+	@ApiBearerAuth()
+	@ApiOperation({ summary: 'Get unread notifications count' })
+	async getUnreadCount(@CurrentUser() user) {
+		return this.notificationService.getUnreadCount(user.userId)
 	}
 }
