@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger'
-import { Type } from 'class-transformer'
-import { IsInt, IsOptional, Max, Min } from 'class-validator'
+import { Transform, Type } from 'class-transformer'
+import { IsBoolean, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
 
 export class QueryNotificationDto {
 	@IsOptional()
@@ -17,4 +17,15 @@ export class QueryNotificationDto {
 	@Max(50)
 	@ApiPropertyOptional()
 	limit?: number = 20
+
+	@IsOptional()
+	@IsBoolean()
+	@Transform(({ value }) => value === 'true' || value === true)
+	@ApiPropertyOptional({ description: 'Filter by read status' })
+	isRead?: boolean
+
+	@IsOptional()
+	@IsString()
+	@ApiPropertyOptional({ description: 'Search by title or message' })
+	search?: string
 }

@@ -24,9 +24,20 @@ export class NotificationService {
 	) {}
 
 	async findAll(userId: string, dto: QueryNotificationDto) {
-		const { page = 1, limit = 20 } = dto
+		const { page = 1, limit = 20, isRead, search } = dto
 
-		const where = { userId }
+		const where: Record<string, unknown> = { userId }
+
+		if (isRead !== undefined) {
+			where.isRead = isRead
+		}
+
+		if (search) {
+			where.OR = [
+				{ title: { contains: search, mode: 'insensitive' } },
+				{ message: { contains: search, mode: 'insensitive' } },
+			]
+		}
 
 		const total = await this.prisma.notification.count({ where })
 
@@ -77,6 +88,18 @@ export class NotificationService {
 			where: { userId, isRead: false },
 			data: { isRead: true },
 		})
+	}
+
+	async delete(id: string, userId: string) {
+		const notification = await this.prisma.notification.findFirst({
+			where: { id, userId },
+		})
+
+		if (!notification) {
+			throw new NotFoundException('Notification not found')
+		}
+
+		await this.prisma.notification.delete({ where: { id } })
 	}
 
 	async createNotification(data: CreateNotificationData) {
