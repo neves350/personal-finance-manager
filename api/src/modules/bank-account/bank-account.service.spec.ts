@@ -122,7 +122,12 @@ describe('BankAccountService', () => {
 
 	describe('delete', () => {
 		it('should delete an account', async () => {
+			mockPrisma.bankAccount.findUnique.mockResolvedValue({
+				id: 'account-id',
+				isLinked: false,
+			})
 			mockPrisma.card.count.mockResolvedValue(0)
+			mockPrisma.transfer.deleteMany.mockResolvedValue({ count: 0 })
 			mockPrisma.bankAccount.delete.mockResolvedValue({})
 
 			const result = await service.delete('account-id')
@@ -131,6 +136,10 @@ describe('BankAccountService', () => {
 			expect(result).toHaveProperty('success', true)
 		})
 		it('should throw if account has linked cards', async () => {
+			mockPrisma.bankAccount.findUnique.mockResolvedValue({
+				id: 'account-id',
+				isLinked: false,
+			})
 			mockPrisma.card.count.mockResolvedValue(2)
 
 			await expect(service.delete('account-id')).rejects.toThrow(

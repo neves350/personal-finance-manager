@@ -15,6 +15,7 @@ export const mockPrisma = {
 		create: jest.fn(),
 		findMany: jest.fn(),
 		findFirst: jest.fn(),
+		findUnique: jest.fn(),
 		update: jest.fn(),
 		delete: jest.fn(),
 		aggregate: jest.fn(),
@@ -33,8 +34,12 @@ export const mockPrisma = {
 		create: jest.fn(),
 		findUnique: jest.fn(),
 		findMany: jest.fn(),
+		deleteMany: jest.fn(),
 		count: jest.fn(),
 		aggregate: jest.fn(),
+	},
+	openBankingAccount: {
+		findFirst: jest.fn(),
 	},
 	card: {
 		create: jest.fn(),
