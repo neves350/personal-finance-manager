@@ -1,3 +1,23 @@
 /node_modules
 /.vscode
 /nul
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+*.tsbuildinfo
+
+# IDE
+.idea/
+
+# Debug logs
+*.log
+npm-debug.log*

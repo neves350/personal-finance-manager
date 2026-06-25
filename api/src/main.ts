@@ -54,7 +54,7 @@ async function bootstrap() {
 
 	app.use(cookieParser())
 
-	await app.listen(process.env.PORT ?? 3000)
+	await app.listen(process.env.PORT ?? 3000, '0.0.0.0')
 	Logger.log('[INFO] Server listening at http://localhost:3000')
 	Logger.log('[INFO] API Reference available at http://localhost:3000/docs')
 }
