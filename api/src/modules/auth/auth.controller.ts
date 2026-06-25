@@ -36,6 +36,19 @@ export class AuthController {
 		private configService: ConfigService,
 	) {}
 
+	private get isSecureCookies(): boolean {
+		return this.configService.getOrThrow('USE_SECURE_COOKIES').toString().toLowerCase() === 'true'
+	}
+
+	private cookieOptions(maxAge: number) {
+		return {
+			httpOnly: true,
+			secure: this.isSecureCookies,
+			sameSite: this.isSecureCookies ? 'none' as const : 'lax' as const,
+			maxAge,
+		}
+	}
+
 	@Post('users')
 	@ApiOperation({
 		summary: 'Create a new account',
@@ -48,19 +61,8 @@ export class AuthController {
 	) {
 		const { user, tokens } = await this.authService.register(registerUserDto)
 
-		// send the token to client
-		res.cookie('accessToken', tokens.accessToken, {
-			httpOnly: true,
-			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
-			maxAge: 15 * 60 * 1000, // 15 min
-		})
-		res.cookie('refreshToken', tokens.refreshToken, {
-			httpOnly: true,
-			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
-			maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-		})
+		res.cookie('accessToken', tokens.accessToken, this.cookieOptions(15 * 60 * 1000))
+		res.cookie('refreshToken', tokens.refreshToken, this.cookieOptions(7 * 24 * 60 * 60 * 1000))
 
 		return {
 			user,
@@ -80,19 +82,8 @@ export class AuthController {
 	) {
 		const { user, tokens } = await this.authService.login(loginUserDto)
 
-		// send the token to client
-		res.cookie('accessToken', tokens.accessToken, {
-			httpOnly: true,
-			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
-			maxAge: 15 * 60 * 1000, // 15 min
-		})
-		res.cookie('refreshToken', tokens.refreshToken, {
-			httpOnly: true,
-			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
-			maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-		})
+		res.cookie('accessToken', tokens.accessToken, this.cookieOptions(15 * 60 * 1000))
+		res.cookie('refreshToken', tokens.refreshToken, this.cookieOptions(7 * 24 * 60 * 60 * 1000))
 
 		return {
 			user,
@@ -111,19 +102,8 @@ export class AuthController {
 	) {
 		const { user, tokens } = await this.authService.googleAuth(dto.credential)
 
-		// send the token to client
-		res.cookie('accessToken', tokens.accessToken, {
-			httpOnly: true,
-			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
-			maxAge: 15 * 60 * 1000, // 15 min
-		})
-		res.cookie('refreshToken', tokens.refreshToken, {
-			httpOnly: true,
-			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
-			maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-		})
+		res.cookie('accessToken', tokens.accessToken, this.cookieOptions(15 * 60 * 1000))
+		res.cookie('refreshToken', tokens.refreshToken, this.cookieOptions(7 * 24 * 60 * 60 * 1000))
 
 		return {
 			user,
@@ -151,18 +131,8 @@ export class AuthController {
 		const { accessToken, refreshToken: newRefreshToken } =
 			await this.authService.refresh(refreshToken)
 
-		res.cookie('accessToken', accessToken, {
-			httpOnly: true,
-			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
-			maxAge: 15 * 60 * 1000, // 15 min
-		})
-		res.cookie('refreshToken', newRefreshToken, {
-			httpOnly: true,
-			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
-			maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-		})
+		res.cookie('accessToken', accessToken, this.cookieOptions(15 * 60 * 1000))
+		res.cookie('refreshToken', newRefreshToken, this.cookieOptions(7 * 24 * 60 * 60 * 1000))
 
 		return {
 			message: 'Token refreshed successfully',
@@ -209,11 +179,10 @@ export class AuthController {
 	})
 	@ApiLogoutResponses()
 	async logout(@Res({ passthrough: true }) res: Response) {
-		const isSecure = this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true'
 		const clearOptions = {
 			httpOnly: true,
-			secure: isSecure,
-			sameSite: isSecure ? 'none' as const : 'lax' as const,
+			secure: this.isSecureCookies,
+			sameSite: this.isSecureCookies ? 'none' as const : 'lax' as const,
 		}
 		res.clearCookie('accessToken', clearOptions)
 		res.clearCookie('refreshToken', clearOptions)
