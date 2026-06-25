@@ -1,5 +1,5 @@
-import { Directive } from '@angular/core';
-import { classes } from '@spartan-ng/helm/utils';
+import { Directive } from '@angular/core'
+import { classes } from '@spartan-ng/helm/utils'
 
 @Directive({
 	selector: 'div[hlmSidebarGroupContent]',
@@ -10,6 +10,6 @@ import { classes } from '@spartan-ng/helm/utils';
 })
 export class HlmSidebarGroupContent {
 	constructor() {
-		classes(() => 'w-full text-sm');
+		classes(() => 'w-full text-sm')
 	}
 }

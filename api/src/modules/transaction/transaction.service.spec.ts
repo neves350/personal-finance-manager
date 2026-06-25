@@ -360,11 +360,7 @@ describe('TransactionService', () => {
 			).toHaveBeenCalledWith('user-id', expect.any(Date))
 			expect(
 				mockNotificationService.checkSpendingLimitGoals,
-			).toHaveBeenCalledWith(
-				'user-id',
-				'category-id',
-				expect.any(Date),
-			)
+			).toHaveBeenCalledWith('user-id', 'category-id', expect.any(Date))
 		})
 
 		it('should fire notification checks after delete', async () => {

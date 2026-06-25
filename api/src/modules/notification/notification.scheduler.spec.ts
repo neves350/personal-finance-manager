@@ -3,8 +3,8 @@ import { mockMail } from 'src/__mocks__/mail.mock'
 import { mockPrisma } from 'src/__mocks__/prisma.mock'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
 import { MailService } from 'src/infrastructure/mail/mail.service'
-import { NotificationService } from './notification.service'
 import { NotificationScheduler } from './notification.scheduler'
+import { NotificationService } from './notification.service'
 
 const mockNotificationService = {
 	createNotification: jest.fn(),
@@ -64,9 +64,7 @@ describe('NotificationScheduler', () => {
 
 			await scheduler.generateRecurringIncomeNotifications()
 
-			expect(
-				mockNotificationService.createNotification,
-			).toHaveBeenCalledWith(
+			expect(mockNotificationService.createNotification).toHaveBeenCalledWith(
 				expect.objectContaining({
 					userId: 'user-1',
 					type: 'RECURRING_INCOME_EXPECTED',
@@ -108,9 +106,7 @@ describe('NotificationScheduler', () => {
 
 			await scheduler.generateRecurringIncomeNotifications()
 
-			expect(
-				mockNotificationService.createNotification,
-			).not.toHaveBeenCalled()
+			expect(mockNotificationService.createNotification).not.toHaveBeenCalled()
 		})
 
 		it('should not send email when notification is deduped', async () => {
@@ -171,9 +167,7 @@ describe('NotificationScheduler', () => {
 
 			await scheduler.generateGoalDeadlineNotifications()
 
-			expect(
-				mockNotificationService.createNotification,
-			).toHaveBeenCalledWith(
+			expect(mockNotificationService.createNotification).toHaveBeenCalledWith(
 				expect.objectContaining({
 					userId: 'user-1',
 					type: 'GOAL_DEADLINE_APPROACHING',
@@ -209,9 +203,7 @@ describe('NotificationScheduler', () => {
 
 			await scheduler.generateGoalDeadlineNotifications()
 
-			expect(
-				mockNotificationService.createNotification,
-			).not.toHaveBeenCalled()
+			expect(mockNotificationService.createNotification).not.toHaveBeenCalled()
 		})
 
 		it('should aggregate spending for SPENDING_LIMIT goals', async () => {
@@ -246,9 +238,7 @@ describe('NotificationScheduler', () => {
 			await scheduler.generateGoalDeadlineNotifications()
 
 			expect(mockPrisma.transaction.aggregate).toHaveBeenCalled()
-			expect(
-				mockNotificationService.createNotification,
-			).toHaveBeenCalledWith(
+			expect(mockNotificationService.createNotification).toHaveBeenCalledWith(
 				expect.objectContaining({
 					type: 'GOAL_DEADLINE_APPROACHING',
 				}),

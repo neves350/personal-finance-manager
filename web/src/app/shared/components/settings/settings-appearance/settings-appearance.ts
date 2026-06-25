@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core'
+import {
+	ChangeDetectionStrategy,
+	Component,
+	computed,
+	inject,
+} from '@angular/core'
 import { LucideAngularModule, MoonIcon, SunIcon } from 'lucide-angular'
 import { EDarkModes, ZardDarkMode } from '@/shared/services/dark-mode'
 import { ZardSwitchComponent } from '../../ui/switch'

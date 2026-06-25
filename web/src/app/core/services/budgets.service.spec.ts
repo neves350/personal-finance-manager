@@ -18,9 +18,7 @@ const mockSummary: BudgetSummary = {
 	warningCount: 1,
 }
 
-const mockEnvelope = (
-	overrides: Partial<Envelope> = {},
-): Envelope => ({
+const mockEnvelope = (overrides: Partial<Envelope> = {}): Envelope => ({
 	id: 'env-1',
 	categoryId: 'cat-1',
 	allocatedAmount: 300,
@@ -28,7 +26,12 @@ const mockEnvelope = (
 	remainingAmount: 200,
 	progress: 33,
 	status: 'on_track',
-	category: { id: 'cat-1', title: 'Groceries', icon: 'shopping-cart', type: 'EXPENSE' },
+	category: {
+		id: 'cat-1',
+		title: 'Groceries',
+		icon: 'shopping-cart',
+		type: 'EXPENSE',
+	},
 	...overrides,
 })
 
@@ -47,7 +50,12 @@ const mockBudget: Budget = {
 			remainingAmount: 30,
 			progress: 85,
 			status: 'warning',
-			category: { id: 'cat-2', title: 'Transport', icon: 'car', type: 'EXPENSE' },
+			category: {
+				id: 'cat-2',
+				title: 'Transport',
+				icon: 'car',
+				type: 'EXPENSE',
+			},
 		}),
 	],
 	summary: mockSummary,
@@ -158,7 +166,9 @@ describe('BudgetsService', () => {
 		it('topCriticalEnvelopes should sort by remaining amount ascending', () => {
 			service.budget.set(mockBudget)
 			const critical = service.topCriticalEnvelopes()
-			expect(critical[0].remainingAmount).toBeLessThanOrEqual(critical[1].remainingAmount)
+			expect(critical[0].remainingAmount).toBeLessThanOrEqual(
+				critical[1].remainingAmount,
+			)
 		})
 
 		it('topCriticalEnvelopes should return max 3 items', () => {
@@ -243,7 +253,13 @@ describe('BudgetsService', () => {
 
 	describe('create', () => {
 		it('should set budget with empty envelopes and summary', () => {
-			const newBudget = { id: 'new-1', month: 7, year: 2026, createdAt: '2026-07-01', updatedAt: '2026-07-01' }
+			const newBudget = {
+				id: 'new-1',
+				month: 7,
+				year: 2026,
+				createdAt: '2026-07-01',
+				updatedAt: '2026-07-01',
+			}
 			mockBudgetsApi.create.mockReturnValue(
 				of({ budget: newBudget, message: 'Budget created successfully' }),
 			)
@@ -252,8 +268,8 @@ describe('BudgetsService', () => {
 
 			const budget = service.budget()
 			expect(budget).not.toBeNull()
-			expect(budget!.envelopes).toEqual([])
-			expect(budget!.summary.totalAllocated).toBe(0)
+			expect(budget?.envelopes).toEqual([])
+			expect(budget?.summary.totalAllocated).toBe(0)
 			expect(service.loading()).toBe(false)
 		})
 
@@ -277,7 +293,7 @@ describe('BudgetsService', () => {
 
 			service.update('budget-1', { note: 'Updated note' }).subscribe()
 
-			expect(service.budget()!.note).toBe('Updated note')
+			expect(service.budget()?.note).toBe('Updated note')
 			expect(service.loading()).toBe(false)
 		})
 
@@ -287,7 +303,9 @@ describe('BudgetsService', () => {
 				throwError(() => ({ error: { message: 'Update failed' } })),
 			)
 
-			service.update('budget-1', { note: 'fail' }).subscribe({ error: () => {} })
+			service
+				.update('budget-1', { note: 'fail' })
+				.subscribe({ error: () => {} })
 
 			expect(service.error()).toBe('Update failed')
 		})
@@ -325,7 +343,9 @@ describe('BudgetsService', () => {
 			)
 			mockBudgetsApi.findByMonthYear.mockReturnValue(of(mockBudget))
 
-			service.addEnvelope('budget-1', { categoryId: 'cat-1', allocatedAmount: 300 }).subscribe()
+			service
+				.addEnvelope('budget-1', { categoryId: 'cat-1', allocatedAmount: 300 })
+				.subscribe()
 
 			expect(mockBudgetsApi.addEnvelope).toHaveBeenCalledWith('budget-1', {
 				categoryId: 'cat-1',
@@ -339,7 +359,9 @@ describe('BudgetsService', () => {
 				throwError(() => ({ error: { message: 'Duplicate category' } })),
 			)
 
-			service.addEnvelope('budget-1', { categoryId: 'cat-1', allocatedAmount: 300 }).subscribe({ error: () => {} })
+			service
+				.addEnvelope('budget-1', { categoryId: 'cat-1', allocatedAmount: 300 })
+				.subscribe({ error: () => {} })
 
 			expect(service.error()).toBe('Duplicate category')
 		})
@@ -353,11 +375,17 @@ describe('BudgetsService', () => {
 			)
 			mockBudgetsApi.findByMonthYear.mockReturnValue(of(mockBudget))
 
-			service.updateEnvelope('budget-1', 'env-1', { allocatedAmount: 500 }).subscribe()
+			service
+				.updateEnvelope('budget-1', 'env-1', { allocatedAmount: 500 })
+				.subscribe()
 
-			expect(mockBudgetsApi.updateEnvelope).toHaveBeenCalledWith('budget-1', 'env-1', {
-				allocatedAmount: 500,
-			})
+			expect(mockBudgetsApi.updateEnvelope).toHaveBeenCalledWith(
+				'budget-1',
+				'env-1',
+				{
+					allocatedAmount: 500,
+				},
+			)
 			expect(service.loading()).toBe(false)
 		})
 
@@ -366,7 +394,9 @@ describe('BudgetsService', () => {
 				throwError(() => ({ error: { message: 'Envelope not found' } })),
 			)
 
-			service.updateEnvelope('budget-1', 'env-1', { allocatedAmount: 500 }).subscribe({ error: () => {} })
+			service
+				.updateEnvelope('budget-1', 'env-1', { allocatedAmount: 500 })
+				.subscribe({ error: () => {} })
 
 			expect(service.error()).toBe('Envelope not found')
 		})
@@ -380,10 +410,15 @@ describe('BudgetsService', () => {
 			mockBudgetsApi.findByMonthYear.mockReturnValue(of(mockBudget))
 
 			let result = ''
-			service.removeEnvelope('budget-1', 'env-1').subscribe((msg) => (result = msg))
+			service
+				.removeEnvelope('budget-1', 'env-1')
+				.subscribe((msg) => (result = msg))
 
 			expect(result).toBe('Envelope removed successfully')
-			expect(mockBudgetsApi.removeEnvelope).toHaveBeenCalledWith('budget-1', 'env-1')
+			expect(mockBudgetsApi.removeEnvelope).toHaveBeenCalledWith(
+				'budget-1',
+				'env-1',
+			)
 		})
 	})
 
@@ -397,17 +432,22 @@ describe('BudgetsService', () => {
 			mockBudgetsApi.transferEnvelopes.mockReturnValue(of(transferResponse))
 			mockBudgetsApi.findByMonthYear.mockReturnValue(of(mockBudget))
 
-			service.transferEnvelopes('budget-1', {
-				fromEnvelopeId: 'env-1',
-				toEnvelopeId: 'env-2',
-				amount: 50,
-			}).subscribe()
+			service
+				.transferEnvelopes('budget-1', {
+					fromEnvelopeId: 'env-1',
+					toEnvelopeId: 'env-2',
+					amount: 50,
+				})
+				.subscribe()
 
-			expect(mockBudgetsApi.transferEnvelopes).toHaveBeenCalledWith('budget-1', {
-				fromEnvelopeId: 'env-1',
-				toEnvelopeId: 'env-2',
-				amount: 50,
-			})
+			expect(mockBudgetsApi.transferEnvelopes).toHaveBeenCalledWith(
+				'budget-1',
+				{
+					fromEnvelopeId: 'env-1',
+					toEnvelopeId: 'env-2',
+					amount: 50,
+				},
+			)
 			expect(service.loading()).toBe(false)
 		})
 
@@ -416,11 +456,13 @@ describe('BudgetsService', () => {
 				throwError(() => ({ error: { message: 'Insufficient allocation' } })),
 			)
 
-			service.transferEnvelopes('budget-1', {
-				fromEnvelopeId: 'env-1',
-				toEnvelopeId: 'env-2',
-				amount: 99999,
-			}).subscribe({ error: () => {} })
+			service
+				.transferEnvelopes('budget-1', {
+					fromEnvelopeId: 'env-1',
+					toEnvelopeId: 'env-2',
+					amount: 99999,
+				})
+				.subscribe({ error: () => {} })
 
 			expect(service.error()).toBe('Insufficient allocation')
 		})

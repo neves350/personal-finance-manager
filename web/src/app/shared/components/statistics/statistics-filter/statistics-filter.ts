@@ -31,8 +31,7 @@ export class StatisticsFilter {
 	readonly period = signal<PeriodType>(PeriodType.MONTH)
 	readonly filterChange = output<StatisticsQueryParams>()
 
-	private readonly segmented =
-		viewChild<ZardSegmentedComponent>('segmented')
+	private readonly segmented = viewChild<ZardSegmentedComponent>('segmented')
 	private readonly dateRangePicker =
 		viewChild<ZardDateRangePickerComponent>('dateRangePicker')
 

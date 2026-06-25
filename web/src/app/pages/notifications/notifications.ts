@@ -85,9 +85,7 @@ export class Notifications {
 	readonly pageSize = 20
 	readonly readCount = signal(0)
 
-	readonly unreadLabel = computed(
-		() => `Unread (${this.unreadCount()})`,
-	)
+	readonly unreadLabel = computed(() => `Unread (${this.unreadCount()})`)
 	readonly readLabel = computed(() => `Read (${this.readCount()})`)
 
 	readonly totalPages = computed(() => {

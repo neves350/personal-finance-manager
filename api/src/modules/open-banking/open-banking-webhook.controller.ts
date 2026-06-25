@@ -11,9 +11,9 @@ import {
 import { ApiExcludeController } from '@nestjs/swagger'
 import type { Request } from 'express'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
-import { OpenBankingSyncService } from './open-banking-sync.service'
 import { validateWebhookSignature } from './helpers/signature-validator'
 import type { SaltEdgeWebhookPayload } from './interfaces/salt-edge.interface'
+import { OpenBankingSyncService } from './open-banking-sync.service'
 import { SaltEdgeService } from './salt-edge.service'
 
 @ApiExcludeController()
@@ -150,5 +150,4 @@ export class OpenBankingWebhookController {
 			`Connection ${saltEdgeConnectionId} marked as INACTIVE due to error`,
 		)
 	}
-
 }

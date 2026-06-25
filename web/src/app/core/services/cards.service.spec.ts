@@ -121,10 +121,17 @@ describe('CardsService', () => {
 			color: CardColor.BLUE,
 			type: CardType.CREDIT_CARD,
 		}
-		const card = makeCard({ id: 'c-1', name: 'My Card', color: CardColor.BLUE, type: CardType.CREDIT_CARD })
+		const card = makeCard({
+			id: 'c-1',
+			name: 'My Card',
+			color: CardColor.BLUE,
+			type: CardType.CREDIT_CARD,
+		})
 
 		it('should return the created card', async () => {
-			mockCards.create.mockReturnValue(of({ card, message: 'Card created successfully' }))
+			mockCards.create.mockReturnValue(
+				of({ card, message: 'Card created successfully' }),
+			)
 			// needed because tap.next calls this.loadCards().subscribe() as a side effect
 			mockCards.findAll.mockReturnValue(of([card]))
 
@@ -135,7 +142,9 @@ describe('CardsService', () => {
 		})
 
 		it('should call the API with the correct payload', async () => {
-			mockCards.create.mockReturnValue(of({ card, message: 'Card created successfully' }))
+			mockCards.create.mockReturnValue(
+				of({ card, message: 'Card created successfully' }),
+			)
 			mockCards.findAll.mockReturnValue(of([card]))
 
 			await firstValueFrom(service.create(payload))
@@ -144,7 +153,9 @@ describe('CardsService', () => {
 		})
 
 		it('should trigger loadCards() as a side effect and reset loading', async () => {
-			mockCards.create.mockReturnValue(of({ card, message: 'Card created successfully' }))
+			mockCards.create.mockReturnValue(
+				of({ card, message: 'Card created successfully' }),
+			)
 			mockCards.findAll.mockReturnValue(of([card]))
 
 			await firstValueFrom(service.create(payload))
@@ -155,9 +166,13 @@ describe('CardsService', () => {
 		})
 
 		it('should set error signal and reset loading when API fails', async () => {
-			mockCards.create.mockReturnValue(throwError(() => new Error('Create failed')))
+			mockCards.create.mockReturnValue(
+				throwError(() => new Error('Create failed')),
+			)
 
-			await expect(firstValueFrom(service.create(payload))).rejects.toThrow('Create failed')
+			await expect(firstValueFrom(service.create(payload))).rejects.toThrow(
+				'Create failed',
+			)
 
 			// tap({ error }) resets loading and sets the error signal
 			expect(service.loading()).toBe(false)
@@ -168,7 +183,11 @@ describe('CardsService', () => {
 	describe('update()', () => {
 		const cardId = 'c-1'
 		const updatePayload = { name: 'Updated Card' }
-		const updatedCard = makeCard({ id: 'c-1', name: 'Updated Card', type: CardType.CREDIT_CARD })
+		const updatedCard = makeCard({
+			id: 'c-1',
+			name: 'Updated Card',
+			type: CardType.CREDIT_CARD,
+		})
 
 		it('should return the updated card', async () => {
 			mockCards.update.mockReturnValue(of(updatedCard))
@@ -202,7 +221,9 @@ describe('CardsService', () => {
 		})
 
 		it('should set error signal and reset loading when API fails', async () => {
-			mockCards.update.mockReturnValue(throwError(() => new Error('Update failed')))
+			mockCards.update.mockReturnValue(
+				throwError(() => new Error('Update failed')),
+			)
 
 			await expect(
 				firstValueFrom(service.update(cardId, updatePayload)),
@@ -299,7 +320,12 @@ describe('CardsService', () => {
 					type: 'EXPENSE',
 					amount: 100,
 					date: '2026-01-01T00:00:00.000Z',
-					category: { id: 'cat-1', title: 'Food', type: 'EXPENSE', icon: 'utensils' },
+					category: {
+						id: 'cat-1',
+						title: 'Food',
+						type: 'EXPENSE',
+						icon: 'utensils',
+					},
 				},
 			]
 			mockCards.recentTransactions.mockReturnValue(of(transactions))

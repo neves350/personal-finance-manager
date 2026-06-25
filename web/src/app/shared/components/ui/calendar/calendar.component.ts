@@ -6,14 +6,14 @@ import {
 	input,
 	linkedSignal,
 	model,
-	viewChild,
 	ViewEncapsulation,
+	viewChild,
 } from '@angular/core'
 import {
 	outputFromObservable,
 	outputToObservable,
 } from '@angular/core/rxjs-interop'
-import { NG_VALUE_ACCESSOR, type ControlValueAccessor } from '@angular/forms'
+import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 
 import type { ClassValue } from 'clsx'
 import { filter, map } from 'rxjs'

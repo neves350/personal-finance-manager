@@ -1,10 +1,4 @@
-import {
-	Component,
-	computed,
-	DestroyRef,
-	inject,
-	OnInit,
-} from '@angular/core'
+import { Component, computed, DestroyRef, inject, OnInit } from '@angular/core'
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop'
 import { NavigationEnd, Router } from '@angular/router'
 import { NotificationsService } from '@core/services/notifications.service'

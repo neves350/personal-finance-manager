@@ -1,9 +1,9 @@
 import {
 	Activity,
 	Archive,
+	ArrowDown,
 	ArrowLeft,
 	ArrowRight,
-	ArrowDown,
 	ArrowUp,
 	ArrowUpDown,
 	ArrowUpRight,

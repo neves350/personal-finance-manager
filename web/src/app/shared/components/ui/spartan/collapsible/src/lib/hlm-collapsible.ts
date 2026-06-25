@@ -1,5 +1,5 @@
-import { Directive, inject } from '@angular/core';
-import { BrnCollapsible } from '@spartan-ng/brain/collapsible';
+import { Directive, inject } from '@angular/core'
+import { BrnCollapsible } from '@spartan-ng/brain/collapsible'
 
 @Directive({
 	selector: '[hlmCollapsible],hlm-collapsible',
@@ -16,5 +16,5 @@ import { BrnCollapsible } from '@spartan-ng/brain/collapsible';
 	},
 })
 export class HlmCollapsible {
-	protected readonly _collapsible = inject(BrnCollapsible);
+	protected readonly _collapsible = inject(BrnCollapsible)
 }

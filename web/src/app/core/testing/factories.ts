@@ -1,12 +1,12 @@
-import {
-	Notification,
-	NotificationType,
-} from '@core/api/notifications.interface'
 import { BankAccount, BankType } from '@core/api/bank-accounts.interface'
 import { Card, CardColor, CardType } from '@core/api/cards.interface'
 import { Category, CategoryType } from '@core/api/categories.interface'
 import { Deposit } from '@core/api/deposits.interface'
 import { Goal, GoalType } from '@core/api/goals.interface'
+import {
+	Notification,
+	NotificationType,
+} from '@core/api/notifications.interface'
 import {
 	FrequencyType,
 	Recurring,

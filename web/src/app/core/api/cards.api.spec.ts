@@ -237,9 +237,7 @@ describe('CardsApi', () => {
 				result = res
 			})
 
-			const req = httpController.expectOne(
-				`${BASE}/c-1/transactions?limit=5`,
-			)
+			const req = httpController.expectOne(`${BASE}/c-1/transactions?limit=5`)
 			expect(req.request.method).toBe('GET')
 			expect(req.request.withCredentials).toBe(true)
 			req.flush(transactions)
@@ -250,9 +248,7 @@ describe('CardsApi', () => {
 		it('passes custom limit as query param', () => {
 			cardsApi.recentTransactions('c-1', 10).subscribe()
 
-			const req = httpController.expectOne(
-				`${BASE}/c-1/transactions?limit=10`,
-			)
+			const req = httpController.expectOne(`${BASE}/c-1/transactions?limit=10`)
 			expect(req.request.method).toBe('GET')
 			req.flush([])
 		})

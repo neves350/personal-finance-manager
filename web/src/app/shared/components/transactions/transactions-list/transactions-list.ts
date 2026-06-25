@@ -1,10 +1,6 @@
 import { Component, computed, input, signal } from '@angular/core'
 import type { Transaction } from '@core/api/transactions.interface'
-import {
-	ArrowUpDownIcon,
-	LucideAngularModule,
-	type LucideIconData,
-} from 'lucide-angular'
+import { ArrowUpDownIcon, LucideAngularModule } from 'lucide-angular'
 import { ZardButtonComponent } from '../../ui/button'
 import { ZardPaginationComponent } from '../../ui/pagination'
 import { ZardSelectImports } from '../../ui/select/select.imports'
@@ -74,8 +70,7 @@ export class TransactionsList {
 			switch (key) {
 				case 'date':
 					return (
-						(new Date(a.date).getTime() - new Date(b.date).getTime()) *
-						modifier
+						(new Date(a.date).getTime() - new Date(b.date).getTime()) * modifier
 					)
 				case 'description':
 					return a.title.localeCompare(b.title) * modifier

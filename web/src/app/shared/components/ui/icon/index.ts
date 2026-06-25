@@ -1,3 +1,3 @@
-export * from './icon.component';
-export * from './icons';
-export * from './icon.variants';
+export * from './icon.component'
+export * from './icon.variants'
+export * from './icons'

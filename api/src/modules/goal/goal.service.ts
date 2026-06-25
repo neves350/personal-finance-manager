@@ -36,16 +36,14 @@ export class GoalService {
 			const category = await this.prisma.category.findFirst({
 				where: { id: categoryId, userId },
 			})
-			if (!category)
-				throw new BadRequestException('Category not found')
+			if (!category) throw new BadRequestException('Category not found')
 		}
 
 		if (bankAccountId) {
 			const account = await this.prisma.bankAccount.findFirst({
 				where: { id: bankAccountId, userId },
 			})
-			if (!account)
-				throw new BadRequestException('Bank account not found')
+			if (!account) throw new BadRequestException('Bank account not found')
 		}
 
 		const goal = await this.prisma.goal.create({
@@ -428,9 +426,7 @@ export class GoalService {
 				breakdown,
 				paceStatus,
 			},
-			message: isCompleted
-				? 'Goal completed!'
-				: 'Deposit added successfully',
+			message: isCompleted ? 'Goal completed!' : 'Deposit added successfully',
 		}
 	}
 

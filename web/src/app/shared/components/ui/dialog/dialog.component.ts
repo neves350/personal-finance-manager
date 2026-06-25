@@ -19,8 +19,8 @@ import {
 	output,
 	type TemplateRef,
 	type Type,
-	viewChild,
 	type ViewContainerRef,
+	viewChild,
 } from '@angular/core'
 import { ZardButtonComponent } from '@/shared/components/ui/button/button.component'
 import { ZardIconComponent } from '@/shared/components/ui/icon/icon.component'

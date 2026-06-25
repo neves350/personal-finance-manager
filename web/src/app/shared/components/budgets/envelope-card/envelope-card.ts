@@ -114,18 +114,13 @@ export class EnvelopeCard {
 			zOnOk: async () => {
 				try {
 					const message = await lastValueFrom(
-						this.budgetsService.removeEnvelope(
-							this.budgetId(),
-							envelope.id,
-						),
+						this.budgetsService.removeEnvelope(this.budgetId(), envelope.id),
 					)
 					toast.success(message)
 					return true
 				} catch (err: unknown) {
 					const error = err as { error?: { message?: string } }
-					toast.error(
-						error.error?.message || 'Failed to remove envelope',
-					)
+					toast.error(error.error?.message || 'Failed to remove envelope')
 					return false
 				}
 			},

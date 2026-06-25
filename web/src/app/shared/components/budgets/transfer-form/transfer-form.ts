@@ -13,8 +13,8 @@ import {
 	LucideAngularModule,
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
-import { ZardDividerComponent } from '../../ui/divider'
 import { Z_MODAL_DATA, ZardDialogRef } from '../../ui/dialog'
+import { ZardDividerComponent } from '../../ui/divider'
 import { ZardSelectComponent, ZardSelectItemComponent } from '../../ui/select'
 import type { iTransferData } from './transfer-form.interface'
 

@@ -33,11 +33,9 @@ export class UsersService {
 		data: ChangePasswordRequest,
 	): Observable<string> {
 		return this.http
-			.patch<UserActionResponse>(
-				`${this.baseUrl}/${userId}/password`,
-				data,
-				{ withCredentials: true },
-			)
+			.patch<UserActionResponse>(`${this.baseUrl}/${userId}/password`, data, {
+				withCredentials: true,
+			})
 			.pipe(map((response) => response.message))
 	}
 

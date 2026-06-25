@@ -1,5 +1,5 @@
-import { Directive } from '@angular/core';
-import { classes } from '@spartan-ng/helm/utils';
+import { Directive } from '@angular/core'
+import { classes } from '@spartan-ng/helm/utils'
 
 @Directive({
 	selector: 'li[hlmSidebarMenuSubItem]',
@@ -10,6 +10,6 @@ import { classes } from '@spartan-ng/helm/utils';
 })
 export class HlmSidebarMenuSubItem {
 	constructor() {
-		classes(() => 'group/menu-sub-item relative');
+		classes(() => 'group/menu-sub-item relative')
 	}
 }

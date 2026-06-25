@@ -1,5 +1,5 @@
-import { Directive } from '@angular/core';
-import { classes } from '@spartan-ng/helm/utils';
+import { Directive } from '@angular/core'
+import { classes } from '@spartan-ng/helm/utils'
 
 @Directive({
 	selector: '[hlmSidebarMenuBadge],hlm-sidebar-menu-badge',
@@ -17,6 +17,6 @@ export class HlmSidebarMenuBadge {
 			'peer-data-[size=default]/menu-button:top-1.5',
 			'peer-data-[size=lg]/menu-button:top-2.5',
 			'group-data-[collapsible=icon]:hidden',
-		]);
+		])
 	}
 }

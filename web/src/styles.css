@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Raleway:wght@300..700&family=Space+Grotesk:wght@300..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Raleway:wght@300..700&family=Space+Grotesk:wght@300..700&display=swap");
 
 /* Tailwind CSS Imports */
 @layer theme, base, components, utilities;
-@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/preflight.css' layer(base);
-@import 'tailwindcss/utilities.css';
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
 
 /* Spartan UI Preset */
 @import "@spartan-ng/brain/hlm-tailwind-preset.css";
@@ -19,202 +19,202 @@
 	color-scheme: light;
 
 	/* Typography */
-  --display: 'Space Grotesk', sans-serif;
-  --title: 'Raleway', sans-serif;
-  --font-body: 'Inter', sans-serif;
+	--display: "Space Grotesk", sans-serif;
+	--title: "Raleway", sans-serif;
+	--font-body: "Inter", sans-serif;
 
-  /* Border Radius */
-  --radius: 0.625rem;
+	/* Border Radius */
+	--radius: 0.625rem;
 
-  /* Core Colors - Light Mode */
-  --background: oklch(0.985 0 0);
-  --foreground: oklch(0.145 0 0);
- 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --card-header: oklch(0.97 0 0);
- 
-  --table: oklch(1 0 0);
-  --table-border: oklch(0.925 0 0);
- 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
- 
-  /* Primary — Emerald Green */
-  --primary: oklch(0.65 0.17 160);
-  --primary-foreground: oklch(0.985 0 0);
- 
-  /* Secondary — Neutral light */
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
- 
-  /* Muted — Subtle text and backgrounds */
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
- 
-  /* Accent — Hover states, subtle highlights */
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
- 
-  /* Destructive — Expenses, errors, alerts */
-  --destructive: oklch(0.584 0.239 28.474);
- 
-  /* Borders and inputs */
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.709 0 0);
- 
-  /* Success — Income, positive values */
-  --success: oklch(0.65 0.17 160);
-  --success-foreground: oklch(0.985 0 0);
- 
-  /* Warning — Alerts, pending */
-  --warning: oklch(0.75 0.15 85);
-  --warning-foreground: oklch(0.35 0.08 70);
- 
-  /* Info — Informational badges */
-  --info: oklch(0.6 0.14 250);
-  --info-foreground: oklch(0.985 0 0);
- 
-  /* Chart Colors */
-  --chart-1: oklch(0.647 0.218 36.849);
-  --chart-2: oklch(0.605 0.107 184.165);
-  --chart-3: oklch(0.397 0.07 227.191);
-  --chart-4: oklch(0.828 0.171 81.036);
-  --chart-5: oklch(0.772 0.173 65.367);
-  --chart-6: oklch(0.6 0.18 330);
- 
-  /* Sidebar — Light: Clara */
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-group: oklch(0.95 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.65 0.17 160);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.95 0.03 160);
-  --sidebar-accent-foreground: oklch(0.35 0.12 160);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.709 0 0);
-  --sidebar-muted: oklch(0.556 0 0);
+	/* Core Colors - Light Mode */
+	--background: oklch(0.985 0 0);
+	--foreground: oklch(0.145 0 0);
 
-  /* Dashboard - Light Mode */
-  --balance: oklch(95.3% 0.051 180.801);
-  --balance-foreground: oklch(70.4% 0.14 182.503);
-  --expense: oklch(95.4% 0.038 75.164);
-  --expense-foreground: oklch(64.6% 0.222 41.116);
-  --income: oklch(95% 0.052 163.051);
-  --income-foreground: oklch(0.60 0.13 163);
-  --transfer: oklch(71.5% 0.143 215.221);
-  --transfer-foreground: oklch(98.4% 0.019 200.873);
-  --goal: oklch(97.3% 0.071 103.193);
-  --goal-foreground: oklch(79.5% 0.184 86.047);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.145 0 0);
+	--card-header: oklch(0.97 0 0);
 
-  /* Cards - Light Mode */
-  --progress: oklch(0.205 0 0);
-  --total: oklch(96.2% 0.044 156.743);
+	--table: oklch(1 0 0);
+	--table-border: oklch(0.925 0 0);
 
-  --available: oklch(0.60 0.13 163);
-  --available-bg: oklch(95% 0.052 163.051);
-  --available-border: oklch(59.6% 0.145 163.225);
-  --unavailable: oklch(27.4% 0.006 286.033);
-  --unavailable-bg: oklch(92% 0.004 286.32);
-  --unavailable-border: oklch(37% 0.013 285.805);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.145 0 0);
+
+	/* Primary — Emerald Green */
+	--primary: oklch(0.65 0.17 160);
+	--primary-foreground: oklch(0.985 0 0);
+
+	/* Secondary — Neutral light */
+	--secondary: oklch(0.97 0 0);
+	--secondary-foreground: oklch(0.205 0 0);
+
+	/* Muted — Subtle text and backgrounds */
+	--muted: oklch(0.97 0 0);
+	--muted-foreground: oklch(0.556 0 0);
+
+	/* Accent — Hover states, subtle highlights */
+	--accent: oklch(0.97 0 0);
+	--accent-foreground: oklch(0.205 0 0);
+
+	/* Destructive — Expenses, errors, alerts */
+	--destructive: oklch(0.584 0.239 28.474);
+
+	/* Borders and inputs */
+	--border: oklch(0.922 0 0);
+	--input: oklch(0.922 0 0);
+	--ring: oklch(0.709 0 0);
+
+	/* Success — Income, positive values */
+	--success: oklch(0.65 0.17 160);
+	--success-foreground: oklch(0.985 0 0);
+
+	/* Warning — Alerts, pending */
+	--warning: oklch(0.75 0.15 85);
+	--warning-foreground: oklch(0.35 0.08 70);
+
+	/* Info — Informational badges */
+	--info: oklch(0.6 0.14 250);
+	--info-foreground: oklch(0.985 0 0);
+
+	/* Chart Colors */
+	--chart-1: oklch(0.647 0.218 36.849);
+	--chart-2: oklch(0.605 0.107 184.165);
+	--chart-3: oklch(0.397 0.07 227.191);
+	--chart-4: oklch(0.828 0.171 81.036);
+	--chart-5: oklch(0.772 0.173 65.367);
+	--chart-6: oklch(0.6 0.18 330);
+
+	/* Sidebar — Light: Clara */
+	--sidebar: oklch(0.985 0 0);
+	--sidebar-group: oklch(0.95 0 0);
+	--sidebar-foreground: oklch(0.145 0 0);
+	--sidebar-primary: oklch(0.65 0.17 160);
+	--sidebar-primary-foreground: oklch(0.985 0 0);
+	--sidebar-accent: oklch(0.95 0.03 160);
+	--sidebar-accent-foreground: oklch(0.35 0.12 160);
+	--sidebar-border: oklch(0.922 0 0);
+	--sidebar-ring: oklch(0.709 0 0);
+	--sidebar-muted: oklch(0.556 0 0);
+
+	/* Dashboard - Light Mode */
+	--balance: oklch(95.3% 0.051 180.801);
+	--balance-foreground: oklch(70.4% 0.14 182.503);
+	--expense: oklch(95.4% 0.038 75.164);
+	--expense-foreground: oklch(64.6% 0.222 41.116);
+	--income: oklch(95% 0.052 163.051);
+	--income-foreground: oklch(0.6 0.13 163);
+	--transfer: oklch(71.5% 0.143 215.221);
+	--transfer-foreground: oklch(98.4% 0.019 200.873);
+	--goal: oklch(97.3% 0.071 103.193);
+	--goal-foreground: oklch(79.5% 0.184 86.047);
+
+	/* Cards - Light Mode */
+	--progress: oklch(0.205 0 0);
+	--total: oklch(96.2% 0.044 156.743);
+
+	--available: oklch(0.6 0.13 163);
+	--available-bg: oklch(95% 0.052 163.051);
+	--available-border: oklch(59.6% 0.145 163.225);
+	--unavailable: oklch(27.4% 0.006 286.033);
+	--unavailable-bg: oklch(92% 0.004 286.32);
+	--unavailable-border: oklch(37% 0.013 285.805);
 }
 
 .dark {
-  color-scheme: dark;
+	color-scheme: dark;
 
-  /* Core Colors - Dark Mode */
-    --background: oklch(0.145 0.014 260);
-  --foreground: oklch(0.965 0 0);
- 
-  --card: oklch(0.195 0.018 255);
-  --card-foreground: oklch(0.965 0 0);
-  --card-header: oklch(0.17 0.016 258);
- 
-  --table: oklch(0.195 0.018 255);
-  --table-border: oklch(0.26 0.02 252);
- 
-  --popover: oklch(0.195 0.018 255);
-  --popover-foreground: oklch(0.965 0 0);
- 
-  /* Primary — Emerald lighter for dark mode */
-  --primary: oklch(0.77 0.17 165);
-  --primary-foreground: oklch(0.145 0.014 260);
- 
-  /* Secondary */
-  --secondary: oklch(0.22 0.018 255);
-  --secondary-foreground: oklch(0.9 0 0);
- 
-  /* Muted */
-  --muted: oklch(0.22 0.018 255);
-  --muted-foreground: oklch(0.6 0 0);
- 
-  /* Accent */
-  --accent: oklch(0.22 0.018 255);
-  --accent-foreground: oklch(0.9 0 0);
- 
-  /* Destructive — Lighter red for dark bg */
-  --destructive: oklch(0.7 0.19 25);
- 
-  /* Borders and inputs */
-  --border: oklch(0.28 0.02 252);
-  --input: oklch(0.28 0.02 252);
-  --ring: oklch(0.45 0 0);
- 
-  /* Success */
-  --success: oklch(0.77 0.17 165);
-  --success-foreground: oklch(0.145 0.014 260);
- 
-  /* Warning */
-  --warning: oklch(0.8 0.14 85);
-  --warning-foreground: oklch(0.25 0.06 70);
- 
-  /* Info */
-  --info: oklch(0.7 0.13 250);
-  --info-foreground: oklch(0.145 0.014 260);
- 
-  /* Chart Colors — Brighter for dark mode */
-  --chart-1: oklch(0.72 0.2 36);
-  --chart-2: oklch(0.7 0.12 184);
-  --chart-3: oklch(0.55 0.08 227);
-  --chart-4: oklch(0.85 0.16 81);
-  --chart-5: oklch(0.8 0.16 65);
-  --chart-6: oklch(0.7 0.17 330);
- 
-  /* Sidebar — Dark: Escura */
-  --sidebar: oklch(0.195 0.018 255);
-  --sidebar-group: oklch(0.23 0.018 255);
-  --sidebar-foreground: oklch(0.93 0 0);
-  --sidebar-primary: oklch(0.77 0.17 165);
-  --sidebar-primary-foreground: oklch(0.195 0.018 255);
-  --sidebar-accent: oklch(0.24 0.04 165);
-  --sidebar-accent-foreground: oklch(0.77 0.17 165);
-  --sidebar-border: oklch(0.28 0.02 252);
-  --sidebar-ring: oklch(0.45 0 0);
-  --sidebar-muted: oklch(0.55 0 0);
+	/* Core Colors - Dark Mode */
+	--background: oklch(0.145 0.014 260);
+	--foreground: oklch(0.965 0 0);
 
-  /* Dashboard - Dark Mode */
-  --balance: oklch(43.7% 0.078 188.216);
-  --balance-foreground: oklch(70.4% 0.14 182.503);
-  --expense: oklch(26.6% 0.079 36.259);
-  --expense-foreground: oklch(64.6% 0.222 41.116);
-  --income: oklch(0.26 0.05 173);
-  --income-foreground: oklch(0.60 0.13 163);
-  --transfer: oklch(52% 0.105 223.128);
-  --transfer-foreground: oklch(95.3% 0.051 180.801);
-  --goal: oklch(28.6% 0.066 53.813);
-  --goal-foreground: oklch(79.5% 0.184 86.047);
+	--card: oklch(0.195 0.018 255);
+	--card-foreground: oklch(0.965 0 0);
+	--card-header: oklch(0.17 0.016 258);
 
-  /* Cards - Dark Mode */
-  --progress: oklch(0.922 0 0);
-  --total: oklch(26.2% 0.051 172.552);
+	--table: oklch(0.195 0.018 255);
+	--table-border: oklch(0.26 0.02 252);
 
-  --available: oklch(0.60 0.13 163);
-  --available-bg: oklch(0.26 0.05 173);
-  --available-border: oklch(59.6% 0.145 163.225);
-  --unavailable: oklch(70.5% 0.015 286.067);
-  --unavailable-bg: oklch(27.4% 0.006 286.033);
-  --unavailable-border: oklch(37% 0.013 285.805);
+	--popover: oklch(0.195 0.018 255);
+	--popover-foreground: oklch(0.965 0 0);
+
+	/* Primary — Emerald lighter for dark mode */
+	--primary: oklch(0.77 0.17 165);
+	--primary-foreground: oklch(0.145 0.014 260);
+
+	/* Secondary */
+	--secondary: oklch(0.22 0.018 255);
+	--secondary-foreground: oklch(0.9 0 0);
+
+	/* Muted */
+	--muted: oklch(0.22 0.018 255);
+	--muted-foreground: oklch(0.6 0 0);
+
+	/* Accent */
+	--accent: oklch(0.22 0.018 255);
+	--accent-foreground: oklch(0.9 0 0);
+
+	/* Destructive — Lighter red for dark bg */
+	--destructive: oklch(0.7 0.19 25);
+
+	/* Borders and inputs */
+	--border: oklch(0.28 0.02 252);
+	--input: oklch(0.28 0.02 252);
+	--ring: oklch(0.45 0 0);
+
+	/* Success */
+	--success: oklch(0.77 0.17 165);
+	--success-foreground: oklch(0.145 0.014 260);
+
+	/* Warning */
+	--warning: oklch(0.8 0.14 85);
+	--warning-foreground: oklch(0.25 0.06 70);
+
+	/* Info */
+	--info: oklch(0.7 0.13 250);
+	--info-foreground: oklch(0.145 0.014 260);
+
+	/* Chart Colors — Brighter for dark mode */
+	--chart-1: oklch(0.72 0.2 36);
+	--chart-2: oklch(0.7 0.12 184);
+	--chart-3: oklch(0.55 0.08 227);
+	--chart-4: oklch(0.85 0.16 81);
+	--chart-5: oklch(0.8 0.16 65);
+	--chart-6: oklch(0.7 0.17 330);
+
+	/* Sidebar — Dark: Escura */
+	--sidebar: oklch(0.195 0.018 255);
+	--sidebar-group: oklch(0.23 0.018 255);
+	--sidebar-foreground: oklch(0.93 0 0);
+	--sidebar-primary: oklch(0.77 0.17 165);
+	--sidebar-primary-foreground: oklch(0.195 0.018 255);
+	--sidebar-accent: oklch(0.24 0.04 165);
+	--sidebar-accent-foreground: oklch(0.77 0.17 165);
+	--sidebar-border: oklch(0.28 0.02 252);
+	--sidebar-ring: oklch(0.45 0 0);
+	--sidebar-muted: oklch(0.55 0 0);
+
+	/* Dashboard - Dark Mode */
+	--balance: oklch(43.7% 0.078 188.216);
+	--balance-foreground: oklch(70.4% 0.14 182.503);
+	--expense: oklch(26.6% 0.079 36.259);
+	--expense-foreground: oklch(64.6% 0.222 41.116);
+	--income: oklch(0.26 0.05 173);
+	--income-foreground: oklch(0.6 0.13 163);
+	--transfer: oklch(52% 0.105 223.128);
+	--transfer-foreground: oklch(95.3% 0.051 180.801);
+	--goal: oklch(28.6% 0.066 53.813);
+	--goal-foreground: oklch(79.5% 0.184 86.047);
+
+	/* Cards - Dark Mode */
+	--progress: oklch(0.922 0 0);
+	--total: oklch(26.2% 0.051 172.552);
+
+	--available: oklch(0.6 0.13 163);
+	--available-bg: oklch(0.26 0.05 173);
+	--available-border: oklch(59.6% 0.145 163.225);
+	--unavailable: oklch(70.5% 0.015 286.067);
+	--unavailable-bg: oklch(27.4% 0.006 286.033);
+	--unavailable-border: oklch(37% 0.013 285.805);
 }
 
 /* ==========================================================================
@@ -222,8 +222,8 @@
    ========================================================================== */
 
 @theme inline {
-  --font-display: var(--display);
-  --font-title: var(--title);
+	--font-display: var(--display);
+	--font-title: var(--title);
 	/* Colors */
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
@@ -319,24 +319,24 @@
 }
 
 @layer utilities {
-  .glass-card {
-    @apply bg-card backdrop-blur-sm border border-border rounded-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5;
-  }
+	.glass-card {
+		@apply bg-card backdrop-blur-sm border border-border rounded-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5;
+	}
 
-  .dashed-card {
-    @apply flex flex-col backdrop-blur-sm border border-dashed rounded-sm min-h-120 justify-center;
-  }
+	.dashed-card {
+		@apply flex flex-col backdrop-blur-sm border border-dashed rounded-sm min-h-120 justify-center;
+	}
 }
 
 @layer components {
-  .page-title {
-    @apply text-2xl font-bold tracking-tight;
-    font-family: var(--font-display);
-  }
+	.page-title {
+		@apply text-2xl font-bold tracking-tight;
+		font-family: var(--font-display);
+	}
 
-  .page-subtitle {
-    @apply text-sm text-muted-foreground mt-1;
-  }
+	.page-subtitle {
+		@apply text-sm text-muted-foreground mt-1;
+	}
 }
 
 /* ==========================================================================
@@ -372,5 +372,5 @@
 
 /* Background Blur */
 .cdk-overlay-backdrop {
-  backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
 }

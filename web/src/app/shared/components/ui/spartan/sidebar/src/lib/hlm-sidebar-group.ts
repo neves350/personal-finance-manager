@@ -1,5 +1,5 @@
-import { Directive } from '@angular/core';
-import { classes } from '@spartan-ng/helm/utils';
+import { Directive } from '@angular/core'
+import { classes } from '@spartan-ng/helm/utils'
 
 @Directive({
 	selector: '[hlmSidebarGroup],hlm-sidebar-group',
@@ -10,6 +10,6 @@ import { classes } from '@spartan-ng/helm/utils';
 })
 export class HlmSidebarGroup {
 	constructor() {
-		classes(() => 'relative flex w-full min-w-0 flex-col p-2');
+		classes(() => 'relative flex w-full min-w-0 flex-col p-2')
 	}
 }

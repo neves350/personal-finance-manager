@@ -1,6 +1,6 @@
-import { Directive } from '@angular/core';
-import { BrnSheetTitle } from '@spartan-ng/brain/sheet';
-import { classes } from '@spartan-ng/helm/utils';
+import { Directive } from '@angular/core'
+import { BrnSheetTitle } from '@spartan-ng/brain/sheet'
+import { classes } from '@spartan-ng/helm/utils'
 
 @Directive({
 	selector: '[hlmSheetTitle]',
@@ -11,6 +11,6 @@ import { classes } from '@spartan-ng/helm/utils';
 })
 export class HlmSheetTitle {
 	constructor() {
-		classes(() => 'text-foreground font-semibold');
+		classes(() => 'text-foreground font-semibold')
 	}
 }

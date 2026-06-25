@@ -363,9 +363,7 @@ export class TransactionService {
 		categoryId: string,
 		date: Date,
 	) {
-		this.notificationService
-			.checkBudgetThresholds(userId, date)
-			.catch(() => {})
+		this.notificationService.checkBudgetThresholds(userId, date).catch(() => {})
 		this.notificationService
 			.checkSpendingLimitGoals(userId, categoryId, date)
 			.catch(() => {})

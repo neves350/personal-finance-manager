@@ -323,9 +323,9 @@ describe('RecurringsService', () => {
 				throwError(() => new Error('Delete failed')),
 			)
 
-			await expect(
-				firstValueFrom(service.delete(recurringId)),
-			).rejects.toThrow('Delete failed')
+			await expect(firstValueFrom(service.delete(recurringId))).rejects.toThrow(
+				'Delete failed',
+			)
 
 			expect(service.loading()).toBe(true)
 		})

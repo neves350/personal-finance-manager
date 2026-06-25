@@ -12,8 +12,8 @@ import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { CreateConnectSessionDto } from './dtos/create-connect-session.dto'
 import { DisconnectBankDto } from './dtos/disconnect-bank.dto'
-import { OpenBankingSyncService } from './open-banking-sync.service'
 import { OpenBankingService } from './open-banking.service'
+import { OpenBankingSyncService } from './open-banking-sync.service'
 
 @ApiTags('Open Banking')
 @Controller('open-banking')
@@ -51,12 +51,13 @@ export class OpenBankingController {
 
 		// If new connections discovered, sync them
 		if (result.discovered > 0) {
-			const connections =
-				await this.openBankingService.listConnections(user.userId)
+			const connections = await this.openBankingService.listConnections(
+				user.userId,
+			)
 			for (const conn of connections.data) {
 				try {
 					await this.syncService.fullSync(conn.id, user.userId)
-				} catch (error) {
+				} catch (_error) {
 					// Log but don't fail — connection is still saved
 				}
 			}

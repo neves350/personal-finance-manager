@@ -25,7 +25,14 @@ describe('TransactionsService', () => {
 		it('should return all transactions and update signals', async () => {
 			const firstTransaction = makeTransaction({ id: 'w-1', amount: 10 })
 			const secondTransaction = makeTransaction({ id: 'w-2', amount: 20 })
-			const meta = { total: 2, lastPage: 1, currentPage: 1, perPage: 10, prev: null, next: null }
+			const meta = {
+				total: 2,
+				lastPage: 1,
+				currentPage: 1,
+				perPage: 10,
+				prev: null,
+				next: null,
+			}
 			const apiResponse = {
 				data: [firstTransaction, secondTransaction],
 				meta,

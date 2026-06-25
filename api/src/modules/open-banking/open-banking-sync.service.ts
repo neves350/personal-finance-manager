@@ -150,13 +150,18 @@ export class OpenBankingSyncService {
 					lastFour: this.extractLastFour(seAccount.name, seAccount.iban),
 					expirationDate: this.extractExpiryDate(seAccount.extra),
 					creditLimit: seAccount.extra.credit_limit ?? undefined,
-					cardNetwork: this.normalizeCardNetwork(seAccount.extra, seAccount.name),
+					cardNetwork: this.normalizeCardNetwork(
+						seAccount.extra,
+						seAccount.name,
+					),
 					isLinked: true,
 					color: 'GRAY',
 				},
 			})
 			stubId = stub.id
-			this.logger.log(`Linked new card: ${seAccount.name} (${seAccount.nature})`)
+			this.logger.log(
+				`Linked new card: ${seAccount.name} (${seAccount.nature})`,
+			)
 		}
 
 		await this.prisma.openBankingAccount.create({
@@ -212,7 +217,9 @@ export class OpenBankingSyncService {
 				},
 			})
 			accountId = bankAccount.id
-			this.logger.log(`Linked new account: ${seAccount.name} (${seAccount.nature})`)
+			this.logger.log(
+				`Linked new account: ${seAccount.name} (${seAccount.nature})`,
+			)
 		}
 
 		await this.prisma.openBankingAccount.create({
@@ -314,16 +321,18 @@ export class OpenBankingSyncService {
 						cardId: linkedCard?.id ?? undefined,
 					},
 				})
-        synced++
+				synced++
 
-        this.logger.log(`Tx: ${seTx.description} | category: ${seTx.category} | amount: ${seTx.amount} | extra: ${JSON.stringify(seTx.extra)}`)
+				this.logger.log(
+					`Tx: ${seTx.description} | category: ${seTx.category} | amount: ${seTx.amount} | extra: ${JSON.stringify(seTx.extra)}`,
+				)
 			}
 
 			if (synced > 0) {
 				this.logger.log(
 					`Synced ${synced} transactions for account ${obAccount.bankAccountId}`,
 				)
-      }
+			}
 		}
 	}
 
@@ -351,53 +360,59 @@ export class OpenBankingSyncService {
 				return 'SAVINGS'
 			case 'investment':
 				return 'INVESTMENT'
-			case 'bonus':
-			case 'card':
-			case 'checking':
-			case 'account':
 			default:
 				return 'CHECKING'
 		}
-  }
+	}
 
-  private isCardAccount(nature: string, name: string): boolean {
-    if (nature === 'card' || nature === 'credit_card') return true
-    // fallback by nome
-    return /\d{4}\s*\*+\s*\*+\s*\d{4}/.test(name) ||
-      /(mastercard|visa|maestro|amex)/i.test(name)
-  }
+	private isCardAccount(nature: string, name: string): boolean {
+		if (nature === 'card' || nature === 'credit_card') return true
+		// fallback by nome
+		return (
+			/\d{4}\s*\*+\s*\*+\s*\d{4}/.test(name) ||
+			/(mastercard|visa|maestro|amex)/i.test(name)
+		)
+	}
 
-  private detectCardType(nature: string, extra: Record<string, unknown>): 'CREDIT_CARD' | 'DEBIT_CARD' {
-    if (nature === 'credit_card') return 'CREDIT_CARD'
-    const network = extra?.card_network as string | undefined
-    if (network && /(credit|mastercard|visa|amex)/i.test(network)) return 'CREDIT_CARD'
-    return 'DEBIT_CARD'
-  }
+	private detectCardType(
+		nature: string,
+		extra: Record<string, unknown>,
+	): 'CREDIT_CARD' | 'DEBIT_CARD' {
+		if (nature === 'credit_card') return 'CREDIT_CARD'
+		const network = extra?.card_network as string | undefined
+		if (network && /(credit|mastercard|visa|amex)/i.test(network))
+			return 'CREDIT_CARD'
+		return 'DEBIT_CARD'
+	}
 
-  private extractLastFour(name: string, iban: string | null): string | null {
-    const match = name.match(/(\d{4})\s*$/)
-    if (match) return match[1]
-    return iban?.slice(-4) ?? null
-  }
+	private extractLastFour(name: string, iban: string | null): string | null {
+		const match = name.match(/(\d{4})\s*$/)
+		if (match) return match[1]
+		return iban?.slice(-4) ?? null
+	}
 
-  private extractExpiryDate(extra: Record<string, unknown>): string | null {
-    const expiryDate = extra?.expiry_date as string | undefined
-    if (!expiryDate) return null
-    const [year, month] = expiryDate.split('-')  // "2028-03-01"
-    return `${month}/${year.slice(2)}`           // "03/28"
-  }
+	private extractExpiryDate(extra: Record<string, unknown>): string | null {
+		const expiryDate = extra?.expiry_date as string | undefined
+		if (!expiryDate) return null
+		const [year, month] = expiryDate.split('-') // "2028-03-01"
+		return `${month}/${year.slice(2)}` // "03/28"
+	}
 
 	private normalizeCardNetwork(
 		extra: Record<string, unknown>,
 		name: string,
 	): string | null {
-		const network = (extra?.card_network as string | undefined)?.toLowerCase() ?? ''
+		const network =
+			(extra?.card_network as string | undefined)?.toLowerCase() ?? ''
 		const nameLower = name.toLowerCase()
 
-		if (network.includes('master') || nameLower.includes('mastercard')) return 'mastercard'
+		if (network.includes('master') || nameLower.includes('mastercard'))
+			return 'mastercard'
 		if (network.includes('visa') || nameLower.includes('visa')) return 'visa'
-		if (network.includes('amex') || nameLower.includes('american express')) return 'amex'
-		if (network.includes('maestro') || nameLower.includes('maestro')) return 'maestro'
+		if (network.includes('amex') || nameLower.includes('american express'))
+			return 'amex'
+		if (network.includes('maestro') || nameLower.includes('maestro'))
+			return 'maestro'
 		return null
 	}
 
@@ -428,10 +443,7 @@ export class OpenBankingSyncService {
 					gte: amount - margin,
 					lte: amount + margin,
 				},
-				OR: [
-					{ monthDay: null },
-					{ monthDay: dayOfMonth },
-				],
+				OR: [{ monthDay: null }, { monthDay: dayOfMonth }],
 			},
 		})
 
@@ -449,5 +461,4 @@ export class OpenBankingSyncService {
 
 		return null
 	}
-
 }

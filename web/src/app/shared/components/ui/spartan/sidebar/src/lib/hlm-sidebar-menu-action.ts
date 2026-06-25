@@ -1,6 +1,6 @@
-import { type BooleanInput } from '@angular/cdk/coercion';
-import { booleanAttribute, Directive, input } from '@angular/core';
-import { classes } from '@spartan-ng/helm/utils';
+import { type BooleanInput } from '@angular/cdk/coercion'
+import { booleanAttribute, Directive, input } from '@angular/core'
+import { classes } from '@spartan-ng/helm/utils'
 
 @Directive({
 	selector: 'button[hlmSidebarMenuAction]',
@@ -10,7 +10,9 @@ import { classes } from '@spartan-ng/helm/utils';
 	},
 })
 export class HlmSidebarMenuAction {
-	public readonly showOnHover = input<boolean, BooleanInput>(false, { transform: booleanAttribute });
+	public readonly showOnHover = input<boolean, BooleanInput>(false, {
+		transform: booleanAttribute,
+	})
 
 	constructor() {
 		classes(() => [
@@ -23,6 +25,6 @@ export class HlmSidebarMenuAction {
 			'group-data-[collapsible=icon]:hidden',
 			this.showOnHover() &&
 				'peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 md:opacity-0',
-		]);
+		])
 	}
 }

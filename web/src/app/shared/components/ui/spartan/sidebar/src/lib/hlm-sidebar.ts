@@ -1,11 +1,18 @@
-import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
-import { BrnSheetImports } from '@spartan-ng/brain/sheet';
-import { HlmSheetImports } from '@spartan-ng/helm/sheet';
-import { classes, hlm } from '@spartan-ng/helm/utils';
-import type { ClassValue } from 'clsx';
-import { HlmSidebarService, type SidebarVariant } from './hlm-sidebar.service';
-import { injectHlmSidebarConfig } from './hlm-sidebar.token';
+import { NgTemplateOutlet } from '@angular/common'
+import {
+	ChangeDetectionStrategy,
+	Component,
+	computed,
+	effect,
+	inject,
+	input,
+} from '@angular/core'
+import { BrnSheetImports } from '@spartan-ng/brain/sheet'
+import { HlmSheetImports } from '@spartan-ng/helm/sheet'
+import { classes, hlm } from '@spartan-ng/helm/utils'
+import type { ClassValue } from 'clsx'
+import { HlmSidebarService, type SidebarVariant } from './hlm-sidebar.service'
+import { injectHlmSidebarConfig } from './hlm-sidebar.token'
 
 @Component({
 	selector: 'hlm-sidebar',
@@ -61,13 +68,19 @@ import { injectHlmSidebarConfig } from './hlm-sidebar.token';
 	`,
 })
 export class HlmSidebar {
-	protected readonly _sidebarService = inject(HlmSidebarService);
-	private readonly _config = injectHlmSidebarConfig();
-	public readonly sidebarWidthMobile = input<string>(this._config.sidebarWidthMobile);
+	protected readonly _sidebarService = inject(HlmSidebarService)
+	private readonly _config = injectHlmSidebarConfig()
+	public readonly sidebarWidthMobile = input<string>(
+		this._config.sidebarWidthMobile,
+	)
 
-	public readonly side = input<'left' | 'right'>('left');
-	public readonly variant = input<SidebarVariant>(this._sidebarService.variant());
-	public readonly collapsible = input<'offcanvas' | 'icon' | 'none'>('offcanvas');
+	public readonly side = input<'left' | 'right'>('left')
+	public readonly variant = input<SidebarVariant>(
+		this._sidebarService.variant(),
+	)
+	public readonly collapsible = input<'offcanvas' | 'icon' | 'none'>(
+		'offcanvas',
+	)
 
 	protected readonly _sidebarGapComputedClass = computed(() =>
 		hlm(
@@ -78,9 +91,9 @@ export class HlmSidebar {
 				? 'group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]'
 				: 'group-data-[collapsible=icon]:w-[var(--sidebar-width-icon)]',
 		),
-	);
+	)
 
-	public readonly sidebarContainerClass = input<ClassValue>('');
+	public readonly sidebarContainerClass = input<ClassValue>('')
 	protected readonly _sidebarContainerComputedClass = computed(() =>
 		hlm(
 			'fixed inset-y-0 z-10 hidden h-svh w-[var(--sidebar-width)] transition-[left,right,width] duration-200 ease-linear md:flex',
@@ -92,49 +105,55 @@ export class HlmSidebar {
 				: 'group-data-[collapsible=icon]:w-[var(--sidebar-width-icon)] group-data-[side=left]:border-r group-data-[side=right]:border-l',
 			this.sidebarContainerClass(),
 		),
-	);
+	)
 
 	protected readonly _dataSlot = computed(() => {
-		return !this._sidebarService.isMobile() ? 'sidebar' : undefined;
-	});
+		return !this._sidebarService.isMobile() ? 'sidebar' : undefined
+	})
 
 	private readonly _collapsibleAndNonMobile = computed(() => {
-		return this.collapsible() !== 'none' && !this._sidebarService.isMobile();
-	});
+		return this.collapsible() !== 'none' && !this._sidebarService.isMobile()
+	})
 
 	protected readonly _dataState = computed(() => {
-		return this._collapsibleAndNonMobile() ? this._sidebarService.state() : undefined;
-	});
+		return this._collapsibleAndNonMobile()
+			? this._sidebarService.state()
+			: undefined
+	})
 
 	protected readonly _dataCollapsible = computed(() => {
 		if (this._collapsibleAndNonMobile()) {
-			return this._sidebarService.state() === 'collapsed' ? this.collapsible() : '';
+			return this._sidebarService.state() === 'collapsed'
+				? this.collapsible()
+				: ''
 		}
-		return undefined;
-	});
+		return undefined
+	})
 
 	protected readonly _dataVariant = computed(() => {
-		return this._collapsibleAndNonMobile() ? this.variant() : undefined;
-	});
+		return this._collapsibleAndNonMobile() ? this.variant() : undefined
+	})
 
 	protected readonly _dataSide = computed(() => {
-		return this._collapsibleAndNonMobile() ? this.side() : undefined;
-	});
+		return this._collapsibleAndNonMobile() ? this.side() : undefined
+	})
 
 	constructor() {
 		// Sync variant input with service
 		effect(() => {
-			this._sidebarService.setVariant(this.variant());
-		});
+			this._sidebarService.setVariant(this.variant())
+		})
 
 		classes(() => {
 			if (this.collapsible() === 'none') {
-				return hlm('bg-sidebar text-sidebar-foreground flex h-svh w-[var(--sidebar-width)] flex-col');
+				return hlm(
+					'bg-sidebar text-sidebar-foreground flex h-svh w-[var(--sidebar-width)] flex-col',
+				)
 			} else if (this._sidebarService.isMobile()) {
-				return '';
+				return ''
 			} else {
-				return hlm('text-sidebar-foreground group peer hidden md:block');
+				return hlm('text-sidebar-foreground group peer hidden md:block')
 			}
-		});
+		})
 	}
 }

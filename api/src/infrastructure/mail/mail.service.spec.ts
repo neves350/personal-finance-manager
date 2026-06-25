@@ -125,9 +125,7 @@ describe('MailService', () => {
 			)
 
 			const call = mockMailerService.sendMail.mock.calls[0][0]
-			expect(call.html).toContain(
-				'You have spent 85% of your Food budget.',
-			)
+			expect(call.html).toContain('You have spent 85% of your Food budget.')
 		})
 
 		it('should include the notifications link with FRONTEND_URL', async () => {
@@ -142,9 +140,7 @@ describe('MailService', () => {
 			)
 
 			const call = mockMailerService.sendMail.mock.calls[0][0]
-			expect(call.html).toContain(
-				'http://localhost:4200/notifications',
-			)
+			expect(call.html).toContain('http://localhost:4200/notifications')
 		})
 
 		it('should default to empty string when FRONTEND_URL is not set', async () => {

@@ -10,13 +10,10 @@ import { StatisticsService } from '@core/services/statistics.service'
 import {
 	ArrowDownIcon,
 	ArrowUpIcon,
-	BanknoteArrowDownIcon,
-	BanknoteArrowUpIcon,
 	CoinsIcon,
 	LucideAngularModule,
 	TrendingDownIcon,
 	TrendingUpIcon,
-	WalletIcon,
 } from 'lucide-angular'
 import { NgApexchartsModule } from 'ng-apexcharts'
 import { ZardBadgeComponent } from '../../ui/badge'

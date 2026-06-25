@@ -85,7 +85,7 @@ export class TransactionsForm {
 	)
 	readonly filteredCategories = computed(() => {
 		const type = this.isOpenBanking()
-			? (this.zData?.type as TransactionType ?? TransactionType.EXPENSE)
+			? ((this.zData?.type as TransactionType) ?? TransactionType.EXPENSE)
 			: this.selectedType()
 		return type === TransactionType.INCOME
 			? this.categoriesService.incomeCategories()

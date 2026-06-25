@@ -1,5 +1,5 @@
-import { Directive } from '@angular/core';
-import { BrnTooltip } from '@spartan-ng/brain/tooltip';
+import { Directive } from '@angular/core'
+import { BrnTooltip } from '@spartan-ng/brain/tooltip'
 
 @Directive({
 	selector: '[hlmTooltip],hlm-tooltip',

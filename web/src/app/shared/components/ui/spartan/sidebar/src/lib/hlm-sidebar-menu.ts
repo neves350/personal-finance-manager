@@ -1,5 +1,5 @@
-import { Directive } from '@angular/core';
-import { classes } from '@spartan-ng/helm/utils';
+import { Directive } from '@angular/core'
+import { classes } from '@spartan-ng/helm/utils'
 
 @Directive({
 	selector: 'ul[hlmSidebarMenu]',
@@ -10,6 +10,6 @@ import { classes } from '@spartan-ng/helm/utils';
 })
 export class HlmSidebarMenu {
 	constructor() {
-		classes(() => 'flex w-full min-w-0 flex-col gap-1');
+		classes(() => 'flex w-full min-w-0 flex-col gap-1')
 	}
 }

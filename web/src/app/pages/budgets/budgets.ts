@@ -99,9 +99,7 @@ export class Budgets {
 		this.budgetsService.copyPrevious(budget.id).subscribe({
 			next: () => toast.success('Envelopes copied from previous month'),
 			error: (err) =>
-				toast.error(
-					err.error?.message || 'Failed to copy from previous month',
-				),
+				toast.error(err.error?.message || 'Failed to copy from previous month'),
 		})
 	}
 }

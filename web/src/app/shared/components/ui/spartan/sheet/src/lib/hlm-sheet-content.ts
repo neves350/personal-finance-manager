@@ -1,11 +1,22 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, effect, inject, signal } from '@angular/core';
-import { provideIcons } from '@ng-icons/core';
-import { lucideX } from '@ng-icons/lucide';
-import { injectExposedSideProvider, injectExposesStateProvider } from '@spartan-ng/brain/core';
-import { HlmIconImports } from '@spartan-ng/helm/icon';
-import { classes } from '@spartan-ng/helm/utils';
-import { cva } from 'class-variance-authority';
-import { HlmSheetClose } from './hlm-sheet-close';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	ElementRef,
+	effect,
+	inject,
+	Renderer2,
+	signal,
+} from '@angular/core'
+import { provideIcons } from '@ng-icons/core'
+import { lucideX } from '@ng-icons/lucide'
+import {
+	injectExposedSideProvider,
+	injectExposesStateProvider,
+} from '@spartan-ng/brain/core'
+import { HlmIconImports } from '@spartan-ng/helm/icon'
+import { classes } from '@spartan-ng/helm/utils'
+import { cva } from 'class-variance-authority'
+import { HlmSheetClose } from './hlm-sheet-close'
 
 export const sheetVariants = cva(
 	'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col gap-4 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500',
@@ -24,7 +35,7 @@ export const sheetVariants = cva(
 			side: 'right',
 		},
 	},
-);
+)
 
 @Component({
 	selector: 'hlm-sheet-content',
@@ -44,16 +55,20 @@ export const sheetVariants = cva(
 	`,
 })
 export class HlmSheetContent {
-	private readonly _stateProvider = injectExposesStateProvider({ host: true });
-	private readonly _sideProvider = injectExposedSideProvider({ host: true });
-	public readonly state = this._stateProvider.state ?? signal('closed');
-	private readonly _renderer = inject(Renderer2);
-	private readonly _element = inject(ElementRef);
+	private readonly _stateProvider = injectExposesStateProvider({ host: true })
+	private readonly _sideProvider = injectExposedSideProvider({ host: true })
+	public readonly state = this._stateProvider.state ?? signal('closed')
+	private readonly _renderer = inject(Renderer2)
+	private readonly _element = inject(ElementRef)
 
 	constructor() {
-		classes(() => sheetVariants({ side: this._sideProvider.side() }));
+		classes(() => sheetVariants({ side: this._sideProvider.side() }))
 		effect(() => {
-			this._renderer.setAttribute(this._element.nativeElement, 'data-state', this.state());
-		});
+			this._renderer.setAttribute(
+				this._element.nativeElement,
+				'data-state',
+				this.state(),
+			)
+		})
 	}
 }

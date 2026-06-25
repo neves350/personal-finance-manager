@@ -55,24 +55,18 @@ export class NotificationScheduler {
 				const title = 'Recurring Income Expected'
 				const message = `Your recurring income "${recurring.description}" of €${Number(recurring.amount)} is expected in 3 days.`
 
-				const notification =
-					await this.notificationService.createNotification({
-						userId: user.id,
-						type: NotificationType.RECURRING_INCOME_EXPECTED,
-						title,
-						message,
-						entityType: 'RECURRING',
-						entityId: recurring.id,
-					})
+				const notification = await this.notificationService.createNotification({
+					userId: user.id,
+					type: NotificationType.RECURRING_INCOME_EXPECTED,
+					title,
+					message,
+					entityType: 'RECURRING',
+					entityId: recurring.id,
+				})
 
 				if (notification) {
 					await this.mailService
-						.sendNotificationEmail(
-							user.email,
-							user.name,
-							title,
-							message,
-						)
+						.sendNotificationEmail(user.email, user.name, title, message)
 						.catch((err) =>
 							this.logger.error(
 								`Failed to send email for recurring ${recurring.id}`,
@@ -81,10 +75,7 @@ export class NotificationScheduler {
 						)
 				}
 			} catch (error) {
-				this.logger.error(
-					`Failed for recurring ${recurring.id}`,
-					error,
-				)
+				this.logger.error(`Failed for recurring ${recurring.id}`, error)
 			}
 		}
 	}
@@ -151,15 +142,14 @@ export class NotificationScheduler {
 				const title = `Goal Deadline Approaching: ${goal.title}`
 				const message = `Your goal "${goal.title}" ends in 7 days. Current progress: ${progress}%.`
 
-				const notification =
-					await this.notificationService.createNotification({
-						userId: goal.userId,
-						type: NotificationType.GOAL_DEADLINE_APPROACHING,
-						title,
-						message,
-						entityType: 'GOAL',
-						entityId: goal.id,
-					})
+				const notification = await this.notificationService.createNotification({
+					userId: goal.userId,
+					type: NotificationType.GOAL_DEADLINE_APPROACHING,
+					title,
+					message,
+					entityType: 'GOAL',
+					entityId: goal.id,
+				})
 
 				if (notification) {
 					await this.mailService

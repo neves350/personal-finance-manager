@@ -356,7 +356,9 @@ export class BudgetService {
 		const prevYear = budget.month === 1 ? budget.year - 1 : budget.year
 
 		const previousBudget = await this.prisma.budget.findUnique({
-			where: { userId_month_year: { userId, month: prevMonth, year: prevYear } },
+			where: {
+				userId_month_year: { userId, month: prevMonth, year: prevYear },
+			},
 			include: { envelopes: true },
 		})
 

@@ -9,8 +9,8 @@ import { RouterLink } from '@angular/router'
 import { type Goal, GoalType } from '@core/api/goals.interface'
 import { GoalsService } from '@core/services/goals.service'
 import {
-	type LucideIconData,
 	LucideAngularModule,
+	type LucideIconData,
 	PiggyBankIcon,
 	ReceiptIcon,
 } from 'lucide-angular'

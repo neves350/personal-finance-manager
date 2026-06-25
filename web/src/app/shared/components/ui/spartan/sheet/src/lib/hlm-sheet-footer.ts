@@ -1,5 +1,5 @@
-import { Directive } from '@angular/core';
-import { classes } from '@spartan-ng/helm/utils';
+import { Directive } from '@angular/core'
+import { classes } from '@spartan-ng/helm/utils'
 
 @Directive({
 	selector: '[hlmSheetFooter],hlm-sheet-footer',
@@ -9,6 +9,6 @@ import { classes } from '@spartan-ng/helm/utils';
 })
 export class HlmSheetFooter {
 	constructor() {
-		classes(() => 'mt-auto flex flex-col gap-2 p-4');
+		classes(() => 'mt-auto flex flex-col gap-2 p-4')
 	}
 }

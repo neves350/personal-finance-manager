@@ -209,7 +209,10 @@ describe('BankAccountsService', () => {
 
 			await firstValueFrom(service.update(bankAccountId, updatePayload))
 
-			expect(mockBankAccounts.update).toHaveBeenCalledWith(bankAccountId, updatePayload)
+			expect(mockBankAccounts.update).toHaveBeenCalledWith(
+				bankAccountId,
+				updatePayload,
+			)
 		})
 
 		it('should update signals after update', async () => {

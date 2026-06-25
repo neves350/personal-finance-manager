@@ -195,10 +195,7 @@ export class ZardDateRangePickerComponent {
 		const right = this.rightCalendar()
 		if (!left || !right) return
 
-		// Access the linkedSignal values from the calendar component
-		// biome-ignore lint/suspicious/noExplicitAny: accessing protected internal signals
 		const leftRef = left as any
-		// biome-ignore lint/suspicious/noExplicitAny: accessing protected internal signals
 		const rightRef = right as any
 
 		const leftMonthStr = leftRef.currentMonthValue?.()

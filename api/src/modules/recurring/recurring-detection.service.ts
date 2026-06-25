@@ -1,5 +1,5 @@
-import { Injectable, Logger } from '@nestjs/common'
 import { createHash } from 'node:crypto'
+import { Injectable, Logger } from '@nestjs/common'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
 
 type Frequency = 'MONTH' | 'ANNUAL'
@@ -123,7 +123,9 @@ export class RecurringDetectionService {
 		}
 
 		if (detected > 0) {
-			this.logger.log(`Detected ${detected} new recurring patterns for user ${userId}`)
+			this.logger.log(
+				`Detected ${detected} new recurring patterns for user ${userId}`,
+			)
 		}
 	}
 

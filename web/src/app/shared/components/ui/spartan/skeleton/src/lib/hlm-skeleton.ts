@@ -1,5 +1,5 @@
-import { Directive } from '@angular/core';
-import { classes } from '@spartan-ng/helm/utils';
+import { Directive } from '@angular/core'
+import { classes } from '@spartan-ng/helm/utils'
 
 @Directive({
 	selector: '[hlmSkeleton],hlm-skeleton',
@@ -9,6 +9,6 @@ import { classes } from '@spartan-ng/helm/utils';
 })
 export class HlmSkeleton {
 	constructor() {
-		classes(() => 'bg-accent block rounded-md motion-safe:animate-pulse');
+		classes(() => 'bg-accent block rounded-md motion-safe:animate-pulse')
 	}
 }

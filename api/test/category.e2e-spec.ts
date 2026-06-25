@@ -79,7 +79,9 @@ describe('CategoryController (e2e)', () => {
 			.expect(200)
 
 		expect(Array.isArray(res.body)).toBe(true)
-		expect(res.body.every((c: { type: string }) => c.type === CategoryType.EXPENSE)).toBe(true)
+		expect(
+			res.body.every((c: { type: string }) => c.type === CategoryType.EXPENSE),
+		).toBe(true)
 	})
 
 	it('should get a category', async () => {

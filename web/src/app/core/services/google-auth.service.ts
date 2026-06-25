@@ -29,8 +29,7 @@ export class GoogleAuthService {
 				size: 'large',
 			})
 
-			const googleBtn =
-				container.querySelector<HTMLElement>('[role="button"]')
+			const googleBtn = container.querySelector<HTMLElement>('[role="button"]')
 			if (googleBtn) {
 				googleBtn.click()
 			}

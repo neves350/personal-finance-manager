@@ -1,7 +1,14 @@
-import { Directive, computed, input } from '@angular/core';
-import { injectHlmIconConfig } from './hlm-icon.token';
+import { computed, Directive, input } from '@angular/core'
+import { injectHlmIconConfig } from './hlm-icon.token'
 
-export type IconSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | 'none' | (Record<never, never> & string);
+export type IconSize =
+	| 'xs'
+	| 'sm'
+	| 'base'
+	| 'lg'
+	| 'xl'
+	| 'none'
+	| (Record<never, never> & string)
 
 @Directive({
 	selector: 'ng-icon[hlmIcon], ng-icon[hlm]',
@@ -10,26 +17,26 @@ export type IconSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | 'none' | (Record<nev
 	},
 })
 export class HlmIcon {
-	private readonly _config = injectHlmIconConfig();
-	public readonly size = input<IconSize>(this._config.size);
+	private readonly _config = injectHlmIconConfig()
+	public readonly size = input<IconSize>(this._config.size)
 
 	protected readonly _computedSize = computed(() => {
-		const size = this.size();
+		const size = this.size()
 
 		switch (size) {
 			case 'xs':
-				return '12px';
+				return '12px'
 			case 'sm':
-				return '16px';
+				return '16px'
 			case 'base':
-				return '24px';
+				return '24px'
 			case 'lg':
-				return '32px';
+				return '32px'
 			case 'xl':
-				return '48px';
+				return '48px'
 			default: {
-				return size;
+				return size
 			}
 		}
-	});
+	})
 }

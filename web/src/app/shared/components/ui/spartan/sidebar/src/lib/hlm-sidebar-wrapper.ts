@@ -1,6 +1,6 @@
-import { Directive, input } from '@angular/core';
-import { classes } from '@spartan-ng/helm/utils';
-import { injectHlmSidebarConfig } from './hlm-sidebar.token';
+import { Directive, input } from '@angular/core'
+import { classes } from '@spartan-ng/helm/utils'
+import { injectHlmSidebarConfig } from './hlm-sidebar.token'
 
 @Directive({
 	selector: '[hlmSidebarWrapper],hlm-sidebar-wrapper',
@@ -11,12 +11,17 @@ import { injectHlmSidebarConfig } from './hlm-sidebar.token';
 	},
 })
 export class HlmSidebarWrapper {
-	private readonly _config = injectHlmSidebarConfig();
+	private readonly _config = injectHlmSidebarConfig()
 
-	public readonly sidebarWidth = input<string>(this._config.sidebarWidth);
-	public readonly sidebarWidthIcon = input<string>(this._config.sidebarWidthIcon);
+	public readonly sidebarWidth = input<string>(this._config.sidebarWidth)
+	public readonly sidebarWidthIcon = input<string>(
+		this._config.sidebarWidthIcon,
+	)
 
 	constructor() {
-		classes(() => 'group/sidebar-wrapper has-[[data-variant=inset]]:bg-sidebar flex min-h-svh w-full');
+		classes(
+			() =>
+				'group/sidebar-wrapper has-[[data-variant=inset]]:bg-sidebar flex min-h-svh w-full',
+		)
 	}
 }

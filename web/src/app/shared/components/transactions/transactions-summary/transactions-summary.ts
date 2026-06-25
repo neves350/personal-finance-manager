@@ -1,5 +1,10 @@
 import { CurrencyPipe } from '@angular/common'
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core'
+import {
+	ChangeDetectionStrategy,
+	Component,
+	computed,
+	inject,
+} from '@angular/core'
 import { TransactionsService } from '@core/services/transactions.service'
 import {
 	LucideAngularModule,

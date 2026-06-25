@@ -218,10 +218,7 @@ export class BudgetController {
 			'Copies all envelopes from the previous month budget into this one with the same categories and amounts.',
 	})
 	@ApiCopyPreviousResponses()
-	async copyFromPrevious(
-		@CurrentUser() user,
-		@Param('id') id: string,
-	) {
+	async copyFromPrevious(@CurrentUser() user, @Param('id') id: string) {
 		return this.budgetService.copyFromPrevious(user.userId, id)
 	}
 

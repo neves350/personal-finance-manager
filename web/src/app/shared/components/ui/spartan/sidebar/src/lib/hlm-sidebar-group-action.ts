@@ -1,5 +1,5 @@
-import { Directive } from '@angular/core';
-import { classes } from '@spartan-ng/helm/utils';
+import { Directive } from '@angular/core'
+import { classes } from '@spartan-ng/helm/utils'
 
 @Directive({
 	selector: 'button[hlmSidebarGroupAction]',
@@ -15,6 +15,6 @@ export class HlmSidebarGroupAction {
 			// Increases the hit area of the button on mobile.
 			'after:absolute after:-inset-2 after:md:hidden',
 			'group-data-[collapsible=icon]:hidden',
-		]);
+		])
 	}
 }

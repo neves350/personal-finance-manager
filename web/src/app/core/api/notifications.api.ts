@@ -15,7 +15,9 @@ export class NotificationsApi {
 	private readonly http = inject(HttpClient)
 	private readonly baseUrl = `${environment.apiUrl}/notifications`
 
-	findAll(query: NotificationsQueryParams = {}): Observable<NotificationsResponse> {
+	findAll(
+		query: NotificationsQueryParams = {},
+	): Observable<NotificationsResponse> {
 		let params = new HttpParams()
 		if (query.page) params = params.set('page', query.page)
 		if (query.limit) params = params.set('limit', query.limit)
@@ -29,10 +31,9 @@ export class NotificationsApi {
 	}
 
 	getUnreadCount(): Observable<UnreadCountResponse> {
-		return this.http.get<UnreadCountResponse>(
-			`${this.baseUrl}/unread-count`,
-			{ withCredentials: true },
-		)
+		return this.http.get<UnreadCountResponse>(`${this.baseUrl}/unread-count`, {
+			withCredentials: true,
+		})
 	}
 
 	markAsRead(id: string): Observable<void> {

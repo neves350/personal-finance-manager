@@ -1,38 +1,38 @@
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common'
 import {
 	DestroyRef,
-	effect,
 	ElementRef,
+	effect,
 	HostAttributeToken,
-	inject,
 	Injector,
+	inject,
 	PLATFORM_ID,
 	runInInjectionContext,
-} from '@angular/core';
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+} from '@angular/core'
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 export function hlm(...inputs: ClassValue[]) {
-	return twMerge(clsx(inputs));
+	return twMerge(clsx(inputs))
 }
 
 // Global map to track class managers per element
-const elementClassManagers = new WeakMap<HTMLElement, ElementClassManager>();
+const elementClassManagers = new WeakMap<HTMLElement, ElementClassManager>()
 
 // Global mutation observer for all elements
-let globalObserver: MutationObserver | null = null;
-const observedElements = new Set<HTMLElement>();
+let globalObserver: MutationObserver | null = null
+const observedElements = new Set<HTMLElement>()
 
 interface ElementClassManager {
-	element: HTMLElement;
-	sources: Map<number, { classes: Set<string>; order: number }>;
-	baseClasses: Set<string>;
-	isUpdating: boolean;
-	nextOrder: number;
-	hasInitialized: boolean;
+	element: HTMLElement
+	sources: Map<number, { classes: Set<string>; order: number }>
+	baseClasses: Set<string>
+	isUpdating: boolean
+	nextOrder: number
+	hasInitialized: boolean
 }
 
-let sourceCounter = 0;
+let sourceCounter = 0
 
 /**
  * This function dynamically adds and removes classes for a given element without requiring
@@ -42,27 +42,32 @@ let sourceCounter = 0;
  * 2. It will also remove any classes that were previously added by this function but are no longer present in the new classes.
  * 3. Multiple calls to this function on the same element will be merged efficiently.
  */
-export function classes(computed: () => ClassValue[] | string, options: ClassesOptions = {}) {
+export function classes(
+	computed: () => ClassValue[] | string,
+	options: ClassesOptions = {},
+) {
 	runInInjectionContext(options.injector ?? inject(Injector), () => {
-		const elementRef = options.elementRef ?? inject(ElementRef);
-		const platformId = inject(PLATFORM_ID);
-		const destroyRef = inject(DestroyRef);
-		const baseClasses = inject(new HostAttributeToken('class'), { optional: true });
+		const elementRef = options.elementRef ?? inject(ElementRef)
+		const platformId = inject(PLATFORM_ID)
+		const destroyRef = inject(DestroyRef)
+		const baseClasses = inject(new HostAttributeToken('class'), {
+			optional: true,
+		})
 
-		const element = elementRef.nativeElement;
+		const element = elementRef.nativeElement
 
 		// Create unique identifier for this source
-		const sourceId = sourceCounter++;
+		const sourceId = sourceCounter++
 
 		// Get or create the class manager for this element
-		let manager = elementClassManagers.get(element);
+		let manager = elementClassManagers.get(element)
 
 		if (!manager) {
 			// Initialize base classes from variation (host attribute 'class')
-			const initialBaseClasses = new Set<string>();
+			const initialBaseClasses = new Set<string>()
 
 			if (baseClasses) {
-				toClassList(baseClasses).forEach((cls) => initialBaseClasses.add(cls));
+				toClassList(baseClasses).forEach((cls) => initialBaseClasses.add(cls))
 			}
 
 			manager = {
@@ -72,52 +77,52 @@ export function classes(computed: () => ClassValue[] | string, options: ClassesO
 				isUpdating: false,
 				nextOrder: 0,
 				hasInitialized: false,
-			};
-			elementClassManagers.set(element, manager);
+			}
+			elementClassManagers.set(element, manager)
 
 			// Setup global observer if needed and register this element
-			setupGlobalObserver(platformId);
-			observedElements.add(element);
+			setupGlobalObserver(platformId)
+			observedElements.add(element)
 		}
 
 		// Assign order once at registration time
-		const sourceOrder = manager.nextOrder++;
+		const sourceOrder = manager.nextOrder++
 
 		function updateClasses(): void {
 			// Get the new classes from the computed function
-			const newClasses = toClassList(computed());
+			const newClasses = toClassList(computed())
 
 			// Update this source's classes, keeping the original order
-			manager!.sources.set(sourceId, {
+			manager?.sources.set(sourceId, {
 				classes: new Set(newClasses),
 				order: sourceOrder,
-			});
+			})
 
 			// Update the element
-			updateElement(manager!);
+			updateElement(manager!)
 		}
 
 		// Register cleanup with DestroyRef
 		destroyRef.onDestroy(() => {
 			// Remove this source from the manager
-			manager!.sources.delete(sourceId);
+			manager?.sources.delete(sourceId)
 
 			// If no more sources, clean up the manager
-			if (manager!.sources.size === 0) {
-				cleanupManager(element);
+			if (manager?.sources.size === 0) {
+				cleanupManager(element)
 			} else {
 				// Update element without this source's classes
-				updateElement(manager!);
+				updateElement(manager!)
 			}
-		});
+		})
 
 		/**
 		 * We need this effect to track changes to the computed classes. Ideally, we would use
 		 * afterRenderEffect here, but that doesn't run in SSR contexts, so we use a standard
 		 * effect which works in both browser and SSR.
 		 */
-		effect(updateClasses);
-	});
+		effect(updateClasses)
+	})
 }
 
 // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
@@ -126,132 +131,137 @@ function setupGlobalObserver(platformId: Object): void {
 		// Create single global observer that watches the entire document
 		globalObserver = new MutationObserver((mutations) => {
 			for (const mutation of mutations) {
-				if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-					const element = mutation.target as HTMLElement;
-					const manager = elementClassManagers.get(element);
+				if (
+					mutation.type === 'attributes' &&
+					mutation.attributeName === 'class'
+				) {
+					const element = mutation.target as HTMLElement
+					const manager = elementClassManagers.get(element)
 
 					// Only process elements we're managing
 					if (manager && observedElements.has(element)) {
-						if (manager.isUpdating) continue; // Ignore changes we're making
+						if (manager.isUpdating) continue // Ignore changes we're making
 
 						// Update base classes to include any externally added classes
-						const currentClasses = toClassList(element.className);
-						const allSourceClasses = new Set<string>();
+						const currentClasses = toClassList(element.className)
+						const allSourceClasses = new Set<string>()
 
 						// Collect all classes from all sources
 						for (const source of manager.sources.values()) {
 							for (const className of source.classes) {
-								allSourceClasses.add(className);
+								allSourceClasses.add(className)
 							}
 						}
 
 						// Any classes not from sources become new base classes
-						manager.baseClasses.clear();
+						manager.baseClasses.clear()
 
 						for (const className of currentClasses) {
 							if (!allSourceClasses.has(className)) {
-								manager.baseClasses.add(className);
+								manager.baseClasses.add(className)
 							}
 						}
 
-						updateElement(manager);
+						updateElement(manager)
 					}
 				}
 			}
-		});
+		})
 
 		// Start observing the entire document for class attribute changes
 		globalObserver.observe(document, {
 			attributes: true,
 			attributeFilter: ['class'],
 			subtree: true, // Watch all descendants
-		});
+		})
 	}
 }
 
 function updateElement(manager: ElementClassManager): void {
-	if (manager.isUpdating) return; // Prevent recursive updates
+	if (manager.isUpdating) return // Prevent recursive updates
 
-	manager.isUpdating = true;
+	manager.isUpdating = true
 
 	// Handle initialization: capture base classes after first source registration
 	if (!manager.hasInitialized && manager.sources.size > 0) {
 		// Get current classes on element (may include SSR classes)
-		const currentClasses = toClassList(manager.element.className);
+		const currentClasses = toClassList(manager.element.className)
 
 		// Get all classes that will be applied by sources
-		const allSourceClasses = new Set<string>();
+		const allSourceClasses = new Set<string>()
 		for (const source of manager.sources.values()) {
-			source.classes.forEach((className) => allSourceClasses.add(className));
+			source.classes.forEach((className) => allSourceClasses.add(className))
 		}
 
 		// Only consider classes as "base" if they're not produced by any source
 		// This prevents SSR-rendered classes from being preserved as base classes
 		currentClasses.forEach((className) => {
 			if (!allSourceClasses.has(className)) {
-				manager.baseClasses.add(className);
+				manager.baseClasses.add(className)
 			}
-		});
+		})
 
-		manager.hasInitialized = true;
+		manager.hasInitialized = true
 	}
 
 	// Get classes from all sources, sorted by registration order (later takes precedence)
-	const sortedSources = Array.from(manager.sources.entries()).sort(([, a], [, b]) => a.order - b.order);
+	const sortedSources = Array.from(manager.sources.entries()).sort(
+		([, a], [, b]) => a.order - b.order,
+	)
 
-	const allSourceClasses: string[] = [];
+	const allSourceClasses: string[] = []
 	for (const [, source] of sortedSources) {
-		allSourceClasses.push(...source.classes);
+		allSourceClasses.push(...source.classes)
 	}
 
 	// Combine base classes with all source classes, ensuring base classes take precedence
 	const classesToApply =
 		allSourceClasses.length > 0 || manager.baseClasses.size > 0
 			? twMerge(clsx([...allSourceClasses, ...manager.baseClasses]))
-			: '';
+			: ''
 
 	// Apply the classes to the element
 	if (manager.element.className !== classesToApply) {
-		manager.element.className = classesToApply;
+		manager.element.className = classesToApply
 	}
 
-	manager.isUpdating = false;
+	manager.isUpdating = false
 }
 
 function cleanupManager(element: HTMLElement): void {
 	// Remove from global tracking
-	observedElements.delete(element);
-	elementClassManagers.delete(element);
+	observedElements.delete(element)
+	elementClassManagers.delete(element)
 
 	// If no more elements being tracked, cleanup global observer
 	if (observedElements.size === 0 && globalObserver) {
-		globalObserver.disconnect();
-		globalObserver = null;
+		globalObserver.disconnect()
+		globalObserver = null
 	}
 }
 
 interface ClassesOptions {
-	elementRef?: ElementRef<HTMLElement>;
-	injector?: Injector;
+	elementRef?: ElementRef<HTMLElement>
+	injector?: Injector
 }
 
 // Cache for parsed class lists to avoid repeated string operations
-const classListCache = new Map<string, string[]>();
+const classListCache = new Map<string, string[]>()
 
 function toClassList(className: string | ClassValue[]): string[] {
 	// For simple string inputs, use cache to avoid repeated parsing
 	if (typeof className === 'string' && classListCache.has(className)) {
-		return classListCache.get(className)!;
+		return classListCache.get(className)!
 	}
 
 	const result = clsx(className)
 		.split(' ')
-		.filter((c) => c.length > 0);
+		.filter((c) => c.length > 0)
 
 	// Cache string results, but limit cache size to prevent memory growth
 	if (typeof className === 'string' && classListCache.size < 1000) {
-		classListCache.set(className, result);
+		classListCache.set(className, result)
 	}
 
-	return result;
+	return result
 }

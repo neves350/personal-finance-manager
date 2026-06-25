@@ -15,7 +15,9 @@ import { forkJoin, Subject, switchMap } from 'rxjs'
 })
 export class StatisticsService {
 	private readonly statisticsApi = inject(StatisticsApi)
-	private readonly loadTrigger$ = new Subject<StatisticsQueryParams | undefined>()
+	private readonly loadTrigger$ = new Subject<
+		StatisticsQueryParams | undefined
+	>()
 
 	readonly period = signal<PeriodType>(PeriodType.MONTH)
 	readonly overview = signal<StatisticsOverview | null>(null)

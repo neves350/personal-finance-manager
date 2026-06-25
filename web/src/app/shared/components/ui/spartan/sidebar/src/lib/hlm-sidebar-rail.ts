@@ -1,6 +1,6 @@
-import { Directive, inject, input } from '@angular/core';
-import { classes } from '@spartan-ng/helm/utils';
-import { HlmSidebarService } from './hlm-sidebar.service';
+import { Directive, inject, input } from '@angular/core'
+import { classes } from '@spartan-ng/helm/utils'
+import { HlmSidebarService } from './hlm-sidebar.service'
 
 @Directive({
 	selector: 'button[hlmSidebarRail]',
@@ -13,9 +13,11 @@ import { HlmSidebarService } from './hlm-sidebar.service';
 	},
 })
 export class HlmSidebarRail {
-	private readonly _sidebarService = inject(HlmSidebarService);
+	private readonly _sidebarService = inject(HlmSidebarService)
 
-	public readonly ariaLabel = input<string>('Toggle Sidebar', { alias: 'aria-label' });
+	public readonly ariaLabel = input<string>('Toggle Sidebar', {
+		alias: 'aria-label',
+	})
 
 	constructor() {
 		classes(() => [
@@ -25,10 +27,10 @@ export class HlmSidebarRail {
 			'hover:group-data-[collapsible=offcanvas]:bg-sidebar group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full',
 			'[[data-side=left][data-collapsible=offcanvas]_&]:-right-2',
 			'[[data-side=right][data-collapsible=offcanvas]_&]:-left-2',
-		]);
+		])
 	}
 
 	protected onClick(): void {
-		this._sidebarService.toggleSidebar();
+		this._sidebarService.toggleSidebar()
 	}
 }

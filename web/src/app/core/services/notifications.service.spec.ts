@@ -13,9 +13,7 @@ describe('NotificationsService', () => {
 		vi.clearAllMocks()
 
 		TestBed.configureTestingModule({
-			providers: [
-				{ provide: NotificationsApi, useValue: mockNotifications },
-			],
+			providers: [{ provide: NotificationsApi, useValue: mockNotifications }],
 		})
 
 		service = TestBed.inject(NotificationsService)
@@ -34,9 +32,7 @@ describe('NotificationsService', () => {
 				next: null,
 			}
 
-			mockNotifications.findAll.mockReturnValue(
-				of({ data: [n1, n2], meta }),
-			)
+			mockNotifications.findAll.mockReturnValue(of({ data: [n1, n2], meta }))
 
 			const result = await firstValueFrom(service.loadNotifications())
 
@@ -61,9 +57,7 @@ describe('NotificationsService', () => {
 				}),
 			)
 
-			await firstValueFrom(
-				service.loadNotifications({ page: 2, limit: 10 }),
-			)
+			await firstValueFrom(service.loadNotifications({ page: 2, limit: 10 }))
 
 			expect(mockNotifications.findAll).toHaveBeenCalledWith({
 				page: 2,
@@ -76,9 +70,9 @@ describe('NotificationsService', () => {
 				throwError(() => new Error('Network error')),
 			)
 
-			await expect(
-				firstValueFrom(service.loadNotifications()),
-			).rejects.toThrow('Network error')
+			await expect(firstValueFrom(service.loadNotifications())).rejects.toThrow(
+				'Network error',
+			)
 
 			expect(service.loading()).toBe(false)
 		})
@@ -114,9 +108,7 @@ describe('NotificationsService', () => {
 
 		it('should not go below zero unread count', async () => {
 			service.unreadCount.set(0)
-			service.notifications.set([
-				makeNotification({ id: 'n-1', isRead: true }),
-			])
+			service.notifications.set([makeNotification({ id: 'n-1', isRead: true })])
 
 			mockNotifications.markAsRead.mockReturnValue(of(undefined))
 
@@ -138,9 +130,7 @@ describe('NotificationsService', () => {
 
 			await firstValueFrom(service.markAllAsRead())
 
-			expect(
-				service.notifications().every((n) => n.isRead),
-			).toBe(true)
+			expect(service.notifications().every((n) => n.isRead)).toBe(true)
 			expect(service.unreadCount()).toBe(0)
 		})
 	})

@@ -87,9 +87,7 @@ export class NotificationsService {
 		return this.api.markAsRead(id).pipe(
 			tap(() => {
 				this.notifications.update((list) =>
-					list.map((n) =>
-						n.id === id ? { ...n, isRead: true } : n,
-					),
+					list.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
 				)
 				this.unreadCount.update((c) => Math.max(0, c - 1))
 			}),
@@ -111,9 +109,7 @@ export class NotificationsService {
 		return this.api.delete(id).pipe(
 			tap(() => {
 				const removed = this.notifications().find((n) => n.id === id)
-				this.notifications.update((list) =>
-					list.filter((n) => n.id !== id),
-				)
+				this.notifications.update((list) => list.filter((n) => n.id !== id))
 				if (removed && !removed.isRead) {
 					this.unreadCount.update((c) => Math.max(0, c - 1))
 				}

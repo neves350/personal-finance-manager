@@ -103,7 +103,10 @@ export class BankAccountService {
 			const activeLink = await this.prisma.openBankingAccount.findFirst({
 				where: { bankAccountId: bankAccount.id },
 			})
-			if (activeLink && (data.balance !== undefined || data.type !== undefined)) {
+			if (
+				activeLink &&
+				(data.balance !== undefined || data.type !== undefined)
+			) {
 				throw new BadRequestException(
 					'Cannot edit balance or type of a linked bank account. These values are synced from your bank.',
 				)

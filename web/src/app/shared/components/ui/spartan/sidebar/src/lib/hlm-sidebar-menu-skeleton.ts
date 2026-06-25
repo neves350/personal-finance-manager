@@ -1,7 +1,12 @@
-import { type BooleanInput } from '@angular/cdk/coercion';
-import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
-import { classes } from '@spartan-ng/helm/utils';
+import { type BooleanInput } from '@angular/cdk/coercion'
+import {
+	booleanAttribute,
+	ChangeDetectionStrategy,
+	Component,
+	input,
+} from '@angular/core'
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton'
+import { classes } from '@spartan-ng/helm/utils'
 
 @Component({
 	selector: 'hlm-sidebar-menu-skeleton,div[hlmSidebarMenuSkeleton]',
@@ -21,10 +26,12 @@ import { classes } from '@spartan-ng/helm/utils';
 	`,
 })
 export class HlmSidebarMenuSkeleton {
-	public readonly showIcon = input<boolean, BooleanInput>(false, { transform: booleanAttribute });
-	protected readonly _width = `${Math.floor(Math.random() * 40) + 50}%`;
+	public readonly showIcon = input<boolean, BooleanInput>(false, {
+		transform: booleanAttribute,
+	})
+	protected readonly _width = `${Math.floor(Math.random() * 40) + 50}%`
 
 	constructor() {
-		classes(() => 'flex h-8 items-center gap-2 rounded-md px-2');
+		classes(() => 'flex h-8 items-center gap-2 rounded-md px-2')
 	}
 }

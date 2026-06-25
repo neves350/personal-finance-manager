@@ -1,15 +1,12 @@
-import { TestBed } from '@angular/core/testing'
-import {
-	provideHttpClient,
-	withInterceptorsFromDi,
-} from '@angular/common/http'
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import {
 	HttpTestingController,
 	provideHttpClientTesting,
 } from '@angular/common/http/testing'
+import { TestBed } from '@angular/core/testing'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { AuthApi } from './auth-api'
 import { environment } from '../../../environments/environment'
+import { AuthApi } from './auth-api'
 
 describe('AuthApi', () => {
 	let authApi: AuthApi
@@ -55,14 +52,20 @@ describe('AuthApi', () => {
 			)
 			expect(req.request.method).toBe('POST')
 			expect(req.request.withCredentials).toBe(true)
-			expect(req.request.body).toEqual({ credential: 'google-credential-token' })
+			expect(req.request.body).toEqual({
+				credential: 'google-credential-token',
+			})
 			req.flush({ accessToken: 'token' })
 		})
 	})
 
 	describe('register', () => {
 		it('POST /users with credentials', () => {
-			const data = { name: 'John', email: 'john@example.com', password: 'secret' }
+			const data = {
+				name: 'John',
+				email: 'john@example.com',
+				password: 'secret',
+			}
 			authApi.register(data).subscribe()
 
 			const req = httpController.expectOne(`${environment.apiUrl}/users`)
@@ -124,10 +127,15 @@ describe('AuthApi', () => {
 		it('POST /password/reset — no withCredentials', () => {
 			authApi.resetPassword('abc123', 'newpassword').subscribe()
 
-			const req = httpController.expectOne(`${environment.apiUrl}/password/reset`)
+			const req = httpController.expectOne(
+				`${environment.apiUrl}/password/reset`,
+			)
 			expect(req.request.method).toBe('POST')
 			expect(req.request.withCredentials).toBe(false)
-			expect(req.request.body).toEqual({ code: 'abc123', newPassword: 'newpassword' })
+			expect(req.request.body).toEqual({
+				code: 'abc123',
+				newPassword: 'newpassword',
+			})
 			req.flush({})
 		})
 	})

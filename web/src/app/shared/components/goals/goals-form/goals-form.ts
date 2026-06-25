@@ -20,7 +20,6 @@ import {
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
 import { ZardDatePickerComponent } from '../../ui/date-picker'
-import { Z_MODAL_DATA, ZardDialogRef } from '../../ui/dialog'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardSelectComponent, ZardSelectItemComponent } from '../../ui/select'
 import { Z_SHEET_DATA, ZardSheetRef } from '../../ui/sheet'

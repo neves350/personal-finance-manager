@@ -301,11 +301,19 @@ describe('GoalsService', () => {
 		const goalId = 'g-1'
 		const payload = { amount: 50, date: '2026-01-01T00:00:00.000Z' }
 		const deposit = makeDeposit({ id: 'd-1', goalId: 'g-1', amount: 50 })
-		const updatedGoal = makeGoal({ id: 'g-1', currentAmount: 150, progress: 80 })
+		const updatedGoal = makeGoal({
+			id: 'g-1',
+			currentAmount: 150,
+			progress: 80,
+		})
 
 		it('should return the created deposit', async () => {
 			mockGoals.addDeposit.mockReturnValue(
-				of({ deposit, goal: updatedGoal, message: 'Deposit added successfully' }),
+				of({
+					deposit,
+					goal: updatedGoal,
+					message: 'Deposit added successfully',
+				}),
 			)
 
 			const result = await firstValueFrom(service.addDeposit(goalId, payload))
@@ -316,7 +324,11 @@ describe('GoalsService', () => {
 
 		it('should call the API with the correct goalId and payload', async () => {
 			mockGoals.addDeposit.mockReturnValue(
-				of({ deposit, goal: updatedGoal, message: 'Deposit added successfully' }),
+				of({
+					deposit,
+					goal: updatedGoal,
+					message: 'Deposit added successfully',
+				}),
 			)
 
 			await firstValueFrom(service.addDeposit(goalId, payload))
@@ -331,7 +343,11 @@ describe('GoalsService', () => {
 			service.goals.set([originalGoal, otherGoal])
 
 			mockGoals.addDeposit.mockReturnValue(
-				of({ deposit, goal: updatedGoal, message: 'Deposit added successfully' }),
+				of({
+					deposit,
+					goal: updatedGoal,
+					message: 'Deposit added successfully',
+				}),
 			)
 
 			await firstValueFrom(service.addDeposit(goalId, payload))

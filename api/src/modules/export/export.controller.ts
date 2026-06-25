@@ -67,10 +67,7 @@ export class ExportController {
 		const filename = `transactions_${new Date().toISOString().split('T')[0]}.pdf`
 
 		res.setHeader('Content-Type', 'application/pdf')
-		res.setHeader(
-			'Content-Disposition',
-			`attachment; filename="${filename}"`,
-		)
+		res.setHeader('Content-Disposition', `attachment; filename="${filename}"`)
 
 		res.send(pdf)
 	}

@@ -45,9 +45,7 @@ export class TransfersService {
 
 		return this.transfersApi.create(data).pipe(
 			map((response) => response.transfer),
-			switchMap((transfer) =>
-				this.loadTransfers().pipe(map(() => transfer)),
-			),
+			switchMap((transfer) => this.loadTransfers().pipe(map(() => transfer))),
 		)
 	}
 

@@ -29,13 +29,11 @@ describe('BudgetController (e2e)', () => {
 		await app.init()
 
 		testEmail = `e2e-budget-${Date.now()}@example.com`
-		const registerRes = await request(app.getHttpServer())
-			.post('/users')
-			.send({
-				name: 'E2E Budget Test',
-				email: testEmail,
-				password: testPassword,
-			})
+		const registerRes = await request(app.getHttpServer()).post('/users').send({
+			name: 'E2E Budget Test',
+			email: testEmail,
+			password: testPassword,
+		})
 
 		cookies = registerRes.headers['set-cookie'] as unknown as string[]
 		userId = registerRes.body.user.id
@@ -220,7 +218,10 @@ describe('BudgetController (e2e)', () => {
 
 		expect(res.body).toHaveProperty('from')
 		expect(res.body).toHaveProperty('to')
-		expect(res.body).toHaveProperty('message', 'Transfer completed successfully')
+		expect(res.body).toHaveProperty(
+			'message',
+			'Transfer completed successfully',
+		)
 	})
 
 	it('should reject transfer to same envelope', async () => {

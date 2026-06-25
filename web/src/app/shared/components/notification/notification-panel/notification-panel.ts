@@ -10,14 +10,10 @@ import { Router } from '@angular/router'
 import { NotificationsApi } from '@core/api/notifications.api'
 import type { Notification } from '@core/api/notifications.interface'
 import {
-	NotificationsService,
 	type NotificationGroup,
+	NotificationsService,
 } from '@core/services/notifications.service'
-import {
-	BellIcon,
-	CheckCheckIcon,
-	LucideAngularModule,
-} from 'lucide-angular'
+import { BellIcon, CheckCheckIcon, LucideAngularModule } from 'lucide-angular'
 import { ZardButtonComponent } from '../../ui/button'
 import { ZardDividerComponent } from '../../ui/divider'
 import { ZardDropdownImports } from '../../ui/dropdown'
@@ -28,7 +24,6 @@ const ENTITY_ROUTE_MAP: Record<string, string> = {
 	ENVELOPE: '/budgets',
 	GOAL: '/goals',
 }
-
 
 @Component({
 	selector: 'app-notification-panel',

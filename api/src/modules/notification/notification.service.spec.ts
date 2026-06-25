@@ -98,9 +98,9 @@ describe('NotificationService', () => {
 		it('should throw if notification not found', async () => {
 			mockPrisma.notification.findFirst.mockResolvedValue(null)
 
-			await expect(
-				service.markAsRead('invalid', 'user-1'),
-			).rejects.toThrow(NotFoundException)
+			await expect(service.markAsRead('invalid', 'user-1')).rejects.toThrow(
+				NotFoundException,
+			)
 		})
 	})
 
@@ -138,9 +138,9 @@ describe('NotificationService', () => {
 		it('should throw if notification not found', async () => {
 			mockPrisma.notification.findFirst.mockResolvedValue(null)
 
-			await expect(
-				service.delete('invalid', 'user-1'),
-			).rejects.toThrow(NotFoundException)
+			await expect(service.delete('invalid', 'user-1')).rejects.toThrow(
+				NotFoundException,
+			)
 		})
 	})
 
@@ -254,9 +254,7 @@ describe('NotificationService', () => {
 		})
 
 		it('should rethrow non-P2002 errors', async () => {
-			mockPrisma.notification.create.mockRejectedValue(
-				new Error('DB error'),
-			)
+			mockPrisma.notification.create.mockRejectedValue(new Error('DB error'))
 
 			await expect(
 				service.createNotification({

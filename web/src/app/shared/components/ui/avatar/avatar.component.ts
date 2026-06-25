@@ -1,15 +1,25 @@
-import { ChangeDetectionStrategy, Component, computed, input, signal, ViewEncapsulation } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	computed,
+	input,
+	signal,
+	ViewEncapsulation,
+} from '@angular/core'
+import { mergeClasses } from '@/shared/utils/merge-classes'
+import {
+	avatarVariants,
+	imageVariants,
+	type ZardAvatarVariants,
+	type ZardImageVariants,
+} from './avatar.variants'
 
-import { avatarVariants, imageVariants, type ZardImageVariants, type ZardAvatarVariants } from './avatar.variants';
-
-import { mergeClasses } from '@/shared/utils/merge-classes';
-
-export type ZardAvatarStatus = 'online' | 'offline' | 'doNotDisturb' | 'away';
+export type ZardAvatarStatus = 'online' | 'offline' | 'doNotDisturb' | 'away'
 
 @Component({
-  selector: 'z-avatar, [z-avatar]',
-  standalone: true,
-  template: `
+	selector: 'z-avatar, [z-avatar]',
+	standalone: true,
+	template: `
     @if (zFallback() && (!zSrc() || !imageLoaded())) {
       <span class="absolute z-0 m-auto text-base">{{ zFallback() }}</span>
     }
@@ -97,51 +107,59 @@ export type ZardAvatarStatus = 'online' | 'offline' | 'doNotDisturb' | 'away';
       }
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  host: {
-    '[class]': 'containerClasses()',
-    '[style.width]': 'customSize()',
-    '[style.height]': 'customSize()',
-    '[attr.data-slot]': '"avatar"',
-    '[attr.data-status]': 'zStatus() ?? null',
-  },
-  exportAs: 'zAvatar',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	encapsulation: ViewEncapsulation.None,
+	host: {
+		'[class]': 'containerClasses()',
+		'[style.width]': 'customSize()',
+		'[style.height]': 'customSize()',
+		'[attr.data-slot]': '"avatar"',
+		'[attr.data-status]': 'zStatus() ?? null',
+	},
+	exportAs: 'zAvatar',
 })
 export class ZardAvatarComponent {
-  readonly zStatus = input<ZardAvatarStatus>();
-  readonly zShape = input<ZardImageVariants['zShape']>('circle');
-  readonly zSize = input<ZardAvatarVariants['zSize'] | number>('default');
-  readonly zSrc = input<string>();
-  readonly zAlt = input<string>('');
-  readonly zFallback = input<string>('');
+	readonly zStatus = input<ZardAvatarStatus>()
+	readonly zShape = input<ZardImageVariants['zShape']>('circle')
+	readonly zSize = input<ZardAvatarVariants['zSize'] | number>('default')
+	readonly zSrc = input<string>()
+	readonly zAlt = input<string>('')
+	readonly zFallback = input<string>('')
 
-  readonly class = input<string>('');
+	readonly class = input<string>('')
 
-  protected readonly imageError = signal(false);
-  protected readonly imageLoaded = signal(false);
+	protected readonly imageError = signal(false)
+	protected readonly imageLoaded = signal(false)
 
-  protected readonly containerClasses = computed(() => {
-    const size = this.zSize();
-    const zSize = typeof size === 'number' ? undefined : (size as ZardAvatarVariants['zSize']);
+	protected readonly containerClasses = computed(() => {
+		const size = this.zSize()
+		const zSize =
+			typeof size === 'number'
+				? undefined
+				: (size as ZardAvatarVariants['zSize'])
 
-    return mergeClasses(avatarVariants({ zShape: this.zShape(), zSize }), this.class());
-  });
+		return mergeClasses(
+			avatarVariants({ zShape: this.zShape(), zSize }),
+			this.class(),
+		)
+	})
 
-  protected readonly customSize = computed(() => {
-    const size = this.zSize();
-    return typeof size === 'number' ? `${size}px` : null;
-  });
+	protected readonly customSize = computed(() => {
+		const size = this.zSize()
+		return typeof size === 'number' ? `${size}px` : null
+	})
 
-  protected readonly imgClasses = computed(() => mergeClasses(imageVariants({ zShape: this.zShape() })));
+	protected readonly imgClasses = computed(() =>
+		mergeClasses(imageVariants({ zShape: this.zShape() })),
+	)
 
-  protected onImageLoad(): void {
-    this.imageLoaded.set(true);
-    this.imageError.set(false);
-  }
+	protected onImageLoad(): void {
+		this.imageLoaded.set(true)
+		this.imageError.set(false)
+	}
 
-  protected onImageError(): void {
-    this.imageError.set(true);
-    this.imageLoaded.set(false);
-  }
+	protected onImageError(): void {
+		this.imageError.set(true)
+		this.imageLoaded.set(false)
+	}
 }
