@@ -52,13 +52,13 @@ export class AuthController {
 		res.cookie('accessToken', tokens.accessToken, {
 			httpOnly: true,
 			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: 'lax',
+			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
 			maxAge: 15 * 60 * 1000, // 15 min
 		})
 		res.cookie('refreshToken', tokens.refreshToken, {
 			httpOnly: true,
 			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: 'lax',
+			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
 			maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 		})
 
@@ -84,13 +84,13 @@ export class AuthController {
 		res.cookie('accessToken', tokens.accessToken, {
 			httpOnly: true,
 			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: 'lax',
+			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
 			maxAge: 15 * 60 * 1000, // 15 min
 		})
 		res.cookie('refreshToken', tokens.refreshToken, {
 			httpOnly: true,
 			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: 'lax',
+			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
 			maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 		})
 
@@ -115,13 +115,13 @@ export class AuthController {
 		res.cookie('accessToken', tokens.accessToken, {
 			httpOnly: true,
 			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: 'lax',
+			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
 			maxAge: 15 * 60 * 1000, // 15 min
 		})
 		res.cookie('refreshToken', tokens.refreshToken, {
 			httpOnly: true,
 			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: 'lax',
+			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
 			maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 		})
 
@@ -154,13 +154,13 @@ export class AuthController {
 		res.cookie('accessToken', accessToken, {
 			httpOnly: true,
 			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: 'lax',
+			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
 			maxAge: 15 * 60 * 1000, // 15 min
 		})
 		res.cookie('refreshToken', newRefreshToken, {
 			httpOnly: true,
 			secure: this.configService.getOrThrow<boolean>('USE_SECURE_COOKIES'),
-			sameSite: 'lax',
+			sameSite: this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true' ? 'none' : 'lax',
 			maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 		})
 
@@ -209,8 +209,14 @@ export class AuthController {
 	})
 	@ApiLogoutResponses()
 	async logout(@Res({ passthrough: true }) res: Response) {
-		res.clearCookie('accessToken')
-		res.clearCookie('refreshToken')
+		const isSecure = this.configService.getOrThrow('USE_SECURE_COOKIES') === 'true'
+		const clearOptions = {
+			httpOnly: true,
+			secure: isSecure,
+			sameSite: isSecure ? 'none' as const : 'lax' as const,
+		}
+		res.clearCookie('accessToken', clearOptions)
+		res.clearCookie('refreshToken', clearOptions)
 
 		return {
 			message: 'Logout successful',
