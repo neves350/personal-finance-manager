@@ -1,12 +1,12 @@
 <main class="p-4 md:p-6 w-full">
-  <div class="max-w-500 mx-auto py-3 xl:py-6 space-y-8 xl:space-y-12">
+  <div class="max-w-500 mx-auto py-3 lg:py-6 space-y-8 lg:space-y-12">
     <app-dashboard-header (filterChange)="onFilterChange($event)" />
     <app-dashboard-card />
-    <div class="grid grid-cols-1 xl:grid-cols-3 gap-3 xl:gap-4 mb-4 mt-4">
-      <app-dashboard-cashflow class="col-span-1 xl:col-span-2" />
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4 mb-4 mt-4">
+      <app-dashboard-cashflow class="col-span-1 lg:col-span-2" />
       <app-dashboard-spending />
     </div>
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-3 xl:gap-4 mb-4 mt-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4 mb-4 mt-4">
       <app-dashboard-goals />
       <app-dashboard-budgets />
     </div>

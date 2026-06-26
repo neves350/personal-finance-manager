@@ -1,5 +1,5 @@
-<main class="p-4 xl:p-6 w-full">
-  <div class="max-w-500 mx-auto py-3 xl:py-6 space-y-8 xl:space-y-12">
+<main class="p-4 lg:p-6 w-full">
+  <div class="max-w-500 mx-auto py-3 lg:py-6 space-y-8 lg:space-y-12">
     <div class="flex justify-between items-start">
       <h1 class="flex flex-col page-title">
         Statistics
@@ -20,11 +20,11 @@
     </div>
     } @else if (hasData()) {
     <app-statistics-summary />
-    <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-3 mb-3 xl:mb-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-3 mb-3 lg:mb-4">
       <app-statistics-categories />
       <app-statistics-period class="col-span-1" />
     </div>
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-3 items-stretch *:h-full">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 items-stretch *:h-full">
       <app-statistics-breakdown />
       <app-statistics-insights />
     </div>

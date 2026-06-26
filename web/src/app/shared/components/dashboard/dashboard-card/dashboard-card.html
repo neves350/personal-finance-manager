@@ -1,27 +1,13 @@
-<div class="grid grid-cols-2 gap-4 xl:grid-cols-4">
-  <app-balance-card
-    [balance]="balanceData().balance"
-    [percentageChange]="balanceData().percentageChange"
-    [periodLabel]="periodLabel()"
-  />
+<div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+  <app-balance-card [balance]="balanceData().balance" [percentageChange]="balanceData().percentageChange"
+    [periodLabel]="periodLabel()" />
 
-  <app-income-card
-    [income]="incomeData().income"
-    [percentageChange]="incomeData().percentageChange"
-    [periodLabel]="periodLabel()"
-    [title]="incomeTitle()"
-  />
+  <app-income-card [income]="incomeData().income" [percentageChange]="incomeData().percentageChange"
+    [periodLabel]="periodLabel()" [title]="incomeTitle()" />
 
-  <app-expense-card
-    [expense]="expenseData().expense"
-    [percentageChange]="expenseData().percentageChange"
-    [periodLabel]="periodLabel()"
-    [title]="expenseTitle()"
-  />
+  <app-expense-card [expense]="expenseData().expense" [percentageChange]="expenseData().percentageChange"
+    [periodLabel]="periodLabel()" [title]="expenseTitle()" />
 
-  <app-savings-rate-card
-    [savingsRate]="savingsData().savingsRate"
-    [percentageChange]="savingsData().percentageChange"
-    [periodLabel]="periodLabel()"
-  />
+  <app-savings-rate-card [savingsRate]="savingsData().savingsRate" [percentageChange]="savingsData().percentageChange"
+    [periodLabel]="periodLabel()" />
 </div>
