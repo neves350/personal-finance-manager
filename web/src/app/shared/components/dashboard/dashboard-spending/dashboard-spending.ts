@@ -56,6 +56,7 @@ export class DashboardSpending {
 		afterNextRender(() => {
 			this.initChart()
 			this.observeThemeChanges()
+			this.observeResize()
 		})
 
 		effect(() => {
@@ -78,6 +79,17 @@ export class DashboardSpending {
 		const labels = cats.map((c) => c.categoryTitle)
 		const amounts = cats.map((c) => c.total)
 		this.chartOptions.set(createDonutOptions(labels, amounts))
+	}
+
+	private observeResize(): void {
+		let wasMobile = window.innerWidth < 1024
+		window.addEventListener('resize', () => {
+			const isMobile = window.innerWidth < 1024
+			if (isMobile !== wasMobile) {
+				wasMobile = isMobile
+				this.initChart()
+			}
+		})
 	}
 
 	private observeThemeChanges(): void {

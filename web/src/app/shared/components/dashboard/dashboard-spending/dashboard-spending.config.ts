@@ -67,12 +67,16 @@ export function createDonutOptions(
 
 	const total = amounts.reduce((sum, val) => sum + val, 0)
 
+	const isMobile = window.innerWidth < 1024
+	const chartHeight = isMobile ? 220 : 280
+	const chartWidth = isMobile ? 180 : 220
+
 	return {
 		series: amounts,
 		chart: {
 			type: 'donut',
-			height: 280,
-			width: 220,
+			height: chartHeight,
+			width: chartWidth,
 			fontFamily: 'inherit',
 			foreColor: foreground,
 			background: 'transparent',

@@ -7,48 +7,36 @@
   </div>
 
   @if (hasCategories()) {
-    <div class="flex flex-col lg:flex-row gap-8">
-      <!-- Donut Chart -->
-      @if (chartOptions()) {
-        <div class="shrink-0 py-8 self-center lg:self-auto">
-          <apx-chart
-            [series]="chartOptions()!.series!"
-            [chart]="chartOptions()!.chart!"
-            [labels]="chartOptions()!.labels!"
-            [colors]="chartOptions()!.colors!"
-            [plotOptions]="chartOptions()!.plotOptions!"
-            [dataLabels]="chartOptions()!.dataLabels!"
-            [legend]="chartOptions()!.legend!"
-            [stroke]="chartOptions()!.stroke!"
-            [tooltip]="chartOptions()!.tooltip!"
-          />
-        </div>
-      }
+  <div class="flex flex-col lg:flex-row gap-2 lg:gap-8">
+    <!-- Donut Chart -->
+    @if (chartOptions()) {
+    <div class="shrink-0 py-2 lg:py-8 self-center lg:self-auto">
+      <apx-chart [series]="chartOptions()!.series!" [chart]="chartOptions()!.chart!" [labels]="chartOptions()!.labels!"
+        [colors]="chartOptions()!.colors!" [plotOptions]="chartOptions()!.plotOptions!"
+        [dataLabels]="chartOptions()!.dataLabels!" [legend]="chartOptions()!.legend!" [stroke]="chartOptions()!.stroke!"
+        [tooltip]="chartOptions()!.tooltip!" />
+    </div>
+    }
 
-      <!-- Category list -->
-      <div class="flex-1 space-y-3 py-10">
-        @for (cat of categories(); track cat.categoryId; let i = $index) {
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-1.5">
-              <div
-                class="size-2.5 rounded-full"
-                [style.backgroundColor]="getCategoryColor(i)"
-              ></div>
-              <span class="text-sm text-muted-foreground">{{ cat.categoryTitle }}</span>
-            </div>
-            <div class="flex items-center gap-1.5">
-              <span class="text-sm font-medium">{{ cat.total | currency: 'EUR' }}</span>
-              <span class="text-xs text-muted-foreground w-12 text-right"
-                >{{ cat.percentage }}%</span
-              >
-            </div>
-          </div>
-        }
+    <!-- Category list -->
+    <div class="flex-1 space-y-3 py-10">
+      @for (cat of categories(); track cat.categoryId; let i = $index) {
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-1.5">
+          <div class="size-2 lg:size-2.5 rounded-full" [style.backgroundColor]="getCategoryColor(i)"></div>
+          <span class="text-sm text-muted-foreground">{{ cat.categoryTitle }}</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="text-sm font-medium">{{ cat.total | currency: 'EUR' }}</span>
+          <span class="text-xs text-muted-foreground w-12 text-right">{{ cat.percentage }}%</span>
+        </div>
       </div>
+      }
     </div>
+  </div>
   } @else {
-    <div class="flex flex-col items-center justify-center py-8 text-muted-foreground">
-      <p class="text-sm">No spending data available</p>
-    </div>
+  <div class="flex flex-col items-center justify-center py-2 lg:py-8 text-muted-foreground">
+    <p class="text-sm">No spending data available</p>
+  </div>
   }
 </z-card>
