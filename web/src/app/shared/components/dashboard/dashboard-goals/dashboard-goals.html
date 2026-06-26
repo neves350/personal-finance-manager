@@ -4,11 +4,12 @@
   </div>
 
   @if (hasGoals()) {
-  <div class="xl:space-y-5 grid grid-cols-2 gap-3 xl:gap-4">
+  <div class="xl:space-y-5 grid grid-cols-1 md:grid-cols-2 gap-2 xl:gap-4">
     @for (goal of displayGoals(); track goal.id) {
     <z-card class="mb-1 glass-card">
       <div class="flex items-center gap-3">
-        <div class="rounded-sm flex items-center justify-center shrink-0 size-12" [class]="goalTypeIcons[goal.type].style">
+        <div class="rounded-sm flex items-center justify-center shrink-0 size-10 lg:size-12"
+          [class]="goalTypeIcons[goal.type].style">
           <i-lucide [img]="goalTypeIcons[goal.type].icon" class="size-5" />
         </div>
         <div class="flex-1 min-w-0">
