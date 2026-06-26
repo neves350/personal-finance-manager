@@ -3,14 +3,14 @@
     <div class="flex items-center justify-start">
       <span
         class="text-xs xl:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2">
-        <div class="rounded-sm border p-2.5">
+        <div class="rounded-sm border p-2 md:p-2.5">
           <i-lucide [img]="PercentIcon" class="h-4 w-4 text-primary" />
         </div>
         {{ title() }}
       </span>
     </div>
 
-    <span class="text-2xl xl:text-3xl font-bold font-display tracking-tight text-card-foreground mt-3 xl:mt-2">
+    <span class="text-xl md:text-2xl lg:text-3xl font-bold font-display tracking-tight text-card-foreground mt-2">
       {{ formattedRate() }}
     </span>
 
