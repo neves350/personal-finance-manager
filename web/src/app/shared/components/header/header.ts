@@ -2,17 +2,15 @@ import { Component, computed, DestroyRef, inject, OnInit } from '@angular/core'
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop'
 import { NavigationEnd, Router } from '@angular/router'
 import { NotificationsService } from '@core/services/notifications.service'
-import { LucideAngularModule, MenuIcon, SlashIcon } from 'lucide-angular'
+import { LucideAngularModule, MenuIcon } from 'lucide-angular'
 import { filter, interval, map, startWith, switchMap } from 'rxjs'
 import { BreadcrumbService } from '@/shared/services/breadcrumb.service'
 import { NotificationPanel } from '../notification/notification-panel/notification-panel'
-import { ProfileButton } from '../profile-button/profile-button'
 import { Theme } from '../theme/theme'
 import {
 	ZardBreadcrumbComponent,
 	ZardBreadcrumbItemComponent,
 } from '../ui/breadcrumb'
-import { ZardDividerComponent } from '../ui/divider'
 import { HlmSidebarService } from '../ui/spartan/sidebar/src'
 
 interface BreadcrumbItem {
@@ -48,8 +46,6 @@ const BREADCRUMB_MAP: Record<string, BreadcrumbItem[]> = {
 		ZardBreadcrumbComponent,
 		ZardBreadcrumbItemComponent,
 		LucideAngularModule,
-		ProfileButton,
-		ZardDividerComponent,
 		NotificationPanel,
 	],
 	templateUrl: './header.html',
@@ -64,7 +60,6 @@ export class Header implements OnInit {
 	private readonly notificationsService = inject(NotificationsService)
 	private readonly sidebarService = inject(HlmSidebarService)
 
-	readonly SlashIcon = SlashIcon
 	readonly MenuIcon = MenuIcon
 
 	private readonly currentUrl = toSignal(
