@@ -1,8 +1,8 @@
-<z-card class="glass-card">
+<z-card class="glass-card h-full">
   <div class="flex flex-col">
     <div class="flex items-center justify-start">
       <span
-        class="text-xs xl:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2">
+        class="text-xs lg:text-sm font-medium font-title tracking-wider text-muted-foreground uppercase flex items-center gap-2">
         <div class="rounded-sm border p-2 md:p-2.5">
           <i-lucide [img]="CoinsIcon" class="h-4 w-4 text-primary" />
         </div>
@@ -10,11 +10,11 @@
       </span>
     </div>
 
-    <span class="text-xl md:text-2xl lg:text-3xl font-bold font-display tracking-tight text-card-foreground mt-2">
+    <span class="text-lg md:text-2xl lg:text-3xl font-bold font-display tracking-tight text-card-foreground mt-2">
       {{ formattedBalance() | currency: 'EUR' }}
     </span>
 
-    <div class="flex items-center gap-1.5 text-sm mt-2">
+    <div class="flex items-center gap-1.5 text-xs md:text-sm mt-2">
       <i-lucide [img]="isPositiveChange() ? ArrowUpIcon : ArrowDownIcon"
         [class]="isPositiveChange() ? 'text-primary' : 'text-destructive'" class="size-3 font-semibold" />
       <span [class]="isPositiveChange() ? 'text-primary' : 'text-destructive'">
