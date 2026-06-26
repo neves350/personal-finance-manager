@@ -12,7 +12,7 @@
   <div class="space-y-4">
     @for (envelope of topCritical(); track envelope.id) {
     <div class="flex items-center gap-3">
-      <div class="rounded-sm flex items-center justify-center shrink-0 size-12 bg-primary/10">
+      <div class="rounded-sm flex items-center justify-center shrink-0 size-10 lg:size-12 bg-primary/10">
         <i-lucide [img]="iconMap[envelope.category.icon] ?? iconMap['tag']" class="size-5 text-primary" />
       </div>
       <div class="flex-1 min-w-0">
@@ -21,7 +21,8 @@
           <p class="text-sm font-bold font-display">{{ envelope.allocatedAmount | currency: 'EUR' }}</p>
         </div>
         <div class="flex items-center gap-2">
-          <z-progress-bar class="flex-1 bg-secondary rounded-full" [progress]="envelope.progress" [zType]="getProgressType(envelope.status)" />
+          <z-progress-bar class="flex-1 bg-secondary rounded-full" [progress]="envelope.progress"
+            [zType]="getProgressType(envelope.status)" />
           <span class="text-xs font-medium shrink-0"
             [class]="getProgressType(envelope.status) === 'destructive' ? 'text-destructive' : getProgressType(envelope.status) === 'accent' ? 'text-chart-1' : 'text-primary'">
             {{ envelope.progress }}%
