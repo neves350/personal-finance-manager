@@ -10,6 +10,7 @@ import { ZardAvatarComponent } from '@/shared/components/ui/avatar'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardDividerComponent } from '@/shared/components/ui/divider'
 import { ZardInputDirective } from '@/shared/components/ui/input'
+import { environment } from '../../../../environments/environment'
 
 @Component({
 	selector: 'app-login',
@@ -32,6 +33,7 @@ export class Login {
 	private readonly googleAuthService = inject(GoogleAuthService)
 
 	readonly ArrowRightIcon = ArrowRightIcon
+	readonly googleAuthEnabled = environment.googleAuthEnabled
 
 	form = this.fb.nonNullable.group({
 		email: ['', [Validators.email, Validators.required]],

@@ -37,14 +37,19 @@ export class AuthController {
 	) {}
 
 	private get isSecureCookies(): boolean {
-		return this.configService.getOrThrow('USE_SECURE_COOKIES').toString().toLowerCase() === 'true'
+		return (
+			this.configService
+				.getOrThrow('USE_SECURE_COOKIES')
+				.toString()
+				.toLowerCase() === 'true'
+		)
 	}
 
 	private cookieOptions(maxAge: number) {
 		return {
 			httpOnly: true,
 			secure: this.isSecureCookies,
-			sameSite: this.isSecureCookies ? 'none' as const : 'lax' as const,
+			sameSite: 'lax' as const,
 			maxAge,
 		}
 	}
@@ -61,8 +66,16 @@ export class AuthController {
 	) {
 		const { user, tokens } = await this.authService.register(registerUserDto)
 
-		res.cookie('accessToken', tokens.accessToken, this.cookieOptions(15 * 60 * 1000))
-		res.cookie('refreshToken', tokens.refreshToken, this.cookieOptions(7 * 24 * 60 * 60 * 1000))
+		res.cookie(
+			'accessToken',
+			tokens.accessToken,
+			this.cookieOptions(15 * 60 * 1000),
+		)
+		res.cookie(
+			'refreshToken',
+			tokens.refreshToken,
+			this.cookieOptions(7 * 24 * 60 * 60 * 1000),
+		)
 
 		return {
 			user,
@@ -82,8 +95,16 @@ export class AuthController {
 	) {
 		const { user, tokens } = await this.authService.login(loginUserDto)
 
-		res.cookie('accessToken', tokens.accessToken, this.cookieOptions(15 * 60 * 1000))
-		res.cookie('refreshToken', tokens.refreshToken, this.cookieOptions(7 * 24 * 60 * 60 * 1000))
+		res.cookie(
+			'accessToken',
+			tokens.accessToken,
+			this.cookieOptions(15 * 60 * 1000),
+		)
+		res.cookie(
+			'refreshToken',
+			tokens.refreshToken,
+			this.cookieOptions(7 * 24 * 60 * 60 * 1000),
+		)
 
 		return {
 			user,
@@ -102,8 +123,16 @@ export class AuthController {
 	) {
 		const { user, tokens } = await this.authService.googleAuth(dto.credential)
 
-		res.cookie('accessToken', tokens.accessToken, this.cookieOptions(15 * 60 * 1000))
-		res.cookie('refreshToken', tokens.refreshToken, this.cookieOptions(7 * 24 * 60 * 60 * 1000))
+		res.cookie(
+			'accessToken',
+			tokens.accessToken,
+			this.cookieOptions(15 * 60 * 1000),
+		)
+		res.cookie(
+			'refreshToken',
+			tokens.refreshToken,
+			this.cookieOptions(7 * 24 * 60 * 60 * 1000),
+		)
 
 		return {
 			user,
@@ -132,7 +161,11 @@ export class AuthController {
 			await this.authService.refresh(refreshToken)
 
 		res.cookie('accessToken', accessToken, this.cookieOptions(15 * 60 * 1000))
-		res.cookie('refreshToken', newRefreshToken, this.cookieOptions(7 * 24 * 60 * 60 * 1000))
+		res.cookie(
+			'refreshToken',
+			newRefreshToken,
+			this.cookieOptions(7 * 24 * 60 * 60 * 1000),
+		)
 
 		return {
 			message: 'Token refreshed successfully',
@@ -182,7 +215,7 @@ export class AuthController {
 		const clearOptions = {
 			httpOnly: true,
 			secure: this.isSecureCookies,
-			sameSite: this.isSecureCookies ? 'none' as const : 'lax' as const,
+			sameSite: 'lax' as const,
 		}
 		res.clearCookie('accessToken', clearOptions)
 		res.clearCookie('refreshToken', clearOptions)

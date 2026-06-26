@@ -21,6 +21,7 @@ import { ZardAvatarComponent } from '@/shared/components/ui/avatar'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardDividerComponent } from '@/shared/components/ui/divider'
 import { ZardInputDirective } from '@/shared/components/ui/input'
+import { environment } from '../../../../environments/environment'
 import { PasswordChecklist } from './password-checklist'
 
 @Component({
@@ -47,6 +48,7 @@ export class Register {
 	readonly ArrowRightIcon = ArrowRightIcon
 	readonly EyeOffIcon = EyeOffIcon
 	readonly EyeIcon = EyeIcon
+	readonly googleAuthEnabled = environment.googleAuthEnabled
 
 	form = this.fb.nonNullable.group({
 		name: ['', [Validators.required]],
