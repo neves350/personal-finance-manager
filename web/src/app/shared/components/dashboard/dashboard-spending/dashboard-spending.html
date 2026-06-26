@@ -7,10 +7,10 @@
   </div>
 
   @if (hasCategories()) {
-    <div class="flex gap-8">
+    <div class="flex flex-col lg:flex-row gap-8">
       <!-- Donut Chart -->
       @if (chartOptions()) {
-        <div class="shrink-0 py-8">
+        <div class="shrink-0 py-8 self-center lg:self-auto">
           <apx-chart
             [series]="chartOptions()!.series!"
             [chart]="chartOptions()!.chart!"
