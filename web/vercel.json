@@ -1,4 +1,10 @@
 {
 	"outputDirectory": "dist/web/browser",
-	"rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+	"rewrites": [
+		{
+			"source": "/api/:path*",
+			"destination": "https://personal-finance-manager-ff9g.onrender.com/:path*"
+		},
+		{ "source": "/(.*)", "destination": "/index.html" }
+	]
 }
