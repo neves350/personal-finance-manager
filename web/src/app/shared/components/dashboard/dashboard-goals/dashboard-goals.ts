@@ -42,7 +42,7 @@ export class DashboardGoals {
 	}
 
 	readonly displayGoals = computed(() =>
-		this.goalsService.activeGoals().slice(0, 4),
+		this.goalsService.activeGoals().slice(0, 2),
 	)
 
 	getRemainingAmount(goal: Goal): number {
