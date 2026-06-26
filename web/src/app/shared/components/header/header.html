@@ -7,7 +7,7 @@
     >
       <i-lucide [img]="MenuIcon" class="size-5" />
     </button>
-    <z-breadcrumb zWrap="wrap" zAlign="start" [zSeparator]="customSeparator">
+    <z-breadcrumb zWrap="wrap" zAlign="start" [zSeparator]="customSeparator" class="hidden md:flex">
     @for (crumb of breadcrumbs(); track $index; let last = $last) {
       @if (!last) {
         <z-breadcrumb-item [routerLink]="['/']" class="ml-0.5 mr-1.5">
