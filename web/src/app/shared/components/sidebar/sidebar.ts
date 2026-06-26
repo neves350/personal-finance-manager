@@ -5,6 +5,7 @@ import { ZardButtonComponent } from '../ui/button'
 import { ZardDividerComponent } from '../ui/divider'
 import { HlmSidebarImports } from '../ui/spartan/sidebar/src'
 import { SidebarGroup } from './sidebar-group/sidebar-group'
+import { SidebarProfile } from './sidebar-profile/sidebar-profile'
 
 @Component({
 	selector: 'app-sidebar',
@@ -13,6 +14,7 @@ import { SidebarGroup } from './sidebar-group/sidebar-group'
 		HlmSidebarImports,
 		ZardDividerComponent,
 		SidebarGroup,
+		SidebarProfile,
 		ZardButtonComponent,
 		RouterLink,
 	],

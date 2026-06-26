@@ -1,0 +1,74 @@
+@if (user(); as user) {
+  <ul hlmSidebarMenu>
+    <li hlmSidebarMenuItem>
+      <button
+        hlmSidebarMenuButton
+        [size]="'lg'"
+        [tooltip]="user.name"
+        [tooltipDisabled]="!isCollapsed()"
+        z-dropdown
+        [zDropdownMenu]="userMenu"
+        zAlign="start"
+        aria-label="User menu"
+      >
+        <z-avatar
+          [zSrc]="user.avatarUrl ?? undefined"
+          [zFallback]="initials()"
+          [zAlt]="user.name"
+          zSize="sm"
+          zShape="rounded"
+          class="bg-primary text-primary-foreground"
+        />
+        <span class="flex flex-col text-left text-xs leading-tight">
+          <span class="truncate font-medium">{{ user.name }}</span>
+          <span class="truncate text-muted-foreground">{{ user.email }}</span>
+        </span>
+        <i-lucide
+          [img]="ChevronsUpDownIcon"
+          class="ml-auto size-4 group-data-[collapsible=icon]:hidden"
+        />
+      </button>
+
+      <z-dropdown-menu-content #userMenu="zDropdownMenuContent" class="w-56">
+        <div class="flex items-center gap-2 px-2 py-1.5">
+          <z-avatar
+            [zSrc]="user.avatarUrl ?? undefined"
+            [zFallback]="initials()"
+            [zAlt]="user.name"
+            zSize="sm"
+            zShape="rounded"
+            class="bg-primary text-primary-foreground"
+          />
+          <div class="flex flex-col text-left text-xs leading-tight">
+            <span class="truncate font-medium">{{ user.name }}</span>
+            <span class="truncate text-muted-foreground">{{ user.email }}</span>
+          </div>
+        </div>
+
+        <z-divider class="-mx-1 my-1" />
+
+        <z-dropdown-menu-item routerLink="/settings">
+          <i-lucide [img]="BadgeCheckIcon" class="mr-2 size-4" />
+          Account
+        </z-dropdown-menu-item>
+
+        <z-dropdown-menu-item routerLink="/settings">
+          <i-lucide [img]="CreditCardIcon" class="mr-2 size-4" />
+          Billing
+        </z-dropdown-menu-item>
+
+        <z-dropdown-menu-item routerLink="/notifications">
+          <i-lucide [img]="BellIcon" class="mr-2 size-4" />
+          Notifications
+        </z-dropdown-menu-item>
+
+        <z-divider class="-mx-1 my-1" />
+
+        <z-dropdown-menu-item (click)="logout()" variant="destructive">
+          <i-lucide [img]="LogOutIcon" class="mr-2 size-4" />
+          Log Out
+        </z-dropdown-menu-item>
+      </z-dropdown-menu-content>
+    </li>
+  </ul>
+}
