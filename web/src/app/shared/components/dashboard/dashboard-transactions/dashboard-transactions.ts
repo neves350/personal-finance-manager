@@ -11,9 +11,9 @@ import { TransactionsService } from '@core/services/transactions.service'
 import { TransfersService } from '@core/services/transfers.service'
 import {
 	ArrowDownIcon,
-	ArrowRightIcon,
 	ArrowRightLeftIcon,
 	ArrowUpIcon,
+	ArrowUpRightIcon,
 	LucideAngularModule,
 } from 'lucide-angular'
 import { ZardButtonComponent } from '../../ui/button'
@@ -51,22 +51,22 @@ export class DashboardTransactions {
 	readonly ArrowRightLeftIcon = ArrowRightLeftIcon
 	readonly ArrowUpIcon = ArrowUpIcon
 	readonly ArrowDownIcon = ArrowDownIcon
-	readonly ArrowRightIcon = ArrowRightIcon
+	readonly ArrowUpRightIcon = ArrowUpRightIcon
 
 	readonly activeFilter = signal<FilterType>('all')
 
 	readonly iconMap = {
 		transfer: {
 			icon: ArrowRightLeftIcon,
-			card: 'border-chart-2/60 text-chart-2 rounded-full border-2',
+			card: 'border-chart-2/50 text-chart-2 rounded-full border bg-chart-2/10',
 		},
 		income: {
 			icon: ArrowUpIcon,
-			card: 'border-primary/60 text-primary rounded-full border-2',
+			card: 'border-primary/50 text-primary rounded-full border bg-primary/10',
 		},
 		expense: {
 			icon: ArrowDownIcon,
-			card: 'border-destructive/60 text-destructive rounded-full border-2',
+			card: 'border-destructive/50 text-destructive rounded-full border bg-destructive/10',
 		},
 	}
 
