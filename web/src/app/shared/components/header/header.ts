@@ -2,7 +2,7 @@ import { Component, computed, DestroyRef, inject, OnInit } from '@angular/core'
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop'
 import { NavigationEnd, Router } from '@angular/router'
 import { NotificationsService } from '@core/services/notifications.service'
-import { LucideAngularModule, SlashIcon } from 'lucide-angular'
+import { LucideAngularModule, MenuIcon, SlashIcon } from 'lucide-angular'
 import { filter, interval, map, startWith, switchMap } from 'rxjs'
 import { BreadcrumbService } from '@/shared/services/breadcrumb.service'
 import { NotificationPanel } from '../notification/notification-panel/notification-panel'
@@ -13,6 +13,7 @@ import {
 	ZardBreadcrumbItemComponent,
 } from '../ui/breadcrumb'
 import { ZardDividerComponent } from '../ui/divider'
+import { HlmSidebarService } from '../ui/spartan/sidebar/src'
 
 interface BreadcrumbItem {
 	label: string
@@ -61,8 +62,10 @@ export class Header implements OnInit {
 	private readonly breadcrumbsService = inject(BreadcrumbService)
 	private readonly destroyRef = inject(DestroyRef)
 	private readonly notificationsService = inject(NotificationsService)
+	private readonly sidebarService = inject(HlmSidebarService)
 
 	readonly SlashIcon = SlashIcon
+	readonly MenuIcon = MenuIcon
 
 	private readonly currentUrl = toSignal(
 		this.router.events.pipe(
@@ -85,6 +88,10 @@ export class Header implements OnInit {
 
 		return base
 	})
+
+	toggleSidebar(): void {
+		this.sidebarService.toggleSidebar()
+	}
 
 	ngOnInit() {
 		interval(60_000)
