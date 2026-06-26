@@ -27,7 +27,7 @@ export const buttonVariants = cva(
 				todayBtn:
 					'shadow-xs bg-primary/20 text-primary hover:border-primary hover:border',
 				sidebarGhost: '',
-				link: 'text-primary underline-offset-4 hover:underline',
+				link: 'text-primary underline underline-offset-4 hover:text-primary/50',
 			},
 			zSize: {
 				default: 'h-9 px-4 py-2 data-icon-only:size-9 data-icon-only:p-0',
