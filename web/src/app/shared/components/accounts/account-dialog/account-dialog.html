@@ -1,10 +1,8 @@
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
   <!-- automatic button -->
-  <button
-    type="button"
+  <button type="button"
     class="flex flex-col items-start gap-3 rounded-xl border-2 border-primary/30 bg-primary/5 p-4 text-left transition-colors hover:border-primary hover:bg-primary/10 cursor-pointer"
-    (click)="connectBank()"
-  >
+    (click)="connectBank()">
     <div class="flex flex-col gap-1 w-full items-center">
       <div class="p-3 rounded-lg bg-primary/15">
         <i-lucide [img]="LinkIcon" class="size-6 text-primary" />
@@ -32,11 +30,9 @@
   </button>
 
   <!-- manual button -->
-  <button
-    type="button"
+  <button type="button"
     class="flex flex-col items-start gap-3 rounded-xl border-2 border-border p-4 text-left transition-colors hover:border-primary hover:bg-primary/10 cursor-pointer"
-    (click)="openManual()"
-  >
+    (click)="openManual()">
     <div class="flex flex-col gap-1 w-full items-center">
       <div class="p-3 rounded-lg bg-foreground/15">
         <i-lucide [img]="SquarePenIcon" class="size-6 text-foreground" />
