@@ -125,7 +125,7 @@ export class TransactionsRow {
 				return false
 			},
 			zCustomClasses:
-				'rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'sm:rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: this.transaction().id,
 				title: this.transaction().title,
@@ -157,7 +157,7 @@ export class TransactionsRow {
 				return false
 			},
 			zCustomClasses:
-				'rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'sm:rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				title: this.transaction().title,
 				isPaid: this.transaction().isPaid,

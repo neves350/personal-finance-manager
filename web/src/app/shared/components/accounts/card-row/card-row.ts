@@ -107,7 +107,7 @@ export class CardRow {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-l-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'sm:rounded-2xl border-l-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: this.card().id,
 				name: this.card().name,
@@ -147,7 +147,7 @@ export class CardRow {
 				}
 			},
 			zCustomClasses:
-				'rounded-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'sm:rounded-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 }

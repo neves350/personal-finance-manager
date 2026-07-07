@@ -55,7 +55,7 @@ export class Goals {
 				return false
 			},
 			zCustomClasses:
-				'rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'sm:rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 }

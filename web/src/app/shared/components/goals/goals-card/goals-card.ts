@@ -165,7 +165,7 @@ export class GoalsCard {
 				return false
 			},
 			zCustomClasses:
-				'rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'sm:rounded-2xl border-4 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: this.goal().id,
 				goal: this.goal(),
@@ -186,7 +186,7 @@ export class GoalsCard {
 				return false
 			},
 			zCustomClasses:
-				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'sm:rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: this.goal().id,
 				title: this.goal().title,

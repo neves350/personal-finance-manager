@@ -46,7 +46,7 @@ export class HeaderTools {
 				return false
 			},
 			zCustomClasses:
-				'rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'sm:rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 
@@ -67,7 +67,7 @@ export class HeaderTools {
 				return false
 			},
 			zCustomClasses:
-				'rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'sm:rounded-l-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 
@@ -83,7 +83,7 @@ export class HeaderTools {
 			zWidth: '580px',
 			zHideFooter: true,
 			zCustomClasses:
-				'rounded-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'sm:rounded-2xl border [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zOnOk: () => {},
 		})
 	}

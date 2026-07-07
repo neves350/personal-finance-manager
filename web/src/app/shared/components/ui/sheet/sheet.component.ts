@@ -145,7 +145,7 @@ export class ZardSheetOptions<T, U> {
 		'data-slot': 'sheet',
 		'[class]': 'classes()',
 		'[attr.data-state]': 'state()',
-		'[style.width]': 'config.zWidth ? config.zWidth + " !important" : null',
+		'[style.max-width]': 'config.zWidth || null',
 		'[style.height]': 'config.zHeight ? config.zHeight + " !important" : null',
 	},
 	exportAs: 'zSheet',

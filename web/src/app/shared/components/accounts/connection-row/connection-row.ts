@@ -120,7 +120,7 @@ export class ConnectionRow {
 				}
 			},
 			zCustomClasses:
-				'rounded-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'sm:rounded-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 		})
 	}
 }

@@ -51,7 +51,7 @@ export class CategoriesList {
 				return false
 			},
 			zCustomClasses:
-				'rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
+				'sm:rounded-l-2xl border-2 [&_[data-slot=sheet-header]]:mt-4 [&>button:first-child]:top-5',
 			zData: {
 				id: category.id,
 				title: category.title,
