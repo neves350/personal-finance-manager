@@ -9,6 +9,7 @@ import {
 	Req,
 } from '@nestjs/common'
 import { ApiExcludeController } from '@nestjs/swagger'
+import { SkipThrottle } from '@nestjs/throttler'
 import type { Request } from 'express'
 import { PrismaService } from 'src/infrastructure/db/prisma.service'
 import { validateWebhookSignature } from './helpers/signature-validator'
@@ -16,6 +17,7 @@ import type { SaltEdgeWebhookPayload } from './interfaces/salt-edge.interface'
 import { OpenBankingSyncService } from './open-banking-sync.service'
 import { SaltEdgeService } from './salt-edge.service'
 
+@SkipThrottle() // tells ThrottlerGuard to ignores this controller
 @ApiExcludeController()
 @Controller('webhooks')
 export class OpenBankingWebhookController {
