@@ -8,11 +8,13 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { QueryNotificationDto } from './dtos/query-notification.dto'
 import { NotificationService } from './notification.service'
 
+@Throttle({ lenient: {} })
 @ApiTags('Notifications')
 @Controller('notifications')
 export class NotificationController {
