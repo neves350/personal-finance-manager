@@ -1,0 +1,22 @@
+<button type="button"
+  class="inline-flex size-8 cursor-pointer items-center justify-center rounded-full bg-primary text-primary-foreground outline-none hover:bg-primary/90"
+  z-dropdown [zDropdownMenu]="menu" zAlign="end">
+  <i-lucide [img]="PlusIcon" class="size-4" />
+</button>
+
+<z-dropdown-menu-content #menu="zDropdownMenuContent" class="w-48">
+  <z-dropdown-menu-item (click)="openTransactionForm()">
+    <i-lucide [img]="ReceiptTextIcon" class="mr-2 size-4 text-muted-foreground" />
+    Transaction
+  </z-dropdown-menu-item>
+
+  <z-dropdown-menu-item (click)="openRecurringForm()">
+    <i-lucide [img]="RepeatIcon" class="mr-2 size-4 text-muted-foreground" />
+    Recurring
+  </z-dropdown-menu-item>
+
+  <z-dropdown-menu-item (click)="openAccountDialog()">
+    <i-lucide [img]="LandmarkIcon" class="mr-2 size-4 text-muted-foreground" />
+    Account
+  </z-dropdown-menu-item>
+</z-dropdown-menu-content>

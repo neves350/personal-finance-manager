@@ -12,6 +12,7 @@ import {
 	ZardBreadcrumbItemComponent,
 } from '../ui/breadcrumb'
 import { HlmSidebarService } from '../ui/spartan/sidebar/src'
+import { HeaderTools } from './header-tools/header-tools'
 
 interface BreadcrumbItem {
 	label: string
@@ -47,6 +48,7 @@ const BREADCRUMB_MAP: Record<string, BreadcrumbItem[]> = {
 		ZardBreadcrumbItemComponent,
 		LucideAngularModule,
 		NotificationPanel,
+		HeaderTools,
 	],
 	templateUrl: './header.html',
 	host: {
