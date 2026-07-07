@@ -1,33 +1,36 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Finova</title>
-    <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/ico" href="finova-icon.svg" />
 
-    <script>
-      (() => {
-        const html = document.documentElement;
+<head>
+  <meta charset="utf-8" />
+  <title>Finova</title>
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/ico" href="trocos-bg.svg" />
 
-        try {
-          const theme = localStorage.theme;
-          const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+  <script>
+    (() => {
+      const html = document.documentElement;
 
-          const isSystem = theme === 'system' || !('theme' in localStorage);
-          const isDark = theme === 'dark' || (isSystem && prefersDark);
-          const resolvedTheme = isDark ? 'dark' : 'light';
-          html.classList.toggle('dark', isDark);
-          html.classList.toggle('dark-theme', isDark);
-          html.setAttribute('data-theme', theme ?? 'system');
-          html.style.colorScheme = resolvedTheme;
-        } catch (_) {}
-      })();
-    </script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-  </head>
-  <body>
-    <app-root></app-root>
-  </body>
+      try {
+        const theme = localStorage.theme;
+        const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+
+        const isSystem = theme === 'system' || !('theme' in localStorage);
+        const isDark = theme === 'dark' || (isSystem && prefersDark);
+        const resolvedTheme = isDark ? 'dark' : 'light';
+        html.classList.toggle('dark', isDark);
+        html.classList.toggle('dark-theme', isDark);
+        html.setAttribute('data-theme', theme ?? 'system');
+        html.style.colorScheme = resolvedTheme;
+      } catch (_) { }
+    })();
+  </script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+  <app-root></app-root>
+</body>
+
 </html>
