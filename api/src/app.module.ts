@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { APP_GUARD } from '@nestjs/core'
 import { ScheduleModule } from '@nestjs/schedule'
+import { ThrottlerModule } from '@nestjs/throttler'
 import { PrismaModule } from './infrastructure/db/prisma.module'
 import { MailModule } from './infrastructure/mail/mail.module'
 import { AuthModule } from './modules/auth/auth.module'
+import { CustomThrottlerGuard } from './modules/auth/guards/custom-throttler.guard'
 import { BankAccountModule } from './modules/bank-account/bank-account.module'
 import { BudgetModule } from './modules/budget/budget.module'
 import { CardModule } from './modules/card/card.module'
@@ -21,6 +24,11 @@ import { UsersModule } from './modules/users/users.module'
 @Module({
 	imports: [
 		ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+		ThrottlerModule.forRoot([
+			{ name: 'strict', ttl: 60_000, limit: 5 }, // ttl - ms (60_000 = 60s)
+			{ name: 'standard', ttl: 60_000, limit: 30 },
+			{ name: 'lenient', ttl: 60_000, limit: 60 },
+		]),
 		ScheduleModule.forRoot(),
 		AuthModule,
 		UsersModule,
@@ -40,6 +48,12 @@ import { UsersModule } from './modules/users/users.module'
 		NotificationModule,
 	],
 	controllers: [],
-	providers: [],
+	providers: [
+		{
+			// for the throttler intercepts any request
+			provide: APP_GUARD,
+			useClass: CustomThrottlerGuard,
+		},
+	],
 })
 export class AppModule {}
