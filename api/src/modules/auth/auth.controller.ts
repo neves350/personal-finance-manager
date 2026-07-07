@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import type { Request, Response } from 'express'
 import {
 	ApiCreateUserResponses,
@@ -54,6 +55,7 @@ export class AuthController {
 		}
 	}
 
+	@Throttle({ strict: {} })
 	@Post('users')
 	@ApiOperation({
 		summary: 'Create a new account',
@@ -83,6 +85,7 @@ export class AuthController {
 		}
 	}
 
+	@Throttle({ strict: {} })
 	@Post('sessions/password')
 	@ApiOperation({
 		summary: 'Authenticate with e-mail & password',
@@ -112,6 +115,7 @@ export class AuthController {
 		}
 	}
 
+	@Throttle({ strict: {} })
 	@Post('sessions/google')
 	@ApiOperation({
 		summary: 'Authenticate with google',
@@ -184,6 +188,7 @@ export class AuthController {
 		return this.authService.getProfile(user.userId)
 	}
 
+	@Throttle({ strict: {} })
 	@Post('password/recover')
 	@ApiOperation({
 		summary: 'Request password recovery',
@@ -194,6 +199,7 @@ export class AuthController {
 		return this.authService.requestPasswordRecover(forgotPasswordDto.email)
 	}
 
+	@Throttle({ strict: {} })
 	@Post('password/reset')
 	@ApiOperation({
 		summary: 'Reset password with recovery code',
