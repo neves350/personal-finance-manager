@@ -8,6 +8,6 @@ export class PageTitleStrategy extends TitleStrategy {
 
 	override updateTitle(snapshot: RouterStateSnapshot): void {
 		const title = this.buildTitle(snapshot)
-		this.title.setTitle(title ? `${title} | Finova` : 'Finova')
+		this.title.setTitle(title ? `${title} | Trocos` : 'Trocos')
 	}
 }
