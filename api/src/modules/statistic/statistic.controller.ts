@@ -5,6 +5,7 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import {
 	ApiByCategoryResponses,
 	ApiOverviewResponses,
@@ -20,6 +21,7 @@ import { QueryStatisticsDto } from './dtos/query-statistics.dto'
 import { TrendsResponseDto } from './dtos/trends-response-dto'
 import { StatisticService } from './statistic.service'
 
+@Throttle({ lenient: {} })
 @ApiTags('Statistics')
 @Controller('statistics')
 export class StatisticController {
