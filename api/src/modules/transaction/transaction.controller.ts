@@ -10,6 +10,7 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import {
 	ApiCreateTransactionResponses,
 	ApiDeleteTransactionResponses,
@@ -52,6 +53,7 @@ export class TransactionController {
 		}
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('transactions')
 	@ApiBearerAuth()
@@ -64,6 +66,7 @@ export class TransactionController {
 		return this.transactionService.findAll(query, user.userId)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('transactions/:id')
 	@ApiBearerAuth()

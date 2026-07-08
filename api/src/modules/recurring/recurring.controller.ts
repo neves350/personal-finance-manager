@@ -10,6 +10,7 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { CreateRecurringDto } from './dtos/create-recurring.dto'
@@ -38,6 +39,7 @@ export class RecurringController {
 		}
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('')
 	@ApiBearerAuth()

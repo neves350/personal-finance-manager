@@ -9,6 +9,7 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import {
 	ApiChangePasswordResponses,
 	ApiDeleteResponses,
@@ -26,6 +27,7 @@ import { UsersService } from './users.service'
 export class UsersController {
 	constructor(private readonly usersService: UsersService) {}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get(':id')
 	@ApiBearerAuth()

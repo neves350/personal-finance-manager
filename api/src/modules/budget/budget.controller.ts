@@ -10,6 +10,7 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import {
 	ApiAddEnvelopeResponses,
 	ApiCopyPreviousResponses,
@@ -53,6 +54,7 @@ export class BudgetController {
 		}
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get()
 	@ApiBearerAuth()
@@ -66,6 +68,7 @@ export class BudgetController {
 		return this.budgetService.findAll(user.userId)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('current')
 	@ApiBearerAuth()
@@ -222,6 +225,7 @@ export class BudgetController {
 		return this.budgetService.copyFromPrevious(user.userId, id)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get(':year/:month')
 	@ApiBearerAuth()

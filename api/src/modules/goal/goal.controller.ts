@@ -9,6 +9,7 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import {
 	ApiAddDepositResponses,
 	ApiCreateResponses,
@@ -48,6 +49,7 @@ export class GoalController {
 		}
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get()
 	@ApiBearerAuth()
@@ -59,6 +61,7 @@ export class GoalController {
 		return this.goalService.findAll(user.userId)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get(':id')
 	@ApiBearerAuth()
@@ -122,6 +125,7 @@ export class GoalController {
 		return this.goalService.addDeposit(user.userId, id, data)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get(':id/deposits')
 	@ApiBearerAuth()

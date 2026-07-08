@@ -8,6 +8,7 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import {
 	ApiCreateTransferResponses,
 	ApiFindAllTransfersResponses,
@@ -37,6 +38,7 @@ export class TransferController {
 		return this.transferService.transfer(user.userId, data)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('')
 	@ApiBearerAuth()
@@ -51,6 +53,7 @@ export class TransferController {
 		return transfers
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get(':id')
 	@ApiBearerAuth()

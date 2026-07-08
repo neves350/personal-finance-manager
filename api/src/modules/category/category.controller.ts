@@ -10,6 +10,7 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import {
 	ApiCreateResponses,
 	ApiDeleteResponses,
@@ -49,6 +50,7 @@ export class CategoryController {
 		}
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('categories')
 	@ApiBearerAuth()
@@ -61,6 +63,7 @@ export class CategoryController {
 		return this.categoryService.findAll(user.userId, query.type)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('categories/:id')
 	@ApiBearerAuth()

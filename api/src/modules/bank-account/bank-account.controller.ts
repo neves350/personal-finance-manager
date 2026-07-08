@@ -9,6 +9,7 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import {
 	ApiCreateBankAccountResponses,
 	ApiDeleteBankAccountResponses,
@@ -45,6 +46,7 @@ export class BankAccountController {
 		}
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('')
 	@ApiBearerAuth()
@@ -59,6 +61,7 @@ export class BankAccountController {
 		return bankAccounts
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('/:id')
 	@ApiBearerAuth()
@@ -109,6 +112,7 @@ export class BankAccountController {
 		return this.bankAccountService.delete(id)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get(':id/balance-history')
 	@ApiBearerAuth()
@@ -120,6 +124,7 @@ export class BankAccountController {
 		return this.bankAccountService.getBalanceHistory(id, user.userId)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get(':id/recent-movements')
 	@ApiBearerAuth()

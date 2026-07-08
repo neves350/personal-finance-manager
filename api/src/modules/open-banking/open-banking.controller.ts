@@ -8,6 +8,7 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { CreateConnectSessionDto } from './dtos/create-connect-session.dto'
@@ -66,6 +67,7 @@ export class OpenBankingController {
 		return result
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('connections')
 	@ApiBearerAuth()
@@ -77,6 +79,7 @@ export class OpenBankingController {
 		return this.openBankingService.listConnections(user.userId)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('connections/:id')
 	@ApiBearerAuth()
@@ -131,6 +134,7 @@ export class OpenBankingController {
 		return { message: 'Sync completed successfully' }
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('providers')
 	@ApiBearerAuth()

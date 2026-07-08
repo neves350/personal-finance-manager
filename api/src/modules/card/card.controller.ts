@@ -10,6 +10,7 @@ import {
 	UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Throttle } from '@nestjs/throttler'
 import {
 	ApiCreateResponses,
 	ApiDeleteResponses,
@@ -45,6 +46,7 @@ export class CardController {
 		}
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('cards')
 	@ApiBearerAuth()
@@ -62,6 +64,7 @@ export class CardController {
 		return cards
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('cards/:id')
 	@ApiBearerAuth()
@@ -108,6 +111,7 @@ export class CardController {
 		return this.cardService.delete(id)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('cards/:id/transactions')
 	@ApiBearerAuth()
@@ -124,6 +128,7 @@ export class CardController {
 		return this.cardService.getRecentTransactions(id, Number(limit) || 5)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('cards/:id/expenses')
 	@ApiBearerAuth()
@@ -141,6 +146,7 @@ export class CardController {
 		return this.cardService.monthlyExpenses(id, startDate, endDate)
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('cards/:id/cashflow')
 	@ApiBearerAuth()
