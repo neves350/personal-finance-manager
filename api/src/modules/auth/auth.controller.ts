@@ -144,6 +144,7 @@ export class AuthController {
 		}
 	}
 
+	@Throttle({ lenient: {} })
 	@Post('refresh')
 	@ApiOperation({
 		summary: 'Refresh access token',
@@ -176,6 +177,7 @@ export class AuthController {
 		}
 	}
 
+	@Throttle({ lenient: {} })
 	@UseGuards(JwtAuthGuard)
 	@Get('profile')
 	@ApiBearerAuth()
@@ -210,6 +212,7 @@ export class AuthController {
 		return this.authService.resetPassword(resetPasswordDto)
 	}
 
+	@Throttle({ lenient: {} })
 	@Post('logout')
 	@ApiOperation({
 		summary: 'Logout user',

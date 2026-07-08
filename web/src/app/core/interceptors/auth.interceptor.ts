@@ -101,7 +101,7 @@ function executeProbe(
 		catchError((error) => {
 			if (!isRetryableError(error)) {
 				probeSuccess(readiness)
-				return handleRequest(req, next, authService, router)
+				return throwError(() => error)
 			}
 
 			const nextAttempt = attempt + 1
