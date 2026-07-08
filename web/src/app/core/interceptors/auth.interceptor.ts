@@ -2,6 +2,7 @@ import { HttpErrorResponse, type HttpInterceptorFn } from '@angular/common/http'
 import { inject } from '@angular/core'
 import { Router } from '@angular/router'
 import { AuthService } from '@core/services/auth.service'
+import { toast } from 'ngx-sonner'
 import { catchError, switchMap, throwError } from 'rxjs'
 
 let isRefreshing = false
@@ -14,7 +15,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
 	return next(clonedRequest).pipe(
 		catchError((error: HttpErrorResponse) => {
-			// Skip refresh for auth-related endpoints and profile (handled by verifyAuth)
+			if (error.status === 429) {
+				toast.error('Too many requests, please slow down')
+				return throwError(() => error)
+			}
+
 			const isAuthEndpoint =
 				req.url.includes('/sessions/password') ||
 				req.url.includes('/sessions/google') ||
