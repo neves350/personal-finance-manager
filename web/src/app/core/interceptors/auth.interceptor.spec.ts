@@ -7,9 +7,11 @@ import {
 	HttpTestingController,
 	provideHttpClientTesting,
 } from '@angular/common/http/testing'
+import { signal } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
 import { Router } from '@angular/router'
 import { AuthService } from '@core/services/auth.service'
+import { BackendReadinessService } from '@core/services/backend-readiness.service'
 import { mockAuth, mockRouter } from '@core/testing/mocks'
 import { of, throwError } from 'rxjs'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -26,6 +28,10 @@ describe('AuthInterceptor', () => {
 			providers: [
 				{ provide: AuthService, useValue: mockAuth },
 				{ provide: Router, useValue: mockRouter },
+				{
+					provide: BackendReadinessService,
+					useValue: { ready: signal(true) },
+				},
 				provideHttpClient(withInterceptors([authInterceptor])),
 				provideHttpClientTesting(),
 			],
