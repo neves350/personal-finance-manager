@@ -19,6 +19,9 @@ export const mockAuth = {
  */
 export const mockRouter = {
 	navigate: vi.fn(),
+	navigateByUrl: vi.fn(),
+	createUrlTree: vi.fn(),
+	serializeUrl: vi.fn().mockReturnValue(''),
 }
 
 /**
@@ -110,6 +113,13 @@ export const mockTransfers = {
 	findAll: vi.fn(),
 	findById: vi.fn(),
 	create: vi.fn(),
+}
+
+/**
+ * Google Auth
+ */
+export const mockGoogleAuth = {
+	signIn: vi.fn(),
 }
 
 /**
