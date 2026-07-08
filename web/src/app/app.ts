@@ -19,7 +19,7 @@ import { ZardLoaderComponent } from './shared/components/ui/loader'
       		Retry
     		</button>
   	</div>
-	} @else if (readiness.loading()) {
+	} @else if (!readiness.ready()) {
   	<div class="fixed inset-0 flex flex-col items-center justify-center gap-4">
     	<z-loader />
     	<p class="text-sm text-muted-foreground">{{ readiness.statusMessage() }}</p>

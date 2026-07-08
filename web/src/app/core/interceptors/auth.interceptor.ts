@@ -36,7 +36,7 @@ const STATUS_MESSAGES = [
 function isRetryableError(error: unknown): boolean {
 	if (error instanceof TimeoutError) return true
 	if (error instanceof HttpErrorResponse) {
-		return [0, 502, 503].includes(error.status)
+		return [0, 500, 502, 503, 504].includes(error.status)
 	}
 	return false
 }

@@ -1,10 +1,12 @@
 import { inject } from '@angular/core'
 import { type CanActivateFn, Router } from '@angular/router'
 import { AuthService } from '@core/services/auth.service'
+import { BackendReadinessService } from '@core/services/backend-readiness.service'
 import { of } from 'rxjs'
 
 export const guestGuard: CanActivateFn = () => {
 	const authService = inject(AuthService)
+	const readiness = inject(BackendReadinessService)
 	const router = inject(Router)
 
 	// If we already know the user is authenticated, redirect immediately
@@ -13,7 +15,10 @@ export const guestGuard: CanActivateFn = () => {
 		return of(false)
 	}
 
-	// For guests, allow access without making API calls
-	// The authGuard on protected routes will verify authentication when needed
+	// Guest pages don't need backend readiness - allow rendering immediately
+	if (!readiness.ready()) {
+		readiness.markReady()
+	}
+
 	return of(true)
 }
