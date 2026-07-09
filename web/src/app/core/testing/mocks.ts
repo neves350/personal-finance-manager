@@ -1,3 +1,4 @@
+import { signal } from '@angular/core'
 import { vi } from 'vitest'
 
 export const mockAuth = {
@@ -28,6 +29,9 @@ export const mockRouter = {
  * Bank Accounts
  */
 export const mockBankAccounts = {
+	bankAccounts: signal([]),
+	totalBalance: signal(0),
+	loading: signal(false),
 	findAll: vi.fn(),
 	findById: vi.fn(),
 	create: vi.fn(),
@@ -40,6 +44,8 @@ export const mockBankAccounts = {
  * Categories
  */
 export const mockCategories = {
+	categories: signal([]),
+	loading: signal(false),
 	findAll: vi.fn(),
 	findById: vi.fn(),
 	create: vi.fn(),
@@ -51,6 +57,8 @@ export const mockCategories = {
  * Cards
  */
 export const mockCards = {
+	cards: signal([]),
+	loading: signal(false),
 	findAll: vi.fn(),
 	findById: vi.fn(),
 	create: vi.fn(),
@@ -66,6 +74,8 @@ export const mockCards = {
  * Transactions
  */
 export const mockTransactions = {
+	transactions: signal([]),
+	loading: signal(false),
 	findAll: vi.fn(),
 	findById: vi.fn(),
 	create: vi.fn(),
@@ -77,6 +87,8 @@ export const mockTransactions = {
  * Goals
  */
 export const mockGoals = {
+	goals: signal([]),
+	loading: signal(false),
 	findAll: vi.fn(),
 	findById: vi.fn(),
 	create: vi.fn(),
@@ -90,6 +102,8 @@ export const mockGoals = {
  * Recurrings
  */
 export const mockRecurrings = {
+	recurrings: signal([]),
+	loading: signal(false),
 	findAll: vi.fn(),
 	create: vi.fn(),
 	update: vi.fn(),
@@ -126,6 +140,7 @@ export const mockGoogleAuth = {
  * Notifications
  */
 export const mockNotifications = {
+	notifications: signal([]),
 	findAll: vi.fn(),
 	getUnreadCount: vi.fn(),
 	markAsRead: vi.fn(),
