@@ -48,6 +48,7 @@ export const mockBankAccounts = {
 export const mockCategories = {
 	categories: signal([]),
 	expenseCategories: signal([]),
+	incomeCategories: signal([]),
 	loading: signal(false),
 	loadCategories: vi.fn().mockReturnValue(of([])),
 	findAll: vi.fn(),
@@ -63,6 +64,7 @@ export const mockCategories = {
 export const mockCards = {
 	cards: signal([]),
 	loading: signal(false),
+	loadCards: vi.fn().mockReturnValue(of([])),
 	findAll: vi.fn(),
 	findById: vi.fn(),
 	create: vi.fn(),
