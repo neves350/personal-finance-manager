@@ -149,6 +149,8 @@ export const mockGoogleAuth = {
  */
 export const mockNotifications = {
 	notifications: signal([]),
+	unreadCount: signal(0),
+	displayBadge: signal(''),
 	findAll: vi.fn(),
 	getUnreadCount: vi.fn(),
 	markAsRead: vi.fn(),
