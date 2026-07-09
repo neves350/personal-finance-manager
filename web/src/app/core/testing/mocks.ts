@@ -87,6 +87,7 @@ export const mockTransactions = {
 	selectedYear: signal(new Date().getFullYear()),
 	selectedMonth: signal(new Date().getMonth()),
 	monthLabel: signal(''),
+	activeFilters: signal({}),
 	navigateMonth: vi.fn(),
 	loadTransactions: vi.fn().mockReturnValue(of([])),
 	findAll: vi.fn(),
