@@ -1,4 +1,5 @@
 import { signal } from '@angular/core'
+import { of } from 'rxjs'
 import { vi } from 'vitest'
 
 export const mockAuth = {
@@ -32,6 +33,7 @@ export const mockBankAccounts = {
 	bankAccounts: signal([]),
 	totalBalance: signal(0),
 	loading: signal(false),
+	loadBankAccounts: vi.fn().mockReturnValue(of([])),
 	findAll: vi.fn(),
 	findById: vi.fn(),
 	create: vi.fn(),
@@ -45,7 +47,9 @@ export const mockBankAccounts = {
  */
 export const mockCategories = {
 	categories: signal([]),
+	expenseCategories: signal([]),
 	loading: signal(false),
+	loadCategories: vi.fn().mockReturnValue(of([])),
 	findAll: vi.fn(),
 	findById: vi.fn(),
 	create: vi.fn(),
