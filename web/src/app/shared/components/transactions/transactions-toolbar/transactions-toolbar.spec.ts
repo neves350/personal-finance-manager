@@ -1,6 +1,13 @@
 import { TestBed } from '@angular/core/testing'
+import { BankAccountsService } from '@core/services/bank-accounts.service'
+import { CategoriesService } from '@core/services/categories.service'
 import { TransactionsService } from '@core/services/transactions.service'
-import { mockTransactions } from '@core/testing/mocks'
+import {
+	mockBankAccounts,
+	mockCategories,
+	mockTransactions,
+} from '@core/testing/mocks'
+import { TransactionType } from '@core/api/transactions.interface'
 import { describe, expect, it, vi } from 'vitest'
 import { TransactionsToolbar } from './transactions-toolbar'
 
@@ -12,6 +19,8 @@ describe('TransactionsToolbar', () => {
 			imports: [TransactionsToolbar],
 			providers: [
 				{ provide: TransactionsService, useValue: mockTransactions },
+				{ provide: CategoriesService, useValue: mockCategories },
+				{ provide: BankAccountsService, useValue: mockBankAccounts },
 			],
 		}).compileComponents()
 
@@ -62,14 +71,14 @@ describe('TransactionsToolbar', () => {
 			const { component } = await setup()
 			component.currentPage.set(3)
 
-			component.onFilterChange({ type: 'EXPENSE' })
+			component.onFilterChange({ type: TransactionType.EXPENSE })
 
 			expect(component.currentPage()).toBe(1)
 		})
 
 		it('should call service.loadTransactions with params', async () => {
 			const { component } = await setup()
-			const params = { type: 'EXPENSE' as const }
+			const params = { type: TransactionType.EXPENSE }
 
 			component.onFilterChange(params)
 
