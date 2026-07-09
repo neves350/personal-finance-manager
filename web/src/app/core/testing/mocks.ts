@@ -84,6 +84,11 @@ export const mockCards = {
 export const mockTransactions = {
 	transactions: signal([]),
 	loading: signal(false),
+	selectedYear: signal(new Date().getFullYear()),
+	selectedMonth: signal(new Date().getMonth()),
+	monthLabel: signal(''),
+	navigateMonth: vi.fn(),
+	loadTransactions: vi.fn().mockReturnValue(of([])),
 	findAll: vi.fn(),
 	findById: vi.fn(),
 	create: vi.fn(),
