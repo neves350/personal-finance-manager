@@ -1,10 +1,10 @@
-import { TestBed } from '@angular/core/testing'
+import { type ComponentFixture, TestBed } from '@angular/core/testing'
 import { ExportsApi } from '@core/api/exports.api'
 import { TransactionsService } from '@core/services/transactions.service'
 import { mockTransactions } from '@core/testing/mocks'
 import { toast } from 'ngx-sonner'
 import { of, throwError } from 'rxjs'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { TransactionsExport } from './transactions-export'
 
 const mockExportsApi = {
@@ -13,7 +13,10 @@ const mockExportsApi = {
 }
 
 describe('TransactionsExport', () => {
-	async function setup() {
+	let component: TransactionsExport
+	let fixture: ComponentFixture<TransactionsExport>
+
+	beforeEach(async () => {
 		vi.restoreAllMocks()
 		vi.spyOn(toast, 'loading').mockReturnValue('toast-id')
 		vi.spyOn(toast, 'success').mockImplementation(() => '')
@@ -29,21 +32,17 @@ describe('TransactionsExport', () => {
 			],
 		}).compileComponents()
 
-		const fixture = TestBed.createComponent(TransactionsExport)
-		const component = fixture.componentInstance
+		fixture = TestBed.createComponent(TransactionsExport)
+		component = fixture.componentInstance
 		await fixture.whenStable()
+	})
 
-		return { fixture, component }
-	}
-
-	it('should create', async () => {
-		const { component } = await setup()
+	it('should create', () => {
 		expect(component).toBeTruthy()
 	})
 
 	describe('downloadCsv()', () => {
-		it('should show loading toast', async () => {
-			const { component } = await setup()
+		it('should show loading toast', () => {
 			mockExportsApi.downloadCsv.mockReturnValue(of(new Blob()))
 
 			component.downloadCsv()
@@ -51,8 +50,7 @@ describe('TransactionsExport', () => {
 			expect(toast.loading).toHaveBeenCalledWith('Downloading CSV...')
 		})
 
-		it('should call exportsApi.downloadCsv with date params', async () => {
-			const { component } = await setup()
+		it('should call exportsApi.downloadCsv with date params', () => {
 			mockExportsApi.downloadCsv.mockReturnValue(of(new Blob()))
 
 			component.downloadCsv()
@@ -65,8 +63,7 @@ describe('TransactionsExport', () => {
 			)
 		})
 
-		it('should trigger file download on success', async () => {
-			const { component } = await setup()
+		it('should trigger file download on success', () => {
 			const blob = new Blob(['csv-data'])
 			mockExportsApi.downloadCsv.mockReturnValue(of(blob))
 			const clickSpy = vi.fn()
@@ -90,8 +87,7 @@ describe('TransactionsExport', () => {
 			expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:mock-url')
 		})
 
-		it('should show success toast on completion', async () => {
-			const { component } = await setup()
+		it('should show success toast on completion', () => {
 			mockExportsApi.downloadCsv.mockReturnValue(of(new Blob()))
 
 			component.downloadCsv()
@@ -101,8 +97,7 @@ describe('TransactionsExport', () => {
 			})
 		})
 
-		it('should show error toast on failure', async () => {
-			const { component } = await setup()
+		it('should show error toast on failure', () => {
 			mockExportsApi.downloadCsv.mockReturnValue(
 				throwError(() => new Error('fail')),
 			)
@@ -116,8 +111,7 @@ describe('TransactionsExport', () => {
 	})
 
 	describe('downloadPdf()', () => {
-		it('should show loading toast', async () => {
-			const { component } = await setup()
+		it('should show loading toast', () => {
 			mockExportsApi.downloadPdf.mockReturnValue(of(new Blob()))
 
 			component.downloadPdf()
@@ -125,8 +119,7 @@ describe('TransactionsExport', () => {
 			expect(toast.loading).toHaveBeenCalledWith('Downloading PDF...')
 		})
 
-		it('should call exportsApi.downloadPdf with date params', async () => {
-			const { component } = await setup()
+		it('should call exportsApi.downloadPdf with date params', () => {
 			mockExportsApi.downloadPdf.mockReturnValue(of(new Blob()))
 
 			component.downloadPdf()
@@ -139,8 +132,7 @@ describe('TransactionsExport', () => {
 			)
 		})
 
-		it('should show success toast on completion', async () => {
-			const { component } = await setup()
+		it('should show success toast on completion', () => {
 			mockExportsApi.downloadPdf.mockReturnValue(of(new Blob()))
 
 			component.downloadPdf()
@@ -150,8 +142,7 @@ describe('TransactionsExport', () => {
 			})
 		})
 
-		it('should show error toast on failure', async () => {
-			const { component } = await setup()
+		it('should show error toast on failure', () => {
 			mockExportsApi.downloadPdf.mockReturnValue(
 				throwError(() => new Error('fail')),
 			)
@@ -165,8 +156,7 @@ describe('TransactionsExport', () => {
 	})
 
 	describe('buildParams', () => {
-		it('should include filter params when activeFilters has values', async () => {
-			const { component } = await setup()
+		it('should include filter params when activeFilters has values', () => {
 			mockTransactions.activeFilters.set({
 				accountId: 'acc-1',
 				categoryId: 'cat-1',
@@ -185,8 +175,7 @@ describe('TransactionsExport', () => {
 			)
 		})
 
-		it('should exclude empty filter params', async () => {
-			const { component } = await setup()
+		it('should exclude empty filter params', () => {
 			mockTransactions.activeFilters.set({})
 			mockExportsApi.downloadCsv.mockReturnValue(of(new Blob()))
 

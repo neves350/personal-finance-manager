@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing'
-import { describe, expect, it, vi } from 'vitest'
+import { type ComponentFixture, TestBed } from '@angular/core/testing'
 import { ZardDarkMode } from '@/shared/services/dark-mode'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { Theme } from './theme'
 
 const mockDarkMode = {
@@ -8,8 +8,11 @@ const mockDarkMode = {
 }
 
 describe('Theme', () => {
-	async function setup() {
-		vi.clearAllMocks()
+	let component: Theme
+	let fixture: ComponentFixture<Theme>
+
+	beforeEach(async () => {
+		vi.restoreAllMocks()
 		vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(null)
 		vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {})
 
@@ -18,48 +21,42 @@ describe('Theme', () => {
 			providers: [{ provide: ZardDarkMode, useValue: mockDarkMode }],
 		}).compileComponents()
 
-		const fixture = TestBed.createComponent(Theme)
-		const component = fixture.componentInstance
+		fixture = TestBed.createComponent(Theme)
+		component = fixture.componentInstance
 		await fixture.whenStable()
+	})
 
-		return { fixture, component }
-	}
-
-	it('should create', async () => {
-		const { component } = await setup()
+	it('should create', () => {
 		expect(component).toBeTruthy()
 	})
 
-	it('should default darkMode to false when no theme in localStorage', async () => {
-		const { component } = await setup()
+	it('should default darkMode to false when no theme in localStorage', () => {
 		expect(component.darkMode).toBe(false)
 	})
 
 	it('should initialize darkMode to true when localStorage has dark', async () => {
 		vi.spyOn(Storage.prototype, 'getItem').mockReturnValue('dark')
 
+		TestBed.resetTestingModule()
 		await TestBed.configureTestingModule({
 			imports: [Theme],
 			providers: [{ provide: ZardDarkMode, useValue: mockDarkMode }],
 		}).compileComponents()
 
-		const fixture = TestBed.createComponent(Theme)
-		const component = fixture.componentInstance
+		const darkFixture = TestBed.createComponent(Theme)
+		const darkComponent = darkFixture.componentInstance
 
-		expect(component.darkMode).toBe(true)
+		expect(darkComponent.darkMode).toBe(true)
 	})
 
 	describe('toggleTheme()', () => {
-		it('should toggle darkMode from false to true', async () => {
-			const { component } = await setup()
-
+		it('should toggle darkMode from false to true', () => {
 			component.toggleTheme()
 
 			expect(component.darkMode).toBe(true)
 		})
 
-		it('should toggle darkMode from true to false', async () => {
-			const { component } = await setup()
+		it('should toggle darkMode from true to false', () => {
 			component.toggleTheme()
 
 			component.toggleTheme()
@@ -67,16 +64,13 @@ describe('Theme', () => {
 			expect(component.darkMode).toBe(false)
 		})
 
-		it('should save dark to localStorage when toggling on', async () => {
-			const { component } = await setup()
-
+		it('should save dark to localStorage when toggling on', () => {
 			component.toggleTheme()
 
 			expect(localStorage.setItem).toHaveBeenCalledWith('theme', 'dark')
 		})
 
-		it('should save light to localStorage when toggling off', async () => {
-			const { component } = await setup()
+		it('should save light to localStorage when toggling off', () => {
 			component.toggleTheme()
 
 			component.toggleTheme()
@@ -84,9 +78,7 @@ describe('Theme', () => {
 			expect(localStorage.setItem).toHaveBeenCalledWith('theme', 'light')
 		})
 
-		it('should call darkModeService.toggleTheme', async () => {
-			const { component } = await setup()
-
+		it('should call darkModeService.toggleTheme', () => {
 			component.toggleTheme()
 
 			expect(mockDarkMode.toggleTheme).toHaveBeenCalled()

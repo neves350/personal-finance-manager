@@ -1,4 +1,5 @@
-import { TestBed } from '@angular/core/testing'
+import { type ComponentFixture, TestBed } from '@angular/core/testing'
+import { TransactionType } from '@core/api/transactions.interface'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
 import { CategoriesService } from '@core/services/categories.service'
 import { TransactionsService } from '@core/services/transactions.service'
@@ -7,12 +8,14 @@ import {
 	mockCategories,
 	mockTransactions,
 } from '@core/testing/mocks'
-import { TransactionType } from '@core/api/transactions.interface'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { TransactionsToolbar } from './transactions-toolbar'
 
 describe('TransactionsToolbar', () => {
-	async function setup() {
+	let component: TransactionsToolbar
+	let fixture: ComponentFixture<TransactionsToolbar>
+
+	beforeEach(async () => {
 		vi.clearAllMocks()
 
 		await TestBed.configureTestingModule({
@@ -24,39 +27,31 @@ describe('TransactionsToolbar', () => {
 			],
 		}).compileComponents()
 
-		const fixture = TestBed.createComponent(TransactionsToolbar)
-		const component = fixture.componentInstance
+		fixture = TestBed.createComponent(TransactionsToolbar)
+		component = fixture.componentInstance
 		await fixture.whenStable()
+	})
 
-		return { fixture, component }
-	}
-
-	it('should create', async () => {
-		const { component } = await setup()
+	it('should create', () => {
 		expect(component).toBeTruthy()
 	})
 
-	it('should start with currentPage 1', async () => {
-		const { component } = await setup()
+	it('should start with currentPage 1', () => {
 		expect(component.currentPage()).toBe(1)
 	})
 
-	it('should start with empty searchQuery', async () => {
-		const { component } = await setup()
+	it('should start with empty searchQuery', () => {
 		expect(component.searchQuery()).toBe('')
 	})
 
 	describe('onSearch()', () => {
-		it('should update searchQuery signal', async () => {
-			const { component } = await setup()
-
+		it('should update searchQuery signal', () => {
 			component.onSearch('groceries')
 
 			expect(component.searchQuery()).toBe('groceries')
 		})
 
-		it('should emit searchChange output', async () => {
-			const { component } = await setup()
+		it('should emit searchChange output', () => {
 			const spy = vi.fn()
 			component.searchChange.subscribe(spy)
 
@@ -67,8 +62,7 @@ describe('TransactionsToolbar', () => {
 	})
 
 	describe('onFilterChange()', () => {
-		it('should reset currentPage to 1', async () => {
-			const { component } = await setup()
+		it('should reset currentPage to 1', () => {
 			component.currentPage.set(3)
 
 			component.onFilterChange({ type: TransactionType.EXPENSE })
@@ -76,19 +70,19 @@ describe('TransactionsToolbar', () => {
 			expect(component.currentPage()).toBe(1)
 		})
 
-		it('should call service.loadTransactions with params', async () => {
-			const { component } = await setup()
+		it('should call service.loadTransactions with params', () => {
 			const params = { type: TransactionType.EXPENSE }
 
 			component.onFilterChange(params)
 
-			expect(mockTransactions.loadTransactions).toHaveBeenCalledWith(params)
+			expect(mockTransactions.loadTransactions).toHaveBeenCalledWith(
+				params,
+			)
 		})
 	})
 
 	describe('onFilterReset()', () => {
-		it('should reset searchQuery to empty', async () => {
-			const { component } = await setup()
+		it('should reset searchQuery to empty', () => {
 			component.onSearch('test')
 
 			component.onFilterReset()
@@ -96,8 +90,7 @@ describe('TransactionsToolbar', () => {
 			expect(component.searchQuery()).toBe('')
 		})
 
-		it('should emit empty searchChange', async () => {
-			const { component } = await setup()
+		it('should emit empty searchChange', () => {
 			const spy = vi.fn()
 			component.searchChange.subscribe(spy)
 
@@ -106,8 +99,7 @@ describe('TransactionsToolbar', () => {
 			expect(spy).toHaveBeenCalledWith('')
 		})
 
-		it('should reset currentPage to 1', async () => {
-			const { component } = await setup()
+		it('should reset currentPage to 1', () => {
 			component.currentPage.set(5)
 
 			component.onFilterReset()
@@ -115,9 +107,7 @@ describe('TransactionsToolbar', () => {
 			expect(component.currentPage()).toBe(1)
 		})
 
-		it('should call service.loadTransactions without params', async () => {
-			const { component } = await setup()
-
+		it('should call service.loadTransactions without params', () => {
 			component.onFilterReset()
 
 			expect(mockTransactions.loadTransactions).toHaveBeenCalledWith()
