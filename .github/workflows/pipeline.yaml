@@ -52,6 +52,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
       - run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install chromium --with-deps
       - name: Build
         run: npm run build --workspace=web
       - name: Unit Tests
