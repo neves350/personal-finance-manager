@@ -6,23 +6,21 @@ import {
 import { PrismaNeon } from '@prisma/adapter-neon'
 import { PrismaClient } from 'src/generated/prisma/client'
 
-function buildPrismaOptions() {
-	if (process.env.USE_NEON_ADAPTER === 'false') {
-		return {}
-	}
-	const adapter = new PrismaNeon({
-		connectionString: process.env.DATABASE_URL as string,
-	})
-	return { adapter }
-}
-
 @Injectable()
 export class PrismaService
 	extends PrismaClient
 	implements OnModuleInit, OnModuleDestroy
 {
 	constructor() {
-		super(buildPrismaOptions())
+		if (process.env.USE_NEON_ADAPTER === 'false') {
+			super({} as any)
+		} else {
+			super({
+				adapter: new PrismaNeon({
+					connectionString: process.env.DATABASE_URL as string,
+				}),
+			})
+		}
 	}
 
 	async onModuleInit() {
