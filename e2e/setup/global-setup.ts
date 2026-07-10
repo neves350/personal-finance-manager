@@ -1,5 +1,5 @@
-import { execSync } from 'child_process'
-import path from 'path'
+import { execSync } from 'node:child_process'
+import path from 'node:path'
 import { cleanup, disconnect, seed } from './seed'
 
 const apiDir = path.resolve(__dirname, '../../api')

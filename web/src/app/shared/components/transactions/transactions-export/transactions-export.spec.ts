@@ -68,18 +68,16 @@ describe('TransactionsExport', () => {
 			mockExportsApi.downloadCsv.mockReturnValue(of(blob))
 			const clickSpy = vi.fn()
 			const realCreateElement = document.createElement.bind(document)
-			vi.spyOn(document, 'createElement').mockImplementation(
-				(tag: string) => {
-					if (tag === 'a') {
-						return {
-							set href(_: string) {},
-							set download(_: string) {},
-							click: clickSpy,
-						} as unknown as HTMLAnchorElement
-					}
-					return realCreateElement(tag)
-				},
-			)
+			vi.spyOn(document, 'createElement').mockImplementation((tag: string) => {
+				if (tag === 'a') {
+					return {
+						set href(_: string) {},
+						set download(_: string) {},
+						click: clickSpy,
+					} as unknown as HTMLAnchorElement
+				}
+				return realCreateElement(tag)
+			})
 
 			component.downloadCsv()
 

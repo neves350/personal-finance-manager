@@ -1,6 +1,6 @@
 import { signal } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
-import { Router, provideRouter } from '@angular/router'
+import { provideRouter, Router } from '@angular/router'
 import { NotificationsApi } from '@core/api/notifications.api'
 import type { Notification } from '@core/api/notifications.interface'
 import { NotificationsService } from '@core/services/notifications.service'
@@ -184,9 +184,7 @@ describe('NotificationPanel', () => {
 
 			component.onNotificationClick(notification)
 
-			expect(mockNotifications.markAsRead).toHaveBeenCalledWith(
-				notification.id,
-			)
+			expect(mockNotifications.markAsRead).toHaveBeenCalledWith(notification.id)
 		})
 
 		it('should not call markAsRead for already read notification', async () => {

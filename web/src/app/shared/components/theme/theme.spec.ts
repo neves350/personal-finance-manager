@@ -1,6 +1,6 @@
 import { type ComponentFixture, TestBed } from '@angular/core/testing'
-import { ZardDarkMode } from '@/shared/services/dark-mode'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { ZardDarkMode } from '@/shared/services/dark-mode'
 import { Theme } from './theme'
 
 const mockDarkMode = {

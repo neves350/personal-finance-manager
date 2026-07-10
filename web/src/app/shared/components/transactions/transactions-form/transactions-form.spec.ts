@@ -402,9 +402,7 @@ describe('TransactionsForm', () => {
 
 			component.onDateChange(date)
 
-			expect(component.form.get('date')?.value).toBe(
-				'2026-06-15T00:00:00.000Z',
-			)
+			expect(component.form.get('date')?.value).toBe('2026-06-15T00:00:00.000Z')
 		})
 
 		it('should set empty string when date is null', async () => {

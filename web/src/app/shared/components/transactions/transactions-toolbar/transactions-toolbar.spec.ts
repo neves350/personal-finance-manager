@@ -75,9 +75,7 @@ describe('TransactionsToolbar', () => {
 
 			component.onFilterChange(params)
 
-			expect(mockTransactions.loadTransactions).toHaveBeenCalledWith(
-				params,
-			)
+			expect(mockTransactions.loadTransactions).toHaveBeenCalledWith(params)
 		})
 	})
 

@@ -85,9 +85,7 @@ describe('SettingsProfile', () => {
 
 	describe('avatarPreview', () => {
 		it('should return user avatarUrl by default', () => {
-			expect(component.avatarPreview()).toBe(
-				'https://example.com/avatar.jpg',
-			)
+			expect(component.avatarPreview()).toBe('https://example.com/avatar.jpg')
 		})
 
 		it('should return pendingAvatarUrl when set', () => {
@@ -147,9 +145,7 @@ describe('SettingsProfile', () => {
 
 			component.onFileSelected(event)
 
-			expect(toast.error).toHaveBeenCalledWith(
-				'Image must be smaller than 2MB',
-			)
+			expect(toast.error).toHaveBeenCalledWith('Image must be smaller than 2MB')
 			expect(input.value).toBe('')
 		})
 
@@ -220,9 +216,7 @@ describe('SettingsProfile', () => {
 		})
 
 		it('should call update with changed name only', () => {
-			mockUsers.update.mockReturnValue(
-				of({ ...mockUser, name: 'Jane Doe' }),
-			)
+			mockUsers.update.mockReturnValue(of({ ...mockUser, name: 'Jane Doe' }))
 			component.form.patchValue({ name: 'Jane Doe' })
 
 			component.save()
@@ -246,9 +240,7 @@ describe('SettingsProfile', () => {
 		})
 
 		it('should include empty avatarUrl when image deleted', () => {
-			mockUsers.update.mockReturnValue(
-				of({ ...mockUser, avatarUrl: '' }),
-			)
+			mockUsers.update.mockReturnValue(of({ ...mockUser, avatarUrl: '' }))
 			component.deleteImage()
 
 			component.save()
@@ -294,9 +286,7 @@ describe('SettingsProfile', () => {
 		})
 
 		it('should set saving to false on success', () => {
-			mockUsers.update.mockReturnValue(
-				of({ ...mockUser, name: 'Jane Doe' }),
-			)
+			mockUsers.update.mockReturnValue(of({ ...mockUser, name: 'Jane Doe' }))
 			component.form.patchValue({ name: 'Jane Doe' })
 
 			component.save()
@@ -306,16 +296,12 @@ describe('SettingsProfile', () => {
 
 		it('should show success toast', () => {
 			vi.spyOn(toast, 'success').mockImplementation(() => '')
-			mockUsers.update.mockReturnValue(
-				of({ ...mockUser, name: 'Jane Doe' }),
-			)
+			mockUsers.update.mockReturnValue(of({ ...mockUser, name: 'Jane Doe' }))
 			component.form.patchValue({ name: 'Jane Doe' })
 
 			component.save()
 
-			expect(toast.success).toHaveBeenCalledWith(
-				'Profile updated successfully',
-			)
+			expect(toast.success).toHaveBeenCalledWith('Profile updated successfully')
 		})
 
 		it('should set saving to false on error', () => {
@@ -343,16 +329,12 @@ describe('SettingsProfile', () => {
 
 		it('should show fallback error toast', () => {
 			vi.spyOn(toast, 'error').mockImplementation(() => '')
-			mockUsers.update.mockReturnValue(
-				throwError(() => ({ error: {} })),
-			)
+			mockUsers.update.mockReturnValue(throwError(() => ({ error: {} })))
 			component.form.patchValue({ name: 'Jane Doe' })
 
 			component.save()
 
-			expect(toast.error).toHaveBeenCalledWith(
-				'Failed to update profile',
-			)
+			expect(toast.error).toHaveBeenCalledWith('Failed to update profile')
 		})
 	})
 })

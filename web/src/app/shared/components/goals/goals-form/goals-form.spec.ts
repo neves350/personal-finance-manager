@@ -3,7 +3,11 @@ import { GoalType } from '@core/api/goals.interface'
 import { BankAccountsService } from '@core/services/bank-accounts.service'
 import { CategoriesService } from '@core/services/categories.service'
 import { GoalsService } from '@core/services/goals.service'
-import { mockBankAccounts, mockCategories, mockGoals } from '@core/testing/mocks'
+import {
+	mockBankAccounts,
+	mockCategories,
+	mockGoals,
+} from '@core/testing/mocks'
 import { toast } from 'ngx-sonner'
 import { of, throwError } from 'rxjs'
 import { beforeEach, describe, expect, it, vi } from 'vitest'

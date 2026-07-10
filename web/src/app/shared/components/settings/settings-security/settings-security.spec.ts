@@ -299,9 +299,7 @@ describe('SettingsSecurity', () => {
 
 			component.submit()
 
-			expect(toast.error).toHaveBeenCalledWith(
-				'Failed to change password',
-			)
+			expect(toast.error).toHaveBeenCalledWith('Failed to change password')
 		})
 
 		it('should set submitting to false on error', () => {
