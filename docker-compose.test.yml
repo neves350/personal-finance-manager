@@ -1,0 +1,20 @@
+services:
+  test-db:
+    image: postgres:17
+    container_name: expenses-test-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: expenses_test
+    volumes:
+      - test-pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d expenses_test"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  test-pg-data:
