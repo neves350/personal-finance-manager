@@ -9,7 +9,10 @@
     "dev": "concurrently \"npm run dev --workspace=api\" \"npm run start --workspace=web\"",
     "dev:api": "npm run dev --workspace=api",
     "dev:web": "npm run start --workspace=web",
-    "build": "npm run build --workspace=api && npm run build --workspace=web"
+    "build": "npm run build --workspace=api && npm run build --workspace=web",
+    "test:e2e": "npx playwright test",
+    "test:e2e:headed": "npx playwright test --headed",
+    "test:e2e:debug": "npx playwright test --debug"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.11",
