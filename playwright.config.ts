@@ -27,22 +27,18 @@ export default defineConfig({
 
 	webServer: [
 		{
-			command: process.env.CI
-				? "cd api && npx nest start"
-				: "npm run dev:api",
+			command: "npm run start:dev -w api",
 			url: "http://127.0.0.1:3000",
 			reuseExistingServer: !process.env.CI,
-			timeout: 240_000,
+			timeout: 300_000,
 			stdout: "pipe",
 			stderr: "pipe",
 		},
 		{
-			command: process.env.CI
-				? "cd web && npx ng serve --host 0.0.0.0"
-				: "npm run dev:web",
+			command: "npm run start -w web -- --host 0.0.0.0",
 			url: "http://127.0.0.1:4200",
 			reuseExistingServer: !process.env.CI,
-			timeout: 240_000,
+			timeout: 300_000,
 			stdout: "pipe",
 			stderr: "pipe",
 		},
