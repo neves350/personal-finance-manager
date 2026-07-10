@@ -29,6 +29,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+      - name: Create API .env for tests
+        run: |
+          cat > api/.env <<'EOF'
+          DATABASE_URL=postgresql://test:test@localhost:5433/expenses_test
+          JWT_SECRET=test-jwt-secret-do-not-use-in-production
+          JWT_EXPIRE_IN=15m
+          JWT_EXPIRE_IN_MS=900000
+          JWT_REFRESH_SECRET=test-jwt-refresh-secret-do-not-use-in-production
+          JWT_REFRESH_EXPIRE_IN=7d
+          JWT_REFRESH_EXPIRE_IN_MS=604800000
+          USE_SECURE_COOKIES=false
+          FRONTEND_URL=http://localhost:4200
+          EOF
       - name: Install dependencies
         run: npm ci
       - name: Generate Prisma Client
