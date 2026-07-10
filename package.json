@@ -17,7 +17,9 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.11",
     "@playwright/test": "^1.61.1",
-    "@types/node": "^26.1.1"
+    "@prisma/adapter-pg": "^7.8.0",
+    "@types/node": "^26.1.1",
+    "pg": "^8.22.0"
   },
   "dependencies": {
     "concurrently": "^9.2.1"

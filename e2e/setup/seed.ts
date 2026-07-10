@@ -1,7 +1,12 @@
+import { PrismaPg } from "@prisma/adapter-pg"
 import { PrismaClient } from "../../api/src/generated/prisma/client"
 import * as bcrypt from "bcrypt"
 
-const prisma = new PrismaClient()
+const connectionString =
+	process.env.DATABASE_URL ??
+	"postgresql://test:test@localhost:5433/expenses_test"
+const adapter = new PrismaPg({ connectionString })
+const prisma = new PrismaClient({ adapter })
 
 export const TEST_USER = {
 	email: "test@example.com",
