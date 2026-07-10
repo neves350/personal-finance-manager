@@ -44,6 +44,7 @@ jobs:
           GOOGLE_CLIENT_ID=test-google-client-id
           SALT_EDGE_APP_ID=test-salt-edge-app-id
           SALT_EDGE_SECRET=test-salt-edge-secret
+          USE_NEON_ADAPTER=false
           EOF
       - name: Install dependencies
         run: npm ci
