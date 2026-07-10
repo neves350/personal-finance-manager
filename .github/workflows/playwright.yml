@@ -24,6 +24,7 @@ jobs:
           --health-retries 5
     env:
       DATABASE_URL: postgresql://test:test@localhost:5433/expenses_test
+      USE_NEON_ADAPTER: "false"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
