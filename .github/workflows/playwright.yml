@@ -41,6 +41,9 @@ jobs:
           JWT_REFRESH_EXPIRE_IN_MS=604800000
           USE_SECURE_COOKIES=false
           FRONTEND_URL=http://localhost:4200
+          GOOGLE_CLIENT_ID=test-google-client-id
+          SALT_EDGE_APP_ID=test-salt-edge-app-id
+          SALT_EDGE_SECRET=test-salt-edge-secret
           EOF
       - name: Install dependencies
         run: npm ci
