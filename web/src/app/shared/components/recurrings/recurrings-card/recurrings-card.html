@@ -1,16 +1,16 @@
 @for (recurring of recurrings(); track recurring.id) {
 <z-accordion zType="multiple" class="py-2">
   <z-accordion-item>
-    <div zAccordionTrigger class="flex items-center justify-between w-full">
-      <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center size-10 rounded-sm" [class]="typeInfo(recurring).style">
+    <div zAccordionTrigger class="flex items-center justify-between w-full gap-2">
+      <div class="flex items-center gap-2 sm:gap-4 min-w-0">
+        <div class="flex items-center justify-center size-10 shrink-0 rounded-sm" [class]="typeInfo(recurring).style">
           <i-lucide [img]="typeInfo(recurring).icon" class="size-5" />
         </div>
-        <span class="grid text-left text-sm leading-tight">
-          <span class="flex items-center gap-2">
+        <span class="grid text-left text-sm leading-tight min-w-0">
+          <span class="flex items-center gap-2 min-w-0">
             <span class="truncate font-medium">{{ recurring.description }}</span>
             @if (recurring.autoDetected) {
-            <z-badge zType="secondary" class="h-4 px-1.5 text-[10px] shrink-0">
+            <z-badge zType="secondary" class="h-4 px-1.5 text-[10px] shrink-0 hidden sm:inline-flex">
               <i-lucide [img]="SparklesIcon" class="size-2.5 mr-0.5" />
               Auto
             </z-badge>
@@ -19,33 +19,35 @@
           <span class="truncate text-xs text-muted-foreground">Day {{ recurring.monthDay }} of every month</span>
         </span>
       </div>
-      <div class="flex items-center gap-3">
-        <z-badge zShape="soft" class="h-5 p-3 text-muted-foreground" zType="outline">{{
+      <div class="flex items-center gap-3 shrink-0">
+        <z-badge zShape="soft" class="h-5 p-3 text-muted-foreground hidden sm:inline-flex" zType="outline">{{
           recurring.category.title
           }}</z-badge>
-        <span class="grid text-left text-sm leading-tight">
-          <span class="text-sm font-medium" [class]="typeInfo(recurring).cost">
+        <span class="grid text-right sm:text-left text-sm leading-tight">
+          <span class="text-sm font-medium whitespace-nowrap" [class]="typeInfo(recurring).cost">
             {{ typeInfo(recurring).sign }}{{ monthlyCost(recurring) | currency: 'EUR' }}
           </span>
-          <span class="text-xs text-muted-foreground">per {{ recurring.frequency === 'MONTH' ? 'month' : 'year'
+          <span class="text-xs text-muted-foreground hidden sm:inline">per {{ recurring.frequency === 'MONTH' ? 'month' : 'year'
             }}</span>
         </span>
       </div>
     </div>
 
-    <div class="flex justify-between items-start p-4">
-      <div class="flex flex-col translate-y-1">
-        <span class="truncate text-xs text-muted-foreground">Schedule</span>
-        <span class="truncate text-sm font-medium">{{ recurring.frequency | titlecase }}, Day {{ recurring.monthDay
-          }}</span>
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start p-4 gap-4">
+      <div class="flex items-start gap-6">
+        <div class="flex flex-col">
+          <span class="truncate text-xs text-muted-foreground">Schedule</span>
+          <span class="truncate text-sm font-medium">{{ recurring.frequency | titlecase }}, Day {{ recurring.monthDay
+            }}</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="truncate text-xs text-muted-foreground">Annual Total</span>
+          <span class="truncate text-sm font-medium">{{
+            annualCost(recurring) | currency: 'EUR'
+            }}</span>
+        </div>
       </div>
-      <div class="flex flex-col translate-y-1">
-        <span class="truncate text-xs text-muted-foreground">Annual Total</span>
-        <span class="truncate text-sm font-medium">{{
-          annualCost(recurring) | currency: 'EUR'
-          }}</span>
-      </div>
-      <div class="p-3 gap-3 flex">
+      <div class="flex gap-3">
         <z-button zType="ghost" (click)="editRecurring(recurring)">
           <i-lucide [img]="PencilIcon" />
           Edit

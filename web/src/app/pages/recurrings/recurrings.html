@@ -1,25 +1,15 @@
 <main class="w-full">
   <div class="max-w-500 mx-auto py-3 space-y-8">
-    <div class="flex justify-between items-start">
-      <div class="flex items-center gap-3">
-        <h1 class="flex flex-col page-title">
-          Recurrings Transactions
-          <span class="page-subtitle">
-            Manage your recurring expenses and income.
-          </span>
-        </h1>
-        <z-button class="self-start" zPopover [zContent]="popoverContent" zPlacement="right" zTrigger="hover"
-          zType="ghost">
-          <i-lucide [img]="CircleAlertIcon" />
-        </z-button>
-      </div>
-      <div class="flex items-center gap-3">
-        <z-button zType="default" (click)="openDialog()">
-          <i-lucide [img]="PlusIcon" />
-          New Recurring
-        </z-button>
-      </div>
-    </div>
+    <app-page-header title="Recurrings Transactions" subtitle="Manage your recurring expenses and income.">
+      <z-button class="self-start" zPopover [zContent]="popoverContent" zPlacement="right" zTrigger="hover"
+        zType="ghost">
+        <i-lucide [img]="CircleAlertIcon" />
+      </z-button>
+      <z-button zType="default" (click)="openDialog()">
+        <i-lucide [img]="PlusIcon" />
+        New Recurring
+      </z-button>
+    </app-page-header>
 
     <ng-template #popoverContent>
       <z-popover class="border-2 w-full">
@@ -75,7 +65,7 @@
       </p>
       @for (recurring of detectedRecurrings(); track recurring.id) {
       <z-card class="p-4">
-        <div class="flex items-center justify-between gap-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
           <div class="flex items-center gap-3 min-w-0">
             <div class="size-9 shrink-0 flex items-center justify-center rounded-full bg-chart-2/10 text-chart-2">
               <i-lucide [img]="SparklesIcon" class="size-4" />
@@ -90,9 +80,13 @@
                 · {{ recurring.category.title }}
               </span>
             </div>
+            <span class="text-sm font-semibold sm:hidden ml-auto"
+              [class]="recurring.type === 'INCOME' ? 'text-primary' : 'text-destructive'">
+              {{ recurring.type === 'INCOME' ? '+' : '-' }}€{{ recurring.amount }}
+            </span>
           </div>
           <div class="flex items-center gap-3 shrink-0">
-            <span class="text-sm font-semibold"
+            <span class="text-sm font-semibold hidden sm:inline"
               [class]="recurring.type === 'INCOME' ? 'text-primary' : 'text-destructive'">
               {{ recurring.type === 'INCOME' ? '+' : '-' }}€{{ recurring.amount }}
             </span>
@@ -101,7 +95,7 @@
             </z-button>
             <z-button zType="ghost" zSize="sm" class="text-muted-foreground" (click)="ignoreRecurring(recurring.id!)">
               <i-lucide [img]="Trash2Icon" class="size-4" />
-              Dismiss
+              <span class="hidden sm:inline">Dismiss</span>
             </z-button>
           </div>
         </div>

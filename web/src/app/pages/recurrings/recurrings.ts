@@ -16,6 +16,7 @@ import {
 } from 'lucide-angular'
 import { toast } from 'ngx-sonner'
 import { lastValueFrom } from 'rxjs'
+import { PageHeader } from '@/shared/components/page-header/page-header'
 import { RecurringsCard } from '@/shared/components/recurrings/recurrings-card/recurrings-card'
 import { RecurringsForm } from '@/shared/components/recurrings/recurrings-form/recurrings-form'
 import { RecurringsSummary } from '@/shared/components/recurrings/recurrings-summary/recurrings-summary'
@@ -44,6 +45,7 @@ import { ZardSheetService } from '@/shared/components/ui/sheet'
 		ZardLoaderComponent,
 		RecurringsSummary,
 		ZardSegmentedComponent,
+		PageHeader,
 	],
 	templateUrl: './recurrings.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,

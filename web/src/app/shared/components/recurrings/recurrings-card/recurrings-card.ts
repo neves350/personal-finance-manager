@@ -49,6 +49,9 @@ import { DeleteRecurringDialog } from './delete-recurring-dialog'
 	],
 	templateUrl: './recurrings-card.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	host: {
+		class: 'max-sm:[&_button>z-icon]:hidden',
+	},
 })
 export class RecurringsCard {
 	readonly recurrings = input.required<Recurring[]>()
