@@ -1,5 +1,5 @@
 <z-card
-  class="mt-3 xl:mt-4 h-122 *:data-[slot=card-content]:flex-1 *:data-[slot=card-content]:flex *:data-[slot=card-content]:flex-col glass-card">
+  class="mt-3 xl:mt-4 sm:h-122 *:data-[slot=card-content]:flex-1 *:data-[slot=card-content]:flex *:data-[slot=card-content]:flex-col glass-card">
   <div class="flex justify-between items-start">
     <h2 class="text-base font-semibold font-display flex items-center">Spending by category</h2>
 
@@ -12,9 +12,9 @@
   </div>
 
   @if (chartOptions()) {
-  <div class="flex-1 flex gap-8 items-center">
+  <div class="flex-1 flex flex-col sm:flex-row gap-4 sm:gap-8 items-center">
     <!-- Donut Chart -->
-    <div class="shrink-0">
+    <div class="shrink-0 mx-auto sm:mx-0">
       <apx-chart #chart [series]="chartOptions()!.series!" [chart]="chartOptions()!.chart!"
         [labels]="chartOptions()!.labels!" [colors]="chartOptions()!.colors!" [legend]="chartOptions()!.legend!"
         [plotOptions]="chartOptions()!.plotOptions!" [dataLabels]="chartOptions()!.dataLabels!"
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Category list -->
-    <div class="flex-1 space-y-3 overflow-y-auto">
+    <div class="flex-1 w-full space-y-3 overflow-y-auto">
       @for (cat of categories(); track cat.categoryId; let i = $index) {
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-1.5">

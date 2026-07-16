@@ -137,10 +137,25 @@ export function createDonutOptions(
 		},
 		responsive: [
 			{
-				breakpoint: 480,
+				breakpoint: 640,
 				options: {
 					chart: {
+						width: 200,
 						height: 240,
+					},
+					plotOptions: {
+						pie: {
+							donut: {
+								labels: {
+									total: {
+										fontSize: '11px',
+									},
+									value: {
+										fontSize: '16px',
+									},
+								},
+							},
+						},
 					},
 				},
 			},

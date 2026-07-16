@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core'
 				{{ title() }}
 				<span class="page-subtitle">{{ subtitle() }}</span>
 			</h1>
-			<div class="flex items-center gap-3 flex-wrap">
+			<div class="flex items-center gap-3 flex-wrap self-end md:self-auto">
 				<ng-content />
 			</div>
 		</div>

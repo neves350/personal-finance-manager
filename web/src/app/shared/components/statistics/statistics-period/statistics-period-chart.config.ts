@@ -143,14 +143,26 @@ export function createGroupedBarOptions(
 		},
 		responsive: [
 			{
-				breakpoint: 480,
+				breakpoint: 640,
 				options: {
 					chart: {
-						height: 250,
+						height: 280,
+					},
+					legend: {
+						position: 'top',
+						horizontalAlign: 'left',
+						fontSize: '11px',
 					},
 					plotOptions: {
 						bar: {
-							columnWidth: '65%',
+							columnWidth: '55%',
+						},
+					},
+					yaxis: {
+						labels: {
+							style: {
+								fontSize: '11px',
+							},
 						},
 					},
 				},

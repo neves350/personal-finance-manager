@@ -4,6 +4,7 @@ import { BankAccountsService } from '@core/services/bank-accounts.service'
 import { CategoriesService } from '@core/services/categories.service'
 import { StatisticsService } from '@core/services/statistics.service'
 import { ChartPieIcon, LucideAngularModule } from 'lucide-angular'
+import { PageHeader } from '@/shared/components/page-header/page-header'
 import { StatisticsBreakdown } from '@/shared/components/statistics/statistics-breakdown/statistics-breakdown'
 import { StatisticsCategories } from '@/shared/components/statistics/statistics-categories/statistics-categories'
 import { StatisticsFilter } from '@/shared/components/statistics/statistics-filter/statistics-filter'
@@ -25,6 +26,7 @@ import { ZardLoaderComponent } from '@/shared/components/ui/loader'
 		StatisticsBreakdown,
 		StatisticsInsights,
 		ZardLoaderComponent,
+		PageHeader,
 	],
 	templateUrl: './statistics.html',
 })
