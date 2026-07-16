@@ -1,4 +1,4 @@
-# Novo Fin Web
+# Trocos Web
 
 Angular 21 single-page application with **standalone components**, **signals**, and **TailwindCSS 4**.
 
@@ -10,7 +10,7 @@ src/app/
 ├── app.config.ts              # Providers (router, http, interceptors)
 ├── core/                      # Singleton services & infrastructure
 │   ├── api/                   #   HTTP clients (one per resource)
-│   │   ├── auth/              #     AuthApi (login, register, refresh)
+│   │   ├── auth-api           #     AuthApi (login, register, refresh)
 │   │   ├── bank-accounts.api  #     BankAccountsApi
 │   │   ├── cards.api          #     CardsApi
 │   │   ├── categories.api     #     CategoriesApi
@@ -20,9 +20,12 @@ src/app/
 │   │   ├── statistics.api     #     StatisticsApi
 │   │   ├── transfers.api      #     TransfersApi
 │   │   ├── transactions.api   #     TransactionsApi
+│   │   ├── notifications.api  #     NotificationsApi
+│   │   ├── open-banking.api   #     OpenBankingApi
+│   │   ├── exports.api        #     ExportsApi
 │   │   └── users.api          #     UsersApi
 │   ├── services/              #   State management (signals)
-│   │   ├── auth/              #     AuthService (currentUser signal)
+│   │   ├── auth.service       #     AuthService (currentUser signal)
 │   │   ├── bank-accounts      #     BankAccountsService
 │   │   ├── cards              #     CardsService
 │   │   ├── categories         #     CategoriesService
@@ -32,14 +35,20 @@ src/app/
 │   │   ├── statistics         #     StatisticsService
 │   │   ├── transactions       #     TransactionsService
 │   │   ├── transfers          #     TransfersService
+│   │   ├── notifications      #     NotificationsService
+│   │   ├── open-banking       #     OpenBankingService
+│   │   ├── google-auth        #     GoogleAuthService
+│   │   ├── backend-readiness  #     BackendReadinessService
 │   │   └── users              #     UsersService
 │   ├── guards/                #   Route protection
 │   │   ├── auth.guard         #     Redirects unauthenticated → /login
 │   │   └── guest.guard        #     Redirects authenticated → /dashboard
 │   ├── interceptors/
 │   │   └── auth.interceptor   #     401 refresh + withCredentials
-│   └── strategies/
-│       └── page-title         #     Dynamic page titles
+│   ├── strategies/
+│   │   └── page-title         #     Dynamic page titles
+│   ├── testing/               #   Test utilities (factories, mocks)
+│   └── types/                 #   Auth-related type definitions
 ├── pages/                     # Route components (all lazy loaded)
 │   ├── auth/
 │   │   ├── login/             #   Login form (email + Google OAuth)
@@ -51,10 +60,11 @@ src/app/
 │   ├── transactions/          #   Transaction list with search/filter/export
 │   ├── recurrings/            #   Recurring transaction management
 │   ├── bank-account/          #   Account list + detail view (balance history)
-│   ├── cards/                 #   Card list + detail view (cashflow chart)
+│   ├── card-details/          #   Card detail view (cashflow chart)
 │   ├── categories/            #   Category management with icons
 │   ├── budgets/               #   Envelope budgeting per month
 │   ├── goals/                 #   Savings goals + detail view (heatmap)
+│   ├── notifications/         #   Notification center
 │   ├── statistics/            #   Analytics: overview, by-category, trends
 │   └── settings/              #   Profile, security, appearance (theme)
 └── shared/                    # Reusable components
@@ -73,8 +83,15 @@ src/app/
         ├── cards/             #   Card list, preview, form, color picker
         ├── categories/        #   Category list, form, icon picker
         ├── budgets/           #   Envelope card, list, forms, month selector
+        ├── goals/             #   Goal components
+        ├── recurrings/        #   Recurring components
+        ├── statistics/        #   Statistics components
+        ├── transactions/      #   Transaction components
         ├── transfers/         #   Transfer form
-        ├── ui/                #   Base UI components (button, input, dialog...)
+        ├── notification/      #   Notification components
+        ├── settings/          #   Settings components
+        ├── theme/             #   Theme switcher
+        ├── ui/                #   Base UI components
         └── ui/spartan/        #   Spartan UI primitives (shadcn for Angular)
 ```
 
@@ -88,17 +105,17 @@ src/app/
          Guest Routes    Auth Guard      Wildcard
          (guestGuard)         │           → /dashboard
               │               │
-    ┌─────────┼─────────┐    │
-    │         │         │    │
-  Login   Register  Password │
-    │                        │
-    └────────┬───────────────┘
+    ┌─────────┼─────────┐     │
+    │         │         │     │
+  Login   Register  Password  │
+    │                         │
+    └────────┬────────────────┘
              │ successful auth
              ▼
     ┌────────────────┐
     │     Layout     │   ← App shell (always rendered for auth routes)
     │  ┌──────────┐  │
-    │  │  Header  │  │   ← Logo, profile button, theme toggle
+    │  │  Header  │  │   ← Logo, profile button, theme toggle, notifications
     │  ├──────────┤  │
     │  │ Sidebar  │  │   ← Navigation links, collapsible
     │  ├──────────┤  │
@@ -108,9 +125,9 @@ src/app/
     │  └──────────┘  │
     └────────────────┘
              │
-     ┌───────┼───────┬──────────┬──────────┬──────────┬─────────┬──────────┐
-     │       │       │          │          │          │         │          │
- Dashboard Txns Recurrings Accounts  Cards  Categories Budgets Goals Statistics Settings
+     ┌───────┼───────┬──────────┬──────────┬──────────┬─────────┬──────────┬───────────┐
+     │       │       │          │          │          │         │          │           │
+ Dashboard Txns Recurrings Accounts  Cards  Categories Budgets Goals Statistics Notifications Settings
      │               │          │       │          │     │       │
      │               │          │       │     ┌────┴──┐  │  Detail→
      │            monthly/   Detail→  Detail→ List Form  │  (heatmap,
@@ -141,8 +158,8 @@ Signal-based reactive state (no NgRx):
 
 ```
 ┌───────────────┐     ┌───────────────┐     ┌────────────────┐
-│   Component   │     │    Service    │     │    API Client   │
-│               │     │   (signals)   │     │   (HttpClient)  │
+│   Component   │     │    Service    │     │   API Client   │
+│               │     │   (signals)   │     │  (HttpClient)  │
 │  reads signal─┼────►│  currentUser  │     │                │
 │               │     │  isAuthenticated    │                │
 │  calls method─┼────►│  login()──────┼────►│  POST /login   │
@@ -161,25 +178,26 @@ Example: AuthService
 
 ## Routes
 
-| Path                   | Guard   | Component      | Description                      |
-| ---------------------- | ------- | -------------- | -------------------------------- |
-| `/login`               | guest   | Login          | Email/password + Google login    |
-| `/register`            | guest   | Register       | Create account                   |
-| `/password/recover`    | guest   | Recover        | Request recovery code            |
-| `/password/reset`      | guest   | Reset          | Set new password                 |
-| `/dashboard`           | auth    | Dashboard      | Overview + charts                |
-| `/transactions`        | auth    | Transactions   | All transactions + export        |
-| `/recurrings`          | auth    | Recurrings     | Recurring transactions           |
-| `/accounts`            | auth    | BankAccount    | List bank accounts               |
-| `/account-details/:id` | auth    | AccountDetails | Account detail + balance history |
-| `/cards`               | auth    | Cards          | Manage cards                     |
-| `/card-details/:id`    | auth    | CardDetails    | Card detail + cashflow chart     |
-| `/categories`          | auth    | Categories     | Manage categories                |
-| `/budgets`             | auth    | Budgets        | Envelope budgeting per month     |
-| `/goals`               | auth    | Goals          | Savings goals + spending limits  |
-| `/goal-details/:id`    | auth    | GoalsDetails   | Goal detail + heatmap            |
-| `/statistics`          | auth    | Statistics     | Analytics & reporting            |
-| `/settings`            | auth    | Settings       | Profile, security, appearance    |
+| Path                   | Guard   | Component       | Description                      |
+| ---------------------- | ------- | --------------- | -------------------------------- |
+| `/login`               | guest   | Login           | Email/password + Google login    |
+| `/register`            | guest   | Register        | Create account                   |
+| `/password/recover`    | guest   | Recover         | Request recovery code            |
+| `/password/reset`      | guest   | Reset           | Set new password                 |
+| `/dashboard`           | auth    | Dashboard       | Overview + charts                |
+| `/transactions`        | auth    | Transactions    | All transactions + export        |
+| `/recurrings`          | auth    | Recurrings      | Recurring transactions           |
+| `/accounts`            | auth    | BankAccount     | List bank accounts               |
+| `/account-details/:id` | auth    | AccountDetails  | Account detail + balance history |
+| `/cards`               | auth    | —               | Redirects to /accounts           |
+| `/card-details/:id`    | auth    | CardDetails     | Card detail + cashflow chart     |
+| `/categories`          | auth    | Categories      | Manage categories                |
+| `/budgets`             | auth    | Budgets         | Envelope budgeting per month     |
+| `/goals`               | auth    | Goals           | Savings goals + spending limits  |
+| `/goal-details/:id`    | auth    | GoalsDetails    | Goal detail + heatmap            |
+| `/notifications`       | auth    | Notifications   | Notification center              |
+| `/statistics`          | auth    | Statistics      | Analytics & reporting            |
+| `/settings`            | auth    | Settings        | Profile, security, appearance    |
 
 ## UI Library
 
@@ -188,7 +206,6 @@ Example: AuthService
 - **Lucide Angular** — Icon library
 - **ApexCharts** — Charts via ng-apexcharts
 - **ngx-sonner** — Toast notifications
-- **DaisyUI** — Additional Tailwind components
 
 ### Custom UI Components
 
@@ -197,6 +214,7 @@ Located in `shared/components/ui/`:
 `accordion` `avatar` `badge` `breadcrumb` `button` `calendar` `card`
 `checkbox` `date-picker` `dialog` `divider` `dropdown` `icon` `input`
 `loader` `pagination` `popover` `progress-bar` `segmented` `select` `sheet`
+`switch` `table` `tabs`
 
 ### Theming
 
@@ -236,5 +254,7 @@ Configure API URL in `src/environments/`:
 // environment.development.ts
 export const environment = {
   apiUrl: 'http://localhost:3000',
+  googleClientId: '...',
+  googleAuthEnabled: true,
 }
 ```

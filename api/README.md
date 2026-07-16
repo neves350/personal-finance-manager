@@ -1,4 +1,4 @@
-# Novo Fin API
+# Trocos API
 
 REST API backend built with **NestJS 11**, **Prisma 7**, and **PostgreSQL**.
 
@@ -21,6 +21,7 @@ src/
 │   ├── export/                #   CSV + PDF transaction export
 │   ├── goal/                  #   Savings goals + deposits
 │   ├── budget/                #   Envelope budgeting + envelopes
+│   ├── notification/          #   In-app notifications + scheduler
 │   └── open-banking/          #   Salt Edge bank connection & sync
 ├── infrastructure/
 │   ├── db/                    #   PrismaService (Neon adapter)
@@ -198,6 +199,16 @@ Incoming Request
 | POST   | `/budgets/:budgetId/envelopes/transfer`   | Yes  | Transfer between envelopes           |
 | POST   | `/budgets/:id/copy-previous`              | Yes  | Copy envelopes from previous month   |
 
+### Notifications (`/notifications`)
+
+| Method | Route                        | Auth | Description                      |
+| ------ | ---------------------------- | ---- | -------------------------------- |
+| GET    | `/notifications`             | Yes  | List notifications (paginated)   |
+| GET    | `/notifications/unread-count`| Yes  | Get unread count                 |
+| PATCH  | `/notifications/read-all`    | Yes  | Mark all as read                 |
+| PATCH  | `/notifications/:id/read`    | Yes  | Mark single as read              |
+| DELETE | `/notifications/:id`         | Yes  | Delete notification              |
+
 ### Open Banking (`/open-banking`)
 
 | Method | Route                                    | Auth | Description                     |
@@ -249,6 +260,7 @@ async findAll(userId: string) {
 - **Refresh token**: JWT in httpOnly cookie, expires in 7 days
 - Passport JWT strategy reads tokens from cookies (not Authorization header)
 - `@CurrentUser()` custom decorator extracts `{ userId, email }` from request
+- Google OAuth supported via `google-auth-library`
 
 ### Prisma Setup
 
@@ -288,9 +300,10 @@ npx prisma db seed                        # Seed default categories
 Create a `.env` file in this directory:
 
 ```env
-DATABASE_URL="postgresql://user:password@host:5432/spendly"
+DATABASE_URL="postgresql://user:password@host:5432/trocos"
 JWT_SECRET="your-secret-key"
 JWT_REFRESH_SECRET="your-refresh-secret"
+FRONTEND_URL="http://localhost:4200"
 MAIL_HOST="smtp.example.com"
 MAIL_USER="user@example.com"
 MAIL_PASS="password"
