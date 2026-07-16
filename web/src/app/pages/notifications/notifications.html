@@ -1,13 +1,6 @@
 <main>
-  <div class="max-w-500 mx-auto py-3 space-y-6">
-    <div class="flex justify-between items-start">
-      <h1 class="flex flex-col page-title">
-        Notifications
-        <span class="page-subtitle">
-          Stay up to date with your budgets, goals, and recurring income.
-        </span>
-      </h1>
-    </div>
+  <div class="max-w-500 mx-auto py-3 lg:py-6 space-y-8">
+    <app-page-header title="Notifications" subtitle="Stay up to date with your budgets, goals, and recurring income." />
 
     <z-tab-group zTabsPosition="custom" zActivePosition="custom" (zTabChange)="onTabChange($event)">
       <z-tab [label]="unreadLabel()">
@@ -65,7 +58,7 @@
 
         <!-- Content -->
         <div class="min-w-0 flex-1 py-4">
-          <p [class]="notification.isRead ? 'font-normal' : 'font-semibold'">
+          <p [class]="notification.isRead ? 'font-normal line-through' : 'font-semibold'" class="truncate">
             {{ notification.title }}
           </p>
           <p class="text-muted-foreground mt-0.5 text-sm leading-relaxed line-clamp-1">
@@ -74,8 +67,12 @@
         </div>
 
         <!-- Timestamp -->
-        <span class="text-muted-foreground shrink-0 text-sm px-4">
-          {{ notification.createdAt | date: 'medium' }}
+        <span class="hidden sm:inline text-muted-foreground shrink-0 text-sm px-4">
+          {{ notification.createdAt | date:'medium' }}
+        </span>
+
+        <span class="sm:hidden text-muted-foreground shrink-0 text-sm px-4">
+          {{ notification.createdAt | date:'mediumDate' }}
         </span>
 
         <!-- Actions -->

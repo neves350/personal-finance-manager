@@ -18,6 +18,7 @@ import {
 	SearchIcon,
 	Trash2Icon,
 } from 'lucide-angular'
+import { PageHeader } from '@/shared/components/page-header/page-header'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
 import { ZardDividerComponent } from '@/shared/components/ui/divider'
@@ -59,6 +60,7 @@ type TabFilter = 'unread' | 'read'
 		ZardTabComponent,
 		ZardTabGroupComponent,
 		DatePipe,
+		PageHeader,
 	],
 	templateUrl: './notifications.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
