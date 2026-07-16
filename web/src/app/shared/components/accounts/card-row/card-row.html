@@ -37,11 +37,11 @@
     }}</span>
 
     @if (card().creditLimit) {
-      <span class="text-xs text-muted-foreground">
+      <span class="text-xs text-muted-foreground hidden sm:inline">
         / {{ card().creditLimit | currency: 'EUR' : 'symbol' : '1.0-0' }} limit
       </span>
     }
-    <z-badge [zType]="badgeType()" class="h-5">
+    <z-badge [zType]="badgeType()" class="h-5 hidden sm:inline-flex">
       {{ balance() < 0 ? 'Negative' : balance() === 0 ? 'Unavailable' : 'Available' }}
     </z-badge>
 
@@ -50,7 +50,7 @@
       [zContent]="actionsMenu"
       zType="ghost"
       zSize="sm"
-      class="size-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+      class="size-8 p-0 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
     >
       <i-lucide [img]="EllipsisVerticalIcon" class="size-4" />
     </z-button>

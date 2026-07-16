@@ -18,7 +18,7 @@
 
   <div class="flex items-center gap-2 shrink-0">
     @if (consentExpiringSoon()) {
-      <z-badge zType="warning" zShape="pill" class="h-5">Expiring soon</z-badge>
+      <z-badge zType="warning" zShape="pill" class="h-5 hidden sm:inline-flex">Expiring soon</z-badge>
     }
     <z-badge [zType]="isActive() ? 'available' : 'negative'" zShape="pill" class="h-5">
       {{ isActive() ? 'Active' : 'Inactive' }}
@@ -44,8 +44,8 @@
       class="justify-start text-destructive"
       (click)="disconnect()"
     >
-      <i-lucide [img]="UnlinkIcon" class="size-4 mr-2" />
-      Disconnect
+      <i-lucide [img]="UnlinkIcon" class="size-4 sm:mr-2" />
+      <span class="hidden sm:inline">Disconnect</span>
     </z-button>
   </div>
 </div>

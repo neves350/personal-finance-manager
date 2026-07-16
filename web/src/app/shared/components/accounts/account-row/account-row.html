@@ -24,14 +24,14 @@
     <span class="text-sm font-bold font-display tabular-nums" [class]="balanceColorClass()">
       {{ account().balance | currency: 'EUR' }}
     </span>
-    <z-badge [zType]="badgeType()" class="h-5">{{ badgeLabel() }}</z-badge>
+    <z-badge [zType]="badgeType()" class="h-5 hidden sm:inline-flex">{{ badgeLabel() }}</z-badge>
 
     <z-button
       zPopover
       [zContent]="actionsMenu"
       zType="ghost"
       zSize="sm"
-      class="size-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+      class="size-8 p-0 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
     >
       <i-lucide [img]="EllipsisVerticalIcon" class="size-4" />
     </z-button>

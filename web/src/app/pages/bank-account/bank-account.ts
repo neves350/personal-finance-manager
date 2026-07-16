@@ -18,6 +18,7 @@ import { AccountsSection } from '@/shared/components/accounts/accounts-section/a
 import { CardRow } from '@/shared/components/accounts/card-row/card-row'
 import { ConnectionRow } from '@/shared/components/accounts/connection-row/connection-row'
 import { CardsForm } from '@/shared/components/cards/cards-form/cards-form'
+import { PageHeader } from '@/shared/components/page-header/page-header'
 import { TransfersForm } from '@/shared/components/transfers/transfers-form/transfers-form'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
@@ -36,6 +37,7 @@ import { ZardSheetService } from '@/shared/components/ui/sheet'
 		CardRow,
 		AccountRow,
 		ConnectionRow,
+		PageHeader,
 	],
 	templateUrl: './bank-account.html',
 })

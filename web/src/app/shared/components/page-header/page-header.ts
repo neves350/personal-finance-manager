@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core'
 @Component({
 	selector: 'app-page-header',
 	template: `
-		<div class="flex flex-col gap-4 md:flex-row md:justify-between md:items-start">
+		<div class="flex flex-col gap-4 md:flex-row md:justify-between md:items-start mb-4">
 			<h1 class="flex flex-col page-title">
 				{{ title() }}
 				<span class="page-subtitle">{{ subtitle() }}</span>
