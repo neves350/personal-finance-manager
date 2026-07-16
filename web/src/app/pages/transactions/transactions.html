@@ -1,23 +1,16 @@
 <main>
   <div class="max-w-500 mx-auto py-3 space-y-6">
-    <div class="flex justify-between items-start">
-      <h1 class="flex flex-col page-title">
-        Transactions
-        <span class="page-subtitle">
-          Manage your income and expenses.
-        </span>
-      </h1>
+    <app-page-header title="Transactions" subtitle="Manage your income and expenses.">
+      <z-button zType="default" (click)="openDialog()" class="hidden sm:inline-flex">
+        <i-lucide [img]="PlusIcon" />
+        New Transaction
+      </z-button>
+      <app-transactions-export class="hidden sm:contents" />
+    </app-page-header>
 
-      <div class="flex items-center gap-3">
-        <z-button zType="default" (click)="openDialog()">
-          <i-lucide [img]="PlusIcon" />
-          New Transaction
-        </z-button>
-        <app-transactions-export />
-      </div>
-    </div>
-
-    <app-transactions-toolbar (searchChange)="searchQuery.set($event)" />
+    <app-transactions-toolbar (searchChange)="searchQuery.set($event)">
+      <app-transactions-export class="sm:hidden" />
+    </app-transactions-toolbar>
 
     @if (isLoading()) {
     <div class="flex flex-col items-center justify-center gap-2 min-h-[60vh]">

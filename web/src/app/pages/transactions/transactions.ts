@@ -11,6 +11,7 @@ import {
 	LucideAngularModule,
 	PlusIcon,
 } from 'lucide-angular'
+import { PageHeader } from '@/shared/components/page-header/page-header'
 import { TransactionsExport } from '@/shared/components/transactions/transactions-export/transactions-export'
 import { TransactionsForm } from '@/shared/components/transactions/transactions-form/transactions-form'
 import { TransactionsList } from '@/shared/components/transactions/transactions-list/transactions-list'
@@ -34,6 +35,7 @@ import { ZardSheetService } from '@/shared/components/ui/sheet'
 		TransactionsSummary,
 		ZardLoaderComponent,
 		TransactionsExport,
+		PageHeader,
 	],
 	templateUrl: './transactions.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,

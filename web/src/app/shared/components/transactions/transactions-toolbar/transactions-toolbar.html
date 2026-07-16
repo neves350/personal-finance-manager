@@ -1,6 +1,9 @@
-<div class="flex items-center justify-between">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
   <app-transactions-navigation />
 
-  <app-transactions-search (search)="onSearch($event)" (filterChange)="onFilterChange($event)"
-    (filterReset)="onFilterReset()" />
+  <div class="flex items-center gap-2">
+    <app-transactions-search (search)="onSearch($event)" (filterChange)="onFilterChange($event)"
+      (filterReset)="onFilterReset()" class="flex-1" />
+    <ng-content />
+  </div>
 </div>
