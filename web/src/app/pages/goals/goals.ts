@@ -3,6 +3,7 @@ import { GoalsService } from '@core/services/goals.service'
 import { GoalIcon, LucideAngularModule, PlusIcon } from 'lucide-angular'
 import { GoalsForm } from '@/shared/components/goals/goals-form/goals-form'
 import { GoalsList } from '@/shared/components/goals/goals-list/goals-list'
+import { PageHeader } from '@/shared/components/page-header/page-header'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
 import { ZardLoaderComponent } from '@/shared/components/ui/loader'
@@ -22,6 +23,7 @@ import {
 		ZardTabGroupComponent,
 		ZardTabComponent,
 		ZardLoaderComponent,
+		PageHeader,
 	],
 	templateUrl: './goals.html',
 })

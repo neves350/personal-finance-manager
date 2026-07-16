@@ -1,12 +1,6 @@
 <main>
-  <div class="max-w-500 mx-auto py-3 space-y-6">
-    <div class="flex justify-between items-start">
-      <h1 class="flex flex-col page-title">
-        Goals
-        <span class="page-subtitle">
-          Track your goals and see if you're on the right track.
-        </span>
-      </h1>
+  <div class="max-w-500 mx-auto py-3 lg:py-6 space-y-8">
+    <app-page-header title="Goals" subtitle="Track your goals and see if you're on the right track.">
 
       <div class="justify-end">
         <z-button class="cursor-pointer" (click)="openSheet()">
@@ -14,7 +8,7 @@
           New Goal
         </z-button>
       </div>
-    </div>
+    </app-page-header>
 
     <!-- Cards with goals -->
     @if (isLoading()) {
