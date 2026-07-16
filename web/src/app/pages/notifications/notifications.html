@@ -71,10 +71,6 @@
           {{ notification.createdAt | date:'medium' }}
         </span>
 
-        <span class="sm:hidden text-muted-foreground shrink-0 text-sm px-4">
-          {{ notification.createdAt | date:'mediumDate' }}
-        </span>
-
         <!-- Actions -->
         <div class="shrink-0 pr-2" (click)="$event.stopPropagation()">
           <z-button zPopover [zContent]="popoverContent" zType="ghost" zSize="sm"
