@@ -13,6 +13,7 @@ import { BudgetSummary } from '@/shared/components/budgets/budget-summary/budget
 import { EnvelopeForm } from '@/shared/components/budgets/envelope-form/envelope-form'
 import { EnvelopeList } from '@/shared/components/budgets/envelope-list/envelope-list'
 import { TransferForm } from '@/shared/components/budgets/transfer-form/transfer-form'
+import { PageHeader } from '@/shared/components/page-header/page-header'
 import { ZardButtonComponent } from '@/shared/components/ui/button'
 import { ZardCardComponent } from '@/shared/components/ui/card'
 import { ZardDialogService } from '@/shared/components/ui/dialog'
@@ -28,6 +29,7 @@ import { ZardLoaderComponent } from '@/shared/components/ui/loader'
 		EnvelopeList,
 		BudgetSummary,
 		BudgetMonthSelector,
+		PageHeader,
 	],
 	templateUrl: './budgets.html',
 })

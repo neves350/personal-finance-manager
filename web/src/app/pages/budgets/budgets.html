@@ -1,34 +1,29 @@
 <main class="w-full">
   <div class="max-w-500 mx-auto py-3 lg:py-6 space-y-8">
-    <div class="flex justify-between">
-      <h1 class="flex flex-col page-title">
-        Budgets
-        <span class="page-subtitle">
-          Track your budgets and see if you're on the right track.
-        </span>
-      </h1>
+    <app-page-header title="Budgets" subtitle="Track your budgets and see if you're on the right track.">
 
       @if (hasBudgets()) {
       <div class="flex items-center gap-2">
         <z-button class="cursor-pointer" zType="default" (click)="openEnvelope()">
           <i-lucide [img]="PlusIcon" />
-          Envelope
+          <span class="hidden sm:inline">Envelope</span>
         </z-button>
+
         @if (envelopes().length >= 2) {
         <z-button class="cursor-pointer" zType="outline" (click)="openTransfer()">
           <i-lucide [img]="ArrowLeftRightIcon" />
-          Transfer
+          <span class="hidden sm:inline">Transfer</span>
         </z-button>
         }
         @if (envelopes().length === 0) {
         <z-button class="cursor-pointer" zType="outline" (click)="copyPrevious()">
           <i-lucide [img]="CopyIcon" />
-          Copy Previous
+          <span class="hidden sm:inline">Copy Previous</span>
         </z-button>
         }
       </div>
       }
-    </div>
+    </app-page-header>
 
     <app-budget-month-selector />
 
