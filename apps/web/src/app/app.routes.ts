@@ -10,8 +10,10 @@ import { Layout } from './shared/components/layout/layout'
 export const routes: Routes = [
 	{
 		path: '',
-		redirectTo: 'dashboard',
-		pathMatch: 'full',
+		title: 'Personal finance, made calm',
+		canActivate: [guestGuard],
+		loadComponent: () =>
+			import('./pages/landing-page/landing-page').then((m) => m.LandingPage),
 	},
 	{
 		path: 'login',
@@ -159,6 +161,6 @@ export const routes: Routes = [
 	},
 	{
 		path: '**',
-		redirectTo: 'dashboard',
+		redirectTo: '',
 	},
 ]
