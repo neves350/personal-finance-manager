@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common'
 import { ChangeDetectionStrategy, Component } from '@angular/core'
 
 interface GalleryCard {
@@ -9,7 +10,7 @@ interface GalleryCard {
 
 @Component({
 	selector: 'app-gallery',
-	imports: [],
+	imports: [NgOptimizedImage],
 	templateUrl: './gallery.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common'
 import { ChangeDetectionStrategy, Component } from '@angular/core'
 import {
 	ChartPie,
@@ -9,7 +10,7 @@ import {
 
 @Component({
 	selector: 'app-features',
-	imports: [LucideAngularModule],
+	imports: [LucideAngularModule, NgOptimizedImage],
 	templateUrl: './features.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
