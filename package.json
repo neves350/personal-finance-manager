@@ -1,18 +1,19 @@
 {
-	"name": "my-monorepo",
+	"name": "trocos",
 	"private": true,
 	"workspaces": [
-		"api",
-		"web"
+		"apps/*"
 	],
 	"scripts": {
-		"dev": "concurrently \"npm run dev --workspace=api\" \"npm run start --workspace=web\"",
-		"dev:api": "npm run dev --workspace=api",
+		"dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
+		"dev:api": "npm run start:dev --workspace=api",
 		"dev:web": "npm run start --workspace=web",
-		"build": "npm run build --workspace=api && npm run build --workspace=web",
+		"build": "npm run build --workspaces --if-present",
 		"test:e2e": "npx playwright test",
 		"test:e2e:headed": "npx playwright test --headed",
-		"test:e2e:debug": "npx playwright test --debug"
+		"test:e2e:debug": "npx playwright test --debug",
+		"lint": "biome check .",
+		"format": "biome check --write ."
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.11",

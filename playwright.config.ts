@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
-	testDir: './e2e/tests',
+	testDir: './apps/e2e/tests',
 
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
@@ -10,8 +10,8 @@ export default defineConfig({
 
 	reporter: 'html',
 
-	globalSetup: './e2e/setup/global-setup.ts',
-	globalTeardown: './e2e/setup/global-teardown.ts',
+	globalSetup: './apps/e2e/setup/global-setup.ts',
+	globalTeardown: './apps/e2e/setup/global-teardown.ts',
 
 	use: {
 		baseURL: 'http://localhost:4200',

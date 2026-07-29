@@ -35,7 +35,7 @@ jobs:
       - run: npm ci
       - name: Generate Prisma Client
         run: npx prisma generate
-        working-directory: api
+        working-directory: apps/api
       - name: Build
         run: npm run build --workspace=api
       - name: Unit Tests
