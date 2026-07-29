@@ -1,8 +1,10 @@
-import { Component } from '@angular/core'
+import { ChangeDetectionStrategy, Component } from '@angular/core'
+import { Navbar } from '@/shared/components/landing/navbar/navbar'
 
 @Component({
 	selector: 'app-landing-page',
-	imports: [],
+	imports: [Navbar],
 	templateUrl: './landing-page.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LandingPage {}

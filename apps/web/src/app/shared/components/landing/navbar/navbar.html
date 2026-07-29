@@ -1,0 +1,33 @@
+<div class="flex items-center justify-between px-8 md:px-10 py-5 md:py-7">
+  <div class="flex items-center gap-2.5">
+    <img src="trocos-icon.svg" alt="Trocos" class="size-8 md:size-10">
+    <span class="font-['Space_Grotesk'] font-semibold tracking-wider">Trocos</span>
+  </div>
+
+  <div class="hidden md:flex gap-9 text-foreground text-sm font-medium">
+    <a href="#features" class="hover:text-primary/50">Features</a>
+    <a href="#works" class="hover:text-primary/50">How it works</a>
+  </div>
+
+  <div class="hidden md:flex items-center gap-5">
+    <a routerLink="/login" class="text-foreground text-sm font-medium hover:text-primary/50 px-5 py-2.5">Log in</a>
+    <a routerLink="/register"
+      class="text-foreground px-5 py-2.5 rounded-md border-2 border-primary/50 font-semibold text-sm hover:bg-background">Get
+      started</a>
+  </div>
+
+  <z-button (click)="openMenu()" zType="ghost" class="cursor-pointer flex md:hidden" aria-label="Open menu">
+    <i-lucide [img]="MenuIcon" class="size-4"></i-lucide>
+  </z-button>
+</div>
+
+<ng-template #menuContent>
+  <nav class="flex flex-col gap-6 p-5">
+    <a href="#features" class="text-foreground text-sm font-medium hover:text-primary/50">Features</a>
+    <a href="#works" class="text-foreground text-sm font-medium hover:text-primary/50">How it works</a>
+    <a routerLink="/login" class="text-foreground text-sm font-medium hover:text-primary/50">Log in</a>
+    <a routerLink="/register"
+      class="text-foreground text-center px-5 py-2.5 rounded-md border-2 border-primary/50 font-semibold text-sm hover:bg-background">Get
+      started</a>
+  </nav>
+</ng-template>
