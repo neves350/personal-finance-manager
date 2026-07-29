@@ -6,14 +6,19 @@
 
   <div class="hidden md:flex gap-9 text-foreground text-sm font-medium">
     <a href="#features" class="hover:text-primary/50">Features</a>
-    <a href="#works" class="hover:text-primary/50">How it works</a>
+    <a href="#how" class="hover:text-primary/50">How it works</a>
   </div>
 
   <div class="hidden md:flex items-center gap-5">
-    <a routerLink="/login" class="text-foreground text-sm font-medium hover:text-primary/50 px-5 py-2.5">Log in</a>
+    <a href="https://github.com/neves350" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile"
+      class="text-foreground hover:text-primary/50">
+      <i-lucide [img]="GithubIcon" class="size-4.5"></i-lucide>
+    </a>
     <a routerLink="/register"
-      class="text-foreground px-5 py-2.5 rounded-md border-2 border-primary/50 font-semibold text-sm hover:bg-background">Get
-      started</a>
+      class="text-foreground px-5 py-2.5 rounded-full border border-primary/80 bg-primary/15 font-semibold text-sm hover:bg-background flex items-center gap-3">
+      Get Started
+      <i-lucide [img]="ArrowUpRightIcon" class="size-4"></i-lucide>
+    </a>
   </div>
 
   <z-button (click)="openMenu()" zType="ghost" class="cursor-pointer flex md:hidden" aria-label="Open menu">
@@ -24,10 +29,12 @@
 <ng-template #menuContent>
   <nav class="flex flex-col gap-6 p-5">
     <a href="#features" class="text-foreground text-sm font-medium hover:text-primary/50">Features</a>
-    <a href="#works" class="text-foreground text-sm font-medium hover:text-primary/50">How it works</a>
-    <a routerLink="/login" class="text-foreground text-sm font-medium hover:text-primary/50">Log in</a>
-    <a routerLink="/register"
-      class="text-foreground text-center px-5 py-2.5 rounded-md border-2 border-primary/50 font-semibold text-sm hover:bg-background">Get
-      started</a>
+    <a href="#how" class="text-foreground text-sm font-medium hover:text-primary/50">How it works</a>
+    <a href="https://github.com/neves350" target="_blank" rel="noopener noreferrer"
+      class="text-foreground text-sm font-medium hover:text-primary/50">GitHub</a>
+    <a routerLink="/register" class="text-primary font-semibold text-sm flex items-center gap-3 underline">
+      Get Started
+      <i-lucide [img]="ArrowUpRightIcon" class="size-4"></i-lucide>
+    </a>
   </nav>
 </ng-template>

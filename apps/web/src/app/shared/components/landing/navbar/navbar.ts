@@ -7,7 +7,12 @@ import {
 	viewChild,
 } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { LucideAngularModule, MenuIcon } from 'lucide-angular'
+import {
+	ArrowUpRightIcon,
+	GithubIcon,
+	LucideAngularModule,
+	MenuIcon,
+} from 'lucide-angular'
 import { ZardButtonComponent } from '../../ui/button'
 import { ZardSheetService } from '../../ui/sheet'
 
@@ -24,6 +29,8 @@ export class Navbar {
 	readonly menuContent = viewChild.required<TemplateRef<void>>('menuContent')
 
 	readonly MenuIcon = MenuIcon
+	readonly GithubIcon = GithubIcon
+	readonly ArrowUpRightIcon = ArrowUpRightIcon
 
 	openMenu(): void {
 		this.sheetService.create({
