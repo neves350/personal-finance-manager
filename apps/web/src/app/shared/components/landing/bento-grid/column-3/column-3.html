@@ -1,0 +1,40 @@
+<div class="flex flex-col gap-3 md:gap-5.5">
+  <div class="flex flex-1 flex-col overflow-hidden rounded-lg border border-border bg-card">
+    <div class="flex items-center gap-2.5 px-6.5 pt-4.5 md:pt-6.5 pb-4 md:pb-6 border-b">
+      <i-lucide [img]="BotIcon" class="size-5 text-primary"></i-lucide>
+      <h3 class="text-base md:text-lg font-semibold">Automation</h3>
+    </div>
+
+    <div class="flex flex-col px-6.5 pt-3.5">
+      @for (toggle of automationToggles; track toggle.label; let last = $last) {
+      <div class="flex items-center gap-3.25 py-3.25" [class]="last ? 'md:pb-40' : 'border-b border-border'">
+        <span class="relative h-3.5 md:h-5.5 w-7.5 md:w-9.5 flex-none rounded-full"
+          [class]="toggle.enabled ? 'bg-primary' : 'bg-secondary'">
+          <span class="absolute top-0.5 size-2.5 md:size-4.5 rounded-full" [class]="toggle.enabled
+                ? 'right-0.5 bg-card'
+                : 'left-0.5 bg-muted-foreground'"></span>
+        </span>
+        <span class="text-xs md:text-sm" [class]="!toggle.enabled ? 'text-muted-foreground' : ''">{{ toggle.label
+          }}</span>
+      </div>
+      }
+    </div>
+  </div>
+
+  <div class="flex flex-1 flex-col overflow-hidden rounded-lg border border-border bg-card pb-6.5 md:pb-20">
+    <div class="flex items-center gap-2.5 px-6.5 pt-4.5 md:pt-6.5 pb-4 md:pb-6 border-b">
+      <i-lucide [img]="SparkleIcon" class="size-5 text-primary"></i-lucide>
+      <h3 class="text-base md:text-lg font-semibold">Smart insights</h3>
+    </div>
+
+    <div class="px-6.5 pt-3.5">
+      <div class="flex flex-col gap-2 rounded-lg border border-primary/25 bg-primary/8 px-3 py-3">
+        <div class="flex items-center gap-1.5">
+          <i-lucide [img]="LightbulbIcon" class="size-3.5 text-primary"></i-lucide>
+          <span class="text-[10px] md:text-xs font-semibold tracking-wide text-primary">TIP</span>
+        </div>
+        <p class="text-xs md:text-sm leading-[1.55] text-foreground/80">{{ insightTip }}</p>
+      </div>
+    </div>
+  </div>
+</div>
