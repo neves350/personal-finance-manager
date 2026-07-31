@@ -21,20 +21,22 @@
     </a>
   </div>
 
-  <z-button (click)="openMenu()" zType="ghost" class="cursor-pointer flex md:hidden" aria-label="Open menu">
-    <i-lucide [img]="MenuIcon" class="size-4"></i-lucide>
-  </z-button>
+  <div class="flex md:hidden items-center">
+    <z-button routerLink="https://github.com/neves350" zType="ghost" aria-label="GitHub profile">
+      <i-lucide [img]="GithubIcon" class="size-4"></i-lucide>
+    </z-button>
+    <z-button (click)="openMenu()" zType="ghost" aria-label="Open menu">
+      <i-lucide [img]="MenuIcon" class="size-4"></i-lucide>
+    </z-button>
+  </div>
 </div>
 
 <ng-template #menuContent>
   <nav class="flex flex-col gap-6 p-5">
     <a href="#features" class="text-foreground text-sm font-medium hover:text-primary/50">Features</a>
     <a href="#how" class="text-foreground text-sm font-medium hover:text-primary/50">How it works</a>
-    <a href="https://github.com/neves350" target="_blank" rel="noopener noreferrer"
-      class="text-foreground text-sm font-medium hover:text-primary/50">GitHub</a>
-    <a routerLink="/register" class="text-primary font-semibold text-sm flex items-center gap-3 underline">
+    <a routerLink="/register" class="text-foreground text-sm font-medium hover:text-primary/50 pt-4 border-t">
       Get Started
-      <i-lucide [img]="ArrowUpRightIcon" class="size-4"></i-lucide>
     </a>
   </nav>
 </ng-template>
